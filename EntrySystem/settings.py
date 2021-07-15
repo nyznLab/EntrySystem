@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'patients',
     'users',
     'inpatients',
-    'followup'
+    'followup',
+    'statistics'
 ]
 
 MIDDLEWARE = [
