@@ -90,7 +90,7 @@ def get_patient_data(request):
             pass
     else:
         username = request.session.get('username')
-        return render(request, 'big_table/index.html', {
+        return render(request, 'statistics/index.html', {
             'patients': patients,
             'username': username
         })
