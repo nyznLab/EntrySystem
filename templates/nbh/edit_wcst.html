@@ -1,0 +1,351 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}威斯康星卡片分类测验（wcst）{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+	<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    input::-webkit-input-placeholder{
+    	color: #DCDCDC;
+    	font-size: 8px;
+    }
+	</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+		<div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >认知分数录入</a></li>
+						 <li class="active"><a href="#" >威斯康星卡片分类测验（wcst）</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+
+                        </div>
+                    </ul>
+				</div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top:0px;height:80%;">
+        	<div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                 <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '威斯康星卡片分类测验（WCST）' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>
+
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+					<form id="sub_wcst" action="/scales/add_wcst?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}" method="post">
+
+						{% csrf_token %}
+                            <div class="row show-grid">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>威斯康星卡片分类测验（WCST）</strong></h4>
+                                </div>
+                            </div>
+							<div class="col-md-12 column" style="text-align:center">
+                                 <br><br>
+                                <h5>
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    请参考评分指导，根据您过去1周的表现，填出合适的分数：
+                                </h5>
+                                 <br>
+							</div>
+                            <div class="row">
+								<div class="col-md-2"></div>
+                                <div class="col-md-8">
+<!--                                    <table class="table table-hover table-bordered" border="5" align="center" height="100" width="400" bordercolor="red">-->
+									<table class="table" align="center">
+				                        <thead>
+					                    <tr>
+                                            <th>
+                                                项目
+						                    </th>
+						                    <th>
+                                                得分
+						                    </th>
+					                    </tr>
+
+				                        </thead>
+				                        <tbody>
+										<br>
+                                             <tr>
+						                        <td>
+							                       完成总应答数（RA）
+						                        </td>
+						                        <td>
+
+                                                    <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="ra" name="ra" class="form-control"
+														   oninput="{notice1(1)}" value="{{ wcst_answer.ra }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice1"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      完成分类数（CC）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="cc" name="cc" class="form-control"
+														   oninput="{notice1(2)}" value="{{ wcst_answer.cc }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice2"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      正确应答数（RC）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rc" name="rc" class="form-control"
+														   oninput="{notice1(3)}" value="{{ wcst_answer.rc }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice3"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       正确应答百分数（RCP）
+						                        </td>
+						                        <td>
+
+													<input type="number" placeholder="请输入大于等于0的百分数" style="border-radius:5px;" class="form-control" id="rcp" name="rcp" min="0.0" step="0.1"
+														   oninput="{notice1(4)}" value="{{ wcst_answer.rcp }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice4"></p>
+						                        </td>
+											</tr>
+                                            <tr>
+						                        <td>
+							                      错误应答数（RE）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="re" name="re" class="form-control"
+														   oninput="{notice1(5)}" value="{{ wcst_answer.re }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice5"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      完成第一个分类所需应答数（RF）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rf" name="rf" class="form-control"
+														   oninput="{notice1(6)}" value="{{ wcst_answer.rf }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice6"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      概念化水平应答百分比（RFP）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的百分数" style="border-radius:5px;" class="form-control" id="rfp" name="rfp" min="0.0" step="0.1"
+														   oninput="{notice1(7)}" value="{{ wcst_answer.rfp }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice7"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       持续性应答（RP）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rp" name="rp" class="form-control"
+														   oninput="{notice1(8)}" value="{{ wcst_answer.rp }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice8"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       持续性错误（RPE）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rpe" name="rpe" class="form-control"
+														   oninput="{notice1(9)}" value="{{ wcst_answer.rpe }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice9"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      持续性错误百分比（RPEP）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的百分数" style="border-radius:5px;" class="form-control" id="rpep" name="rpep" min="0.0" step="0.1"
+														   oninput="{notice1(10)}" value="{{ wcst_answer.rpep }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice10"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       非持续性错误（NRPE）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" class="form-control" id="nrpe" name="nrpe"
+														   oninput="{notice1(11)}" value="{{ wcst_answer.nrpe }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice11"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       不能维持完成的分类数（FM）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" class="form-control" id="fm" name="fm"
+														   oninput="{notice1(12)}" value="{{ wcst_answer.fm }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice12"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       学习到学会（L-L)
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入" style="border-radius:5px;" class="form-control" name="l_l" min="0.0" step="0.1" value="{{ wcst_answer.l_l }}" disabled required />
+						                        </td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+								</div>
+                            </div>
+
+<br><br>
+
+
+
+						        <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="wcst_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+
+                                <div class="row" id="bt_group">
+                                        <div  class="col-md-4 col-sm-6 text-center"  >
+                                           <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                               <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                           </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                        </div>
+
+                                </div>
+                    </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+       function getData(){
+        var order = "{{ order  }}";
+        if(order==0){
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+       }
+</script>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script>
+	$("input[name='ra']").eq({{ wcst_answer.ra }}).attr("checked","checked");
+    $("input[name='cc']").eq({{ wcst_answer.cc }}).attr("checked","checked");
+    $("input[name='rc']").eq({{ wcst_answer.rc }}).attr("checked","checked");
+    $("input[name='rcp']").eq({{ wcst_answer.rcp }}).attr("checked","checked");
+    $("input[name='re']").eq({{ wcst_answer.re }}).attr("checked","checked");
+    $("input[name='rf']").eq({{ wcst_answer.rf }}).attr("checked","checked");
+    $("input[name='rfp']").eq({{ wcst_answer.rfp }}).attr("checked","checked");
+    $("input[name='rp']").eq({{ wcst_answer.rp }}).attr("checked","checked");
+    $("input[name='rpe']").eq({{ wcst_answer.rpe }}).attr("checked","checked");
+    $("input[name='rpep']").eq({{ wcst_answer.rpep }}).attr("checked","checked");
+    $("input[name='nrpe']").eq({{ wcst_answer.nrpe }}).attr("checked","checked");
+    $("input[name='fm']").eq({{ wcst_answer.fm }}).attr("checked","checked");
+    $("input[name='l_l']").eq({{ wcst_answer.l_l }}).attr("checked","checked");
+
+     function remove_disabled(){
+		$("input[name='ra']").removeAttr("disabled","disabled");
+        $("input[name='cc']").removeAttr("disabled","disabled");
+        $("input[name='rc']").removeAttr("disabled","disabled");
+        $("input[name='rcp']").removeAttr("disabled","disabled");
+        $("input[name='re']").removeAttr("disabled","disabled");
+        $("input[name='rf']").removeAttr("disabled","disabled");
+        $("input[name='rfp']").removeAttr("disabled","disabled");
+        $("input[name='rp']").removeAttr("disabled","disabled");
+        $("input[name='rpe']").removeAttr("disabled","disabled");
+        $("input[name='rpep']").removeAttr("disabled","disabled");
+        $("input[name='nrpe']").removeAttr("disabled","disabled");
+        $("input[name='fm']").removeAttr("disabled","disabled");
+        $("input[name='l_l']").removeAttr("disabled","disabled");
+        $("#wcst_bt").attr("style", "display:block;");
+        $("#bt_group").attr("style", "display:none;");
+
+     }
+
+</script>
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+	cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+});
+</script>
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,481 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}威斯康星卡片分类测验（wcst）{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+	<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    input::-webkit-input-placeholder{
+    	color: #DCDCDC;
+    	font-size: 8px;
+    }
+	</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+		<div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >认知分数录入</a></li>
+						 <li class="active"><a href="#" >威斯康星卡片分类测验（wcst）</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+
+                        </div>
+                    </ul>
+				</div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top:0px;height:80%;">
+        	<div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '威斯康星卡片分类测验（WCST）' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>
+
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+					<form id="sub_wcst" action="/scales/add_wcst?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}" method="post">
+
+						{% csrf_token %}
+                            <div class="row show-grid">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>威斯康星卡片分类测验（WCST）</strong></h4>
+                                </div>
+                            </div>
+							<div class="col-md-12 column" style="text-align:center">
+                                 <br><br>
+                                <h5>
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    请参考评分指导，根据您过去1周的表现，填出合适的分数：
+                                </h5>
+                                 <br>
+							</div>
+                            <div class="row">
+								<div class="col-md-2"></div>
+                                <div class="col-md-8">
+<!--                                    <table class="table table-hover table-bordered" border="5" align="center" height="100" width="400" bordercolor="red">-->
+									<table class="table" align="center">
+				                        <thead>
+					                    <tr>
+                                            <th>
+                                                项目
+						                    </th>
+						                    <th>
+                                                得分
+						                    </th>
+					                    </tr>
+
+				                        </thead>
+				                        <tbody>
+										<br>
+                                             <tr>
+						                        <td>
+							                       完成总应答数（RA）
+						                        </td>
+						                        <td>
+
+                                                    <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="ra" name="ra" class="form-control"
+														   oninput="{notice1(1)}"  required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice1"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      完成分类数（CC）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="cc" name="cc" class="form-control"
+														   oninput="{notice1(2)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice2"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      正确应答数（RC）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rc" name="rc" class="form-control"
+														   oninput="{notice1(3)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice3"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       正确应答百分数（RCP）
+						                        </td>
+						                        <td>
+
+													<input type="number" placeholder="请输入大于等于0的百分数" style="border-radius:5px;" class="form-control" id="rcp" name="rcp" min="0.0" step="0.1"
+														   oninput="{notice1(4)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice4"></p>
+						                        </td>
+											</tr>
+                                            <tr>
+						                        <td>
+							                      错误应答数（RE）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="re" name="re" class="form-control"
+														   oninput="{notice1(5)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice5"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      完成第一个分类所需应答数（RF）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rf" name="rf" class="form-control"
+														   oninput="{notice1(6)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice6"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      概念化水平应答百分比（RFP）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的百分数" style="border-radius:5px;" class="form-control" id="rfp" name="rfp" min="0.0" step="0.1"
+														   oninput="{notice1(7)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice7"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       持续性应答（RP）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rp" name="rp" class="form-control"
+														   oninput="{notice1(8)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice8"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       持续性错误（RPE）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="rpe" name="rpe" class="form-control"
+														   oninput="{notice1(9)}"  required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice9"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      持续性错误百分比（RPEP）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的百分数" style="border-radius:5px;" class="form-control" id="rpep" name="rpep" min="0.0" step="0.1"
+														   oninput="{notice1(10)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice10"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       非持续性错误（NRPE）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" class="form-control" id="nrpe" name="nrpe"
+														   oninput="{notice1(11)}" required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice11"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       不能维持完成的分类数（FM）
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" class="form-control" id="fm" name="fm"
+														   oninput="{notice1(12)}"  required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice12"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       学习到学会（L-L)
+						                        </td>
+						                        <td>
+							                        <input type="number" placeholder="请输入" style="border-radius:5px;" class="form-control" name="l_l" min="0.0" step="0.1"  required />
+						                        </td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+								</div>
+                            </div>
+
+<br><br>
+
+
+						        <div class="row">
+									<div class="col-md-2">
+
+									</div>
+									<div  class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                                        <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                            id="last_scale">
+											<button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button></a>
+                                    </div>
+                                    <div  class="col-md-4 col-sm-6">
+                                     {% csrf_token %}
+
+										<input class="btn btn-success text-center" id="sub" type="button" value="保存提交量表"></input>
+
+									</div>
+                                    <div class="col-md-2 col-sm-6">
+                                       <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{scale_id}}"  style="float: right"><u>跳过该量表</u></a>
+                                    </div>
+								</div>
+
+
+
+                    </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function getData(){
+		var order = "{{ order }}"
+		if(order==0){
+			$("#last_scale").attr("style", "display:none;");
+		}
+
+	}
+</script>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+	cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+});
+
+function notice1(num){
+	if(num==1){
+		a0=document.getElementsByName('ra')[0].value;
+		if(a0<0){
+			document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a0) != parseFloat(a0)){
+				document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice1').innerHTML="";
+			}
+		}
+	}
+	else if(num==2){
+		a1=document.getElementsByName('cc')[0].value;
+		if(a1<0){
+			document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a1) != parseFloat(a1)){
+				document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice2').innerHTML="";
+			}
+		}
+	}
+	else if(num==3){
+		a2=document.getElementsByName('rc')[0].value;
+		if(a2<0){
+			document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a2) != parseFloat(a2)){
+				document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice3').innerHTML="";
+			}
+		}
+	}
+	else if(num==4){
+		a3=document.getElementsByName('rcp')[0].value;
+		if(a3<0 || a3>100){
+			document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入0-100的百分数";
+		}else{
+			document.getElementById('notice4').innerHTML="";
+		}
+	}
+	else if(num==5){
+		a4=document.getElementsByName('re')[0].value;
+		if(a4<0){
+			document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a4) != parseFloat(a4)){
+				document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice5').innerHTML="";
+			}
+		}
+	}
+	else if(num==6){
+		a5=document.getElementsByName('rf')[0].value;
+		if(a5<0){
+			document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a5) != parseFloat(a5)){
+				document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice6').innerHTML="";
+			}
+		}
+	}
+	else if(num==7){
+		a6=document.getElementsByName('rfp')[0].value;
+		if(a6<0 || a6>100){
+			document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入0-100的百分数";
+		}else{
+			document.getElementById('notice7').innerHTML="";
+		}
+	}
+	else if(num==8){
+		a7=document.getElementsByName('rp')[0].value;
+		if(a7<0){
+			document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a7) != parseFloat(a7)){
+				document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice8').innerHTML="";
+			}
+		}
+	}
+	else if(num==9){
+		a8=document.getElementsByName('rpe')[0].value;
+		if(a8<0){
+			document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a8) != parseFloat(a8)){
+				document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice9').innerHTML="";
+			}
+		}
+	}
+	else if(num==10){
+		a9=document.getElementsByName('rpep')[0].value;
+		if(a9<0 || a9>100){
+			document.getElementById('notice10').innerHTML="&nbsp;&nbsp;&nbsp;请输入0-100的百分数";
+		}else{
+			document.getElementById('notice10').innerHTML="";
+		}
+	}
+	else if(num==11){
+		a10=document.getElementsByName('nrpe')[0].value;
+		if(a10<0){
+			document.getElementById('notice11').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a10) != parseFloat(a10)){
+				document.getElementById('notice11').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice11').innerHTML="";
+			}
+		}
+	}
+	else if(num==12){
+		a11=document.getElementsByName('fm')[0].value;
+		if(a11<0){
+			document.getElementById('notice12').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a11) != parseFloat(a11)){
+				document.getElementById('notice12').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice12').innerHTML="";
+			}
+		}
+	}
+}
+
+$("#sub").click(function(){
+
+
+	ra = $('#ra').val();
+	ra1 = (parseInt(ra) == parseFloat(ra));
+
+	cc= $('#cc').val();
+	cc1 = (parseInt(cc) == parseFloat(cc));
+
+	rc = $('#rc').val();
+	rc1 = (parseInt(rc) == parseFloat(rc));
+
+	rcp = $('#rcp').val();
+
+	re = $('#re').val();
+	re1 = (parseInt(re) == parseFloat(re));
+
+	rf = $('#rf').val();
+	rf1 = (parseInt(rf) == parseFloat(rf));
+
+	rfp = $('#rfp').val();
+
+	rp = $('#rp').val();
+	rp1 = (parseInt(rp) == parseFloat(rp));
+
+	rpe = $('#rpe').val();
+	rpe1 = (parseInt(rpe) == parseFloat(rpe));
+
+	rpep = $('#rpep').val();
+
+	nrpe = $('#nrpe').val();
+	nrpe1 = (parseInt(nrpe) == parseFloat(nrpe));
+
+	fm = $('#fm').val();
+	fm1 = (parseInt(fm) == parseFloat(fm));
+
+	if (ra>=0 && ra1 && cc>=0 && cc1 && rc>=0 && rc1 && rcp>=0 && rcp<=100 && re>=0 && re1 && rf>=0 && rf1 && rfp>=0
+        && rfp<=100 && rp>=0 && rp1 && rpe>=0 && rpe1 && rpep>=0 && rpep<=100 && nrpe>=0 && nrpe1 && fm>=0 && fm1){
+		$('#sub_wcst').submit();
+	}
+	else if(ra=='' || cc=='' || rc=='' || rcp=='' || re=='' || rf=='' || rfp=='' || rp=='' || rpe=='' || rpep=='' || nrpe=='' || fm==''){
+		alert("请填写完毕后提交！");
+		return false;
+	}else{
+		alert("请输入正确数字后提交！");
+		return false;
+	}
+});
+</script>
+{% endblock %}
+
+
+
+
+

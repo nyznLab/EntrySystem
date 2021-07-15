@@ -1,0 +1,591 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}rtms治疗信息{% endblock %}
+{% block css %}
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <style>
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 4px;
+            vertical-align: middle;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .tab1 {
+        {#background-color: #E8E8E8;#} font-weight: bold;
+            font-size: larger;
+        }
+
+        .sel_beauty {
+            background: #fafdfe;
+            height: 28px;
+            width: 180px;
+            line-height: 28px;
+            border: 1px solid #9bc0dd;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            width: 160px;
+            color: #2C4257;
+            font-size: 7px
+        }
+
+
+        .table input.labelauty + label {
+            margin-bottom: 0px;
+            width: 100%;
+            display: table;
+            font-size: 13px;
+            padding: 20px;
+            text-align: center;
+            background-color: #efefef;
+            color: #b3b3b3;
+            cursor: pointer;
+            border-radius: 3px 3px 3px 3px;
+            -moz-border-radius: 3px 3px 3px 3px;
+            -webkit-border-radius: 3px 3px 3px 3px;
+            transition: background-color 0.25s;
+            -moz-transition: background-color 0.25s;
+            -webkit-transition: background-color 0.25s;
+            -o-transition: background-color 0.25s;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -o-user-select: none;
+        }
+    </style>
+
+    <style>
+
+        td {
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="#">信息录入</a></li>
+                    <li class="active"><a href="#">rtms治疗信息录入</a></li>
+
+                    <div style="float: right;margin-bottom: 0px;">
+                        <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                           class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel">
+        <div id="wrapper">
+            <div id="right-side">
+                <div id="first" class="active">
+
+                    <div class="container " style="align-content: center">
+                        <div class="x_title">
+                            <div class="clearfix" style="text-align:center "></div>
+                            <h2>rtms治疗方案 </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="row" style="margin: 15px;">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4  col-xs-12" for="patient_id">受试编号:</label>
+                                    <div id="patient_id" class="col-md-4  col-xs-12">{{ standard_id }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="sex">性别: </label>
+                                    {% if patient.sex == 0 %}
+                                        <div class="col-md-2  form-group has-feedback row">
+                                            <input type="radio" disabled name="sex" value=0 data-labelauty="男" checked/>
+                                        </div>
+                                        <div class="col-md-2  form-group has-feedback row">
+                                            <input type="radio" disabled name="sex" value=1 data-labelauty="女"/>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-2  form-group has-feedback row">
+                                            <input type="radio" disabled name="sex" value=0 data-labelauty="男"/>
+                                        </div>
+                                        <div class="col-md-2  form-group has-feedback row">
+                                            <input type="radio" disabled name="sex" value=1 data-labelauty="女" checked/>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="birth_date"
+                                           class="control-label col-md-4 col-sm-2 col-xs-12">出生日期: </label>
+                                    <div id="birth_date" class="">
+                                        {{ patient_baseinfo.birth_date }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin: 15px;">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"
+                                           for="subject_number">诊断情况</label>
+                                    <div class="  col-md-4 col-sm-4 col-xs-12">
+                                        <select name="diagnosis" id="diagnosis" class="sel_beauty" disabled>
+                                            <option value=0>&nbsp;&nbsp;&nbsp;未诊断</option>
+                                            <option value=1>&nbsp;&nbsp;&nbsp;健康者</option>
+                                            <option value=2>&nbsp;&nbsp;&nbsp;重性抑郁障碍</option>
+                                            <option value=3>&nbsp;&nbsp;&nbsp;焦虑障碍</option>
+                                            <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
+                                            <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
+                                            <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
+                                            <option value=7>&nbsp;&nbsp;&nbsp;高危遗传</option>
+                                            <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
+                                            <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
+                                            <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4" id="other_diagnosis_div" style="display: none">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-6" for="subject_number">其他诊断<span
+                                        class="required">:</span></label>
+                                <div class="control-label col-md-2 ">
+                                    <input id="other_diagnosis" name="other_diagnosis" disabled class="sel_beauty"
+                                           value="{{ patient_baseinfo.other_diagnosis|processNone }}">
+                                </div>
+                                <div id="ghr_label_div" class="form-group  col-md-4" style="display: none;">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12"
+                                           for="subject_number">高危类型<span class="required">*:</span></label>
+                                    <div id="ghr_diagnosis_p" class="form-group col-md-10 col-sm-2 col-xs-12"
+                                         style="display: none; ">
+                                        <p id="ghr_diagnosis_div"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"
+                                           for="subject_number">扫描日期</label>
+                                    <div id="birth_date" disabled>
+                                        {{ patient_detail.scan_date }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <center><h4>rtms治疗信息</h4></center>
+                        </div>
+                        <form action="/scales/add_rtms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                              method="post">
+                            <div>
+                                {% csrf_token %}
+                                <div style="margin-bottom: 10px">
+                                    <table border="1" cellpadding="1" cellspacing="0" align="center" id="" tms_table>
+                                        <tr valign="top">
+                                            <td height="200">
+                                                <div class="container ">
+                                                    <table border="1" id="planTable" cellpadding="1" cellspacing="1"
+                                                           style="table-layout: fixed; width:99%;text-align: center;">
+                                                        <colgroup>
+                                                            <col width=10%>
+                                                            <col width=10%>
+                                                            <col width=11%>
+                                                            <col width=11%>
+                                                        </colgroup>
+                                                        <tr align="right">
+                                                            <input name="button" type="button" id="add_button"
+                                                                   onClick="addLine()" value="添加"
+                                                                   style="background-color: #26B99A ; color:white">
+                                                            <input name="button2" type="button" id="del_button"
+                                                                   onClick="delLine()" value="删除"
+                                                                   style="background-color: #26B99A ; color:white">
+                                                        </tr>
+
+                                                        <tr bgcolor="#26B99A " onMouseOver="" style="color: white"
+                                                            style="height: 90%;text-align: center">
+                                                            <th style="width:100%;text-align: center">
+                                                                治疗次数 （第几次）
+                                                            </th>
+                                                            <th>
+                                                                治疗日期
+                                                            </th>
+                                                            <th style="width:50%;text-align: center">
+                                                                刺激部位
+                                                            </th>
+                                                            <th style="width:100%;text-align: center">
+                                                                刺激次数 （每天）
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                刺激总次数
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                运动阈值
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                能量强度（%）
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                频率（HZ）
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                脉冲个数（个）
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                刺激时间（秒）
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                重复次数
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                频率（HZ）
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                刺激总次数
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                总时间(分钟)
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                总时间(秒)
+                                                            </th>
+                                                            <th style="width:80%;text-align: center">
+                                                                备注
+                                                            </th>
+                                                        </tr>
+                                                        <tbody>
+                                                        {% if do_type == '1' %}
+                                                            {% for items in patient_rtms_info %}
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.treatment_num|processNone }}"
+                                                                               name="treatment_num_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=date
+                                                                               value="{{ items.treatment_date|processNone }}"
+                                                                               name="treatment_date_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if items.therapeutic_target|processNone == 0 %}
+                                                                            <select tabindex=-1 style="font-size: 10px"
+                                                                                    class="sel_beauty  form-control"
+                                                                                    name="therapeutic_target_{{ forloop.counter }}"
+                                                                                    value="0">
+                                                                                <option value="0" selected>枕叶</option>
+                                                                                <option value="1">前额</option>
+                                                                                <option value="2">额顶叶</option>
+                                                                            </select>
+                                                                        {% elif items.therapeutic_target|processNone == 1 %}
+                                                                            <select tabindex=-1 style="font-size: 10px "
+                                                                                    class="sel_beauty  form-control"
+                                                                                    name="therapeutic_target_{{ forloop.counter }}"
+                                                                                    value="1">
+                                                                                <option value="0">枕叶</option>
+                                                                                <option value="1" selected>前额</option>
+                                                                                <option value="2">额顶叶</option>
+                                                                            </select>
+                                                                        {% else %}
+                                                                            <select tabindex=-1 style="font-size: 10px "
+                                                                                    class="sel_beauty  form-control "
+                                                                                    name="therapeutic_target_{{ forloop.counter }}"
+                                                                                    value={{ items.therapeutic_target }}>
+                                                                                <option value="0">枕叶</option>
+                                                                                <option value="1">前额</option>
+                                                                                <option value="2" selected>额顶叶</option>
+                                                                            </select>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if  items.times_per_day|processNone  == 0 %}
+                                                                            <select tabindex=-1 style="font-size: 10px "
+                                                                                    class="sel_beauty  form-control"
+                                                                                    name="times_per_day_{{ forloop.counter }}">
+                                                                                <option value="0" selected>QD(每天一次)
+                                                                                </option>
+                                                                                <option value="1">BID(每天两次)</option>
+                                                                                <option value="2">TID(每天三次)</option>
+                                                                            </select>
+                                                                            </select>
+                                                                        {% elif items.times_per_day|processNone  == 1 %}
+                                                                            <select tabindex=-1 style="font-size: 10px "
+                                                                                    class="sel_beauty  form-control "
+                                                                                    name="times_per_day_{{ forloop.counter }}">
+                                                                                <option value="0">QD(每天一次)</option>
+                                                                                <option value="1" selected>BID(每天两次)
+                                                                                </option>
+                                                                                <option value="2">TID(每天三次)</option>
+                                                                            </select>
+                                                                        {% elif  items.times_per_day|processNone  == 2 %}
+                                                                            <select tabindex=-1 style=font-size: 10px
+                                                                                    class=sel_beauty form-control
+                                                                                    name="times_per_day_{{ forloop.counter }}">
+                                                                                <option value="0">QD(每天一次)</option>
+                                                                                <option value="1">BID(每天两次)</option>
+                                                                                <option value="2" selected>TID(每天三次)
+                                                                                </option>
+                                                                            </select>
+                                                                        {% else %}
+                                                                            <select tabindex=-1 style="font-size: 10px"
+                                                                                    class="sel_beauty  form-control "
+                                                                                    name="times_per_day_{{ forloop.counter }}">
+                                                                                <option value="0">QD(每天一次)</option>
+                                                                                <option value="1">BID(每天两次)</option>
+                                                                                <option value="2" selected>T</option>
+                                                                            </select>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.total_num|processNone }}"
+                                                                               name="total_num_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.resting_motor_threshold|processNone }}"
+                                                                               name="resting_motor_threshold_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.intensity|processNone }}"
+                                                                               name="intensity_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.frequency|processNone }}"
+                                                                               name="frequency_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.pulses|processNone }}"
+                                                                               name="pulses_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.stimulation_time|processNone }}"
+                                                                               name="stimulation_time_{{ forloop.counter }}">
+
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.inter_train_intervals|processNone }}"
+                                                                               name="inter_train_intervals_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.pulse_trains|processNone }}"
+                                                                               name="pulse_trains_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.total_pulses|processNone }}"
+                                                                               name="total_pulses_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.total_time_minute|processNone }}"
+                                                                               name="total_time_minute_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=number
+                                                                               value="{{ items.total_time_second|processNone }}"
+                                                                               name="total_time_second_{{ forloop.counter }}">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type=text
+                                                                               value="{{ items.note|processNone }}"
+                                                                               name="note_{{ forloop.counter }}">
+                                                                    </td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        {% endif %}
+
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-10 col-sm-6" style="text-align: center">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-success text-center" value="保存提交">
+                            </div>
+                            <div class="row" id="redo_bt_group">
+                                <div class="col-md-2 col-sm-6">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                                       style="float: right"><u>跳过</u></a>
+                                </div>
+                            </div>
+                            {#1.展示按钮组合#}
+                            <div class="row" id="bt_group" style="display: none">
+                                <div class="col-md-2 col-sm-6">
+                                    <a onclick="remove_disabled()" style="float: right"><u>修改</u></a>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+
+
+    <script>
+        function getData()
+        {
+            var do_type = "{{ do_type }}";
+            if (do_type == '1')
+            {
+                $("#planTable :input").attr("disabled", true);
+                document.getElementById("add_button").disabled = true;
+                document.getElementById("del_button").disabled = true;
+                $("#bt_group").attr("style", "display:block;");
+                $("#redo_bt_group").attr("style", "display:none;");
+
+            } else {  {# do_type=0 #}
+                $("#patient_rtms_info :input").attr("disabled", true);
+                document.getElementById("add_button").disabled = false;
+                document.getElementById("del_button").disabled = false;
+
+            }
+        }
+    </script>
+    <script>
+        function remove_disabled() {
+            document.getElementById("add_button").disabled = false;
+            document.getElementById("del_button").disabled = false;
+
+            $("#planTable :input").removeAttr("disabled", true);
+
+            $("#redo_bt_group").removeAttr("style", "display:none;");
+            $("#bt_group").attr("style", "display:none;");
+        }
+    </script>
+    <script src="{% static '/js/layerJquery.js' %}"></script>
+    <script src="{% static '/js/layer.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}">
+        //加载模态框
+    </script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+            document.getElementById("diagnosis").value ={{ patient_baseinfo.diagnosis }};
+            var diagnosistype ={{ patient_baseinfo.diagnosis }};
+            var diagnosistype ={{ patient_baseinfo.diagnosis }};
+            if (diagnosistype == 99)
+                document.getElementById("other_diagnosis_div").style.display = "";
+            document.getElementById("diagnosis").value ={{ patient_baseinfo.diagnosis }};
+        });
+    </script>
+
+
+
+    <script language="javascript">
+
+        function addLine() {
+            var newLine = planTable.rows.length;
+            var row = planTable.insertRow(newLine);
+            var idx = newLine - 1
+            col = row.insertCell(0);
+            col.innerHTML = "<input type=number  name=treatment_num_" + newLine + ">";
+
+
+            var col = row.insertCell(1);
+            col.innerHTML = "<input type=date   name=treatment_date_" + newLine + ">";
+
+            col = row.insertCell(2);
+            var str1 = "";
+            str1 += "<select tabindex=-1 style=font-size: 10px ;  class=sel_beauty  form-control    name=therapeutic_target_" + newLine + ">"
+            str1 += "<option  value='0'>" + "枕叶";
+            str1 += "<option  value='1'>" + "前额叶";
+            str1 += "<option  value='2'>" + "额顶叶";
+            str1 += "</select>";
+            col.innerHTML = str1;
+
+            col = row.insertCell(3);
+            var str2 = "";
+            str2 += "<select tabindex=-1 style=font-size: 10px ; class=sel_beauty  form-control   name=times_per_day_" + newLine + ">"
+            str2 += "<option  value='0'>" + "QD(每天一次)</option>";
+            str2 += "<option  value='1'>" + "BID(每天两次)</option>";
+            str2 += "<option  value='2'>" + "TID(每天三次)</option>";
+
+            str2 += "</select>";
+            col.innerHTML = str2;
+            col = row.insertCell(4);
+            col.innerHTML = "<input type=number    name=total_num_" + newLine + ">";
+            col = row.insertCell(5);
+            col.innerHTML = "<input  type=number   name=resting_motor_threshold_" + newLine + ">";
+            col = row.insertCell(6);
+            col.innerHTML = "<input  type=number    name=intensity_" + newLine + ">";
+            col = row.insertCell(7);
+            col.innerHTML = "<input type=number   name=frequency_" + newLine + ">";
+            col = row.insertCell(8);
+            col.innerHTML = "<input type=number  name=pulses_" + newLine + ">";
+            col = row.insertCell(9);
+            col.innerHTML = "<input type=number   name=stimulation_time_" + newLine + ">";
+            col = row.insertCell(10);
+            col.innerHTML = "<input type=number   name=inter_train_intervals_" + newLine + ">";
+            col = row.insertCell(11);
+            col.innerHTML = "<input type=number  name=pulse_trains_" + newLine + ">";
+            col = row.insertCell(12);
+            col.innerHTML = "<input type=number   name=total_pulses_" + newLine + ">";
+            col = row.insertCell(13);
+            col.innerHTML = "<input type=number   name=total_time_minute_" + newLine + ">";
+            col = row.insertCell(14);
+            col.innerHTML = "<input type=number   name=total_time_second_" + newLine + ">";
+            col = row.insertCell(15);
+            col.innerHTML = "<input type=text   name=note_" + newLine + ">";
+
+
+            return newLine;
+        }
+
+
+        function delLine() {
+            var i;
+            var count;
+            count = planTable.rows.length;
+            if (count > 2) {
+                planTable.deleteRow(planTable.rows.length - 1)
+                for (i = 0; i < count - 1; i++) {
+                    //if(document.chk[i].checked){
+                    //alert("aa");
+                    //}
+                }
+            }
+        }
+
+
+    </script>
+
+
+{% endblock %}

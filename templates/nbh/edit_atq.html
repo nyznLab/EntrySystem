@@ -1,0 +1,521 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}自动思维问卷表(atq){% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表</a></li>
+                         <li class="active"><a href="#" >自动思维问卷表(atq)</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>  
+        <div class="dashboard_graph x_panel" style="margin-top:0px;height: 80%;">
+            <div id="left-side" style="height: 100%;" class="col-md-3">
+                <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '自动思维问卷（ATQ）' %}
+                            <li class="step doing">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 1 %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                             <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="finish nodone notclick">
+                        <p>完成</p>
+                    </li>
+                </ul>
+            </div>
+				         
+            <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+                            <div class="container">
+
+                            <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+                                <h4><strong><center>自动思维问卷（ATQ）</center><br/></strong></h4>
+                            </div>
+                             <div   style="margin: 5px;">指导语：下列是一些可能涌入人们头脑中的想法，请逐条阅读，说明你在最近一周内是否出现过这类想法，其频度如何。请在每一条目后标明相应的数值：1=无；2=偶尔出现；3=有时出现；4=经常出现；5=持续存在。
+                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table   class="table table-bordered table-condensed" style="table-layout: fixed; width:100%;">
+				                        <thead>
+					                    <tr>
+						                    <th style="width:30%">
+                                                <center> </center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 1</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 2</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 3</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 4</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 5</center>
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody align="left">
+                                             <tr>
+						                        <td style="width:50%">1.我觉得活在世上困难重重。</td>
+                                                 <td style="width:10%"><input type="radio"  name="question1_answer" value=1 data-labelauty="无"/></td>
+                                                 <td style="width:10%"><input type="radio"  name="question1_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td style="width: 10%;"><input type="radio"  name="question1_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td style="width: 10%;"><input type="radio"  name="question1_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td style="width: 10%;"><input type="radio"  name="question1_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>2.我不好。</td>
+                                                 <td><input type="radio"  name="question2_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>3.为什么我总不能成功？</td>
+                                                 <td><input type="radio"  name="question3_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>4.没有人理解我。</td>
+                                                 <td><input type="radio"  name="question4_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>5.我让人失望。</td>
+                                                 <td><input type="radio"  name="question5_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>6.我觉得过不下去了。</td>
+                                                 <td><input type="radio"  name="question6_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>7.真希望我能好一点。</td>
+                                                 <td><input type="radio"  name="question7_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>8.我很虚弱。</td>
+                                                 <td><input type="radio"  name="question8_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>9.我的生活不按我的愿望发展。</td>
+                                                 <td><input type="radio"  name="question9_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>10.我对自己很不满意。</td>
+                                                 <td><input type="radio"  name="question10_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question10_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question10_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question10_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question10_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>11.我觉得一切都不好了。</td>
+                                                 <td><input type="radio"  name="question11_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question11_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question11_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question11_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question11_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>12.我无法坚持下去。</td>
+                                                 <td><input type="radio"  name="question12_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question12_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question12_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question12_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question12_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>13.我无法重新开始。</td>
+                                                 <td><input type="radio"  name="question13_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question13_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question13_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question13_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question13_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>14.我究竟犯了什么毛病？</td>
+                                                 <td><input type="radio"  name="question14_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question14_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question14_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question14_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question14_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>15.真希望我是在另外一个地方。</td>
+                                                 <td><input type="radio"  name="question15_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question15_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question15_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question15_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question15_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>16.我无法同时对付这些事情。</td>
+                                                 <td><input type="radio"  name="question16_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question16_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question16_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question16_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question16_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>17.我恨我自己</td>
+                                                 <td><input type="radio"  name="question17_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question17_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question17_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question17_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question17_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>18.我毫无价值。</td>
+                                                 <td><input type="radio"  name="question18_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question18_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question18_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question18_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question18_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>19.真希望我一下子就消失了。</td>
+                                                 <td><input type="radio"  name="question19_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question19_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question19_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question19_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question19_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>20.我这是怎么了？</td>
+                                                 <td><input type="radio"  name="question20_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question20_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question20_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question20_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question20_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>21.我是个失败者。</td>
+                                                 <td><input type="radio"  name="question21_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question21_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question21_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question21_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question21_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>22.我的生活一团糟。</td>
+                                                 <td><input type="radio"  name="question22_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question22_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question22_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question22_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question22_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>23.我一事无成。</td>
+                                                 <td><input type="radio"  name="question23_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question23_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question23_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question23_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question23_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>24.我不可能干好。</td>
+                                                 <td><input type="radio"  name="question24_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question24_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question24_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question24_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question24_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>25.我觉得孤立无援。</td>
+                                                 <td><input type="radio"  name="question25_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question25_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question25_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question25_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question25_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>26.有些东西必须改变。</td>
+                                                 <td><input type="radio"  name="question26_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question26_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question26_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question26_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question26_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>27.我肯定有问题。</td>
+                                                 <td><input type="radio"  name="question27_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question27_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question27_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question27_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question27_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>28.我的将来毫无希望。</td>
+                                                 <td><input type="radio"  name="question28_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question28_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question28_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question28_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question28_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>29.这根本毫无价值。</td>
+                                                 <td><input type="radio"  name="question29_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question29_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question29_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question29_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question29_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+                                         <tr>
+						                        <td>30.我干什么事都有头无尾。</td>
+                                                 <td><input type="radio"  name="question30_answer" value=1 data-labelauty="无"/></td>
+                                                 <td><input type="radio"  name="question30_answer" value=2 data-labelauty="偶尔出现"/></td>
+                                                 <td><input type="radio"  name="question30_answer" value=3 data-labelauty="有时出现"/></td>
+                                                 <td><input type="radio"  name="question30_answer" value=4 data-labelauty="经常出现"/></td>
+                                                 <td><input type="radio"  name="question30_answer" value=5 data-labelauty="持续存在"/></td>
+					                        </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                            <a  style="float: left;font-weight: bold">总分：{{ atq_answer.total_score|processNone }}</a>
+                                        </div>
+                                </div>
+
+
+                            <div class="row" id="bt_group">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    <a href="/scales/get_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {{% comment %}第一个{% endcomment %}
+                $("#last_scale").attr("style", "display:none;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:block;");
+                $("#next_scale").attr("style", "display:none;");
+            } else {{# 啥也不是 #}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            }
+            if ('{{ atq_answer }}' != 'None') {
+                {#数据填充 读数据#}
+                if ('{{ atq_answer.question1_answer }}' != 'None') {
+                    $("input[name='question1_answer'][value=" + Number({{ atq_answer.question1_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question2_answer }}' != 'None') {
+                    $("input[name='question2_answer'][value=" + Number({{ atq_answer.question2_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question3_answer }}' != 'None') {
+                    $("input[name='question3_answer'][value=" + Number({{ atq_answer.question3_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question4_answer }}' != 'None') {
+                    $("input[name='question4_answer'][value=" + Number({{ atq_answer.question4_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question5_answer }}' != 'None') {
+                    $("input[name='question5_answer'][value=" + Number({{ atq_answer.question5_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question6_answer }}' != 'None') {
+                    $("input[name='question6_answer'][value=" + Number({{ atq_answer.question6_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question7_answer }}' != 'None') {
+                    $("input[name='question7_answer'][value=" + Number({{ atq_answer.question7_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question8_answer }}' != 'None') {
+                    $("input[name='question8_answer'][value=" + Number({{ atq_answer.question8_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question9_answer }}' != 'None') {
+                    $("input[name='question9_answer'][value=" + Number({{ atq_answer.question9_answer }}) + "]").prop("checked", true);
+                }if ('{{ atq_answer.question10_answer }}' != 'None') {
+                    $("input[name='question10_answer'][value=" + Number({{ atq_answer.question10_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question11_answer }}' != 'None') {
+                    $("input[name='question11_answer'][value=" + Number({{ atq_answer.question11_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question12_answer }}' != 'None') {
+                    $("input[name='question12_answer'][value=" + Number({{ atq_answer.question12_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question13_answer }}' != 'None') {
+                    $("input[name='question13_answer'][value=" + Number({{ atq_answer.question13_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question14_answer }}' != 'None') {
+                    $("input[name='question14_answer'][value=" + Number({{ atq_answer.question14_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question15_answer }}' != 'None') {
+                    $("input[name='question15_answer'][value=" + Number({{ atq_answer.question15_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question16_answer }}' != 'None') {
+                    $("input[name='question16_answer'][value=" + Number({{ atq_answer.question16_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question17_answer }}' != 'None') {
+                    $("input[name='question17_answer'][value=" + Number({{ atq_answer.question17_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question18_answer }}' != 'None') {
+                    $("input[name='question18_answer'][value=" + Number({{ atq_answer.question18_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question19_answer }}' != 'None') {
+                    $("input[name='question19_answer'][value=" + Number({{ atq_answer.question19_answer }}) + "]").prop("checked", true);
+                }if ('{{ atq_answer.question20_answer }}' != 'None') {
+                    $("input[name='question20_answer'][value=" + Number({{ atq_answer.question20_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question21_answer }}' != 'None') {
+                    $("input[name='question21_answer'][value=" + Number({{ atq_answer.question21_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question22_answer }}' != 'None') {
+                    $("input[name='question22_answer'][value=" + Number({{ atq_answer.question22_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question23_answer }}' != 'None') {
+                    $("input[name='question23_answer'][value=" + Number({{ atq_answer.question23_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question24_answer }}' != 'None') {
+                    $("input[name='question24_answer'][value=" + Number({{ atq_answer.question24_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question25_answer }}' != 'None') {
+                    $("input[name='question25_answer'][value=" + Number({{ atq_answer.question25_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question26_answer }}' != 'None') {
+                    $("input[name='question26_answer'][value=" + Number({{ atq_answer.question26_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question27_answer }}' != 'None') {
+                    $("input[name='question27_answer'][value=" + Number({{ atq_answer.question27_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question28_answer }}' != 'None') {
+                    $("input[name='question28_answer'][value=" + Number({{ atq_answer.question28_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ atq_answer.question29_answer }}' != 'None') {
+                    $("input[name='question29_answer'][value=" + Number({{ atq_answer.question29_answer }}) + "]").prop("checked", true);
+                }if ('{{ atq_answer.question30_answer }}' != 'None') {
+                    $("input[name='question30_answer'][value=" + Number({{ atq_answer.question30_answer }}) + "]").prop("checked", true);
+                }
+                
+
+            }
+            {#锁住#}
+            $("input[name='question1_answer']").attr("disabled", "disabled");
+            $("input[name='question2_answer']").attr("disabled", "disabled");
+            $("input[name='question3_answer']").attr("disabled", "disabled");
+            $("input[name='question4_answer']").attr("disabled", "disabled");
+            $("input[name='question5_answer']").attr("disabled", "disabled");
+            $("input[name='question6_answer']").attr("disabled", "disabled");
+            $("input[name='question7_answer']").attr("disabled", "disabled");
+            $("input[name='question8_answer']").attr("disabled", "disabled");
+            $("input[name='question9_answer']").attr("disabled", "disabled");
+            $("input[name='question10_answer']").attr("disabled", "disabled");
+            $("input[name='question11_answer']").attr("disabled", "disabled");
+            $("input[name='question12_answer']").attr("disabled", "disabled");
+            $("input[name='question13_answer']").attr("disabled", "disabled");
+            $("input[name='question14_answer']").attr("disabled", "disabled");
+            $("input[name='question15_answer']").attr("disabled", "disabled");
+            $("input[name='question16_answer']").attr("disabled", "disabled");
+            $("input[name='question17_answer']").attr("disabled", "disabled");
+            $("input[name='question18_answer']").attr("disabled", "disabled");
+            $("input[name='question19_answer']").attr("disabled", "disabled");
+            $("input[name='question20_answer']").attr("disabled", "disabled");
+            $("input[name='question21_answer']").attr("disabled", "disabled");
+            $("input[name='question22_answer']").attr("disabled", "disabled");
+            $("input[name='question23_answer']").attr("disabled", "disabled");
+            $("input[name='question24_answer']").attr("disabled", "disabled");
+            $("input[name='question25_answer']").attr("disabled", "disabled");
+            $("input[name='question26_answer']").attr("disabled", "disabled");
+            $("input[name='question27_answer']").attr("disabled", "disabled");
+            $("input[name='question28_answer']").attr("disabled", "disabled");
+            $("input[name='question29_answer']").attr("disabled", "disabled");
+            $("input[name='question30_answer']").attr("disabled", "disabled");
+
+
+
+        }
+    </script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+{% endblock %}

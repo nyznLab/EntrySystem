@@ -1,0 +1,1317 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}他评量表{% endblock %}
+{% block css %}
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+
+    <div class="right_col" role="main" style="">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="/patients/get_select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">量表录入</a></li>
+                         <li class="active"><a href="#" ></a>他评表</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel">
+            <div class="tabbable" id="tabs-58973">
+				<ul class="nav nav-tabs">
+
+					<li>
+                        <a href="#panel_HAMD" data-toggle="tab"><strong>汉密尔顿抑郁量表(HAMD-17)</strong></a>
+					</li>
+                    <li>
+                        <a href="#panel_HAMA" data-toggle="tab"><strong>汉密尔顿焦虑量表(HAMA)</strong></a>
+					</li>
+                    <li>
+                        <a href="#panel_YMRS" data-toggle="tab"><strong>杨氏躁狂量表（YMRS）</strong></a>
+                    </li>
+                    <li>
+                        <a href="#panel_BPRS" data-toggle="tab"><strong>BPRS（简明精神病量表）</strong></a>
+                    </li>
+
+				</ul>
+                <div class="tab-content" >
+                    <div class="tab-pane" id="panel_HAMD">
+                          <form action="/scales/add_hamd?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+
+                        <div class="container">
+                            <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+                                <strong>请参考评分指导，根据您过去1周的表现，在合适的分数上打勾：<br/></strong>
+                                <strong>无症状=0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  轻微=1  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中等=2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  较重=3  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 严重=4<br/></strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table class="table table-hover table-bordered">
+				                        <thead>
+					                    <tr>
+						                    <th  colspan="6">
+                                                <center> 圈出最适合病人情况的分数</center>
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       1.抑郁情绪
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="depression" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="depression" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="depression" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="depression" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="depression" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       2.有罪感
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="guilt" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="guilt" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       3.自杀
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="suicide" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="suicide" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suicide" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suicide" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suicide" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       4.入睡困难
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="difficulty_sleeping" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="difficulty_sleeping" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="difficulty_sleeping" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="difficulty_sleeping" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="difficulty_sleeping" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       5.睡眠不深
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="sleep_deep" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="sleep_deep" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="sleep_deep" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="sleep_deep" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="sleep_deep" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       6.早醒
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="wake_early" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="wake_early" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="wake_early" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="wake_early" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="wake_early" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       7.工作和兴趣
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="work_interest" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="work_interest" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="work_interest" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="work_interest" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="work_interest" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       8.迟缓
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="slow" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="slow" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       9.激越
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="intense" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="intense" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="intense" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="intense" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="intense" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       10.精神性焦虑
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="psycho_anxiety" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="psycho_anxiety" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="psycho_anxiety" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="psycho_anxiety" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="psycho_anxiety" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       11.躯体性焦虑
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="somatic_anxiety" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="somatic_anxiety" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="somatic_anxiety" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="somatic_anxiety" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="somatic_anxiety" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       12.胃肠道症状
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="gastrointestinal_symptoms" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="gastrointestinal_symptoms" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="gastrointestinal_symptoms" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="gastrointestinal_symptoms" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="gastrointestinal_symptoms" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       13.全身症状
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="systemic_symptoms" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="systemic_symptoms" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="systemic_symptoms" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="systemic_symptoms" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="systemic_symptoms" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       14.性症状
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="sexual_symptoms" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="sexual_symptoms" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="sexual_symptoms" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="sexual_symptoms" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="sexual_symptoms" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       15.疑病
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="hypochondria" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="hypochondria" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>doctor_id
+							                        <input type="radio" class="flat" name="hypochondria" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hypochondria" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hypochondria" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       16.体重减轻
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="lose_weight" value=0  required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="lose_weight" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="lose_weight" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="lose_weight" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="lose_weight" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       14.自知力
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="self_awareness" value=0 required /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="self_awareness" value=1 required/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="self_awareness" value=2 required/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="self_awareness" value=3 required/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="self_awareness" value=4 required/> <span style="margin-right: 20px">4</span>
+						                        </td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="text-center">
+                                     {% csrf_token %}
+                                    <input  type="submit" class="btn btn-success"  id="hamd_bt"  value="提交"/>
+
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+
+					</div>
+                    <div class="tab-pane" id="panel_HAMA">
+                           <form action="/scales/add_hama?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                               <div class="container">
+			<h3 class="text-center">汉密尔顿焦虑量表（HAMA)</h3>
+             <h2>请参考评分指导，根据您过去1周的表现，在合适的分数上打勾:</h2>
+                    <h2>无症状=0   轻微=1   中等=2   较重=3   严重=4</h2>
+                               </div>
+                {%  csrf_token %}
+			<table class="table table-hover table-bordered" >
+                  <thead>
+                  <tr>
+                      <th  colspan="6">
+                          <center> 圈出最适合病人情况的分数</center>
+                      </th>
+                  </tr>
+                  </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>1.焦虑心境</td>
+                                    <td><input name="anxiety" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="anxiety" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="anxiety" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="anxiety" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="anxiety" type="radio" class="flat" value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>2.紧张</td>
+                                    <td><input name="nervous" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="nervous" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="nervous" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="nervous" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="nervous" type="radio" class="flat" value="4"/></td>
+
+                    </tr>
+                    <tr>
+                        <td>3.害怕</td>
+                                    <td><input name="fear" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="fear" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="fear" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="fear" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="fear" type="radio" class="flat" value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>4.失眠</td>
+                                    <td><input name="insomnia" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="insomnia" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="insomnia" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="insomnia" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="insomnia" type="radio" class="flat" value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>5.认知功能</td>
+                                    <td><input name="cognitive_function" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="cognitive_function" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="cognitive_function" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="cognitive_function" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="cognitive_function" type="radio" class="flat" value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>6.抑郁心境</td>
+                                    <td><input name="depression" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="depression" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="depression" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="depression" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="depression" type="radio" class="flat" value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>7.躯体性焦虑:肌肉系统</td>
+                                    <td><input name="somaticanxiety_muscle" type="radio" class="flat" value="0"/></td>
+                                    <td><input name="somaticanxiety_muscle" type="radio" class="flat" value="1"/></td>
+                                    <td><input name="somaticanxiety_muscle" type="radio" class="flat" value="2"/></td>
+                                    <td><input name="somaticanxiety_muscle" type="radio" class="flat" value="3"/></td>
+                                    <td><input name="somaticanxiety_muscle" type="radio" class="flat" value="4"/></td>
+                    </tr>
+                    <tr><td>8.躯体性焦虑:感觉系统</td>
+                                    <td><input name="somaticanxiety_sensory" type="radio" class="flat"value="0"/></td>
+                                    <td><input name="somaticanxiety_sensory" type="radio" class="flat"value="1"/></td>
+                                    <td><input name="somaticanxiety_sensory" type="radio" class="flat"value="2"/></td>
+                                    <td><input name="somaticanxiety_sensory" type="radio" class="flat"value="3"/></td>
+                                    <td><input name="somaticanxiety_sensory" type="radio" class="flat"value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>9.心血管系统症状</td>
+                                    <td><input name="cardiovascular_symptoms" type="radio" class="flat"value="0"/></td>
+                                    <td><input name="cardiovascular_symptoms" type="radio" class="flat"value="1"/></td>
+                                    <td><input name="cardiovascular_symptoms" type="radio" class="flat"value="2"/></td>
+                                    <td><input name="cardiovascular_symptoms" type="radio" class="flat"value="3"/></td>
+                                    <td><input name="cardiovascular_symptoms" type="radio" class="flat"value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>10.呼吸系统症状</td>
+                                    <td><input name="respiratory_symptoms" type="radio" class="flat"value="0"/></td>
+                                    <td><input name="respiratory_symptoms" type="radio" class="flat"value="1"/></td>
+                                    <td><input name="respiratory_symptoms" type="radio" class="flat"value="2"/></td>
+                                    <td><input name="respiratory_symptoms" type="radio" class="flat"value="3"/></td>
+                                    <td><input name="respiratory_symptoms" type="radio" class="flat"value="4"/></td>
+                    </tr>
+                    <tr>
+                        <td>11.胃肠道症状</td>
+                                    <td><input name="gastrointestinal_symptoms" type="radio" value="0"class="flat"/></td>
+                                    <td><input name="gastrointestinal_symptoms" type="radio" value="1"class="flat"/></td>
+                                    <td><input name="gastrointestinal_symptoms" type="radio" value="2"class="flat"/></td>
+                                    <td><input name="gastrointestinal_symptoms" type="radio" value="3"class="flat"/></td>
+                                    <td><input name="gastrointestinal_symptoms" type="radio" value="4"class="flat"/></td>
+                    </tr>
+                    <tr>
+                        <td>12.生殖泌尿系统症状</td>
+                                    <td><input name="genitourinary_symptoms" type="radio" value="0"class="flat"/></td>
+                                    <td><input name="genitourinary_symptoms" type="radio" value="1"class="flat"/></td>
+                                    <td><input name="genitourinary_symptoms" type="radio" value="2"class="flat"/></td>
+                                    <td><input name="genitourinary_symptoms" type="radio" value="3"class="flat"/></td>
+                                    <td><input name="genitourinary_symptoms" type="radio" value="4"class="flat"/></td>
+                    </tr>
+                    <tr>
+                        <td>13.植物神经系统症状</td>
+                                    <td><input name="plantnervous_symptoms" type="radio" value="0"class="flat"/></td>
+                                    <td><input name="plantnervous_symptoms" type="radio" value="1"class="flat"/></td>
+                                    <td><input name="plantnervous_symptoms" type="radio" value="2"class="flat"/></td>
+                                    <td><input name="plantnervous_symptoms" type="radio" value="3"class="flat"/></td>
+                                    <td><input name="plantnervous_symptoms" type="radio" value="4"class="flat"/></td>
+                    </tr>
+
+                   <tr>
+                        <td>14.会谈时行为表现</td>
+                                    <td><input name="interview_behavior" type="radio" value="0"class="flat"/></td>
+                                    <td><input name="interview_behavior" type="radio" value="1"class="flat"/></td>
+                                    <td><input name="interview_behavior" type="radio" value="2"class="flat"/></td>
+                                    <td><input name="interview_behavior" type="radio" value="3"class="flat"/></td>
+                                    <td><input name="interview_behavior" type="radio" value="4"class="flat"/></td>
+                    </tr>
+
+				</tbody>
+
+			</table>
+
+
+                                <div class="text-center">
+                                     {% csrf_token %}
+                                    <input  type="submit" class="btn btn-success"  id="hamd_bt"  value="提交"/>
+
+                                </div>
+
+            </form>
+                    </div>
+                    <div class="tab-pane" id="panel_YMRS">
+                        <form action="/scales/add_ymrs?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 column">
+			                        <table class="table table-hover table-bordered">
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       1.情感高涨
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="emotional_upsurge" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       2.活动增多、精力旺盛
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="vigorous_energy"  style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       3.性欲
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="sexual_desire" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       4.睡眠
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="sleep" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       5.易激惹性
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="irritability" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       6.言语（速度和量）
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="speech" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       7.语言（思维障碍）
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="language" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       8.思维内容
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="thinking_content" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       9.破坏-攻击性行为
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="aggressive_behavior"  style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       10.外貌
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="appearance"  style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                             <tr>
+						                        <td>
+							                       11.自知力
+						                        </td>
+						                        <td>
+							                        0-4分
+						                        </td>
+                                                 <td>
+                                                     <div class="form-inline"><input type="number" class="form-control" name="self_awareness" style="width:100px;" /> 分</div>
+						                        </td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="text-center">
+                                        {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success" value="提交"/>
+                                        <button class="btn btn-danger">取消</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="panel_BPRS">
+                        <form action="/scales/add_bprs?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            {% csrf_token %}
+                            <div class="container">
+                                <div class="row" style="margin: 5px;">
+                                    <strong>圈出最适合病人情况的分数</strong>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover table-bordered">
+				                        <thead>
+					                    <tr>
+                                            <th >
+
+						                    </th>
+						                    <th >
+                                                未测
+						                    </th>
+                                            <th >
+                                                无
+						                    </th>
+                                            <th >
+                                                很轻
+						                    </th>
+                                            <th >
+                                                轻度
+						                    </th>
+                                            <th >
+                                                中度
+						                    </th>
+                                            <th >
+                                                偏重
+						                    </th>
+                                            <th >
+                                                重度
+						                    </th>
+                                            <th >
+                                                极重
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       1.关心身体健康
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="health_care" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="health_care" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="health_care" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="health_care" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="health_care" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="health_care" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="health_care" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="health_care" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       2.焦虑
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="anxious" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="anxious" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="anxious" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="anxious" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="anxious" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="anxious" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="anxious" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="anxious" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       3.感情交流障碍
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="emocommunicat_barrier" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       4.概念紊乱
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="conceptual_disorder" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       5.罪恶观念
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="guilt_concept" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       6.紧张
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="nervous" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="nervous" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="nervous" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="nervous" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="nervous" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="nervous" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="nervous" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="nervous" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       7.装相和作态
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="look_act" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="look_act" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="look_act" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="look_act" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="look_act" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="look_act" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="look_act" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="look_act" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       8.夸大
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="exaggerate" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       9.心境抑郁
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="mood_depression" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       10.敌对性
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="hostility" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="hostility" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hostility" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hostility" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hostility" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="hostility" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hostility" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hostility" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       11.猜疑
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="suspicion" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="suspicion" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suspicion" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suspicion" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suspicion" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="suspicion" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suspicion" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="suspicion" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       12.幻觉
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="hallucination" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="hallucination" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hallucination" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hallucination" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hallucination" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="hallucination" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hallucination" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="hallucination" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       13.动作迟缓
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="slow_movement" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       14.不合作
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="no_cooperation" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       15.不寻常思维内容
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="unusual_thinking" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       16.情感平淡
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="feeling_flat" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       17.兴奋
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="excitement" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="excitement" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="excitement" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="excitement" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="excitement" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="excitement" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="excitement" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="excitement" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       18.定向障碍
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=0 required="required" /> <span style="margin-right: 20px">0</span>
+						                        </td>
+						                        <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=1 required="required"/> <span style="margin-right: 20px">1</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=2 required="required"/> <span style="margin-right: 20px">2</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=3 required="required"/> <span style="margin-right: 20px">3</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=4 required="required"/> <span style="margin-right: 20px">4</span>
+						                        </td>
+                                                <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=5 required="required"/> <span style="margin-right: 20px">5</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=6 required="required"/> <span style="margin-right: 20px">6</span>
+						                        </td>
+                                                 <td>
+							                        <input type="radio" class="flat" name="directional_disorder" value=7 required="required"/> <span style="margin-right: 20px">7</span>
+						                        </td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+<!--                                <div class="row">-->
+<!--                                   <div class="form-inline" style="float: right;margin-right: 10px;">-->
+<!--                                      <strong>总分：<input type="number" class="form-control" name="total_score" style="width:100px;"/>分</strong>-->
+<!--                                   </div>-->
+<!--                                </div>-->
+                                <div class="row">
+                                   <div class="text-center">
+                                       <input  type="submit" class="btn btn-success" value="提交"/>
+{#                                    <button class="btn btn-danger">取消</button>#}
+                                   </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+				</div>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}">
+//加载模态框
+
+
+
+
+
+
+	$(document).ready(function() {
+
+
+				for(var i=0;i<answer_list.length;i++){
+					var answer = answer_list[i];
+					var answer_radio = $("input[name='"+"_question"+(i+1)+"_answer"+"']")
+					answer_radio.attr("disabled","disabled");
+					answer_radio.eq(parseInt(answer)).attr("checked",true);
+				}
+				$("#hamd_bt").hide();
+
+
+	});
+
+
+
+
+</script>
+{% endblock %}

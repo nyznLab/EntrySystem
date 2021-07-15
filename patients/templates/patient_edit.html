@@ -1,0 +1,105 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}受试预约详情页{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="dashboard_graph x_panel">
+		    <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+			        <ul class="breadcrumb">
+                        <li><a href="#">受试预约信息</a></li>
+                        <li><a href="#">受试人：李丽</a></li>
+                        <li class="active">预约编辑</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="x_content">
+                <form action="addPatient">
+                <div class = "row">
+                    <div class = "form-group has-success">
+						<label class = "col-sm-2 control-label" for="name">姓名:</label>
+                        <div class ="col-sm-4"><input type="text" class = "form-control" id = "name" name = "name"/></div>
+                        <label class = "col-sm-2 control-label" for="name">性别：</label>
+                        <div class ="col-sm-4">
+									<label class="radio-inline">
+									    <input type="radio" class="flat" name="sex" id="genderM" value="0" checked="" required/>&nbsp;&nbsp;男
+									</label>
+									<label class="radio-inline">
+										<input type="radio" class="flat" name="sex" id="genderF" value="1" />&nbsp;&nbsp;女
+									</label>
+                                </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-2 control-label" for="birthday">出生日期:</label>
+                        <div class ="col-sm-4">
+                            <input type="date" class="form-control has-feedback-left" id="single_cal1" placeholder="First Name" aria-describedby="inputSuccess2Status" name = "birth_date"/>
+                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                        </div>
+                        <label class = "col-sm-2 control-label" for="education">学历:</label>
+                        <div class = "col-sm-4">
+                            <select class="form-control selectpicker" name="education">
+                                <option value="小学">小学</option>
+                                <option value="中学">中学</option>
+                                <option value="高中">高中</option>
+                                <option value="大学本科">大学本科</option>
+                                <option value="硕士">硕士</option>
+                                <option value="硕士">硕士</option>
+                                <option value="博士">博士</option>
+                                <option value="博士后">博士后</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-2 control-label" for="occupation">职业:</label>
+                        <div class ="col-sm-4"><input type="text" class="form-control" name= "occupation"/></div>
+                        <label class = "col-sm-2 control-label" for="emotional_state">情感状态:</label>
+                        <div class = "col-sm-4"><input type="text" class="form-control" name= "emotional_state"/></div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-2 control-label" for="phone">联系电话:</label>
+                        <div class ="col-sm-4"><input type="tel" class="form-control" name= "phone"/></div>
+                        <label class = "col-sm-2 control-label" for="date">预约日期:</label>
+                        <div class ="col-sm-4"><input type="date" class="form-control has-feedback-left" id="single_cal1_appoint" placeholder="预约日期" aria-describedby="inputSuccess2Status1" name = "date"/>
+                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                            <span id="inputSuccess2Status1" class="sr-only">(success)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-2 control-label" for="note">备注:</label>
+                        <div class ="col-sm-10">
+                            <textarea class="form-control" rows="3" name="note"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div style="border:1px solid #CCC;margin: 5px 5px;"></div>
+                </div>
+                <div class = "row">
+                    <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+                          <button type="submit" class="btn btn-primary">Cancel</button>
+                          <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}{% endblock %}

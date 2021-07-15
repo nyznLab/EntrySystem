@@ -1,0 +1,658 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}病人病史{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="#">量表评估</a></li>
+                        <li><a href="#">个人详细信息录入</a></li>
+                        <li class="active"><a href="#">病人病史</a></li>
+                        <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel">
+            <div id="wrapper">
+                <div id="left-side" style="height: 100%;" class="col-md-2">
+                    <ul class="scales_progress">
+                        {% for scale_name in scale_name_list %}
+                            {% if scale_name|get_item:'scale__scale_name' == '简要病史' %}
+                                <li class="step doing  ">
+                                    <p>一般资料-{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% elif scale_name|get_item:'state' == 0 %}
+                                <li class="step nodone notclick">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% else %}
+                                <li class="step done notclick">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                            <p>完成</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                        <form action="/scales/add_patient_medical_history?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                              id="patient_medical_history" method="post">
+                            {% csrf_token %}
+                            <div class="container " style="align-content: center">
+                                <div class="x_title">
+                                    <div class="clearfix"></div>
+                                    <h2>简要病史 <small>Brief history</small></h2>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="">
+                                    <label class="control-label control-label col-md-12"><span>1.简要现病史记录：（其中是否有自杀观念、自杀行为、强迫观念、强迫行为等）</span></label>
+                                    <br>
+                                </div>
+
+                                <div class=" " id="patient_big_event_1">
+                                    <div class="form-group" style='margin-top: 20px ;margin-left:30px; margin-bottom: 18px'>
+                                        <div class="row">
+                                            <textarea name="disease_history" id="disease_history" class="disease_history " style="resize: none; width: 520px;height: 120px "></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row " style="margin: 10px">
+                                    <label class="control-label col-md-3">2.前驱期：</label>
+                                    <input type="month" name="prophase_begin" id="prophase_begin" onclick="maxtime()"/>至
+                                    <input type="month" name="prophase_end" id="prophase_end" onclick="mintime()"/>
+                                </div>
+
+                                <div class=" " style="margin: 10px">
+                                    <label class="control-label col-md-3">3.首次发病时间（不包括前驱期）：</label>
+                                    <input type="month" name="first_time_begin" id="first_time_begin" onclick="maxtime2()"/>
+                                    至
+                                    <input type="month" name="first_time_end" id="first_time_end" onclick="mintime2()"/>
+                                </div>
+
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3"><span>4.首次发病时诊断：</span></label>
+                                    <input type="text" name="first_episode_diagnosis" id="first_episode_diagnosis" class="first_episode_diagnosis"/>
+
+                                </div>
+
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3"><span>5.发作次数：（首发患者无需填）</span></label>
+                                    <input type="number" name="number_of_episode" id="number_of_episode" min="0"/>
+
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 "><span>6.本次发作日期</span></label>
+                                    <input type="month" name="current_episode_date" id="current_episode_date"
+                                           onclick="maxtime3()" class="current_episode_date" style="width:200px"/>
+
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 col-sm-7 "><span>7.本次发作诊断</span></label>
+                                    <input type="text" name="current_episode_diagnosis" id="current_episode_diagnosis" class="current_episode_diagnosis"/>
+
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label "><span>8.既往是否服用药物</span></label>
+                                    <input type="radio" class="historical_drugs" name="historical_drugs" value=0 data-labelauty="否"/>
+                                    <input type="radio" class="historical_drugs" name="historical_drugs" value=1 data-labelauty="是"/>
+                                </div>
+
+
+                                <div class="row" id="use_time1" style="margin: 10px">
+                                    <label class="control-label col-md-3 col-sm-7 historical_drugs_month_question "><span>多长时间未使用药物(从未使用请填0)</span></label>
+                                    <input type="text" class="historical_drugs_month " class="control-label" id="historical_drugs_month" name="historical_drugs_month" value=0 disabled/>
+                                </div>
+
+
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 col-sm-7"><span>9.扫描时状态：</span></label>
+                                    <input class=" col-md-4" type="radio" name="scanning_state" id="scanning_state_no" value=0 data-labelauty="不稳定"/>
+                                    <input class=" col-md-4" type="radio" name="scanning_state" id="scanning_state_yes" value=1 data-labelauty="稳定"/>
+                                </div>
+
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 col-sm-7"><span>10.扫描时是否使用药物</span></label>
+                                    <input type="radio" class=" col-md-4 scanning_using_drugs" name="scanning_using_drugs" value=0 data-labelauty="否"/>
+                                    <input type="radio" class=" col-md-4 scanning_using_drugs" name="scanning_using_drugs" value=1 data-labelauty="是"/>
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 col-sm-7  scaning_drugs_month_name"><span>多长时间未使用药物(从未使用请填0)</span></label>
+                                    <input type="text" class="scaning_drugs_month" id="scaning_drugs_month"
+                                           name="scaning_drugs_month" value=0 disabled/>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="former_drugs_table" align="center">
+                                <table class="table table-hover table-bordered  historical_drugs_table" hidden id="historical_drugs_table" >
+                                    <caption style="text-align:center">既往服用药物</caption>
+                                    <tr>
+                                        <td valign="top" colspan="9">
+                                            <table border="1" cellpadding="1" cellspacing="0" align="center">
+                                                <tr valign="top">
+                                                    <td height="120">
+                                                        <div class="container ">
+                                                            <table border="1" id="planTable" cellpadding="1" cellspacing="1">
+                                                                <tr align="right">
+                                                                    <input name="button" type="button" onClick="addLine()" value="添加" style="background-color: #26B99A ; color:white">
+                                                                    <input name="button2" type="button" onClick="delLine()" value="删除" style="background-color: #26B99A ; color:white">
+                                                                </tr>
+                                                                <tr bgcolor="#26B99A " onMouseOver="" style="color: white">
+                                                                    <th>用药类型(固定)</th>
+                                                                    <th>药物商品名</th>
+                                                                    <th>药物通用名</th>
+                                                                    <th>药物类别</th>
+                                                                    <th>药物剂量（g/mg）</th>
+                                                                    <th>服用开始时间</th>
+                                                                    <th>服用截至时间</th>
+                                                                    <th>备注</th>
+                                                                </tr>
+
+                                                                <tbody>
+                                                                <div id="pre_drugs_info">
+                                                                 {% if do_type == '1' %}
+                                                                {% for items in historical_drugs_information %}
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type=number readonly min=0  max=1 value="{{ items.type }}" name="type_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.drug_name|processNone }}" name="drug_name_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.drug_general_name|processNone }}" name="drug_general_name_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.drug_type|processNone }}" name="drug_type_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text  value="{{ items.dosage|processNone }}" name="dosage_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=month size=7 value="{{ items.begin_time|processNone }}" name="begin_time_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=month size=7 value="{{ items.end_time|processNone }}" name="end_time_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.note|processNone }}" name="note_1{{ forloop.counter }}">
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                </div>
+                                                                <tr>
+
+                                                                </tr>
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="tab-content" id="scan_drugs_table" align="center">
+                                <table class="table table-hover table-bordered  scanning_drugs_table" hidden id="scanning_drugs_table">
+                                    <caption style="text-align:center">扫描时服用药物</caption>
+                                    <td valign="top" colspan="9">
+                                        <table border="1" cellpadding="1" cellspacing="0" align="center">
+                                            <tr valign="top">
+                                                <td height="120" width="70%">
+                                                    {% csrf_token %}
+                                                    <div class="container">
+                                                        <table border="1" id="planTable2" cellpadding="1" cellspacing="0" width="100%" >
+                                                            <tr>
+
+                                                                <input name="button3" type="button" onClick="addLine2()" value="添加" style="background-color: #26B99A ; color:white">
+                                                                <input name="button4" type="button" onClick="delLine2()" value="删除" style="background-color: #26B99A ;color:white">
+                                                            </tr>
+                                                            <tr bgcolor="#26B99A " onMouseOver="" style="color: white">
+                                                                <th>用药类型(固定)</th>
+                                                                <th>药物商品名</th>
+                                                                <th>药物通用名</th>
+                                                                <th>药物类别</th>
+                                                                <th>药物剂量（g/mg）</th>
+                                                                <th>服用开始时间</th>
+                                                                <th>服用截至时间</th>
+                                                                <th>备注</th>
+                                                            </tr>
+                                                            <tbody>
+                                                            {% if do_type == '1' %}
+                                                                {% for items in scanning_drugs_information %}
+
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type=number readonly min=0  max=1 value="{{ items.type }}" name="type_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.drug_name|processNone }}" name="drug_name_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.drug_general_name|processNone }}" name="drug_general_name_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.drug_type|processNone }}" name="drug_type_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text  value="{{ items.dosage|processNone }}" name="dosage_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=month size=7 value="{{ items.begin_time|processNone }}" name="begin_time_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=month size=7 value="{{ items.end_time|processNone }}" name="end_time_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type=text size=7 value="{{ items.note|processNone }}" name="note_0{{ forloop.counter }}">
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                                <tr>
+
+                                                                </tr>
+                                                                </tbody>
+
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            </br>
+
+                            {#0.重做按钮组合#}
+                            <div class="row" id="redo_bt_group">
+                                <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                                    <a href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale0">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-success text-center" value="保存提交量表"
+                                           id="family_bt">
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       style="float: right"><u>跳过该量表</u></a>
+                                </div>
+                            </div>
+
+                            {#1.展示按钮组合#}
+                            <div class="row" id="bt_group" style="display: none">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    {% csrf_token %}
+                                    <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    {% csrf_token %}
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <a onclick="remove_disabled()" style="float: right"><u>修改</u></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {
+                $("#last_scale0").attr("style", "display:none;");
+            }
+            var do_type = "{{ do_type }}";
+            if (do_type == '1') {
+                $("textarea[name='disease_history']").val('{{ patient_medical_history.disease_history|processNone }}');
+                $("input[name='prophase_begin']").val('{{ patient_medical_history.prophase_begin|processNone }}');
+                $("input[name='prophase_end']").val('{{ patient_medical_history.prophase_end|processNone }}');
+                $("input[name='first_time_begin']").val('{{ patient_medical_history.first_time_begin|processNone }}');
+                $("input[name='first_time_end']").val('{{ patient_medical_history.first_time_end|processNone }}');
+                $("input[name='first_episode_diagnosis']").val('{{ patient_medical_history.first_episode_diagnosis|processNone }}');
+                $("input[name='number_of_episode']").val('{{ patient_medical_history.number_of_episode|processNone }}');
+                $("input[name='current_episode_date']").val('{{ patient_medical_history.current_episode_date|processNone }}');
+                $("input[name='current_episode_diagnosis']").val('{{ patient_medical_history.current_episode_diagnosis|processNone }}');
+
+                {##既往是否服用药物#}
+                var historical_drugs = Number("{{ patient_medical_history.historical_drugs}}");
+                $("input[name='historical_drugs'][value=" + historical_drugs + "]").prop("checked", true);
+                if (historical_drugs == 0) {
+                    $("#historical_drugs_table").hide();
+                    {##添加药物的值置0#}
+                } else {
+                    $("#historical_drugs_table").show();
+                }
+                $("input[name='historical_drugs_month']").val('{{ patient_medical_history.historical_drugs_month|processNone }}');
+
+                var scanning_state = Number("{{ patient_medical_history.scanning_state }}");
+                $("input[name='scanning_state'][value=" + scanning_state + "]").prop("checked", true);
+
+                {##扫描时是否服用药物#}
+                var scanning_using_drugs = Number("{{ patient_medical_history.scanning_using_drugs}}");
+                $("input[name='scanning_using_drugs'][value=" + scanning_using_drugs + "]").prop("checked", true);
+                if (scanning_using_drugs == 0) {
+                    $("#scanning_drugs_table").hide();
+                    {##添加药物的值置0#}
+                } else {
+                    $("#scanning_drugs_table").show();
+                }
+                $("input[name='scaning_drugs_month']").val('{{ patient_medical_history.scaning_drugs_month|processNone }}');
+                {#锁住#}
+                $("input[name='disease_history']").attr("disabled", "disabled");
+                $("input[name='prophase_begin']").attr("disabled", "disabled");
+                $("input[name='prophase_end']").attr("disabled", "disabled");
+                $("input[name='first_time_begin']").attr("disabled", "disabled");
+                $("input[name='first_time_end']").attr("disabled", "disabled");
+                $("input[name='first_episode_diagnosis']").attr("disabled", "disabled");
+                $("input[name='number_of_episode']").attr("disabled", "disabled");
+                $("input[name='current_episode_date']").attr("disabled", "disabled");
+                $("input[name='current_episode_diagnosis']").attr("disabled", "disabled");
+                $("input[name='historical_drugs']").attr("disabled", "disabled");
+                $("input[name='historical_drugs_month']").attr("disabled", "disabled");
+                $("input[name='scanning_state']").attr("disabled", "disabled");
+                $("input[name='scanning_using_drugs']").attr("disabled", "disabled");
+                $("input[name='scaning_drugs_month']").attr("disabled", "disabled");
+                $("#historical_drugs_table :input").attr("disabled", true);
+                $("#scanning_drugs_table :input").attr("disabled", true);
+
+
+
+                $("#bt_group").attr("style", "display:block;");
+                $("#redo_bt_group").attr("style", "display:none;");
+
+                var order = "{{ order }}";
+                if (order == 0) {{% comment %}第一个{% endcomment %}
+                    $("#last_scale").attr("style", "display:none;");
+                    $("#next_scale_final").attr("style", "display:none;");
+                    $("#next_scale").attr("style", "display:block;");
+                } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                    $("#last_scale").attr("style", "display:block;");
+                    $("#next_scale_final").attr("style", "display:block;");
+                    $("#next_scale").attr("style", "display:none;");
+                } else {{# 啥也不是 #}
+                    $("#last_scale").attr("style", "display:block;");
+                    $("#next_scale_final").attr("style", "display:none;");
+                    $("#next_scale").attr("style", "display:block;");
+                }
+            }
+            else
+            {  {# do_type=0 #}
+                $("#pre_drugs_info :input").attr("disabled", true);
+            }
+        }
+
+    </script>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+        <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+
+    <script> $(document).ready(function () {
+        $("input[type='radio']").labelauty();
+        cookie_val = getCookie('enter_page')
+        set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+    });
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+
+    function mintime() {
+        var currentdate = getNowFormatDate();
+        var starttime = document.getElementById('prophase_begin').value;
+        $("#prophase_end").attr("min", starttime);
+        $("#prophase_end").attr("max", currentdate);
+
+    }
+
+    function mintime2() {
+        var currentdate = getNowFormatDate();
+        var starttime = document.getElementById('first_time_begin').value;
+        $("#first_time_end").attr("min", starttime);
+        $("#first_time_end").attr("max", currentdate);
+    }
+
+    function maxtime() {
+        var currentdate = getNowFormatDate();
+
+        $("#prophase_begin").attr("max", currentdate);
+
+    }
+
+    function maxtime2() {
+        var currentdate = getNowFormatDate();
+
+        $("#first_time_begin").attr("max", currentdate);
+
+    }
+
+    function maxtime3() {
+        var currentdate = getNowFormatDate();
+
+        $("#current_episode_date").attr("max", currentdate);
+
+    }
+
+
+    </script>
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}">
+        //加载模态框
+    </script>
+    <script>
+
+        $(".historical_drugs").on('click', function (event) {
+            var val = $('input:radio[name=historical_drugs]:checked').val();
+            if (val == "0") {
+                $("#historical_drugs_table").hide();
+                $("#historical_drugs_month").removeAttr("disabled");
+
+            } else {
+
+                $("#historical_drugs_month").attr("disabled", true);
+                $("#historical_drugs_table").show();
+
+            }
+        });
+
+        $(".scanning_using_drugs").on('click', function (event) {
+            var val = $('input:radio[name=scanning_using_drugs]:checked').val();
+            if (val == "0") {
+                $("#scanning_drugs_table").hide()
+                $("#scaning_drugs_month").removeAttr("disabled");
+            } else {
+                $("#scaning_drugs_month").attr("disabled", true);
+                $("#scanning_drugs_table").show()
+            }
+        });
+    </script>
+    <script language="javascript">
+
+        function addLine() {
+            var newLine = planTable.rows.length;
+            var row = planTable.insertRow(newLine);
+            var col = row.insertCell(0);
+
+            col.innerHTML = "<input type=number readonly min=0  max=1 value=0   name=type_0" + newLine + ">";
+            col = row.insertCell(1);
+
+            col.innerHTML = "<input type=text size=7 name=drug_name_0" + newLine + ">";
+            col = row.insertCell(2);
+
+            col.innerHTML = "<input type=text size=7 name=drug_general_name_0" + newLine + ">";
+            col = row.insertCell(3);
+
+            col.innerHTML = "<input type=text size=7 name=drug_type_0" + newLine + ">";
+            col = row.insertCell(4);
+
+            col.innerHTML = "<input type=text  name=dosage_0" + newLine + ">";
+            col = row.insertCell(5);
+
+            col.innerHTML = "<input  type=month size=7 name=begin_time_0" + newLine + ">";
+            col = row.insertCell(6);
+
+            col.innerHTML = "<input  type=month  size=7 name=end_time_0" + newLine + ">";
+            col = row.insertCell(7);
+
+            col.innerHTML = "<input type=text size=7 name=note_0" + newLine + ">";
+
+            return newLine;
+        }
+
+        function keyDwonEvent() {
+            //alert(event.keyCode);
+            var newLine;
+            var txt;
+            if (event.keyCode == 13 && event.ctrlKey) {
+                newLine = addLine();
+            }
+            /*
+            txt = "line"+newLine+"startTime"
+            txt.setFocus;alert(txt);*/
+        }
+
+        function delLine() {
+            var i;
+            var count;
+            count = planTable.rows.length;
+            if (count > 2) {
+                planTable.deleteRow(planTable.rows.length - 1)
+                for (i = 0; i < count - 1; i++) {
+                    //if(document.chk[i].checked){
+                    //alert("aa");
+                    //}
+                }
+            }
+        }
+
+        function addLine2() {
+            var newLine = planTable2.rows.length;
+            var row = planTable2.insertRow(newLine);
+            var col = row.insertCell(0);
+            col.innerHTML = "<input type=number readonly min=0  max=1  value=1  name=type_1" + newLine + ">";
+
+            col = row.insertCell(1);
+            col.innerHTML = "<input type=text size=7 name=drug_name_1" + newLine + ">";
+            col = row.insertCell(2);
+            col.innerHTML = "<input type=text size=7 name=drug_general_name_1" + newLine + ">";
+            col = row.insertCell(3);
+            col.innerHTML = "<input type=text size=7 name=drug_type_1" + newLine + ">";
+            col = row.insertCell(4);
+            col.innerHTML = "<input type=text  name=dosage_1" + newLine + ">";
+            col = row.insertCell(5);
+            col.innerHTML = "<input type=month size=7 name=begin_time_1" + newLine + ">";
+            col = row.insertCell(6);
+            col.innerHTML = "<input type=month size=7 name=end_time_1" + newLine + ">";
+            col = row.insertCell(7);
+            col.innerHTML = "<input type=text size=7 name=note_1" + newLine + ">";
+
+            return newLine;
+        }
+
+        function keyDwonEvent2() {
+            //alert(event.keyCode);
+            var newLine;
+            var txt;
+            if (event.keyCode == 13 && event.ctrlKey) {
+                newLine = addLine();
+            }
+            /*
+            txt = "line"+newLine+"startTime"
+            txt.setFocus;alert(txt);*/
+        }
+
+        function delLine2() {
+            var i;
+            var count;
+            count = planTable2.rows.length;
+            if (count > 2) {
+                planTable2.deleteRow(planTable2.rows.length - 1)
+                for (i = 0; i < count - 1; i++) {
+                    //if(document.chk[i].checked){
+                    //alert("aa");
+                    //}
+                }
+            }
+        }
+    </script>
+    <script>
+        function remove_disabled() {
+            $("input[name='disease_history']").removeAttr("disabled", "disabled");
+            $("input[name='prophase_begin']").removeAttr("disabled", "disabled");
+            $("input[name='prophase_end']").removeAttr("disabled", "disabled");
+            $("input[name='first_time_begin']").removeAttr("disabled", "disabled");
+            $("input[name='first_time_end']").removeAttr("disabled", "disabled");
+            $("input[name='first_episode_diagnosis']").removeAttr("disabled", "disabled");
+            $("input[name='number_of_episode']").removeAttr("disabled", "disabled");
+            $("input[name='current_episode_date']").removeAttr("disabled", "disabled");
+            $("input[name='current_episode_diagnosis']").removeAttr("disabled", "disabled");
+            $("input[name='historical_drugs']").removeAttr("disabled", "disabled");
+            $("input[name='historical_drugs_month']").removeAttr("disabled", "disabled");
+            $("input[name='scanning_state']").removeAttr("disabled", "disabled");
+            $("input[name='scanning_using_drugs']").removeAttr("disabled", "disabled");
+            $("input[name='scaning_drugs_month']").removeAttr("disabled", "disabled");
+            $("#historical_drugs_table :input").removeAttr("disabled", true);
+            $("#scanning_drugs_table :input").removeAttr("disabled", true);
+
+            $("#redo_bt_group").removeAttr("style", "display:none;");
+
+            $("#bt_group").attr("style", "display:none;");
+        }
+    </script>
+
+{% endblock %}

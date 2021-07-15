@@ -1,0 +1,990 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}33项轻躁狂症状清单hcl-33{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="#">量表评估</a></li>
+                        <li><a href="#">自评量表</a></li>
+                        <li class="active"><a href="#">33项轻躁狂症状清单hcl-33</a></li>
+                       <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+            <div id="wrapper">
+                <div id="left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                    <ul class="scales_progress">
+                        {% for scale_name in scale_name_list %}
+                            {% if scale_name|get_item:'scale__scale_name' == '33项轻躁狂症状清单' %}
+                                <li class="step doing  ">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% elif scale_name|get_item:'state' == 0 %}
+                                <li class="step nodone notclick">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% else %}
+                                <li class="step done notclick">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                            <p>完成</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                            <div class="container">
+                                <div class="row show-grid">
+                                    <div class="col-md-12  text-center">
+                                        <h4><strong>33项轻躁狂症状清单 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;精力、活力和情绪</strong></h4>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <strong><i class="fa fa-hand-o-right"></i>&nbsp;
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>
+                                        &nbsp;每个人在一生中的不同时期都会体验到精力、活力和情绪上的变化或波动（“高涨”与 “低落”或“向上”与“向下”）。
+                                    </strong>
+                                </div>
+                                <div class="row" style="margin: 10px"><strong>此问卷的目的旨在评估您在“高涨”时期的特点。</strong></div>
+
+                                <div class="row" style="margin: 10px">
+                                    <strong>1. 首先，和平常的状态比起来，您今天感觉怎么样？
+                                    （请在下列选项中选出一项）</strong>
+                                </div>
+
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=0 data-labelauty="比平常差多了"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=1 data-labelauty="比平常差"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=2 data-labelauty="比平常差一点"/>
+                                </div>
+
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=3 data-labelauty="和平常差不多"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=4 data-labelauty="比平常好"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=5 data-labelauty="比平常好一点"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question1" value=6 data-labelauty="比平常好很多"/>
+                                </div>
+
+
+                                <div class="row" style="margin: 10px"><strong>2. 与其他人相比，您觉得自己怎么样？<br/>
+                                    不管您今天感觉怎么样，请告诉我们通常情况下您和其他人相比的情况，请在下面选出最合适您的描述.<br/>
+                                </strong></div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question2" value=0 data-labelauty="总是相当稳定"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question2" value=1 data-labelauty="通常比较高涨一些"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question2" value=2 data-labelauty="通常比较低落一些"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question2" value=3 data-labelauty="反复地出现高涨与低落"/>
+                                </div>
+                                <div class="row" style="margin: 10px"><strong>3.
+                                    请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br/>
+                                </strong></div>
+                                <div>
+                                    <table id="table" class="mania_table_33 table" width="60%"
+                                           style="margin: 10px;font-size:13px;">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                在这种状态下：
+                                            </th>
+                                            <th>
+                                                是
+                                            </th>
+                                            <th>
+                                                否
+                                            </th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1) 我需要比较少的睡眠</td>
+                                            <td><input class="row" style="margin: 10px" type="radio" name="question3_1"
+                                                       value=1 data-labelauty="是"/></td>
+                                            <td><input class="row" style="margin: 10px" type="radio" name="question3_1"
+                                                       value=0 data-labelauty="否"/>&nbsp;
+                                            </td>
+                                            <td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                2) 我感觉更有精力并且更加活跃
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_2"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_2"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                3) 我更自信
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_3"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_3"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                4) 我更加享受我的工作
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_4"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_4"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                5) 我社交活动更多（打更多的电话，外出更多）
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_5"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_5"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                6) 我更想去旅行和/或者我旅行更多
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_6"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_6"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                7) 我想开车更快，或更冒险地开车
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_7"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_7"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                8) 我花钱更多，或花了太多钱
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_8"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_8"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                9) 在日常生活中，我更加冒险（在工作和/或在其它活动上）
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_9"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_9"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                10) 我体力活动量增多（如体育运动等）
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_10"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_10"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                11) 我计划更多的活动或者项目
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_11"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_11"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                12) 我有更多的点子，更有创造力
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_12"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_12"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                13) 我很少害羞或者感到受约束
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_13"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_13"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                14) 我会穿更加鲜艳、更加奢侈的衣服/用更鲜艳、奢侈的化妆品
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_14"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_14"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                15) 我想接触更多的人，或者的确接触了更多的人
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_15"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_15"
+                                                       value=0 data-labelauty="否"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                16) 我对“性”更感兴趣，并且/或者性的方面更活跃
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_16"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_16"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                17) 我讲话更多
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_17"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_17"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                18) 我思维更快
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_18"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_18"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                19) 我讲话时会开更多的玩笑，或者说更多俏皮话
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_19"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_19"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                20) 我更容易分心
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_20"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_20"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                21) 我尝试许多新鲜事物
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_21"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_21"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                22) 我的想法经常从一个话题跳到另一个话题
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_22"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_22"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                23) 我做事比平时更快，并且/或者感到更容易
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_23"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_23"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                24) 我更没有耐心，并且/或者更容易激惹
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_24"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_24"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                25) 我更令别人疲惫不堪，或者更容易让别人发怒
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_25"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_25"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                26) 我陷入更多的争吵
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_26"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_26"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                27) 我的情绪更高涨、更乐观
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_27"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_27"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                28) 我喝更多的咖啡
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_28"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_28"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                29) 我吸更多的烟
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_29"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_29"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                30) 我喝更多的酒
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_30"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_30"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                31) 我服用更多的药物 (指：镇静剂、抗焦虑剂、兴奋剂等)
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_31"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_31"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                32) 我参加更多的游戏或赌博活动
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_32"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_32"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                33) 我吃得更多或参加更多的狂欢
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_33"
+                                                       value=1 data-labelauty="是"/>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="row" style="margin: 10px" name="question3_33"
+                                                       value=0 data-labelauty="否"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+
+
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <strong>4. 您的“高涨”状态对您生活各个方面的影响：<br/>
+                                    </strong>
+                                </div>
+                                <div>
+                                    <table id="table" class="mania_table" width="60%"
+                                           style="margin: 5px;font-size: 13px;">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                家庭生活
+                                            </td>
+                                            <td><input type="radio" name="question4_1" value=0
+                                                       data-labelauty="正面与负面都有"/></td>
+                                            <td><input type="radio" name="question4_1" value=1 data-labelauty="正面影响"/>
+                                            </td>
+                                            <td><input type="radio" name="question4_1" value=2 data-labelauty="负面影响"/>
+                                            </td>
+                                            <td><input type="radio" name="question4_1" value=3 data-labelauty="没有影响"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                社会生活
+                                            </td>
+                                            <td><input type="radio" name="question4_2" value=0
+                                                       data-labelauty="正面与负面都有"/></td>
+                                            <td><input type="radio" name="question4_2" value=1 data-labelauty="正面影响"/>&nbsp;&nbsp;
+                                            </td>
+                                            <td><input type="radio" name="question4_2" value=2 data-labelauty="负面影响"/>
+                                            </td>
+                                            <td><input type="radio" name="question4_2" value=3 data-labelauty="没有影响"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                工作
+                                            </td>
+                                            <td><input type="radio" name="question4_3" value=0
+                                                       data-labelauty="正面与负面都有"/></td>
+                                            <td><input type="radio" name="question4_3" value=1 data-labelauty="正面影响"/>&nbsp;&nbsp;
+                                            </td>
+                                            <td><input type="radio" name="question4_3" value=2 data-labelauty="负面影响"/>
+                                            </td>
+                                            <td><input type="radio" name="question4_3" value=3 data-labelauty="没有影响"/>&nbsp;&nbsp;
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                休闲
+                                            </td>
+                                            <td><input type="radio" name="question4_4" value=0
+                                                       data-labelauty="正面与负面都有"/></td>
+                                            <td><input type="radio" name="question4_4" value=1 data-labelauty="正面影响"/>&nbsp;&nbsp;
+                                            </td>
+                                            <td><input type="radio" name="question4_4" value=2 data-labelauty="负面影响"/>
+                                            </td>
+                                            <td><input type="radio" name="question4_4" value=3 data-labelauty="没有影响"/>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row" style="margin: 10px"><strong>5. 与您亲近的人对您“高涨”状态有什么反应或意见？
+                                    （请在下列选项中选出一项）</strong></div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question5" value=0 data-labelauty="正面的 (鼓励或支持)"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question5" value=1 data-labelauty="中性的"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question5" value=2 data-labelauty="负面的 (关注、恼火、生气、批评)"/>
+                                </div>
+
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question5" value=3 data-labelauty="正面和负面都有"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question5" value=4 data-labelauty="没有反应"/>
+                                </div>
+
+                                <div class="row" style="margin: 10px"><strong>6 a). 您过去的“高涨”状态最长一次持续了多久？
+                                    （请在下列选项中选出一项）</strong></div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_1" value=0 data-labelauty=" 1 天"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_1" value=1 data-labelauty="2-3 天"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_1" value=2 data-labelauty="4-6 天"/>
+                                </div>
+
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_1" value=3 data-labelauty="1-3 周"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_1" value=4 data-labelauty="1个月或以上"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_1" value=5 data-labelauty=" 我不能判断或不知道"/>
+                                </div>
+
+
+                                <div class="row" style="margin: 10px"><strong>6 b). “高涨”状态通常的持续时间 (平均)：
+                                    （请在下列选项中选出一项）</strong></div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_2" value=0 data-labelauty=" 1 天"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_2" value=1 data-labelauty="2-3 天"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_2" value=2 data-labelauty="4-6 天"/>
+                                </div>
+
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_2" value=3 data-labelauty="1-3 周"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_2" value=4 data-labelauty="1个月或以上"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question6_2" value=5 data-labelauty=" 我不能判断或不知道"/>
+                                </div>
+
+
+                                <div class="row" style="margin: 10px"><strong>7. 在过去的 12 个月中，您经历过这种“高涨”的状态吗？</strong>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question7" class="hcl-33_question7_yes" value=1
+                                           data-labelauty="是"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question7" class="hcl-33_question7_no" value=0
+                                           data-labelauty="否"/>
+                                </div>
+                                <div class="hcl-33_question7_yes_days">
+                                    <div class="row" style="margin: 10px"><strong>8. 若是，请估计在过去 12
+                                        个月中您在这种“高涨”状态中度过多少天。总计大约多少天?</strong>
+                                    </div>
+                                    <div class="row show-grid" style="margin: 5px">
+                                        <input name="question8"/>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin: 5px"><strong>9. 您可以把自己描述为一个上下起伏的人吗：</strong></div>
+                                <div class="row" style="margin: 10px"><strong>一段时间极度兴奋，另一段时间则愁眉苦脸？ </strong></div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question9" value=1 data-labelauty="是"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question9" value=0 data-labelauty="否"/>
+                                </div>
+
+                                <div class="row" style="margin: 5px"><strong>10. 您的情绪有时会突然转变吗？</strong></div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question10" value=1 data-labelauty="是"/>
+                                </div>
+                                <div class="row show-grid" style="margin: 5px">
+                                    <input type="radio" name="question10" value=0 data-labelauty="否"/>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                            <a  style="float: left;font-weight: bold">总分：{{ hcl_33_answer.total_score|processNone }}</a>
+                                        </div>
+                                </div>
+
+
+                                <div class="row" id="bt_group">
+                                    <div class="col-md-4 col-sm-6 text-center">
+                                        <a href="/scales/get_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                            <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6" id="next_scale">
+                                        {% csrf_token %}
+                                        <a href="/scales/get_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                            <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                        <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                            <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                        </a>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+       function getData(){
+        var order = "{{ order }}";
+        if(order==0){{% comment %}第一个{% endcomment %}
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+            }else if(order==1){{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style","display:block;");
+                $("#next_scale_final").attr("style","display:block;");
+                $("#next_scale").attr("style","display:none;");
+            }else{{# 啥也不是 #}
+                $("#last_scale").attr("style","display:block;");
+                $("#next_scale_final").attr("style","display:none;");
+                $("#next_scale").attr("style","display:block;");
+            }
+            if('{{ hcl_33_answer }}'!='None')
+            {
+               {#数据填充 读数据#}
+               if ('{{ hcl_33_answer.question1 }}' != 'None') {
+                   $("input[name='question1'][value=" + Number({{ hcl_33_answer.question1 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question2 }}' != 'None') {
+                   $("input[name='question2'][value=" + Number({{ hcl_33_answer.question2 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_1 }}' != 'None') {
+                   $("input[name='question3_1'][value=" + Number({{ hcl_33_answer.question3_1 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_2 }}' != 'None') {
+                   $("input[name='question3_2'][value=" + Number({{ hcl_33_answer.question3_2 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_3 }}' != 'None') {
+                   $("input[name='question3_3'][value=" + Number({{ hcl_33_answer.question3_3 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_4 }}' != 'None') {
+                   $("input[name='question3_4'][value=" + Number({{ hcl_33_answer.question3_4 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_5 }}' != 'None') {
+                   $("input[name='question3_5'][value=" + Number({{ hcl_33_answer.question3_5 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_6 }}' != 'None') {
+                   $("input[name='question3_6'][value=" + Number({{ hcl_33_answer.question3_6 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_7 }}' != 'None') {
+                   $("input[name='question3_7'][value=" + Number({{ hcl_33_answer.question3_7 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_8 }}' != 'None') {
+                   $("input[name='question3_8'][value=" + Number({{ hcl_33_answer.question3_8 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_9 }}' != 'None') {
+                   $("input[name='question3_9'][value=" + Number({{ hcl_33_answer.question3_9 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_10 }}' != 'None') {
+                   $("input[name='question3_10'][value=" + Number({{ hcl_33_answer.question3_10 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_11 }}' != 'None') {
+                   $("input[name='question3_11'][value=" + Number({{ hcl_33_answer.question3_11 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_12 }}' != 'None') {
+                   $("input[name='question3_12'][value=" + Number({{ hcl_33_answer.question3_12 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_13 }}' != 'None') {
+                   $("input[name='question3_13'][value=" + Number({{ hcl_33_answer.question3_13 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_14 }}' != 'None') {
+                   $("input[name='question3_14'][value=" + Number({{ hcl_33_answer.question3_14 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_15 }}' != 'None') {
+                   $("input[name='question3_15'][value=" + Number({{ hcl_33_answer.question3_15 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_16 }}' != 'None') {
+                   $("input[name='question3_16'][value=" + Number({{ hcl_33_answer.question3_16 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_17 }}' != 'None') {
+                   $("input[name='question3_17'][value=" + Number({{ hcl_33_answer.question3_17 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_18 }}' != 'None') {
+                   $("input[name='question3_18'][value=" + Number({{ hcl_33_answer.question3_18 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_19 }}' != 'None') {
+                   $("input[name='question3_19'][value=" + Number({{ hcl_33_answer.question3_19 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_20 }}' != 'None') {
+                   $("input[name='question3_20'][value=" + Number({{ hcl_33_answer.question3_20 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_21 }}' != 'None') {
+                   $("input[name='question3_21'][value=" + Number({{ hcl_33_answer.question3_21 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_22 }}' != 'None') {
+                   $("input[name='question3_22'][value=" + Number({{ hcl_33_answer.question3_22 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_23 }}' != 'None') {
+                   $("input[name='question3_23'][value=" + Number({{ hcl_33_answer.question3_23 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_24 }}' != 'None') {
+                   $("input[name='question3_24'][value=" + Number({{ hcl_33_answer.question3_24 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_25 }}' != 'None') {
+                   $("input[name='question3_25'][value=" + Number({{ hcl_33_answer.question3_25 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_26 }}' != 'None') {
+                   $("input[name='question3_26'][value=" + Number({{ hcl_33_answer.question3_26 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_27 }}' != 'None') {
+                   $("input[name='question3_27'][value=" + Number({{ hcl_33_answer.question3_27 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_28 }}' != 'None') {
+                   $("input[name='question3_28'][value=" + Number({{ hcl_33_answer.question3_28 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_29 }}' != 'None') {
+                   $("input[name='question3_29'][value=" + Number({{ hcl_33_answer.question3_29 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_30 }}' != 'None') {
+                   $("input[name='question3_30'][value=" + Number({{ hcl_33_answer.question3_30 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_31 }}' != 'None') {
+                   $("input[name='question3_31'][value=" + Number({{ hcl_33_answer.question3_31 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_32 }}' != 'None') {
+                   $("input[name='question3_32'][value=" + Number({{ hcl_33_answer.question3_32 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question3_33 }}' != 'None') {
+                   $("input[name='question3_33'][value=" + Number({{ hcl_33_answer.question3_33 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question4_1 }}' != 'None') {
+                   $("input[name='question4_1'][value=" + Number({{ hcl_33_answer.question4_1 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question4_2 }}' != 'None') {
+                   $("input[name='question4_2'][value=" + Number({{ hcl_33_answer.question4_2 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question4_3 }}' != 'None') {
+                   $("input[name='question4_3'][value=" + Number({{ hcl_33_answer.question4_3 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question4_4 }}' != 'None') {
+                   $("input[name='question4_4'][value=" + Number({{ hcl_33_answer.question4_4 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question5 }}' != 'None') {
+                   $("input[name='question5'][value=" + Number({{ hcl_33_answer.question5 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question6_1 }}' != 'None') {
+                   $("input[name='question6_1'][value=" + Number({{ hcl_33_answer.question6_1 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question6_2 }}' != 'None') {
+                   $("input[name='question6_2'][value=" + Number({{ hcl_33_answer.question6_2 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question7 }}' != 'None') {
+                   $("input[name='question7'][value=" + Number({{ hcl_33_answer.question7 }}) + "]").prop("checked", true);
+                   if(Number({{ hcl_33_answer.question7 }})==0){
+                       $('.hcl-33_question7_yes_days').hide();
+                   }else{
+                       $('.hcl-33_question7_yes_days').show();
+                       $("input[name='question8']").val('{{ hcl_33_answer.question8|processNone }}');
+                   }
+               }
+               if ('{{ hcl_33_answer.question9 }}' != 'None') {
+                   $("input[name='question9'][value=" + Number({{ hcl_33_answer.question9 }}) + "]").prop("checked", true);
+               }
+               if ('{{ hcl_33_answer.question10 }}' != 'None') {
+                   $("input[name='question10'][value=" + Number({{ hcl_33_answer.question10 }}) + "]").prop("checked", true);
+               }
+
+            }
+            {#锁住#}
+           $("input[name='question1']").attr("disabled","disabled");
+           $("input[name='question2']").attr("disabled","disabled");
+           $("input[name='question3_1']").attr("disabled","disabled");
+           $("input[name='question3_2']").attr("disabled","disabled");
+           $("input[name='question3_3']").attr("disabled","disabled");
+           $("input[name='question3_4']").attr("disabled","disabled");
+           $("input[name='question3_5']").attr("disabled","disabled");
+           $("input[name='question3_6']").attr("disabled","disabled");
+           $("input[name='question3_7']").attr("disabled","disabled");
+           $("input[name='question3_8']").attr("disabled","disabled");
+           $("input[name='question3_9']").attr("disabled","disabled");
+           $("input[name='question3_10']").attr("disabled","disabled");
+           $("input[name='question3_11']").attr("disabled","disabled");
+           $("input[name='question3_12']").attr("disabled","disabled");
+           $("input[name='question3_13']").attr("disabled","disabled");
+           $("input[name='question3_14']").attr("disabled","disabled");
+           $("input[name='question3_15']").attr("disabled","disabled");
+           $("input[name='question3_16']").attr("disabled","disabled");
+           $("input[name='question3_17']").attr("disabled","disabled");
+           $("input[name='question3_18']").attr("disabled","disabled");
+           $("input[name='question3_19']").attr("disabled","disabled");
+           $("input[name='question3_20']").attr("disabled","disabled");
+           $("input[name='question3_21']").attr("disabled","disabled");
+           $("input[name='question3_22']").attr("disabled","disabled");
+           $("input[name='question3_23']").attr("disabled","disabled");
+           $("input[name='question3_24']").attr("disabled","disabled");
+           $("input[name='question3_25']").attr("disabled","disabled");
+           $("input[name='question3_26']").attr("disabled","disabled");
+           $("input[name='question3_27']").attr("disabled","disabled");
+           $("input[name='question3_28']").attr("disabled","disabled");
+           $("input[name='question3_29']").attr("disabled","disabled");
+           $("input[name='question3_30']").attr("disabled","disabled");
+           $("input[name='question3_31']").attr("disabled","disabled");
+           $("input[name='question3_32']").attr("disabled","disabled");
+           $("input[name='question3_33']").attr("disabled","disabled");
+           $("input[name='question4_1']").attr("disabled","disabled");
+           $("input[name='question4_2']").attr("disabled","disabled");
+           $("input[name='question4_3']").attr("disabled","disabled");
+           $("input[name='question4_4']").attr("disabled","disabled");
+           $("input[name='question5']").attr("disabled","disabled");
+           $("input[name='question6_1']").attr("disabled","disabled");
+           $("input[name='question6_2']").attr("disabled","disabled");
+           $("input[name='question7']").attr("disabled","disabled");
+           $("input[name='question8']").attr("disabled","disabled");
+           $("input[name='question9']").attr("disabled","disabled");
+           $("input[name='question10']").attr("disabled","disabled");
+        
+       }
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+        });
+    </script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+
+{% endblock %}

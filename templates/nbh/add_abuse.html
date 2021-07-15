@@ -1,0 +1,367 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}物质依赖{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+<style>
+  .row input.labelauty + label{
+    margin-bottom:0px;
+    width:150px;
+	  display:inline-block;
+	  font-size: 13px;
+    padding: 3px;
+    text-align: center;
+	  background-color: #efefef;
+	  color: #b3b3b3;
+	  cursor: pointer;
+	  border-radius: 3px 3px 3px 3px;
+	  -moz-border-radius: 3px 3px 3px 3px;
+	  -webkit-border-radius: 3px 3px 3px 3px;
+  }
+
+
+
+
+
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+
+
+                    <li><a href="#">量表评估</a></li>
+                    <li><a href="#">个人详细信息录入</a></li>
+                    <li class="active"><a href="#">物质依赖</a></li>
+                    <div style="float: right;margin-bottom: 0px;">
+                        <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                           class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel" style="margin-top: 0px; height:80%;">
+        <div id="wrapper">
+            <div id="left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                    {% if scale_name|get_item:'scale__scale_name' == '一般资料－物质依赖' %}
+                    <li class="step doing  ">
+                        <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                    </li>
+                    {% elif scale_name|get_item:'state' == 0 %}
+                    <li class="step nodone notclick">
+                        <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                    </li>
+                    {% else %}
+                    <li class="step done notclick">
+                        <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    <li class="finish nodone notclick">
+                        <p>完成</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="right-side" class="col-md-10">
+                <div id="first" class="active">
+                    <form action="/scales/add_abuse?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}"
+                          method="post">
+                        {% csrf_token %}
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                            <h2>烟酒和物质使用 <small>Tobacco, alcohol and material dependence</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="x_content">
+                            <!--                    js 选择是偏移1 默认偏移4 -->
+                            <br>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-2 col-sm-2 col-md-offset-1 ">&nbsp;是否吸烟<span
+                                        class="required">:</span></label>
+
+                                <div class="col-md-2 col-sm-3">
+                                    <select class="form-control" name="patient_smoke" id="patient_smoke_1"
+                                            style="width: 150px;">
+                                        <option value="1">从不吸烟</option>
+                                        <option value="2">偶尔吸（累计吸烟<10包）</option>
+                                        <option value="3">以前吸，近1年不吸</option>
+                                        <option value="4">现在吸（累计吸烟>10包）</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="form-group row smoke_detail" style="display: none">
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1  ">起始吸烟年龄<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group has-feedback ">
+                                        <input type="text" id="patient_smoke_age" name="patient_smoke_age"
+                                               class="form-control" style="width: 150px;">
+                                    </div>
+                                    <label class="control-label col-md-2 col-sm-2  ">每日吸烟支数<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group has-feedback ">
+                                        <input type="text" id="patient_daily_smoke_num" name="patient_daily_smoke_num"
+                                               class="form-control" style="width: 150px;">
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-1 ">戒烟年龄<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group has-feedback ">
+                                        <input type="text" id="patient_stop_smoke_age" name="patient_stop_smoke_age"
+                                               class="form-control" style="width: 150px;">
+                                    </div>
+                            </div>
+
+
+
+                            <br>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2 col-sm-2 col-md-offset-1 ">是否饮酒<span
+                                        class="required">*:</span></label>
+                                <div class="col-md-2 col-sm-3">
+                                    <select class="form-control" name="patient_alcohol" id="alcoholSelect"
+                                            style="width: 150px;">
+                                        <option value="1">从不饮酒</option>
+                                        <option value="2">偶尔饮酒（每周<1次）</option>
+                                        <option value="3">以前饮酒，近1年不饮</option>
+                                        <option value="4">现在习惯饮酒</option>
+                                    </select>
+                                </div>
+                                <div class="alcohol_detail">
+                                    <label class="control-label col-md-2 col-sm-2 ">起始饮酒的年龄<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group has-feedback alcohol_age">
+                                        <input type="text" id="patient_alcohol_age" name="patient_alcohol_age"
+                                               class="form-control" style="width: 150px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="control-label col-md-4 col-sm-2 col-md-offset-1">是否存在其他物质（非烟和酒）滥用<span
+                                        class="required">*:</span></label>
+                                <div class="col-md-1 col-sm-1 " id="patient_other_abuse_1">
+                                    <input type="radio" name="patient_other_abuse" class="other_abuse_yes" value=1
+                                           data-labelauty="是"/>
+                                </div>
+                                <div class="col-md-1 col-sm-1 " id="patient_other_abuse_2">
+                                    <input type="radio" name="patient_other_abuse" class="other_abuse_no" value=0
+                                           data-labelauty="否"/>
+                                </div>
+                                <div class="other_abuse_detail">
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1 "
+                                           style="align-content: center">起始年龄<span class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-1 form-group has-feedback ">
+                                        <input type="text" id="patient_other_abuse_age" name="patient_other_abuse_age"
+                                               style="width: 200px;align-content: center" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {#0.重做按钮组合#}
+                    <div class="row" id="redo_bt_group">
+                        <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                            <a href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale0">
+                                <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                            </a>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success text-center" value="保存提交量表" id="abuse_bt">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               style="float: right"><u>跳过该量表</u></a>
+                        </div>
+                    </div>
+                        {#1.展示按钮组合#}
+                    <div class="row" id="bt_group" style="display: none">
+                            <div  class="col-md-4 col-sm-6 text-center"  >
+                               <a  href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale">
+                                   <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                               </a>
+                            </div>
+
+                            <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                 {% csrf_token %}
+                                <a href="/scales/get_next_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                </a>
+                            </div>
+                            <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                     {% csrf_token %}
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                    </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                            </div>
+                    </div>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  <script>
+       function getData(){
+           var order = "{{ order }}";
+            if (order == 0) {
+                $("#last_scale0").attr("style", "display:none;");
+            }
+           var do_type='{{ do_type }}';
+           if(do_type=='1')
+           {
+               if('{{ patient_baseinfo_abuse }}'!='None')
+               {
+                   {#数据填充 读数据#}
+                   var patient_smoke = Number("{{ patient_baseinfo_abuse.patient_smoke }}");
+                   $("#patient_smoke_1 option[value="+patient_smoke+"]").prop("selected",true);
+
+                   if (patient_smoke==1){
+                       $(".smoke_detail").attr("style","display:none;");
+                       $("input[name='patient_smoke_age']").val('');
+                       $("input[name='patient_daily_smoke_num']").val('');
+                       $("input[name='patient_stop_smoke_age']").val('');
+                   }else if( patient_smoke==2 ||patient_smoke==3|| patient_smoke==4){
+                      $(".smoke_detail").removeAttr("style","display:none;");
+                       $("input[name='patient_smoke_age']").val('{{ patient_baseinfo_abuse.patient_smoke_age|processNone }}');
+                       $("input[name='patient_daily_smoke_num']").val('{{ patient_baseinfo_abuse.patient_daily_smoke_num|processNone }}');
+                       $("input[name='patient_stop_smoke_age']").val('{{ patient_baseinfo_abuse.patient_stop_smoke_age|processNone }}');
+                   }
+
+                   var patient_alcohol = Number("{{ patient_baseinfo_abuse.patient_alcohol }}");
+                   $("#alcoholSelect option[value="+patient_alcohol+"]").prop("selected",true);
+
+                   if (patient_alcohol==1 ){
+                       $(".alcohol_detail").attr("style","display:none;");
+                       $("input[name='patient_alcohol_age']").val('');
+                   }else if( patient_alcohol==2||patient_alcohol==3|| patient_alcohol==4){
+                      $(".alcohol_detail").removeAttr("style","display:none;");
+                       $("input[name='patient_alcohol_age']").val('{{ patient_baseinfo_abuse.patient_alcohol_age|processNone }}');
+                   }
+
+
+
+                   var patient_other_abuse = Number("{{ patient_baseinfo_abuse.patient_other_abuse }}");
+                   $("input[name='patient_other_abuse'][value="+patient_other_abuse+"]").prop("checked",true);
+
+                   if (patient_other_abuse==0 ){
+                       $(".other_abuse_detail").attr("style","display:none;");
+                       $("input[name='patient_other_abuse_age']").val('');
+                   }else if(patient_other_abuse==1){
+                      $(".other_abuse_detail").removeAttr("style","display:none;");
+                       $("input[name='patient_other_abuse_age']").val('{{ patient_baseinfo_abuse.patient_other_abuse_age|processNone }}');
+                   }
+
+
+
+               }
+               {#锁住#}
+               $("select[name='patient_smoke']").attr("disabled","disabled");
+               $("input[name='patient_smoke_age']").attr("disabled","disabled");
+               $("input[name='patient_daily_smoke_num']").attr("disabled","disabled");
+               $("input[name='patient_stop_smoke_age']").attr("disabled","disabled");
+               $("select[name='patient_alcohol']").attr("disabled","disabled");
+               $("input[name='patient_alcohol_age']").attr("disabled","disabled");
+               $("input[name='patient_other_abuse']").attr("disabled","disabled");
+               $("input[name='patient_other_abuse_age']").attr("disabled","disabled");
+               $("#bt_group").attr("style","display:block;");
+               $("#redo_bt_group").attr("style","display:none;");
+
+               var order = "{{ order }}";
+               if(order==0){{% comment %}第一个{% endcomment %}
+                   $("#last_scale").attr("style","display:none;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+               }else if(order==1){{% comment %}最后一个{% endcomment %}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:block;");
+                   $("#next_scale").attr("style","display:none;");
+               }else{{# 啥也不是 #}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+                }
+           }
+       }
+    </script>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+        <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+
+
+<script>
+$(document).ready(function(){
+    $("input[type='radio']").labelauty();
+    cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+        $('.smoke_detail').hide();
+        $('#patient_smoke_1').change(function(){
+       if ($('#patient_smoke_1 option:selected').val()>1){
+           $('.smoke_detail').show();
+       }
+       else{
+           $('.smoke_detail').hide();
+       }
+    });
+
+
+    $('.alcohol_detail').hide();
+    $('#alcoholSelect').change(function(){
+       if ($('#alcoholSelect option:selected').val()>1){
+           $('.alcohol_detail').show();
+           $("input[name='patient_alcohol_age']").attr('required','required');
+       }
+       else{
+           $('.alcohol_detail').hide();
+           $("input[name='patient_alcohol_age']").removeAttr("required");
+           $("input[name='patient_alcohol_age']").val("");
+       }
+    });
+
+
+    $('.other_abuse_detail').hide();
+    $(".other_abuse_yes").on('click', function(event){
+        $('.other_abuse_detail').show();
+        $("input[name='patient_other_abuse_age']").attr('required','required');
+    });
+    $(".other_abuse_no").on('click', function(event){
+        $('.other_abuse_detail').hide();
+        $("input[name='patient_other_abuse_age']").removeAttr("required");
+        $("input[name='patient_other_abuse_age']").val("");
+    });
+});
+</script>
+<script>
+ function remove_disabled(){
+     $("select[name='patient_smoke']").removeAttr("disabled","disabled");
+     $("input[name='patient_smoke_age']").removeAttr("disabled","disabled");
+     $("input[name='patient_daily_smoke_num']").removeAttr("disabled","disabled");
+     $("input[name='patient_stop_smoke_age']").removeAttr("disabled","disabled");
+     $("select[name='patient_alcohol']").removeAttr("disabled","disabled");
+     $("input[name='patient_alcohol_age']").removeAttr("disabled","disabled");
+     $("input[name='patient_other_abuse']").removeAttr("disabled","disabled");
+     $("input[name='patient_other_abuse_age']").removeAttr("disabled","disabled");
+     $("#redo_bt_group").removeAttr("style","display:none;");
+     $("#abuse_bt").attr("style","display:block;");
+     $("#bt_group").attr("style","display:none;");
+    }
+</script>
+{% endblock %}

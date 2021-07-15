@@ -1,0 +1,625 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}新建被试{% endblock %}
+{% block css %}
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet" >
+{% endblock %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li><a href="#">被试录入</a></li>
+                         <li><a href="/patients/get_select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">量表录入</a></li>
+                         <li class="active" ><a href="#">认知量表录入</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel">
+            <div class="tabbable" id="tabs-58973">
+				<ul class="nav nav-tabs">
+					<li  class="active">
+                        <a href="#panel_wcst" data-toggle="tab"><strong>威斯康星卡片分类测验（WCST）</strong></a>
+					</li>
+                    <li>
+                        <a href="#panel_rbans" data-toggle="tab"><strong>重复成套性神经心理状态测验系统（RBANS）</strong></a>
+                    </li>
+					<li>
+                        <a href="#panel_fept" data-toggle="tab"><strong>面孔情绪感知能力测试</strong></a>
+					</li>
+                    <li>
+                        <a href="#panel_vept" data-toggle="tab"><strong>语音情绪感知能力测试（VEPT）</strong></a>
+					</li>
+				</ul>
+                <div class="tab-content">
+					<div class="tab-pane active" id="panel_wcst">
+						<div class="container">
+                            <form action="/scales/add_wcst?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                                {% csrf_token %}
+                            <div class="row show-grid">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>威斯康星卡片分类测验（WCST）</strong></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover table-bordered">
+				                        <thead>
+					                    <tr>
+                                            <th >
+                                                项目
+						                    </th>
+						                    <th >
+                                                得分
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       完成总应答数（RA）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="ra" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      完成分类数（CC）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="cc" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      正确应答数（RC）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rc" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       正确应答百分数（RCP）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rcp" min="0.0" step="0.1" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      错误应答数（RE）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="re" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      完成第一个分类所需应答数（RF）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rf" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      概念化水平应答百分比（RFP）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rfp" min="0.0" step="0.1" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       持续性应答（RP）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rp" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       持续性错误（RPE）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rpe" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                      持续性错误百分比（RPEP）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="rpep" min="0.0" step="0.1" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       非持续性错误（NRPE）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="nrpe" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       不能维持完成的分类数（FM）
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="fm" required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       学习到学会（L-L)
+						                        </td>
+						                        <td>
+							                        <input type="text" class="form-control" name="l_l" min="0.0" step="0.1" required />
+						                        </td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" value="提交"/>
+                                    <button class="btn btn-danger">取消</button>
+                                </div>
+                            </div>
+                                    </div>
+                            </div>
+
+                            </form>
+                        </div>
+					</div>
+					<div class="tab-pane" id = "panel_rbans">
+                        <form action="/scales/add_rbans?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+							{% csrf_token %}
+                        <div class="container">
+	                        <div class="row clearfix">
+		                        <div class="col-md-12 column">
+			                        <table class="table table-hover table-bordered">
+				                        <thead>
+					                    <tr>
+						                    <th>
+							                    认知功能
+						                    </th>
+						                    <th>
+							                    测查内容
+						                    </th>
+						                    <th>
+							                    原始分
+						                    </th>
+                                            <th>
+							                    量表分
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+					                        <tr>
+						                        <td rowspan="2">
+							                       即刻记忆
+						                        </td>
+						                        <td>
+							                        词汇学习
+						                        </td>
+						                        <td>
+							                       <input type="text" name="instant_memory_word" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+                                                <td rowspan="2">
+							                       <input type="text" name="instant_memory_total" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       故事复述
+						                        </td>
+						                        <td>
+							                        <input type="text" name="instant_memory_story" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="2">
+							                       视觉广度
+						                        </td>
+						                        <td>
+							                        图形临摹
+						                        </td>
+						                        <td>
+							                        <input type="text" name="vision_graph" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+                                                <td rowspan="2">
+							                        <input type="text" name="vision_total" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        线条定位
+						                        </td>
+						                        <td>
+							                        <input type="text" name="vision_line" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="2">
+							                       言语功能
+						                        </td>
+						                        <td>
+							                       图画命名
+						                        </td>
+						                        <td>
+							                        <input type="text" name="speech_graph" oninput="value=value.replace(/[^\d]/g,'')" class="form-control" />
+						                        </td>
+                                                <td rowspan="2">
+							                        <input type="text" name="speech_total" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        语义流畅性
+						                        </td>
+						                        <td>
+							                        <input type="text" name="speech_ fluency" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="2">
+							                       注意
+						                        </td>
+						                        <td>
+							                        数字广度
+						                        </td>
+						                        <td>
+							                        <input type="text" name="attention_number" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+                                                <td rowspan="2">
+							                        <input type="text" name="attention_total" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        编码测验
+						                        </td>
+						                        <td>
+							                       <input type="text" name="attention_code" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="4">
+							                       延时记忆
+						                        </td>
+						                        <td>
+							                        词汇回忆
+						                        </td>
+						                        <td>
+							                        <input type="text" name="delayed_retention_word" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+                                                <td rowspan="4">
+							                        <input type="text" name="delayed_retention_total" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+
+                                            <tr>
+						                        <td>
+							                        词汇再识
+						                        </td>
+						                        <td>
+							                        <input type="text" name="delayed_retention_word2" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        故事回忆
+						                        </td>
+						                        <td>
+							                        <input type="text" name="delayed_retention_story" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        图形回忆
+						                        </td>
+						                        <td>
+							                        <input type="text" name="delayed_retention_graph" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+                                                <td>
+                                                    总分
+                                                </td>
+						                        <td colspan="3">
+							                        <input type="text" name="total_score" oninput="value=value.replace(/[^\d]/g,'')" class="form-control"/>
+						                        </td>
+					                        </tr>
+				                        </tbody>
+                                    </table>
+		                        </div>
+	                        </div>
+                            <div class="row">
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" value="提交"/>
+{#                                    <button class="btn btn-danger">取消</button>#}
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="panel_fept">
+                          <form action="/scales/add_fept?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            {%  csrf_token %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table class="table table-hover table-bordered">
+				                        <thead>
+					                    <tr>
+						                    <th>
+                                                编号
+						                    </th>
+                                            <th>
+                                                项目
+						                    </th>
+                                            <th>
+                                                分数
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       1
+						                        </td>
+						                        <td>
+							                        平静
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="calm"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       2
+						                        </td>
+						                        <td>
+							                        愤怒
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="angry"  required />
+						                        </td>
+					                        </tr>
+                                               <tr>
+						                        <td>
+							                       3
+						                        </td>
+						                        <td>
+							                        厌恶
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="disgusting"  required />
+						                        </td>
+					                        </tr>
+
+                                            <tr>
+						                        <td>
+							                       4
+						                        </td>
+						                        <td>
+							                        恐惧
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="fear"  required />
+						                        </td>
+					                        </tr>
+                                              <tr>
+						                        <td>
+							                       5
+						                        </td>
+						                        <td>
+							                        高兴
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="happy"  required />
+						                        </td>
+					                        </tr>
+                                              <tr>
+						                        <td>
+							                       6
+						                        </td>
+						                        <td>
+							                        悲伤
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="sad"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       7
+						                        </td>
+						                        <td>
+							                        惊奇
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="wonder"  required />
+						                        </td>
+					                        </tr>
+
+
+                                            <tr>
+						                        <td colspan="2">
+							                       质控：
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="quality_control" min="0.0" step="0.1" required />
+						                        </td>
+					                        </tr>
+                                           {% comment %} <tr>
+						                        <td colspan="2">
+							                       总分：
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="" required />
+						                        </td>
+					                        </tr>{% endcomment %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% comment %}    <div class="row">
+                                 <div class="form-inline" style="float: right;margin-right: 10px;">
+                                     <strong>总分：<input type="number" class="form-control" name="total_score" style="width:100px;"/>分</strong>
+                                 </div>
+                            </div>{% endcomment %}
+                            <div class="row">
+                                <div class="text-center">
+                                    <input  type="submit" class="btn btn-success" value="提交"/>
+                                    <button class="btn btn-danger">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+					</div>
+                    <div class="tab-pane" id="panel_vept">
+                        <form action="/scales/add_vept?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            {%  csrf_token %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table class="table table-hover table-bordered">
+				                        <thead>
+					                    <tr>
+						                    <th>
+                                                编号
+						                    </th>
+                                            <th>
+                                                项目
+						                    </th>
+                                            <th>
+                                                分数
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       1
+						                        </td>
+						                        <td>
+							                        平静
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="calm"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       2
+						                        </td>
+						                        <td>
+							                        愤怒
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="angry"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       3
+						                        </td>
+						                        <td>
+							                        悲伤
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="sad"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       4
+						                        </td>
+						                        <td>
+							                        恐惧
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="fear"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       5
+						                        </td>
+						                        <td>
+							                        惊奇
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="wonder"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       6
+						                        </td>
+						                        <td>
+							                        讽刺
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="satire"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       7
+						                        </td>
+						                        <td>
+							                        厌恶
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="disgusting"  required />
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td colspan="2">
+							                       质控：
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="quality_control" min="0.0" step="0.1" required />
+						                        </td>
+					                        </tr>
+                                            {% comment %}<tr>
+						                        <td colspan="2">
+							                       总分：
+						                        </td>
+						                        <td>
+							                        <input type="number" class="form-control" name="" required />
+						                        </td>
+					                        </tr>{% endcomment %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {% comment %}<div class="row">
+                                 <div class="form-inline" style="float: right;margin-right: 10px;">
+                                     <strong>总分：<input type="number" class="form-control" name="total_score" style="width:100px;"/>分</strong>
+                                 </div>
+                            </div>{% endcomment %}
+                            <div class="row">
+                                <div class="text-center">
+                                    <input  type="submit" class="btn btn-success" value="提交"/>
+                                    <button class="btn btn-danger">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

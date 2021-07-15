@@ -1,0 +1,607 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}新建被试{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <link href="{% static '/css/select_scales.css' %}" rel="stylesheet">
+    <style>
+        .sel_beauty {
+            background: #fafdfe;
+            height: 28px;
+            line-height: 28px;
+            border: 1px solid #9bc0dd;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            width: 125px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <!--弹出模态框，提交采血信息-->
+    <div class="modal fade" id="modal_container_subjectBaseInfo_build" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/patients/采血" method="post" name="subjectEstablishForm">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 class="modal-title" id="myModalLabel">
+                            新建被试：添加基本信息
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-2 control-label" for="name" style="text-align: right">编号：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm " name="patient_id"
+                                       required="required"/>
+                            </div>
+
+
+                            <label class="col-sm-2 control-label" style="text-align: right" for="sex"> 扫描日期：</label>
+                            <div class="col-sm-4">
+                                <input type="date" class=" sel_beauty form-control input-sm" name="scan_date"
+                                       required="required"/>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-2 control-label" for="name" style="text-align: right">姓名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class=" sel_beauty form-control input-sm " name="name"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right" for="sex">性别：</label>
+                            <div class="col-sm-4">
+                                <input type="radio" class=" flat" name="sex" value=0 required/>
+                                <span style="margin-right: 10px;"></span>男
+                                <span style="margin-right: 20px;"></span>
+                                <input type="radio" class="flat" name="sex" value=1><span
+                                    style="margin-right: 10px;"></span>女
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="birth_date"
+                                   style="text-align: right">出生日期：</label>
+                            <div id="birth_date" class="col-sm-4">
+                                <input type="date" class="sel_beauty form-control input-sm" name="birth_date"
+                                       required="required"/>
+                            </div>
+
+                            <label class="col-sm-2 control-label" for="nation" style="text-align: right">民族：</label>
+                            <div class="col-sm-4">
+                                <select tabindex="-1" class="sel_beauty select2_single form-control col-md-4"
+                                        name='nation' style="font-size: 10px">
+                                    <option></option>
+                                    {% for nation in nations %}
+                                        <option value={{ nation.ethnicity_name }}>{{ nation.ethnicity_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-2 control-label" for="subject_number"
+                                   style="text-align: right">诊断情况<span class="required">:</span></label>
+                            <input type="hidden" value="{{ patient_detail.diagnosis }}" id="diagnosis">
+                            <div class="col-md-4">
+                                <select tabindex="-1" style="font-size: 10px" name="diagnosis" id="diagnosis"
+                                        class="sel_beauty select2_single form-control col-md-4"
+                                        onchange="judge_diagnosis(this)">
+                                    <option value=0>未诊断</option>
+                                    <option value=1>健康者</option>
+                                    <option value=2>重性抑郁障碍</option>
+                                    <option value=3>焦虑障碍</option>
+                                    <option value=4>双相障碍</option>
+                                    <option value=5>精神分裂症</option>
+                                    <option value=6>强迫症</option>
+                                    <option value=7>高危遗传</option>
+                                    <option value=8>临床高危</option>
+                                    <option value=9>抑郁症状</option>
+                                    <option value=99>其他诊断</option>
+                                </select>
+                            </div>
+                            <div id="other_diagnosis_div" style="display: none">
+
+                                <label class="col-sm-2 control-label" for="subject_number" style="text-align: right">其他诊断<span
+                                        class="required">:</span></label>
+                                <div class="col-md-4">
+                                    <input type="text" class="sel_beauty form-control input-sm" id="other_diagnosis"
+                                           name="other_diagnosis" class="sel_beauty">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row" id="ghr_div"
+                             style="display: none;margin:12px;margin-bottom:12px; border:1.5px solid cadetblue;">
+                            <div class="col-md-4">
+                                <label class="" for="subject_number"
+                                       style="text-align: right  ;margin-top: 10px ">患者编号<span class="required">:</span></label>
+                                <select tabindex="-1"
+                                        style="font-size: 5px;  margin-top: 5px ;margin-bottom: 5px ;max-height: 5px"
+                                        class="sel_beauty" name="kin_patient_id_0" id="singleSelect">
+                                    <option value=0>无</option>
+                                    {% for obj in all_patients %}
+                                        <option value="{{ obj.id }}">{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="col-md-4">
+                                <label class="" for="subject_number"
+                                       style="text-align: right;margin-top: 10px ">患病类型<span
+                                        class="required">:</span></label>
+                                <select tabindex="-1" style=" font-size: 5px; margin-top: 10px ;margin-bottom: 10px "
+                                        name="diagnosis_0" id="ghr_diagnosis"
+                                        class="sel_beauty select2_single form-control col-md-4" required>
+                                    <option value=2>重性抑郁障碍</option>
+                                    <option value=3>焦虑障碍</option>
+                                    <option value=4>双相障碍</option>
+                                    <option value=5>精神分裂症</option>
+                                    <option value=6>强迫症</option>
+                                    <option value=8>临床高危</option>
+                                    <option value=9>抑郁症状</option>
+                                    <option value=99>其他诊断</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="" for="subject_number"
+                                       style="text-align: right;margin-top: 10px">亲属关系<span
+                                        class="required">:</span></label>
+                                <select tabindex="-1" style=" font-size: 5px; margin-bottom: 10px ; margin-top: 10px "
+                                        name="kinship_0" id="ghr_kinship"
+                                        class="sel_beauty select2_single form-control col-md-4" required>
+                                    <option value=0>父亲</option>
+                                    <option value=1>母亲</option>
+                                    <option value=2>儿子</option>
+                                    <option value=3>女儿</option>
+                                    <option value=4>哥哥</option>
+                                    <option value=5>弟弟</option>
+                                    <option value=6>姐姐</option>
+                                    <option value=7>妹妹</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2" style="text-align: right;margin-bottom: 10px; ">
+                                <p>
+                                    <input type="button" value="+" onClick="addLine()"
+                                           style="margin-bottom: 10px; background-color: white ; border:1px solid;margin-top: 10px"></input>
+                                </p>
+                            </div>
+
+                            <p id="ghr_add"></p>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="text-center">
+                                <input type="submit" class="btn btn-success" onclick="" value="提交"/>
+                                <a href="manage_patients.html">
+                                    <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="">取消</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框结束 -->
+    <!-- 删除确认开始 -->
+        <div class="modal fade" id="delete_blood_modal" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-group" align="center">
+                                <p id="del_alert_message"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="text-center">
+
+                                <a href="" id="delete_blood_href">
+                                    <button class="btn btn-success">确定</button>
+                                </a>
+                                <a href="">
+                                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 删除确认结束 -->
+
+    <div class="right_col" role="main">
+        <div class="row " style="margin-left:-20px">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="subjectManage">被试管理</a></li>
+                    <li class="active"><a href="subjectInfoInputSelet">被试信息录入选择列表</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row x_panel">
+        <br/><br/>
+            <form  name="save_form" class="form-horizontal form-label-left"
+                  action="/patients/update_patient_detail?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}&session_id={{ patient_detail.session_id }}"
+                  method="POST"  onSubmit="return myCheck(this) ">
+
+                <div class="col-md-12 col-xs-12">
+                   <div class="col-md-4  col-xs-12">
+                        <div class="x_panel" style="height:500px">
+                            <div class="x_title">
+                                <h2>个人信息<small>基本信息{{ standard_id }}</small></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">受试编号<span class="required">:</span></label>
+                                    <a href="/patients/get_patient_detail?patient_id={{ patient_baseinfo.id }}">
+                                        <p class="col-md-6 col-sm-6 col-xs-6" id="patient_id"
+                                       style="padding-top: 7px;margin-bottom: 0;text-align: left;text-decoration: underline">{{ standard_id }}</p>
+                                    </a>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6" for="last-name">姓名 <span
+                                            class="required">:</span></label>
+                                    <p class="col-md-6 col-sm-6 col-xs-6"
+                                       style="padding-top: 7px;margin-bottom: 0;text-align: left">{{ patient_baseinfo.name }}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6">性别 <span
+                                            class="required">:</span></label>
+                                    <p class="col-md-6 col-sm-6 col-xs-6"
+                                       style="padding-top: 7px;margin-bottom: 0;text-align: left">
+                                        {% if patient_baseinfo.sex == 0 %}
+                                            男
+                                        {% else %}
+                                            女
+                                        {% endif %}
+                                    </p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6">民族 <span
+                                            class="required">:</span></label>
+                                    <p class="col-md-6 col-sm-6 col-xs-6"
+                                       style="padding-top: 7px;margin-bottom: 0;text-align: left">{{ patient_baseinfo.nation }}
+                                    </p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="birth_date" class="control-label col-md-6 col-sm-6 col-xs-6">出生日期<span
+                                            class="required">:</span></label>
+                                    <p class="col-md-6 col-sm-6 col-xs-6"
+                                       style="width: 120px; padding-top: 7px;margin-bottom: 0;text-align: left;">{{ patient_baseinfo.birth_date }}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">年龄<span class="required">:</span></label>
+                                    <p class="col-md-6 col-sm-6 col-xs-6" id="age"
+                                       style="padding-top: 7px;margin-bottom: 0;text-align: left"> {{ patient_detail.age }}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">头动参数<span class="required">:</span></label>
+                                    <input type="text" name="head_motion_parameters" class="sel_beauty"
+                                           value="{{ patient_detail.head_motion_parameters|processNone }}"/>
+                                </div>
+
+                                 <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">尿酸<span class="required">:</span></label>
+                                    <input type="text" name="ua" class="sel_beauty"
+                                           value="{{ patient_detail.ua|processNone }}"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">扫描时间<span class="required">:</span></label>
+                                    <input type="date" name="scan_date" class="sel_beauty"
+                                           value="{{ patient_detail.scan_date }}"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">采血时间<span class="required">:</span></label>
+                                    <input type="date" name="blood_sampling_date" class="sel_beauty"
+                                           value="{{ patient_detail.blood_sampling_date }}"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-6"
+                                           for="subject_number">疾病诊断状态<span class="required">:</span></label>
+                                    <input type="text" name="disease_state" class="sel_beauty"
+                                           value="{{ patient_detail.disease_state|processNone }}"/>
+                                </div>
+
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
+
+                   <div class="col-md-4 col-xs-12">
+                        <div class="x_panel" style="height: 460px">
+                            <div class="x_title">
+                                <h2>量表录入选项列表</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content" style="text-align: center">
+                            <br/><br/><br/>
+                                <a href="/scales/get_general_info_forms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}&do_type=0"
+                                   style="color: white">
+                                    {% if todo_generalinfo_scale_size == 0 %}
+                                        <button class="btn btn-success" style="width: 70%" disabled="disabled" type="button">个人一般信息录入</button>
+                                    {% else %}
+                                        <button class="btn btn-success" style="width: 70%" type="button">
+                                            个人一般信息录入({{ todo_generalinfo_scale_size }})
+                                        </button>
+                                    {% endif %}
+                                </a>
+                                <br/><br/>
+                                <a href="/scales/get_other_test_forms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}"
+                                   style="color: white">
+                                    {% if todo_other_test_scale_size == 0 %}
+                                        <button class="btn btn-warning " style="width: 70%" disabled="disabled" type="button">他测量表录入</button>
+                                    {% else %}
+                                        <button class="btn btn-warning " style="width: 70%" type="button">
+                                            他测量表录入({{ todo_other_test_scale_size }})
+                                        </button>
+                                    {% endif %}
+                                </a>
+                                <br/><br/>
+                                <a href="/scales/get_self_test_forms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}"
+                                   style="color: white">
+                                    {% if todo_self_test_scale_size == 0 %}
+                                        <button class="btn btn-primary  " style="width: 70%" disabled="disabled" type="button">自评量表录入</button>
+                                    {% else %}
+                                        <button class="btn btn-primary " style="width: 70%" type="button">自评量表录入({{ todo_self_test_scale_size }})</button>
+                                    {% endif %}
+                                </a>
+                                <br/><br/>
+                                <a href="/scales/get_cognition_forms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}"
+                                   style="color: white">
+                                    {% if todo_cognition_scale_size == 0 %}
+                                        <button class="btn btn-info  " style="width: 70%" disabled="disabled" type="button">认知量表录入</button>
+                                    {% else %}
+                                        <button class="btn btn-info " style="width: 70%" type="button">认知量表录入({{ todo_cognition_scale_size }})
+                                        </button>
+                                    {% endif %}
+                                </a>
+                                <br><br/>
+                                <a href="/scales/get_rtms_forms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}"
+                                   style="color: white">
+                                    {% if tms == 1 %}
+                                        <button class="btn btn-danger  " style="width: 70%" disabled="disabled" type="button">rtms治疗信息录入</button>
+                                    {% else %}
+                                        <button class="btn btn-danger " style="width: 70%" type="button">rtms治疗信息录入</button>
+
+                                    {% endif %}
+                                </a>
+                                <br/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <div class="x_panel" style="height: 460px">
+                            <div class="x_title">
+                                <h2>信息采集情况</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                        <br/><br/>
+                            <div class="x_content">
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">认知是否完成<span class="required">:</span></label>
+                                        <input type="radio" name="cognitive" value=0 data-labelauty="否" />
+                                        <input type="radio" name="cognitive" value=1 data-labelauty="是"/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">录音是否完成<span class="required">:</span></label>
+                                        <input type="radio" name="sound" value=0 data-labelauty="否" />
+                                        <input type="radio" name="sound" value=1 data-labelauty="是"/>
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">血液是否采集<span class="required">:</span></label>
+                                    <input type="radio" name="blood" value=0 data-labelauty="否"/>
+                                    <input type="radio" name="blood" value=1 data-labelauty="是"/>
+                                    <a href="" id="blood_typein" style="position: absolute;display: none" >
+                                        <u>血液信息录入</u>
+                                    </a>
+                                    <a href="" id="blood_check" style="position: absolute;display: none" >
+                                        <u>查看修改血液信息</u>
+                                    </a>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">毛发是否采集<span class="required">:</span></label>
+
+                                        <input type="radio" name="hairs" value=0 data-labelauty="否"/>
+                                        <input type="radio" name="hairs" value=1 data-labelauty="是" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">粪便是否检测<span class="required">:</span></label>
+                                        <input type="radio" name="manure" value=0 data-labelauty="否" />
+                                        <input type="radio" name="manure" value=1 data-labelauty="是"/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label  col-md-offset-1 col-md-5"
+                                           for="subject_number">是否用药<span class="required">:</span></label>
+
+
+                                        <input type="radio" name="drugs_information" value=0 data-labelauty="否"/>
+                                        <input type="radio" name="drugs_information" value=1 data-labelauty="是"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">磁共振情况<span class="required">:</span></label>
+                                        <input type="radio" name="mri_examination" value=0 data-labelauty="否"/>
+                                        <input type="radio" name="mri_examination" value=1 data-labelauty="是" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5" for="subject_number">首发否<span
+                                            class="required">:</span></label>
+                                        <input type="radio" name="first" value=0 data-labelauty="否"/>
+                                        <input type="radio" name="first" value=1 data-labelauty="是" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    <br/><br/>
+                    <label class="control-label col-md-2 col-sm-2 col-xs-2" for="subject_number">备注<span
+                            class="required">:</span></label>
+                    <textarea class="col-md-8 col-sm-8 col-xs-8" rows="3" style="resize: none;border-color: #6688a8"
+                              name="note">{{ patient_detail.note|processNone }}</textarea>
+                </div>
+                <div></div>
+                <div class="col-md-12"
+                     style="text-align: center;transform:translateY(50%);-ms-transform:translateY(50%);-webkit-transform:translateY(50%);">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-success " style="margin-right: 40px" value="提交"/>
+                </div>
+            </form>
+        </div>
+    </div>
+<script>
+var num=1
+ function myCheck(save_form) {
+    if(num==1)
+    {
+        alert("提交成功！");
+    }
+    num=num+1;
+            return true;
+ }
+</script>
+    <script>
+        function getData() {
+            var blood = Number("{{ patient_detail.blood }}");
+            {#alert(blood)#}
+            if ('{{ patient_detail.blood }}' != 'None') {
+                $("input[name='blood'][value=" + blood + "]").prop("checked", true);
+                if(blood==1){
+                    $("#blood_check").removeAttr("style","display:none;");
+                }
+            }
+
+
+
+        }
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" language="JavaScript">
+
+        $(document).ready(function () {
+            document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_baseinfo.id }}, 8)
+            document.cookie = "enter_page=select;path=/"
+            $("input:radio[name='blood']").click(function() {
+                blood="{{ patient_detail.blood }}";
+                click_blood = $(this).val();
+                {#点击否#}
+                if (Number(click_blood == 0)) {
+                    $("#blood_check").attr("style","display:none;");
+                    $("#blood_typein").attr("style","display:none;");
+                    if(blood != '0'){
+                        $('#delete_blood_modal').modal("show");
+                        var standard_id = "{{ patient_detail.standard_id }}";
+                        var name = "{{ patient_baseinfo.name }}";
+                        var patient_session_id="{{ patient_session_id }}"
+                        var patient_id="{{ patient_baseinfo.id }}"
+                        document.getElementById("del_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不做血了吗？";
+                        $("#delete_blood_href").attr("href","/patients/del_blood?patient_session_id="+patient_session_id+"&patient_id="+patient_id);
+                    }
+                }
+                {#点击是#}
+                if (Number(click_blood == 1)) {
+                    if(blood == 'None' || blood == '0'){
+                        $("#blood_typein").removeAttr("style","display:none;");
+                    }
+
+                }
+            });
+
+
+
+        });
+
+        function formatZero(num, len) {
+            if (String(num).length > len) return num;
+            return (Array(len).join(0) + num).slice(-len);
+        }
+
+    </script>
+
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+        });
+
+         function addCookie(name,value,expiresHours){
+            var cookieString=name+"="+escape(value);
+            //判断是否设置过期时间
+            if(expiresHours>0){
+            var date=new Date();
+            date.setTime(date.getTime+expiresHours*3600*1000);
+            cookieString=cookieString+"; expires="+date.toGMTString()+";path=/";;
+            }
+            document.cookie=cookieString;
+        }
+    </script>
+
+{#    <script>#}
+{#        function judge_diagnosis(obj) {#}
+{#            if (obj.options[obj.selectedIndex].value == 99) {#}
+{#                document.getElementById("other_diagnosis_div").style.display = "";#}
+{#            } else {#}
+{#                document.getElementById("other_diagnosis_div").style.display = "none";#}
+{#            }#}
+{#        }#}
+{##}
+{#    </script>#}
+
+
+{% endblock %}

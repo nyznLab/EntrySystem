@@ -1,0 +1,139 @@
+{% load static %}
+@charset "utf-8";
+body { font: 14px "微软雅黑", "FontAwesome", "Arial Narrow", HELVETICA; -webkit-text-size-adjust: 100%; }
+.fl{float: left}
+.fr{float: right}
+ol, ul {
+    list-style: none outside none;
+}
+ ul,li{ margin:0; padding:0; list-style:none; } 
+.alignleft{text-align: left}
+.center{text-align: center}
+.relative{position: relative}
+.dnone{display: none}
+.color1{color: #8C8C8C}
+.color2{color: #EF4548}
+.color3{color: #A2A2A2}
+.mtb10{margin: 10px 0px;}
+.mtb20{margin: 20px 0px;}
+.mtb30{margin: 30px 0px;}
+.mtb40{margin: 40px 0px;}
+.mtb50{margin: 50px 0px;}
+.mt5{margin-bottom: 5px}
+.mt10{margin-bottom: 10px}
+.mt20{margin-bottom:20px}
+.mt30{margin-bottom: 30px}
+/* 用户登录样式 */
+.textright{text-align: right}
+.large-header1 {
+    position: relative;
+    width: 100%;
+    background:url(../images/login/bg.jpg) no-repeat;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    z-index: 1;
+}
+.large-header {
+    position: relative;
+    width: 100%;
+    background:url(../images/login/bg.jpg) no-repeat;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    z-index: 1;
+}
+.logobg_style .login-form {
+    position:absolute;
+    top: 50%;
+	font-family: "微软雅黑", Microsoft YaHei UI;
+	margin-top: -225px;
+	margin-left: -225px;
+	left: 50%;
+	z-index: 999;
+    -webkit-transition: all 550ms ease-in-out;
+    -moz-transition: all 550ms ease-in-out;
+    -o-transition: all 550ms ease-in-out;
+    transition: all 550ms ease-in-out;
+}
+.logobg_style .login-content {
+    position: relative;
+    width: 450px;
+	z-index: 999;
+	height: 470px;
+	box-shadow: 0px 3px 6px #333333;
+	background: url(../images/login/bg_03.png) repeat;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 0;
+    -webkit-transition: all 550ms ease-in-out;
+    -moz-transition: all 550ms ease-in-out;
+    -o-transition: all 550ms ease-in-out;
+    transition: all 550ms ease-in-out;
+}
+.logobg_style .input-group-addon{ padding:6px 20px }
+.logobg_style .login-content .title_name{ color: #ffffff; font-weight: bold}
+.login_padding{padding: 15px 40px; position: relative}
+.logobg_style .form-control{ height: 45px}
+.logobg_style .input-group {
+     height:45px;
+	float: left;
+    -webkit-transition: all 300ms ease-in-out;
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.logobg_style a:hover{color: #ffffff}
+.logobg_style .form-group{ margin-bottom: 25px; display: block}
+.logobg_style .input-group-addon i{background-size: 25px; position: absolute; left: 3px; top:7px; width: 30px; height: 30px;}
+.logobg_style .icon_user{background: url(../images/login/iconfont-yonghu.png) no-repeat 7px center;  }
+.logobg_style .icon_password{background: url(../images/login/iconfont-psw.png) no-repeat 7px center; }
+
+.btn-block{height: 45px; line-height:29px; font-size: 18px}
+
+.login input {font-family: 'Microsoft YaHei';outline: none;}
+.btn_mfyzm {
+    width: 100px;
+    margin-left: 10px;
+    height: 45px;
+    background: #f0f0f0;
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    cursor: pointer;
+	transition: background-color .5s ease;
+}
+.btn_mfyzm.msgs1,
+.btn_mfyzm.msgs1:hover{ background: #E6E6E6;color: #818080; border: 1px solid #CCCCCC;}
+.btn_mfyzm:hover{color: #ffffff; background:#DD4144; border: 1px solid #DD4144}
+.download-btn{
+	
+	height:38px;
+	line-height: 26px;
+	color:#ffffff!important; 
+	margin: 10px 0px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 220px; 
+	text-align: left;    
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+	white-space:inherit;
+	font-size: 12px;
+}
+.download-btn i{ margin-right:10px;}
+/****************************************************/
+

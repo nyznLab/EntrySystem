@@ -1,0 +1,373 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}汉密尔顿焦虑量表（HAMA）{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+     <style>
+    .hama_table input.labelauty + label {
+    margin-bottom: 2px;
+    width: 100%;
+    display: table;
+    font-size: 13px;
+    padding: 20px;
+    text-align: center;
+    background-color: #efefef;
+    color: #b3b3b3;
+    cursor: pointer;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    transition: background-color 0.25s;
+    -moz-transition: background-color 0.25s;
+    -webkit-transition: background-color 0.25s;
+    -o-transition: background-color 0.25s;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="#">量表评估</a></li>
+                        <li><a href="#">他评量表</a></li>
+                        <li class="active"><a href="#">汉密尔顿焦虑量表（HAMA）</a></li>
+                       <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+            <div id="wrapper">
+                <div id="left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                    <ul class="scales_progress">
+                        {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '汉密尔顿焦虑量表（HAMA）' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                    </ul>
+                </div>
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                        <form action="/scales/add_hama?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" method="post">
+                            {% csrf_token %}
+                            <div class="container">
+                              <div class="col-md-12 text-center">
+                                <h4><strong> 汉密尔顿焦虑量表</strong></h4>
+                              </div>
+                                <div class="row title">
+                                    <strong style="FONT-SIZE: 17px">
+                                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                                        请参考评分指导，根据您过去1周的表现，在合适的分数上打勾:
+                                        <br/>
+                                    </strong>
+                                    <strong>无症状=0 轻微=1 中等=2 较重=3 严重=4</strong>
+                                    <div class="ln_solid"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table hama_table"  frame="void" style="font-weight:bold;">
+                                        <tbody>
+                                        <tr>
+                                            <td width="20%">1.焦虑心境
+                                                <input type="radio" name="anxiety" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="anxiety" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="anxiety" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="anxiety" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="anxiety" value=4 data-labelauty="4" disabled/>
+                                            </td>
+
+                                            <td width="5%"></td>
+
+                                            <td width="20%">2.紧张
+                                                <input type="radio" name="nervous" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="nervous" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="nervous" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="nervous" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="nervous" value=4 data-labelauty="4" disabled/>
+                                            </td>
+
+                                            <td width="5%"></td>
+
+                                            <td width="20%">3.害怕
+                                                <input type="radio" name="fear" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="fear" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="fear" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="fear" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="fear" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+
+                                            <td width="20%">4.失眠
+                                                <input type="radio" name="insomnia" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="insomnia" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="insomnia" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="insomnia" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="insomnia" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">5.认知功能
+                                                <input type="radio" name="cognitive_function" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="cognitive_function" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="cognitive_function" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="cognitive_function" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="cognitive_function" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+                                            <td width="20%">6.抑郁心境
+                                                <input type="radio" name="depression" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="depression" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="depression" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="depression" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="depression" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+                                            <td width="20%">7.躯体性焦虑:肌肉系统
+                                                <input type="radio" name="somaticanxiety_muscle" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="somaticanxiety_muscle" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="somaticanxiety_muscle" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="somaticanxiety_muscle" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="somaticanxiety_muscle" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+                                            <td width="20%">8.躯体性焦虑:感觉系统
+                                                <input type="radio" name="somaticanxiety_sensory" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="somaticanxiety_sensory" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="somaticanxiety_sensory" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="somaticanxiety_sensory" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="somaticanxiety_sensory" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">9.心血管系统症状
+                                                <input type="radio" name="cardiovascular_symptoms" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="cardiovascular_symptoms" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="cardiovascular_symptoms" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="cardiovascular_symptoms" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="cardiovascular_symptoms" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+                                            <td width="20%">10.呼吸系统症状
+                                                <input type="radio" name="respiratory_symptoms" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="respiratory_symptoms" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="respiratory_symptoms" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="respiratory_symptoms" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="respiratory_symptoms" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+                                            <td width="20%">11.胃肠道症状
+                                                <input type="radio" name="gastrointestinal_symptoms" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="gastrointestinal_symptoms" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="gastrointestinal_symptoms" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="gastrointestinal_symptoms" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="gastrointestinal_symptoms" value=4 data-labelauty="4" disabled/></td>
+                                            <td width="5%"></td>
+                                            <td width="20%">12.生殖泌尿系统症状
+                                                <input type="radio" name="genitourinary_symptoms" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="genitourinary_symptoms" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="genitourinary_symptoms" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="genitourinary_symptoms" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="genitourinary_symptoms" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">13.植物神经系统症状
+                                                <input type="radio" name="plantnervous_symptoms" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="plantnervous_symptoms" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="plantnervous_symptoms" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="plantnervous_symptoms" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="plantnervous_symptoms" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                            <td width="5%"></td>
+                                            <td width="20%">14.会谈时行为表现
+                                                <input type="radio" name="interview_behavior" value=0 data-labelauty="0" disabled/>
+                                                <input type="radio" name="interview_behavior" value=1 data-labelauty="1" disabled/>
+                                                <input type="radio" name="interview_behavior" value=2 data-labelauty="2" disabled/>
+                                                <input type="radio" name="interview_behavior" value=3 data-labelauty="3" disabled/>
+                                                <input type="radio" name="interview_behavior" value=4 data-labelauty="4" disabled/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                            </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                            <a  style="float: left;font-weight: bold">总分：{{ hama_answer.total_score|processNone }}</a>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="hama_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+                                <div class="row" id="bt_group">
+                                        <div  class="col-md-4 col-sm-6 "  >
+                                           <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                               <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                           </a>
+                                        </div>
+                                        {% comment %}<div  class="col-md-4 col-sm-6 text-center"  >
+                                               <button type="button" class="btn btn-warning" id="bt_return" onclick="return myCheck(this)">提交</button>
+                                        </div>{% endcomment %}
+
+                                        <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                        </div>
+                                </div>
+
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+       function getData(){
+        var order = "{{ order }}";
+        if(order==0){{% comment %}第一个{% endcomment %}
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){{% comment %}最后一个{% endcomment %}
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{{# 啥也不是 #}
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+       }
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+        });
+    </script>
+    <script>
+    if('{{ hama_answer }}'!='None') {
+
+        if ('{{ hama_answer.anxiety }}' != 'None') {
+            $("input[name='anxiety'][value=" + Number({{ hama_answer.anxiety }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.nervous }}' != 'None') {
+            $("input[name='nervous'][value=" + Number({{ hama_answer.nervous }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.fear }}' != 'None') {
+            $("input[name='fear'][value=" + Number({{ hama_answer.fear }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.insomnia }}' != 'None') {
+            $("input[name='insomnia'][value=" + Number({{ hama_answer.insomnia }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.cognitive_function }}' != 'None') {
+            $("input[name='cognitive_function'][value=" + Number({{ hama_answer.cognitive_function }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.depression }}' != 'None') {
+            $("input[name='depression'][value=" + Number({{ hama_answer.depression }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.somaticanxiety_muscle }}' != 'None') {
+            $("input[name='somaticanxiety_muscle'][value=" + Number({{ hama_answer.somaticanxiety_muscle }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.somaticanxiety_sensory }}' != 'None') {
+            $("input[name='somaticanxiety_sensory'][value=" + Number({{ hama_answer.somaticanxiety_sensory }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.cardiovascular_symptoms }}' != 'None') {
+            $("input[name='cardiovascular_symptoms'][value=" + Number({{ hama_answer.cardiovascular_symptoms }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.respiratory_symptoms }}' != 'None') {
+            $("input[name='respiratory_symptoms'][value=" + Number({{ hama_answer.respiratory_symptoms }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.gastrointestinal_symptoms }}' != 'None') {
+            $("input[name='gastrointestinal_symptoms'][value=" + Number({{ hama_answer.gastrointestinal_symptoms }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.genitourinary_symptoms }}' != 'None') {
+            $("input[name='genitourinary_symptoms'][value=" + Number({{ hama_answer.genitourinary_symptoms }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.plantnervous_symptoms }}' != 'None') {
+            $("input[name='plantnervous_symptoms'][value=" + Number({{ hama_answer.plantnervous_symptoms }}) + "]").prop("checked", true);
+        }
+        if ('{{ hama_answer.interview_behavior }}' != 'None') {
+            $("input[name='interview_behavior'][value=" + Number({{ hama_answer.interview_behavior }}) + "]").prop("checked", true);
+        }
+    }
+
+        function remove_disabled(){
+            $("input[name='anxiety']").removeAttr("disabled","disabled");
+            $("input[name='nervous']").removeAttr("disabled","disabled");
+            $("input[name='fear']").removeAttr("disabled","disabled");
+            $("input[name='insomnia']").removeAttr("disabled","disabled");
+            $("input[name='cognitive_function']").removeAttr("disabled","disabled");
+            $("input[name='depression']").removeAttr("disabled","disabled");
+            $("input[name='somaticanxiety_muscle']").removeAttr("disabled","disabled");
+            $("input[name='somaticanxiety_sensory']").removeAttr("disabled","disabled");
+            $("input[name='cardiovascular_symptoms']").removeAttr("disabled","disabled");
+            $("input[name='respiratory_symptoms']").removeAttr("disabled","disabled");
+            $("input[name='gastrointestinal_symptoms']").removeAttr("disabled","disabled");
+            $("input[name='genitourinary_symptoms']").removeAttr("disabled","disabled");
+            $("input[name='plantnervous_symptoms']").removeAttr("disabled","disabled");
+            $("input[name='interview_behavior']").removeAttr("disabled","disabled");
+            $("#hama_bt").attr("style","display:block;");
+            $("#bt_group").attr("style","display:none;");
+
+        }
+
+    </script>
+
+
+
+
+{% endblock %}

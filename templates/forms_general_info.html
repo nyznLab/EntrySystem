@@ -1,0 +1,1081 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}个人详细信息{% endblock %}
+{% block css %}
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+    <div class="right_col" role="main" style="">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="/patients/get_select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">量表录入</a></li>
+                        <li class="active"><a href="#"></a>个人详细信息录入</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel">
+            <div class="tabbable" id="tabs-58973">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#r_patient_basic_information_family" data-toggle="tab"><strong>家庭信息</strong></a>
+                    </li>
+                    <li>
+                        <a href="#r_patient_basic_information_study" data-toggle="tab"><strong>学习情况</strong></a>
+                    </li>
+                    <li>
+                        <a href="#r_patient_basic_information_health" data-toggle="tab"><strong>家族及疾病史</strong></a>
+                    </li>
+                    <li>
+                        <a href="#r_patient_basic_information_abuse" data-toggle="tab"><strong>物质依赖</strong></a>
+                    </li>
+                    <li>
+                        <a href="#r_patient_basic_information_other" data-toggle="tab"><strong>其他资料</strong></a>
+                    </li>
+                    <li>
+                        <a href="#panel_chineseHandle" data-toggle="tab"><strong>中国利手量表</strong></a>
+                    </li>
+
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="r_patient_basic_information_family">
+                        <form action="/scales/add_family_info?patient_session_id={{ patient_session_id }}"
+                              method="POST">
+                            <div class="container">
+                                <div class="row" style=" margin: 20px;">
+                                    <h4><strong>
+                                        <center>家庭资料</center>
+                                        <br/></strong></h4>
+                                </div>
+
+                                <br>
+                                <div class="x_content">
+                                    <br>
+                                    <!-- 姓名 性别 联系电话-->
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-1 col-sm-1" for="name">姓名<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback">
+                                            <input type="text" id="name" name="name" required="required"
+                                                   class="form-control has-feedback-left">
+                                            <span class="fa fa-user form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1">性别<span class="required">*</span></label>
+                                        <div class="col-md-1 col-sm-1 " id="gender_1">
+                                            <input type="radio" class="flat " name="gender" value=0 />
+                                            <b>男</b>
+                                        </div>
+                                        <div class="col-md-1 col-sm-1 " id="gender_2">
+                                            <input type="radio" class="flat " name="gender" value=1 />
+                                            <b>女</b>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2" for="tele">联系方式<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback">
+                                            <input type="text" id="tele" name="tele" required="required"
+                                                   class="form-control has-feedback-left">
+                                            <span class="fa fa-mobile form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1" for="age">年龄<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2 form-group ">
+                                            <input type="text" id="age" name="age" required="required"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--年龄 出生日期 婚姻状况 职业-->
+                                    <div class="form-group row">
+
+                                        <label class="control-label col-md-1 col-sm-2" for="birthday">出生日期<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-3 form-group">
+                                            <input type="date" id="birthday" name="birthday" required="required"
+                                                   class="form-control">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1 " for="marital_status">婚姻状况<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control" name="marital_status" id="marital_status">
+                                                <option value="1">单身=1</option>
+                                                <option value="2">未婚=2</option>
+                                                <option value="3">已婚=3</option>
+                                                <option value="4">离婚=4</option>
+                                                <option value="5">再婚=5</option>
+                                                <option value="6">分居=6</option>
+                                                <option value="7">丧偶=7</option>
+                                            </select>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1 " for="occupation">职业<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2 form-group ">
+                                            <input type="text" id="occupation" name="occupation" required="required"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--受教育程度 民族-->
+                                    <div class="form-group row">
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="row">
+                                                <label class="control-label col-md-2 col-sm-2 "
+                                                       for="education">受教育程度<span class="required">*</span></label>
+                                                <div class="col-md-4 col-sm-4">
+                                                    <input type="text" id="education" name="education"
+                                                           required="required" class="form-control">
+                                                </div>
+                                                <label class="control-label col-md-2 col-sm-2">共</label>
+                                                <div class="col-md-2 col-sm-2">
+                                                    <input type="text" id="education_years" name="education_years"
+                                                           required="required" class="form-control">
+                                                </div>
+                                                <label class="control-label col-md-2 col-sm-2">年</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="row">
+                                                <label class="control-label col-md-2 col-sm-2 " for="nation">民族<span
+                                                        class="required">*</span></label>
+                                                <div class="col-md-4 col-sm-4">
+                                                    <select class="form-control" name="nation" id="nation">
+                                                        <option value="0">汉族</option>
+                                                        <option value="1">少数民族</option>
+                                                    </select>
+                                                </div>
+                                                <label class="control-label col-md-2 col-sm-2 minority" for="minority"
+                                                       style="display: none;">少数民族</label>
+                                                <div class="col-md-4 col-sm-4 form-group minority"
+                                                     style="display: none;">
+                                                    <input type="text" id="minority" name="minority"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--注释-->
+                                    <div class="form-group row">
+                                        <div class=" col-md-12 col-sm-10 col-md-offset-1">
+                                            <small>小学=6年，初中=9年，高中=12年，大学=16/17年，硕士研究生=18/19年，博士研究生=21/22年，根据受试者实际情况而定，例如初二=8年</small>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--身高 体重 腰围 臀围 -->
+                                    <div class="form-group row">
+                                        <div class="col-md-3 col-sm-3">
+                                            <div class="row">
+                                                <div class="col-md-1 col-sm-1"></div>
+                                                <label class="control-label col-md-4 col-sm-4 " for="height">身高<span
+                                                        class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 input-group has-feedback">
+                                                    <input type="text" id="height" name="height" required="required"
+                                                           class="form-control">
+                                                    <span class="input-group-addon">CM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3">
+                                            <div class="row">
+                                                <div class="col-md-1 col-sm-1"></div>
+                                                <label class="control-label col-md-4 col-sm-4 " for="weight">体重<span
+                                                        class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 input-group has-feedback">
+                                                    <input type="text" id="weight" name="weight" required="required"
+                                                           class="form-control">
+                                                    <span class="input-group-addon">KG</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3">
+                                            <div class="row">
+                                                <div class="col-md-1 col-sm-1"></div>
+                                                <label class="control-label col-md-4 col-sm-4 " for="waist">腰围<span
+                                                        class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 input-group has-feedback">
+                                                    <input type="text" id="waist" name="waist" required="required"
+                                                           class="form-control">
+                                                    <span class="input-group-addon">CM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3">
+                                            <div class="row">
+                                                <div class="col-md-1 col-sm-1"></div>
+                                                <label class="control-label col-md-4 col-sm-4 " for="hip">臀围<span
+                                                        class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 input-group has-feedback">
+                                                    <input type="text" id="hip" name="hip" required="required"
+                                                           class="form-control">
+                                                    <span class="input-group-addon">CM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="x_title">
+                                    <div class="clearfix"></div>
+                                    <h2>家庭及居住情况 <small>Family and living conditions</small></h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <br>
+                                <div class="x_content">
+                                    <br>
+                                    <!--                    居住地 家庭地址-->
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-1 col-sm-2">居住地<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-1 col-sm-2" id="patient_urban_rural_1">
+                                            <input type="radio" class="flat form-control" name="patient_urban_rural"
+                                                   value=0 />
+                                            <b>城市</b>
+                                        </div>
+                                        <div class="col-md-1 col-sm-2" id="patient_urban_rural_2">
+                                            <input type="radio" class="flat form-control" name="patient_urban_rural"
+                                                   value=1 />
+                                            <b>农村</b>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2" for="patient_address">家庭住址<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-5 col-sm-3 form-group has-feedback">
+                                            <input type="text" id="patient_address" name="patient_address"
+                                                   required="required" class="form-control has-feedback-left">
+                                            <span class="fa fa-home form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--                    居住方式  其他  独生子女 父母偏爱-->
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-1 col-sm-2 patient_live_type"
+                                               for="patient_live_type">居住方式<span class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-3 patient_live_type">
+                                            <select class="form-control" name="patient_live_type"
+                                                    id="patient_live_type">
+                                                <option value="1">独自居住</option>
+                                                <option value="2">与父母同住</option>
+                                                <option value="3">与祖父母同住</option>
+                                                <option value="4">与丈夫/妻子同住</option>
+                                                <option value="5">集体宿舍/合租</option>
+                                                <option value="6">其他</option>
+                                            </select>
+                                        </div>
+
+                                        <label class="control-label col-md-1 col-sm-3 patient_live_type_other"
+                                               for="patient_live_type_other">其他居住方式<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback patient_live_type_other">
+                                            <input type="text" id="patient_live_type_other"
+                                                   name="patient_live_type_other"
+                                                   class="form-control has-feedback-left patient_live_type_other">
+                                            <span class="fa fa-home form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                        </div>
+
+                                        <label class="control-label col-md-1 col-sm-2">独生子女<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-1 col-sm-1 ">
+                                            <input type="radio" class=" form-control flat only_child_1"
+                                                   name="patient_only_child" value=1>
+                                            <b>是</b>
+                                        </div>
+                                        <div class="col-md-1 col-sm-1">
+                                            <input type="radio" class=" form-control flat only_child_2"
+                                                   name="patient_only_child" value=0>
+                                            <b>否</b>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-4" for="parents_favour">父母偏爱<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-3">
+                                            <select class="form-control" name="parents_favour" id="parents_favour">
+                                                <option value="1">偏爱兄弟姐妹</option>
+                                                <option value="2">无偏爱</option>
+                                                <option value="3">偏爱自己</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--                    兄弟姐妹-->
+                                    <div class="form-group row " id="brother_num_1" style="display: none;">
+                                        <label class="control-label col-md-1 col-sm-2">兄弟姐妹数量<span
+                                                class="required">:</span></label>
+                                    </div>
+                                    <!--                    兄弟姐妹数量-->
+                                    <div class="form-group row " id="brother_num_2" style="display: none;">
+                                        <label class="control-label col-md-1 col-sm-1"
+                                               for="patient_older_brother_num">兄</label>
+                                        <div class="col-md-2 col-sm-2 form-group ">
+                                            <input type="text" id="patient_older_brother_num"
+                                                   name="patient_older_brother_num"
+                                                   class="form-control has-feedback-left">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1" for="patient_youger_brother_num">弟</label>
+                                        <div class="col-md-2 col-sm-2 form-group ">
+                                            <input type="text" id="patient_youger_brother_num"
+                                                   name="patient_youger_brother_num"
+                                                   class="form-control has-feedback-left">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1"
+                                               for="patient_older_sister_num">姐</label>
+                                        <div class="col-md-2 col-sm-2 form-group ">
+                                            <input type="text" id="patient_older_sister_num"
+                                                   name="patient_older_sister_num"
+                                                   class="form-control has-feedback-left">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1"
+                                               for="patient_youger_sister_num">妹</label>
+                                        <div class="col-md-2 col-sm-2 form-group ">
+                                            <input type="text" id="patient_youger_sister_num"
+                                                   name="patient_youger_sister_num"
+                                                   class="form-control has-feedback-left">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--                   父母职业 手机 -->
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-1 col-sm-2">父亲职业<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-4 form-group ">
+                                            <input type="text" id="father_occupation" name="father_occupation"
+                                                   required="required" class="form-control ">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2">父亲电话<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-4 form-group ">
+                                            <input type="text" id="father_tele" name="father_tele" required="required"
+                                                   class="form-control ">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2">母亲职业<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-4 form-group has-feedback">
+                                            <input type="text" id="mother_occupation" name="mother_occupation"
+                                                   required="required" class="form-control">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2">母亲电话<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-4 form-group has-feedback">
+                                            <input type="text" id="mother_tele" name="mother_tele" required="required"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--                    文化程度 婚姻状态-->
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-1 col-sm-2">父亲文化程度<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control" name="father_education" id="father_education">
+                                                <option value="1">小学</option>
+                                                <option value="2">初中</option>
+                                                <option value="3">高中/中专/技校/职高</option>
+                                                <option value="4">大专</option>
+                                                <option value="5">大学本科</option>
+                                                <option value="6">硕士</option>
+                                                <option value="7">博士</option>
+                                                <option value="8">未上学</option>
+                                            </select>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2">母亲文化程度<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control" name="mother_education" id="mother_education">
+                                                <option value="1">小学</option>
+                                                <option value="2">初中</option>
+                                                <option value="3">高中/中专/技校/职高</option>
+                                                <option value="4">大专</option>
+                                                <option value="5">大学本科</option>
+                                                <option value="6">硕士</option>
+                                                <option value="7">博士</option>
+                                                <option value="8">未上学</option>
+                                            </select>
+                                        </div>
+                                        <!--                    父母婚姻状态选择离异 展示继父/继母问题 选择有一方过世 展示过世时自己年龄标签 否则都不展示-->
+                                        <label class="control-label col-md-1 col-sm-2">父母婚姻状态<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control parent_marry" name="parent_marry"
+                                                    id="parent_marry">
+                                                <option value="1">正常</option>
+                                                <option value="2">离异</option>
+                                                <option value="3">分居</option>
+                                                <option value="4">有一方过世</option>
+                                            </select>
+                                        </div>
+                                        <!--                      -->
+                                        <!--                      这里要写一个JS 根据父母婚姻状态 展示后面的问题-->
+                                        <label class="control-label col-md-1 col-sm-2">父母争吵频率<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control" name="parent_argument" id="parent_argument">
+                                                <option value="1">几乎每天</option>
+                                                <option value="2">一周数次</option>
+                                                <option value="3">一月两三</option>
+                                                <option value="4">每月一次</option>
+                                                <option value="5">每年几次</option>
+                                                <option value="6">不吵架</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!--                    领养 与父母的关系-->
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-1 col-sm-2 StepParents"
+                                               style="display: none;">继父/继母</label>
+                                        <!--                      hidden-->
+                                        <div class="col-md-2 col-sm-2 StepParents" style="display: none;">
+                                            <select class="form-control" name="StepParents">
+                                                <option value="1">继父</option>
+                                                <option value="2">继母</option>
+                                            </select>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2 patient_parent_death_age"
+                                               style="display: none;">父/母过世时自己的年龄</label>
+                                        <!--                      hidden-->
+                                        <div class="col-md-2 col-sm-2 patient_parent_death_age" style="display: none;">
+                                            <input type="text" class="form-control" , name="patient_parent_death_age" ,
+                                                   id="patient_parent_death_age">
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2">是否领养<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-1 col-sm-1 " id="patient_adopt_1">
+                                            <input type="radio" class="flat " name="patient_adopt" value=0 />
+                                            <b>是</b>
+                                        </div>
+                                        <div class="col-md-1 col-sm-1 " id="patient_adopt_2">
+                                            <input type="radio" class="flat " name="patient_adopt" value=1 />
+                                            <b>否</b>
+                                        </div>
+                                        <!--hidden-->
+                                        <label class="control-label col-md-1 col-sm-2" id="adopt_age_1"
+                                               style="display: none;">领养时的年龄</label>
+                                        <div class="col-md-2 col-sm-1 form-group " id="adopt_age_2"
+                                             style="display: none;">
+                                            <input type="text" id="patient_adopt_age" name="patient_adopt_age"
+                                                   class="form-control ">
+                                        </div>
+                                        <!--                      offset-->
+                                        <label class="control-label col-md-1 col-sm-2 ">与父亲的关系<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control" name="father_relationship"
+                                                    id="father_relationship">
+                                                <option value="1">非常好</option>
+                                                <option value="2">较好</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">较差</option>
+                                                <option value="5">非常差</option>
+                                            </select>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-2">与母亲的关系<span
+                                                class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2">
+                                            <select class="form-control" name="mother_relationship"
+                                                    id="mother_relationship">
+                                                <option value="1">非常好</option>
+                                                <option value="2">较好</option>
+                                                <option value="3">一般</option>
+                                                <option value="4">较差</option>
+                                                <option value="5">非常差</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="text-center">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-success" value="提交" id="happiness_bt"/>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="r_patient_basic_information_study">
+                        <form action="/scales/add_information_study?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                              method="post">
+                            <div class="x_content">
+                                <br>
+                                <!--                    最后一次大考-->
+                                <div class="form-group row">
+                                    <label class="control-label col-md-4 col-sm-6 col-md-offset-3">最近一次大考（期中或期末）中，您在班级的排名大约为<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-3">
+                                        <select class="form-control" name="patient_current_achievement"
+                                                id="patient_current_achievement">
+                                            <option value="1">前10%=1</option>
+                                            <option value="2">11-25%=2</option>
+                                            <option value="3">26-50%=3</option>
+                                            <option value="4">51-75%=4</option>
+                                            <option value="5">后24%=5</option>
+                                            <option value="6">学校不公布排名=6</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <!--本学期相比于上个学期，学习成绩变动情况-->
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-5 col-md-offset-4">本学期相比于上个学期，学习成绩变动情况<span
+                                            class="required">*：</span></label>
+                                    <div class="col-md-1 col-sm-3">
+                                        <select class="form-control" name="patient_last_semester_achievement_difference"
+                                                id="patient_last_semester_achievement_difference">
+                                            <option value="1">进步=1</option>
+                                            <option value="2">退步=2</option>
+                                            <option value="3">稳定=3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <!--                    有情绪方面的症状前后，学习成绩变动情况-->
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-5 col-md-offset-4">有情绪方面的症状前后，学习成绩变动情况<span
+                                            class="required">*：</span></label>
+                                    <div class="col-md-1 col-sm-3">
+                                        <select class="form-control" name="patient_mood_symptom_achievement_difference"
+                                                id="patient_mood_symptom_achievement_difference">
+                                            <option value="1">进步=1</option>
+                                            <option value="2">退步=2</option>
+                                            <option value="3">稳定=3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-4 col-md-offset-2">是否担任过班级或学校的学生干部<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-1 col-sm-1 " id="patient_leader_1">
+                                        <input type="radio" class="flat " name="patient_leader" value=0 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_leader_2">
+                                        <input type="radio" class="flat " name="patient_leader" value=1 />
+                                        <b>否</b>
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-2 ">担任职务<span class="required">*:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group">
+                                        <input type="text" id="patient_leader_occupation"
+                                               name="patient_leader_occupation" class="form-control"
+                                               disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-2 col-sm-3 col-md-offset-3 col-sm-offset-1">是否在学校寄宿<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-1 col-sm-1 " id="patient_live_school_1">
+                                        <input type="radio" class="flat " name="patient_live_school" value=0 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_live_school_2">
+                                        <input type="radio" class="flat " name="patient_live_school" value=1 />
+                                        <b>否</b>
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-2 ">每月回家次数<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group ">
+                                        <input type="text" id="patient_home_frequency" name="patient_home_frequency"
+                                               class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" value="提交"/>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="tab-pane" id="r_patient_basic_information_health">
+                        <form action="/scales/add_patient_basic_information_health?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            <div class="x_title">
+                                <div class="clearfix"></div>
+                                <h2>健康情况及家族史 <small>Health and family history</small></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <br>
+                            <div class="x_content">
+                                <br>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-2 col-sm-3 col-md-offset-1">既往是否有躯体疾病<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-1 col-sm-1 " id="patient_somatic_diseases_1">
+                                        <input type="radio" class="flat " name="patient_somatic_diseases" value=1 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_somatic_diseases_2">
+                                        <input type="radio" class="flat " name="patient_somatic_diseases" value=0 />
+                                        <b>否</b>
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-2 ">所患疾病<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group  ">
+                                        <input type="text" id="patient_somatic_diseases_name"
+                                               name="patient_somatic_diseases_name" class="form-control"
+                                               disabled="disabled">
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-2 ">患病时长<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-1 form-group  ">
+                                        <input type="text" id="patient_somatic_diseases_year"
+                                               name="patient_somatic_diseases_year" class="form-control"
+                                               disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-2 col-sm-3 col-md-offset-1 ">既往是否有精神疾病<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-1 col-sm-1 " id="patient_mental_diseases_1">
+                                        <input type="radio" class="flat " name="patient_mental_diseases" value=1 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_mental_diseases_2">
+                                        <input type="radio" class="flat " name="patient_mental_diseases" value=0 />
+                                        <b>否</b>
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-2 ">所患疾病<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group  ">
+                                        <input type="text" id="patient_mental_diseases_name"
+                                               name="patient_mental_diseases_name" class="form-control"
+                                               disabled="disabled">
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-2 ">患病时长<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-1 form-group ">
+                                        <input type="text" id="patient_mental_diseases_year"
+                                               name="patient_mental_diseases_year" class="form-control"
+                                               disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-1 col-sm-2 col-md-offset-2 col-sm-offset-1">家族史<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-1 col-sm-1 " id="patient_family_diseases_history_1">
+                                        <input type="radio" class="flat " name="patient_family_diseases_history"
+                                               value=1 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_family_diseases_history_2">
+                                        <input type="radio" class="flat " name="patient_family_diseases_history"
+                                               value=0 />
+                                        <b>否</b>
+                                    </div>
+                                    一般资料
+                                    <label class="control-label col-md-1 col-sm-2 ">疾病名<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback ">
+                                        <input type="text" id="patient_family_diseases_name"
+                                               name="patient_family_diseases_name" class="form-control"
+                                               disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-6 col-md-offset-3">用药情况（药物名称、剂量、用药周期）<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-4 col-sm-4 form-group ">
+                                        <input type="text" id="patient_medicine_information"
+                                               name="patient_medicine_information" required="required"
+                                               class="form-control ">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-4 col-sm-6 col-md-offset-2">治疗情况（治疗种类、治疗方案、治疗时长）<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-4 col-sm-4 form-group ">
+                                        <input type="text" id="patient_treatment_information"
+                                               name="patient_treatment_information" required="required"
+                                               class="form-control ">
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+
+
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" value="提交"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="r_patient_basic_information_abuse">
+                        <form action="/scales/add_abuse?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            {% csrf_token %}
+                            <div class="x_title">
+                                <div class="clearfix"></div>
+                                <h2>烟酒和物质使用 <small>Tobacco, alcohol and material dependence</small></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <br>
+                            <div class="x_content">
+                                <!--                    js 选择是偏移1 默认偏移4 -->
+                                <br>
+                                <div class="form-group row " style="font-size: larger">
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1 "
+                                           style="">&nbsp;是否吸烟<span class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-1" id="patient_smoke_1">
+                                        <input type="radio" class="flat " name="patient_smoke" value=1 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1" id="patient_smoke_2">
+                                        <input type="radio" class="flat " name="patient_smoke" value=0 />
+                                        <b>否</b>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="form-group row" style="font-size: larger">
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1  ">起始吸烟年龄<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-1 form-group has-feedback ">
+                                        <input type="text" id="patient_smoke_age" name="patient_smoke_age"
+                                               class="form-control" disabled="disabled">
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-1  ">每日吸烟支数<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-1 form-group has-feedback ">
+                                        <input type="text" id="patient_daily_smoke_num" name="patient_daily_smoke_num"
+                                               class="form-control" disabled="disabled">
+                                    </div>
+                                    <label class="control-label col-md-1 col-sm-1 ">戒烟年龄<span class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-1 form-group has-feedback ">
+                                        <input type="text" id="patient_stop_smoke_age" name="patient_stop_smoke_age"
+                                               class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+
+
+                                <br>
+                                <div class="form-group row" style="font-size: larger">
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1 ">是否饮酒<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-2 col-sm-3">
+                                        <select class="form-control" name="patient_alcohol" id="patient_alcohol">
+                                            <option value="1">从不饮酒=1</option>
+                                            <option value="2">偶尔饮酒（每周<1次）=2</option>
+                                            <option value="3">以前饮酒，近1年不饮=3</option>
+                                            <option value="4">现在习惯饮酒=4</option>
+                                        </select>
+                                    </div>
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1 ">起始饮酒的年龄<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-3 form-group has-feedback alcohol_age">
+                                        <input type="text" id="patient_alcohol_age" name="patient_alcohol_age"
+                                               class="form-control " disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group row" style="font-size: larger">
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1">是否存在其他物质（非烟和酒）滥用<span
+                                            class="required">*:</span></label>
+                                    <div class="col-md-1 col-sm-1 " id="patient_other_abuse_1">
+                                        <input type="radio" class="flat " name="patient_other_abuse" value=0 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_other_abuse_2">
+                                        <input type="radio" class="flat " name="patient_other_abuse" value=1 />
+                                        <b>否</b>
+                                    </div>
+                                    <label class="control-label col-md-2 col-sm-2 col-md-offset-1 ">起始年龄<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-1 col-sm-1 form-group has-feedback ">
+                                        <input type="text" id="patient_other_abuse_age" name="patient_other_abuse_age"
+                                               required="required" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" value="提交"/>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="r_patient_basic_information_other">
+                        <form action="/scales/add_other?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}" method="post">
+                            {% csrf_token %}
+                            <div class="x_title">
+                                <div class="clearfix"></div>
+                                <h2>社会支持 <small>Social support</small></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <br>
+                            <div class="x_content">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-2 col-sm-3 col-sm-offset-3"
+                                           for="patient_friend_num">您有几个亲密的朋友<span class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-2">
+                                        <select class="form-control" name="patient_friend_num" id="patient_friend_num">
+                                            <option value="1">0个=1</option>
+                                            <option value="2">1个=2</option>
+                                            <option value="3">2个=3</option>
+                                            <option value="4">3个及以上=4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+
+                            <div class="x_title">
+                                <div class="clearfix"></div>
+                                <h2>重大生活事件 <small>Huge life events</small></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <br>
+                            <div class="x_content">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-8 col-sm-7">最近三个月内是否发生过对您有重大影响的生活事件？（如失恋、家庭变故、欠债、投资失败、辍学、人际关系紧张等）<span
+                                            class="required">*:</span></label>
+                                    <br>
+                                    <div class="col-md-1 col-sm-1 " id="patient_big_event_1">
+                                        <input type="radio" class="flat " name="patient_big_event" value=1 />
+                                        <b>是</b>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="patient_big_event_2">
+                                        <input type="radio" class="flat " name="patient_big_event" value=0 />
+                                        <b>否</b>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-1 col-sm-1 col-sm-offset-3">描述<span
+                                            class="required">:</span></label>
+                                    <div class="col-md-4 col-sm-4 form-group  ">
+                                        <input type="text" id="patient_big_event_describtion"
+                                               name="patient_big_event_describtion" class="form-control ">
+                                    </div>
+                                </div>
+
+                                <br>
+                            </div>
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" value="提交"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="panel_chineseHandle">
+                        <form action="/scales/add_chinesehandle?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                              method="post">
+                            {% csrf_token %}
+                            <div class="container">
+                                <div class="row clearfix">
+                                    <div class="col-md-12 column">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    项目
+                                                </th>
+                                                <th>
+                                                    用右手
+                                                </th>
+                                                <th>
+                                                    用左手
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    1.执笔
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_pen" value=1 required/>
+                                                    <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_pen" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    2.执筷
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_chopsticks" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_chopsticks" value=0 />
+                                                    <span style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    3.掷东西
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="throw_things" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="throw_things" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    4.持牙刷刷牙
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="brush_tooth" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="brush_tooth" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    5.持剪刀
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="use_scissors" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="use_scissors" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    6.划火柴
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="use_match" value=1 required/>
+                                                    <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="use_match" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    7.持针穿线
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="use_needle" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="use_needle" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    8.握钉锤
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_hammer" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_hammer" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    9.握球拍
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_racket" value=1
+                                                           required/> <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="hold_racket" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    10.持毛巾洗脸
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="wash_face" value=1 required/>
+                                                    <span style="margin-right: 20px">1</span>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" class="flat" name="wash_face" value=0 /> <span
+                                                        style="margin-right: 20px">0</span>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-left: 5px;margin-top: 10px;">
+                                    结果评定说明：如果前六项都用右手或左手，后四项中任何一至四项用另一手，则称为右利或左利。如果前六项中：有一至五项习用一手，其余则习用另手，则称为混合利。
+                                </div>
+                                <div class="row">
+                                    <div class="text-center">
+                                        <input type="submit" class="btn btn-success" value="提交"/>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}">
+        //加载模态框
+        $(document).ready(function () {
+            for (var i = 0; i < answer_list.length; i++) {
+                var answer = answer_list[i];
+                var answer_radio = $("input[name='" + "_question" + (i + 1) + "_answer" + "']")
+                answer_radio.attr("disabled", "disabled");
+                answer_radio.eq(parseInt(answer)).attr("checked", true);
+            }
+            $("#hamd_bt").hide();
+        });
+    </script>
+{% endblock %}

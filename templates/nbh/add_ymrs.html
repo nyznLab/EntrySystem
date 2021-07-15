@@ -1,0 +1,390 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}杨氏躁狂量表（YMRS）{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="#">量表评估</a></li>
+                        <li><a href="#">他评量表</a></li>
+                        <li class="active"><a href="#">杨氏躁狂量表（YMRS）</a></li>
+                        <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+            <div id="wrapper">
+                <div id="left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                    <ul class="scales_progress">
+                        {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '杨氏躁狂量表（YMRS）' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                    </ul>
+                </div>
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                        <form id="sub_ymrs" action="/scales/add_ymrs?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" method="post">
+                          <div class="col-md-12 text-center">
+                            <h4><strong> 杨氏躁狂量表</strong></h4>
+                          </div>
+                            <div class="col-md-12 column" style="text-align:center">
+                                 <br><br>
+                                <strong style="FONT-SIZE: 17px">
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    请参考评分指导，根据您过去1周的表现，填出合适的分数：
+                                </strong>
+                                <br><br>
+                            </div>
+                            {% csrf_token %}
+                            <div class="container" >
+                                <div class="row">
+                                  <div class="col-md-2 column"></div>
+                                    <div class="col-md-8 column" style="text-align: center">
+                                        <table class="table" style="border:1px solid white">
+                                            <tbody style="font-weight:bold;">
+                                            <tr>
+                                                <td width="30%">1.情感高涨</td>
+                                                <td width="20%">0-4分</td>
+                                                <td width="30%" class='bid-floor-col'>
+                                                    <input type="number" placeholder="请输入0~4的整数" class="form-control" name="emotional_upsurge" id="emotional_upsurge" oninput="{notice(1)}"/>
+                                                    <p style="display:inline-block; font-size: x-small;color: #942a25" id="notice1"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.活动增多、精力旺盛</td>
+                                                <td>0-4分</td>
+                                                <td>
+                                                    <input type="number" placeholder="请输入0~4的整数" name="vigorous_energy" class="form-control" id="vigorous_energy" oninput="{notice(2)}"  />
+                                                    <p style="display:inline-block; font-size: x-small;color: #942a25" id="notice2"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.性欲</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="sexual_desire" class="form-control" id="sexual_desire" oninput="{notice(3)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice3"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.睡眠</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="sleep" class="form-control" id="sleep" oninput="{notice(4)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice4"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.易激惹性</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="irritability" class="form-control" id="irritability" oninput="{notice(5)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice5"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.言语（速度和量）</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="speech" class="form-control" id="speech" oninput="{notice(6)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice6"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.语言（思维障碍）</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number " placeholder="请输入0~4的整数" name="language" class="form-control" id="language" oninput="{notice(7)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice7"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.思维内容</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="thinking_content" class="form-control" id="thinking_content" oninput="{notice(8)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice8"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>9.破坏-攻击性行为</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="aggressive_behavior" class="form-control" id="aggressive_behavior" oninput="{notice(9)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice9"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10.外貌</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="appearance" class="form-control" id="appearance" oninput="{notice(10)}"  />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice10"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11.自知力</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="self_awareness" class="form-control" id="self_awareness" oninput="{notice(11)}" />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice11"></p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                              <div class="row">
+                                        <div  class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                                            <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                            id="last_scale">
+                                                 <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6">
+                                             {% csrf_token %}
+                                            <input  type="submit" class="btn btn-success text-center"  value="保存提交量表" id="ymrs_bt" >
+                                        </div>
+                                         <div class="col-md-4 col-sm-6">
+                                             <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{scale_id}}"  style="float: right">
+                                                 <u>跳过该量表</u>
+                                             </a>
+                                         </div>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script>
+       function getData(){
+           var order = "{{ order }}";
+           if(order==0) {
+               $("#last_scale").attr("style", "display:none;");
+           }
+           $("input[name='emotional_upsurge']").val({{ ymrs_answer.emotional_upsurge|processNone }})
+           $("input[name='vigorous_energy']").val({{ ymrs_answer.vigorous_energy|processNone }})
+           $("input[name='sexual_desire']").val({{ ymrs_answer.sexual_desire|processNone }})
+           $("input[name='sleep']").val({{ ymrs_answer.sleep|processNone }})
+           $("input[name='irritability']").val({{ ymrs_answer.irritability|processNone }})
+           $("input[name='speech']").val({{ ymrs_answer.speech|processNone }})
+           $("input[name='language']").val({{ ymrs_answer.language|processNone }})
+           $("input[name='thinking_content']").val({{ ymrs_answer.thinking_content|processNone }})
+           $("input[name='aggressive_behavior']").val({{ ymrs_answer.aggressive_behavior|processNone }})
+           $("input[name='appearance']").val({{ ymrs_answer.appearance|processNone }})
+           $("input[name='self_awareness']").val({{ ymrs_answer.self_awareness|processNone }})
+
+       }
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+        });
+    </script>
+    <script type="text/javascript">
+    function notice(num){
+        if(num==1){
+            val=document.getElementsByName('emotional_upsurge')[0].value;
+            if (val<0||val>4){
+                    document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else{
+                    document.getElementById('notice1').innerHTML="";}
+            }
+        }
+        else if(num==2){
+            val=document.getElementsByName('vigorous_energy')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice2').innerHTML = "";
+                }
+            }
+        }else if(num==3){
+            val=document.getElementsByName('sexual_desire')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice3').innerHTML = "";
+                }
+            }
+        }else if(num==4){
+            val=document.getElementsByName('sleep')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice4').innerHTML = "";
+                }
+            }
+        }else if(num==5){
+            val=document.getElementsByName('irritability')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～8的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice5').innerHTML = "";
+                }
+            }
+        }else if(num==6){
+            val=document.getElementsByName('speech')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～8的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice6').innerHTML = "";
+                }
+            }
+        }else if(num==7){
+           val=document.getElementsByName('language')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice7').innerHTML = "";
+                }
+            }
+        }else if(num==8){
+            val=document.getElementsByName('thinking_content')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice8').innerHTML = "";
+                }
+            }
+        }else if(num==9){
+            val=document.getElementsByName('aggressive_behavior')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice9').innerHTML = "";
+                }
+            }
+        }else if(num==10){
+            val=document.getElementsByName('appearance')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice10').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice10').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice10').innerHTML = "";
+                }
+            }
+        }else if(num==11){
+            val=document.getElementsByName('self_awareness')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice11').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice11').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice11').innerHTML = "";
+                }
+            }
+        }
+
+    }
+    </script>
+    <script type="text/javascript">
+
+    $("#sub").click(function() {
+        emotional_upsurge =$('#emotional_upsurge').val();
+        vigorous_energy = $('#vigorous_energy').val();
+        sexual_desire = $('#sexual_desire').val();
+        sleep = $('#sleep').val();
+        irritability = $('#irritability').val();
+        speech = $('#speech').val();
+        language = $('#language').val();
+        thinking_content = $('#thinking_content').val();
+        aggressive_behavior = $('#aggressive_behavior').val();
+        appearance = $('#appearance').val();
+        self_awareness = $('#self_awareness').val();
+         if(emotional_upsurge=='' ||  vigorous_energy==''|| sexual_desire=='' || sleep ==''|| irritability ==''||
+            speech ==''|| language ==''|| thinking_content =='' || aggressive_behavior=='' ||appearance==''||self_awareness=='' ) {
+         alert("请填入整数后提交！！！");
+        }else if (0 <= emotional_upsurge && emotional_upsurge <= 4 && 0 <= vigorous_energy && vigorous_energy <= 4 && 0 <= sexual_desire && sexual_desire <= 4
+            && 0 <= sleep && sleep <= 4 && 0 <= irritability && irritability <= 8 && 0 <= speech && speech <= 8 && 0 <= language && language <= 4
+            && 0 <= thinking_content && thinking_content <= 8 && 0 <= aggressive_behavior && aggressive_behavior <= 8 && 0 <= appearance
+            && appearance <= 4 && 0 <= self_awareness && self_awareness <= 4)
+        {
+            $('#sub_ymrs').submit();
+        } else{
+            alert("请填入正确的整数后提交！！！");
+        }
+
+    });
+</script>
+
+{% endblock %}

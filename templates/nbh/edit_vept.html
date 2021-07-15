@@ -1,0 +1,475 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}语音情绪感知能力测试(vept){% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+	<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    input::-webkit-input-placeholder{
+    	color: #DCDCDC;
+    	font-size: 8px;
+    }
+    .gridContainer{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 5fr 1fr;}
+	</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+		<div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >认知分数录入</a></li>
+						 <li class="active"><a href="#" >语音情绪感知能力测试(vept)</a></li>
+						 <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+        	<div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left:10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '语音情绪感知能力测试 (VEPT)' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>  
+				         
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+					<form id="sub_vept" action="/scales/add_vept?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}" method="post">
+                            {% csrf_token %}
+						<div class="row show-grid">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>语音情绪感知能力测试（vept）</strong></h4>
+                                </div>
+                            </div>
+							<div class="col-md-12 column" style="text-align:center">
+                                 <br><br>
+                                <h5>
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    请参考评分指导，根据您过去1周的表现，填出合适的分数：
+                                </h5>
+                                 <br>
+							</div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 column">
+									<div class="col-md-2"></div>
+									<div class="col-md-8">
+			                        <table class="table table-bordered">
+				                        <thead>
+					                    <tr>
+						                    <th>
+                                                编号
+						                    </th>
+                                            <th>
+                                                项目
+						                    </th>
+                                            <th>
+                                                分数
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+                                             <tr>
+						                        <td>
+							                       1
+						                        </td>
+						                        <td>
+							                        平静
+						                        </td>
+						                        <td>
+
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="calm" name="calm" class="form-control"
+														   oninput="{notice1(1)}" value="{{ vept_answer.calm }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice1"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       2
+						                        </td>
+						                        <td>
+							                        愤怒
+						                        </td>
+						                        <td>
+
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="angry" name="angry" class="form-control"
+														   oninput="{notice1(2)}" value="{{ vept_answer.angry }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice2"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       3
+						                        </td>
+						                        <td>
+							                        悲伤
+						                        </td>
+						                        <td>
+
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="sad" name="sad" class="form-control"
+														   oninput="{notice1(3)}" value="{{ vept_answer.sad }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice3"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       4
+						                        </td>
+						                        <td>
+							                        恐惧
+						                        </td>
+						                        <td>
+
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="fear" name="fear" class="form-control"
+														   oninput="{notice1(4)}" value="{{ vept_answer.fear }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice4"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       5
+						                        </td>
+						                        <td>
+							                        惊奇
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="wonder" name="wonder" class="form-control"
+														   oninput="{notice1(5)}" value="{{ vept_answer.wonder }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice5"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       6
+						                        </td>
+						                        <td>
+							                        讽刺
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="satire" name="satire" class="form-control"
+														   oninput="{notice1(6)}" value="{{ vept_answer.satire }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice6"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       7
+						                        </td>
+						                        <td>
+							                        厌恶
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="disgusting" name="disgusting" class="form-control"
+														   oninput="{notice1(7)}" value="{{ vept_answer.disgusting }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice7"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td colspan="2" align="center">
+
+							                       质控：
+						                        </td>
+						                        <td class='bid-floor-col'>
+													<div class='gridContainer'>
+														<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="quality_control" name="quality_control" min="0.0" step="0.1" class="form-control" oninput="{notice1(8)}" value="{{ vept_answer.quality_control }}" disabled required /> %
+														<p class="error" style="display:inline-block; font-size:x-small; color:#8B0000" id="notice8"></p>
+
+													</div>
+
+						                        </td>
+					                        </tr>
+					                        <tr>
+												 <td colspan="2" align="center">
+													 总分:
+												 </td>
+												 <td>
+													 <input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="total_score" name="total_score"  class="form-control"
+														   oninput="{notice1(9)}" value="{{ vept_answer.total_score }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice9"></p>
+												 </td>
+											 </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+<!--                            <div class="row">-->
+<!--                                 <div class="form-inline" style="float: right;margin-right: 10px;">-->
+<!--                                     <strong>总分：<input type="number" class="form-control" name="total_score" style="width:100px;"/>分</strong>-->
+<!--                                 </div>-->
+<!--                            </div>-->
+                            <br><br>
+						        <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="vept_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+
+                                <div class="row" id="bt_group">
+                                        <div  class="col-md-4 col-sm-6 text-center"  >
+                                           <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                               <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                           </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                        </div>
+
+                                </div>
+                        </div>
+                    </div>
+                    </form>
+				  </div>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+<script>
+       function getData(){
+        var order = "{{ order  }}";
+        if(order==0){
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+       }
+</script>
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+	cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+});
+
+function notice1(num){
+	if(num==1){
+		a0=document.getElementsByName('calm')[0].value;
+		if(a0<0){
+			document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a0) != parseFloat(a0)){
+				document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice1').innerHTML="";
+			}
+		}
+	}
+	else if(num==2){
+		a1=document.getElementsByName('angry')[0].value;
+		if(a1<0){
+			document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a1) != parseFloat(a1)){
+				document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice2').innerHTML="";
+			}
+		}
+	}
+	else if(num==3){
+		a2=document.getElementsByName('sad')[0].value;
+		if(a2<0){
+			document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a2) != parseFloat(a2)){
+				document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice3').innerHTML="";
+			}
+		}
+	}
+	else if(num==4){
+		a3=document.getElementsByName('fear')[0].value;
+		if(a3<0){
+			document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a3) != parseFloat(a3)){
+				document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice4').innerHTML="";
+			}
+		}
+	}
+	else if(num==5){
+		a4=document.getElementsByName('wonder')[0].value;
+		if(a4<0){
+			document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a4) != parseFloat(a4)){
+				document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice5').innerHTML="";
+			}
+		}
+	}
+	else if(num==6){
+		a5=document.getElementsByName('satire')[0].value;
+		if(a5<0){
+			document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a5) != parseFloat(a5)){
+				document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice6').innerHTML="";
+			}
+		}
+	}
+	else if(num==7){
+		a6=document.getElementsByName('disgusting')[0].value;
+		if(a6<0){
+			document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a6) != parseFloat(a6)){
+				document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice7').innerHTML="";
+			}
+		}
+	}
+	else if(num==8){
+		a7=document.getElementsByName('quality_control')[0].value;
+		if(a7<0 || a7>100){
+			document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入0-100百分比";
+		}else{
+			document.getElementById('notice8').innerHTML="";
+		}
+	}
+	else if(num==9){
+		a8=document.getElementsByName('total_score')[0].value;
+		if(a8<0){
+			document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入大于等于0的整数";
+		}else{
+			if(parseInt(a8) != parseFloat(a8)){
+				document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+			}else{
+				document.getElementById('notice9').innerHTML="";
+			}
+		}
+	}
+}
+
+$("#sub").click(function(){
+	r1 = $('#calm').val();
+	a1 = (parseInt(r1) == parseFloat(r1));
+	r2= $('#angry').val();
+	a2 = (parseInt(r2) == parseFloat(r2));
+	r3 = $('#sad').val();
+	a3 = (parseInt(r3) == parseFloat(r3));
+	r4 = $('#fear').val();
+	a4 = (parseInt(r4) == parseFloat(r4));
+	r5 = $('#wonder').val();
+	a5 = (parseInt(r5) == parseFloat(r5));
+	r6 = $('#satire').val();
+	a6 = (parseInt(r6) == parseFloat(r6));
+	r7 = $('#disgusting').val();
+	a7 = (parseInt(r7) == parseFloat(r7));
+	r8 = $('#quality_control').val();
+	r9 = $('#total_score').val();
+	a9 = (parseInt(r9) == parseFloat(r9));
+
+
+	if (r1>=0 && a1 && r2>=0 && a2 && r3>=0 && a3 && r4>=0 && a4 && r5>=0 && a5 && r6>=0 && a6 && r7>=0 && a7 && r8>=0 && r8<=100 && r9>=0 && a9){
+		$('#sub_vept').submit();
+	}else if(r1=='' || r2=='' || r3=='' || r4=='' || r5=='' || r6=='' || r7=='' || r8=='' || r9==''){
+		alert("请填写完毕后提交！");
+		return false;
+	}else{
+		alert("请输入正确数字后提交！");
+		return false;
+
+	}
+});
+$("input[name='calm']").eq({{ vept_answer.calm }}).attr("checked","checked");
+        $("input[name='angry']").eq({{ vept_answer.angry }}).attr("checked","checked");
+        $("input[name='sad']").eq({{ vept_answer.sad }}).attr("checked","checked");
+        $("input[name='fear']").eq({{ vept_answer.fear }}).attr("checked","checked");
+        $("input[name='wonder']").eq({{ vept_answer.wonder }}).attr("checked","checked");
+        $("input[name='satire']").eq({{ vept_answer.satire }}).attr("checked","checked");
+        $("input[name='disgusting']").eq({{ vept_answer.disgusting }}).attr("checked","checked");
+        $("input[name='quality_control']").eq({{ vept_answer.quality_control }}).attr("checked","checked");
+        $("input[name='total_score']").eq({{ vept_answer.total_score }}).attr("checked","checked");
+
+ function remove_disabled(){
+            $("input[name='calm']").removeAttr("disabled","disabled");
+            $("input[name='angry']").removeAttr("disabled","disabled");
+            $("input[name='sad']").removeAttr("disabled","disabled");
+            $("input[name='fear']").removeAttr("disabled","disabled");
+            $("input[name='wonder']").removeAttr("disabled","disabled");
+            $("input[name='satire']").removeAttr("disabled","disabled");
+            $("input[name='disgusting']").removeAttr("disabled","disabled");
+            $("input[name='quality_control']").removeAttr("disabled","disabled");
+            $("input[name='total_score']").removeAttr("disabled","disabled");
+            $("#vept_bt").attr("style", "display:block;");
+       		$("#bt_group").attr("style", "display:none;");
+
+        }
+</script>
+{% endblock %}

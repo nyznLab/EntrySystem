@@ -1,0 +1,1022 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}被试管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href={% static '/css/tinyselect.css' %}>
+    <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />
+
+    <style>
+        .sel_beauty {
+            background: #fafdfe;
+            height: 33px;
+            width: 180px;
+            line-height: 28px;
+            border: 1px solid #9bc0dd;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            width: 158px;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!--弹出模态框 ，完成病人的预约工作 -->
+    <div class="modal fade" id="modal_container_subjectBaseInfo_build" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/patients/add_patient_baseinfo" method="post" name="subjectEstablishForm">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 class="modal-title" id="myModalLabel">
+                            新建被试：添加基本信息
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-2 control-label" for="name" style="text-align: right">编号：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm " name="patient_id"
+                                       required="required"/>
+                            </div>
+
+
+                            <label class="col-sm-2 control-label" style="text-align: right" for="sex"> 扫描日期：</label>
+                            <div class="col-sm-4">
+                                <input type="date" class=" sel_beauty form-control input-sm" name="scan_date"
+                                       required="required"/>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-2 control-label" for="name" style="text-align: right">姓名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class=" sel_beauty form-control input-sm " name="name"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right" for="sex">性别：</label>
+                            <div class="col-sm-4">
+                                <input type="radio" class=" flat" name="sex" value=0 required/>
+                                <span style="margin-right: 10px;"></span>男
+                                <span style="margin-right: 20px;"></span>
+                                <input type="radio" class="flat" name="sex" value=1><span
+                                    style="margin-right: 10px;"></span>女
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="birth_date"
+                                   style="text-align: right">出生日期：</label>
+                            <div id="birth_date" class="col-sm-4">
+                                <input type="date" class="sel_beauty form-control input-sm" name="birth_date"
+                                       required="required"/>
+                            </div>
+
+                            <label class="col-sm-2 control-label" for="nation" style="text-align: right">民族：</label>
+                            <div class="col-sm-4">
+                                <select tabindex="-1" class="sel_beauty select2_single form-control col-md-4"
+                                        name='nation' style="font-size: 10px">
+                                    <option></option>
+                                    {% for nation in nations %}
+                                        <option value={{ nation.ethnicity_name }}>{{ nation.ethnicity_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-2 control-label" for="subject_number"
+                                   style="text-align: right">诊断情况<span class="required">:</span></label>
+                            <input type="hidden" value="{{ patient_detail.diagnosis }}" id="diagnosis">
+                            <div class="col-md-4">
+                                <select tabindex="-1" style="font-size: 10px" name="diagnosis" id="diagnosis"
+                                        class="sel_beauty select2_single form-control col-md-4"
+                                        onchange="judge_diagnosis(this)">
+                                    <option value=0>未诊断</option>
+                                    <option value=1>健康者</option>
+                                    <option value=2>重性抑郁障碍</option>
+                                    <option value=3>焦虑障碍</option>
+                                    <option value=4>双相障碍</option>
+                                    <option value=5>精神分裂症</option>
+                                    <option value=6>强迫症</option>
+                                    <option value=7>高危遗传</option>
+                                    <option value=8>临床高危</option>
+                                    <option value=9>抑郁症状</option>
+                                    <option value=99>其他诊断</option>
+                                </select>
+                            </div>
+                            <div id="other_diagnosis_div" style="display: none">
+
+                                <label class="col-sm-2 control-label" for="subject_number" style="text-align: right">其他诊断<span
+                                        class="required">:</span></label>
+                                <div class="col-md-4">
+                                    <input type="text" class="sel_beauty form-control input-sm" id="other_diagnosis"
+                                           name="other_diagnosis" class="sel_beauty">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row" id="ghr_div"
+                             style="display: none;margin:12px;margin-bottom:12px; border:1.5px solid cadetblue;">
+                            <div class="col-md-4">
+                                <label class="" for="subject_number"
+                                       style="text-align: right  ;margin-top: 10px ">患者编号<span class="required">:</span></label>
+                                <select tabindex="-1"
+                                        style="font-size: 5px;  margin-top: 5px ;margin-bottom: 5px ;max-height: 5px"
+                                        class="sel_beauty" name="kin_patient_id_0" id="singleSelect">
+                                    <option value=0>无</option>
+                                    {% for obj in all_patients %}
+                                        <option value="{{ obj.id }}">{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="col-md-4">
+                                <label class="" for="subject_number"
+                                       style="text-align: right;margin-top: 10px ">患病类型<span
+                                        class="required">:</span></label>
+                                <select tabindex="-1" style=" font-size: 5px; margin-top: 10px ;margin-bottom: 10px "
+                                        name="diagnosis_0" id="ghr_diagnosis"
+                                        class="sel_beauty select2_single form-control col-md-4" required>
+                                    <option value=2>重性抑郁障碍</option>
+                                    <option value=3>焦虑障碍</option>
+                                    <option value=4>双相障碍</option>
+                                    <option value=5>精神分裂症</option>
+                                    <option value=6>强迫症</option>
+                                    <option value=8>临床高危</option>
+                                    <option value=9>抑郁症状</option>
+                                    <option value=99>其他诊断</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="" for="subject_number"
+                                       style="text-align: right;margin-top: 10px">亲属关系<span
+                                        class="required">:</span></label>
+                                <select tabindex="-1" style=" font-size: 5px; margin-bottom: 10px ; margin-top: 10px "
+                                        name="kinship_0" id="ghr_kinship"
+                                        class="sel_beauty select2_single form-control col-md-4" required>
+                                    <option value=0>父亲</option>
+                                    <option value=1>母亲</option>
+                                    <option value=2>儿子</option>
+                                    <option value=3>女儿</option>
+                                    <option value=4>哥哥</option>
+                                    <option value=5>弟弟</option>
+                                    <option value=6>姐姐</option>
+                                    <option value=7>妹妹</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2" style="text-align: right;margin-bottom: 10px; ">
+                                <p>
+                                    <input type="button" value="+" onClick="addLine()"
+                                           style="margin-bottom: 10px; background-color: white ; border:1px solid;margin-top: 10px"></input>
+                                </p>
+                            </div>
+
+                            <p id="ghr_add"></p>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="text-center">
+                                <input type="submit" class="btn btn-success" onclick="" value="提交"/>
+                                <a href="manage_patients.html">
+                                    <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="">取消</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框结束 -->
+
+    <!--弹出模态框 ，查找 -->
+    <div class="modal fade" id="modal_container_search" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="myModalLabel">
+                        查找被试信息
+                    </h5>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row" style="margin-bottom: 10px;">
+
+                        <label class="col-sm-2 control-label" for="name" style="text-align: right">编号：</label>
+                        <div class="col-sm-4">
+                            <input type="number" class=" sel_beauty form-control input-sm " name="patient_id"
+                                   id="patient_id_search"/>
+                            <input type="hidden" name="patient_id_cache"/>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px;">
+                        <label class="col-sm-2 control-label" for="name" style="text-align: right">姓名：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class=" sel_beauty form-control input-sm " name="name" id="name_search"/>
+                            <input type="hidden" name="name_cache"/>
+                        </div>
+                        <label class="col-sm-2 control-label" style="text-align: right" for="sex">性别：</label>
+                        <div class="col-sm-4">
+                            <input type="radio" class="flat" name="sex_search" value=0 id="sex_search"/>
+                            <span style="margin-right: 10px;"></span>男<span style="margin-right: 20px;"></span>
+                            <input type="radio" class="flat" name="sex_search" value=1 id="sex_search"/>
+                            <span style="margin-right: 10px;"></span>女
+                            <input type="hidden" name="sex_cache"/>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <label class="col-sm-2 control-label" for="subject_number"
+                               style="text-align: right">诊断情况<span class="required">:</span></label>
+                        <input type="hidden" value="{{ patient_detail.diagnosis }}" id="diagnosis1">
+                        <div class="col-md-4">
+                            <select tabindex="-1" style="font-size: 10px" name="diagnosis1" id="diagnosis_search"
+                                    class="sel_beauty select2_single form-control col-md-4">
+                                <option value="">所有</option>
+                                <option value=0>未诊断</option>
+                                <option value=1>健康者</option>
+                                <option value=2>重性抑郁障碍</option>
+                                <option value=3>焦虑障碍</option>
+                                <option value=4>双相障碍</option>
+                                <option value=5>精神分裂症</option>
+                                <option value=6>强迫症</option>
+                                <option value=7>高危遗传</option>
+                                <option value=8>临床高危</option>
+                                <option value=9>抑郁症状</option>
+                                <option value=99>其他诊断</option>
+                            </select>
+
+                            <input type="hidden" name="diagnosis_cache"/>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="text-center">
+                            <button class="btn btn-success" type="button"  data-dismiss="modal" onclick="search_patients('1')">查找</button>
+                            <button class="btn btn-warning" type="button"  onclick="reset()">重置</button>
+                            <button class="btn btn-danger" type="button"  data-dismiss="modal" onclick="reset()">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框结束 -->
+
+    <div id="patients_data">
+     <!-- 病人删除确认模态框 开始 -->
+        <div class="modal fade" id="delete_a_patient_modal" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="form-group" align="center">
+                            <p id="del_a_patient_alert_message"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-12">
+                            <label class="control-label col-md-4 col-sm-6 col-xs-6 text-right" for="sex">图形验证码：<span
+                                                class="required"></span></label>
+                            <div class="col-md-6">
+                                <form id="form1" runat="server">
+                                    <div class="input-group" id="box2">
+                                        <input type="tel" class="form-control" id="verification_input" oninput="verification()" placeholder="请输入图形验证码"/>
+                                        <span><canvas id="canvas" width="120" height="45"></canvas></span>
+                                        <a href="" id="changeImg">看不清，换一张</a></span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <div class="col-md-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                <p id="verification_result"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="text-center">
+                            <a id="delete_a_patient_href" onclick='delete_a_patient()'>
+                                <button class="btn btn-success" id="confirm_del_a_patient_button">确定</button>
+                            </a>
+                            <a href="">
+                                <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  一个病人删除确认模态框 结束 -->
+
+    <!-- 提示没有权限删除模态框 开始 -->
+        <div class="modal fade" id="del_a_patient_permission_alert_modal" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group" align="center">
+                            <p id="del_a_patient_permission_alert_message"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="text-center">
+                            <a href="">
+                                <button class="btn btn-danger" disabled="disabled" data-dismiss="modal">确定</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 提示没有权限删除模态框 结束 -->
+
+    <!-- 删除确认开始 -->
+        <div class="modal fade" id="delete_patient_modal" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-group" align="center">
+                                <p id="del_alert_message"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="text-center">
+
+                                <a href="" id="delete_patient_href">
+                                    <button class="btn btn-success">确定</button>
+                                </a>
+                                <a href="">
+                                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 删除确认结束 -->
+
+    <!-- 添加复扫模态框 开始 -->
+        <div class="modal fade" id="add_followup_modal" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="#" name="add_followup_form" method="post">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h5 class="modal-title" id="myModalLabel">
+                                添加复扫
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row" style="margin-bottom: 10px;">
+
+                                <label class="col-sm-2 control-label" for="name" style="text-align: right">编号：</label>
+                                <p class="col-md-4" id="followup_patient_id_message"></p>
+
+                                <label class="col-sm-2 control-label" style="text-align: right" for="sex">性别：</label>
+                                <p class="col-sm-4" id="followup_sex_message">></p>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="name" style="text-align: right">姓名：</label>
+                                <p class="col-md-4" id="followup_name_message"></p>
+                                <label class="col-sm-2 control-label" for="nation" style="text-align: right">民族：</label>
+                                <p class="col-sm-4" id="followup_nation_message"></p>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="birth_date"
+                                       style="text-align: right">出生日期：</label>
+                                <p class="col-sm-4" id="followup_birth_date_message"> </p>
+
+                                <label class="col-sm-2 control-label" for="birth_date"
+                                       style="text-align: right">扫描日期：</label>
+                                <div class="col-sm-4">
+                                    <input type="date" class=" sel_beauty form-control input-sm " name="scan_date"
+                                           required="required"/>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="birth_date"
+                                       style="text-align: right">诊断情况：</label>
+                                <p class="col-md-4" id="followup_diagnosis_message"></p>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" onclick="" value="提交"/>
+                                    <a href="#">
+                                        <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="">取消</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    <!-- 添加复扫模态框模态框 结束-->
+
+    <!-- 添加住院模态框 开始 -->
+        <div class="modal fade" id="add_inpatient_modal" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="#" method="post" name="add_inpatient_form">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h5 class="modal-title" id="myModalLabel">
+                                添加住院
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" style="margin-bottom: 10px;">
+
+                                <label class="col-sm-2 control-label" for="department"
+                                       style="text-align: right">科室：</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="sel_beauty form-control input-sm" id="department"
+                                           name="department" class="sel_beauty">
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="inpatient_area"
+                                       style="text-align: right">病区：</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="sel_beauty form-control input-sm" id="inpatient_area"
+                                           name="inpatient_area" class="sel_beauty">
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="bed_number"
+                                       style="text-align: right">床号：</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="sel_beauty form-control input-sm" id="bed_number"
+                                           name="bed_number" class="sel_beauty">
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="inpatient_number" style="text-align: right">住院号：</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="sel_beauty form-control input-sm" id="inpatient_number"
+                                           name="inpatient_number" class="sel_beauty">
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-sm-2 control-label" for="in_date"
+                                       style="text-align: right">入院日期：</label>
+                                <div class="col-sm-4">
+                                    <input type="date" class=" sel_beauty form-control input-sm " name="in_date"
+                                           required="required"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success" onclick="" value="提交"/>
+                                    <a href="#">
+                                        <button class="btn btn-danger" type="button" data-dismiss="modal" onclick="">取消</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <!-- 添加住院模态 结束-->
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="/patients/get_patient_baseinfo">被试信息</a></li>
+                        <li class="active"><a href="#">被试管理与录入</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel">
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <a href="#modal_container_subjectBaseInfo_build" data-toggle="modal">
+                            <button class="btn btn-success btn-sm"><span class="fa fa-plus"></span><span>&nbsp;&nbsp;新建被试</span>
+                            </button>
+                        </a>
+                        <a href="#modal_container_search" data-toggle="modal">
+                            <button class="btn btn-warning btn-sm"><span class="fa fa-search"></span><span>&nbsp;&nbsp;查找</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="row" style="border-top: solid #ACC0D8 1px;margin:5px 0px"></div>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <table id="" class="table table-striped table-hover" style="font-size: 13px;cellspacing:15px;">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>出生日期</th>
+                                <th>民族</th>
+                                <th>诊断</th>
+                                <th>在院状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for patient in patients %}
+                                {% if patient.id|divisibleby:"2" %}
+                                    <tr class="success">
+                                        {% else %}
+                                    <tr>
+                                {% endif %}
+                            <td>
+                                {{ patient.id|calciulateId }}
+                            </td>
+                            <td>
+                                {{ patient.name }}
+                            </td>
+                            <td>
+                                {% if patient.sex == 0 %}
+                                    男
+                                {% else %}
+                                    女
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ patient.birth_date }}
+                            </td>
+                            <td>
+                                {{ patient.nation }}
+                            </td>
+                            <td>
+                                {{ patient|get_diagnosis_by_object }}
+                            </td>
+                            <td>
+                                {{ patient.get_inpatient_state_display }}
+                            </td>
+                            <td>
+
+                                <a href="/patients/get_patient_detail?patient_id={{ patient.id }}" style="color:white">
+                                    <button class="btn btn-success btn-xs" style="margin:0px;color:white">信息查询</button>
+                                </a>
+                                <a href="javascript:void(0);"
+                                   onclick="add_followup_before('{{ patient.id }}','{{ patient.sex }}','{{ patient.name }}',
+                                           '{{ patient.nation }}','{{ patient.birth_date }}','{{ patient|get_diagnosis_by_object }}')"
+                                   style="color:white">
+                                    <button class="btn btn-info btn-xs" style="margin:0px;color:white">添加复扫</button>
+                                </a>
+                                {% if patient.inpatient_state != 1 %}
+                                    <a href="javascript:void(0);"
+                                       onclick="add_inpatient_before('{{ patient.id}}')"
+                                       style="color:white">
+                                        <button class="btn btn-primary btn-xs" style="margin:0px;color:white">
+                                            添加住院
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    <a href="javascript:void(0);" style="color:white">
+                                        <button class="btn btn-primary btn-xs" style="margin:0px;color:white" disabled>
+                                            &nbsp;已&nbsp;住&nbsp;院&nbsp;
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                <a href="javascript:void(0);"  onclick="del_patient_before('{{ patient.id}}','{{ patient.name }}'
+                                        ,'{{ doctor_id }}'
+                                        {#,'{{ patient|get_item:'doctor__id' }}'#}
+                                        )" style="color:white">
+                                    <button class="btn btn-warning btn-xs" style="margin:0px;color:white">删除</button>
+                                </a>
+                            </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    {% if paginator.has_prev_page %}
+                                        <a href="javascript:void(0);"
+                                           onclick="get_patient_by_page({{ paginator.first_page }})"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">首页</span>
+                                        </a>
+                                    {% endif %}
+                                </li>
+
+                                <li>
+                                    {% if paginator.has_prev_page %}
+                                        <a href="javascript:void(0);"
+                                           onclick="get_patient_by_page({{ paginator.prev_page }})"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    {% endif %}
+                                </li>
+
+                                {% for pagenum in paginator.pagetag_range %}
+                                    {% if paginator.pagetag_current == pagenum %}
+                                        <li class="active">
+                                            <a href="javascript:void(0)"
+                                               onclick="get_patient_by_page({{ pagenum }})">{{ pagenum }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="javascript:void(0)"
+                                               onclick="get_patient_by_page({{ pagenum }})">{{ pagenum }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <li>
+                                    {% if paginator.has_next_page %}
+                                        <a href="javascript:void(0)"
+                                           onclick="get_patient_by_page({{ paginator.next_page }})"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    {% endif %}
+                                </li>
+
+                                <li>
+                                    {% if paginator.has_next_page %}
+                                        <a href="javascript:void(0);"
+                                           onclick="get_patient_by_page({{ paginator.last_page }})"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">尾页</span>
+                                        </a>
+                                    {% endif %}
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static '/js/layerJquery.js' %}"></script>
+    <script src="{% static '/js/layer.js' %}"></script>
+
+    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+    <script type="text/javascript" language="JavaScript">
+        function judge_diagnosis(obj) {
+            if (obj.options[obj.selectedIndex].value == 99) {
+                document.getElementById("other_diagnosis_div").style.display = "";
+                document.getElementById("ghr_div").style.display = "none";
+                document.getElementById("singleSelect").disabled = "true";
+                document.getElementById("ghr_diagnosis").disabled = "true";
+                document.getElementById("ghr_kinship").disabled = "true";
+            }
+            else if (obj.options[obj.selectedIndex].value == 7) {
+                document.getElementById("other_diagnosis_div").style.display = "none";
+                document.getElementById("ghr_div").style.display = "";
+            } else {
+                document.getElementById("ghr_div").style.display = "none";
+                document.getElementById("other_diagnosis_div").style.display = "none";
+                document.getElementById("singleSelect").disabled = "true";
+                document.getElementById("ghr_diagnosis").disabled = "true";
+                document.getElementById("ghr_kinship").disabled = "true";
+            }
+        }
+        {#查找病人#}
+
+        function search_patients(page_num) {
+            {#    需要缓存查询条件,用于分页#}
+            var patient_id = $("#patient_id_search").val();
+            var name = $("#name_search").val();
+            var diagnosis = $("#diagnosis_search").val();
+            var sex = $("input[id='sex_search']:checked").val();
+            $("input[name='patient_id_cache']").val(patient_id);
+            $("input[name='name_cache']").val(name);
+            $("input[name='diagnosis_cache']").val(diagnosis);
+            $("input[name='sex_cache']").val(sex);
+
+            $("#patients_data").load("/patients/get_patient_by_search #patients_data", {
+                "patient_id": patient_id,
+                "name": name,
+                "diagnosis": diagnosis,
+                "sex": sex,
+                "page": page_num,
+                'csrfmiddlewaretoken': $("[name = 'csrfmiddlewaretoken']").val()
+            })
+        }
+
+        function get_patient_by_page(page_num) {
+            $("#patients_data").load("/patients/get_patient_by_search #patients_data", {
+                "patient_id": $("input[name='patient_id_cache']").val(),
+                "name": $("input[name='name_cache']").val(),
+                "diagnosis": $("input[name='diagnosis_cache']").val(),
+                "sex": $("input[name='sex_cache']").val(),
+                "page": page_num,
+                'csrfmiddlewaretoken': $("[name = 'csrfmiddlewaretoken']").val()
+            })
+        }
+
+        function reset() {
+            $("#patient_id_search").val('');
+            $("#name_search").val('');
+            $("#diagnosis_search").val('');
+            $("input[type='radio']").attr("checked", false);
+        }
+
+
+
+        function add_inpatient_before(patient_id){
+            $('#add_inpatient_modal').modal("show");
+            document.add_inpatient_form.action="/inpatients/add_inpatient_info?patient_id="+patient_id;
+        }
+
+        function add_followup_before(patient_id,sex,name,nation,birth_date,diagnosis){
+            $('#add_followup_modal').modal("show");
+            document.getElementById("followup_patient_id_message").innerHTML = 'NN_'+zeropadding(patient_id,8);
+
+            if(sex==1){
+                sex='女';
+            }else{
+                sex='男';
+            }
+            document.getElementById("followup_sex_message").innerHTML = sex;
+            document.getElementById("followup_name_message").innerHTML = name;
+            document.getElementById("followup_nation_message").innerHTML = nation;
+            document.getElementById("followup_birth_date_message").innerHTML = birth_date;
+            document.getElementById("followup_diagnosis_message").innerHTML = diagnosis;
+            document.add_followup_form.action="/patients/add_patient_followup?patient_id="+patient_id;
+        }
+
+        function zeropadding(num, length) {
+            //这里用slice和substr均可
+            return (Array(length).join("0") + num).slice(-length);
+        }
+
+
+        /*获取生成id
+        这一段千万千万不能删呀！！！！！！！！！
+        千万千万不能删呀！！！！！！！！！
+        千万千万不能删呀！！！！！！！！！
+        千万千万不能删呀！！！！！！！！！
+        千万千万不能删呀！！！！！！！！！
+        $('#modal_container_subjectBaseInfo_build').on('show.bs.modal', function (e) {
+            $.ajax({
+                url: '/patients/get_generateId_and_nation',
+                type: 'POST',
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    $('#modal_container_subjectBaseInfo_build #standard_id').val(result.standard_id);
+                },
+                error: function () {
+                    // alert('出错了');
+                }
+            });
+        })
+        */
+    </script>
+    {% comment %}填充0{% endcomment %}
+
+    <script>
+        var patientid = null;
+        function del_patient_before(patient_id,patient_name
+            ,doctorid
+            {#,p_doctorid#}
+        ){
+            patientid=patient_id;
+            {#if (doctorid == p_doctorid) {#}
+                 $('#delete_a_patient_modal').modal("show");
+                 document.getElementById("del_alert_message").innerHTML = "确定删除"+patient_id+"号患者"+patient_name+"吗？";
+            {# } #}
+            {#else {#}
+            {#    $('#del_a_patient_permission_alert_modal').modal("show");#}
+            {# } #}
+         }
+        function delete_a_patient(){
+            $("#delete_a_patient_href").attr("href","/patients/del_patient?patient_id="+patientid);
+         }
+    </script>
+
+    <script>
+        var i = 1;
+        function addLine() {
+
+            var txt1 = document.createElement("p");
+            var s = ""
+            s += "<div class=col-md-4 style=margin: 10px >"
+
+            s += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty  form-control col-md-4 id=singleSelect" + i + " name=kin_patient_id_" + i + " >"
+            s += " <option value= 0 >无</option>"
+            s += " {% for obj in all_patients %}"
+                s += "<option value ={{ obj.id }}>{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>"
+
+                s+="{% endfor %}"
+            s += " </select>"
+            s += "</div>"
+            txt1.innerHTML = s;
+            var txt2 = document.createElement("p");
+            var str = "";
+            str += "<div class=col-md-4 style=margin: 10px>"
+            str += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty select2_single form-control col-md-4 required id=ghr_diagnosis" + i + " name=diagnosis_" + i + ">"
+            str += "<option  value=2>" + '重性抑郁障碍';
+            str += "<option  value=3>" + '焦虑障碍';
+            str += "<option  value=4>" + '双相障碍';
+            str += "<option  value=5>" + '精神分裂症';
+            str += "<option  value=6>" + '强迫症';
+            str += "<option  value=8>" + '临床高危';
+            str += "<option  value=9>" + '抑郁症状';
+            str += "<option  value=99>" + '其他诊断';
+            str += "</select>";
+            str += "</div>";
+            txt2.innerHTML = str;
+            var txt3 = document.createElement("p");
+            var str2 = "";
+            str2 += "<div class=col-md-4 style=margin: 10px>"
+            str2 += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty select2_single form-control col-md-4 required id=ghr_kinship" + i + " name=kinship_" + i + ">"
+            str2 += "<option  value=0>" + '父亲';
+            str2 += "<option  value=1>" + '母亲';
+            str2 += "<option  value=2>" + '儿子';
+            str2 += "<option  value=3>" + '女儿';
+            str2 += "<option  value=4>" + '哥哥';
+            str2 += "<option  value=5>" + '弟弟';
+            str2 += "<option  value=6>" + '姐姐';
+            str2 += "<option  value=7>" + '妹妹';
+            str2 += "</select>";
+            str2 += "</div>";
+            txt3.innerHTML = str2;
+            $("#ghr_add").append(txt1, txt2, txt3);
+            $("#singleSelect" + i + "").select2();
+            $("#ghr_diagnosis" + i + "").select2();
+            $("#ghr_kinship" + i + "").select2();
+            i++;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {//加载页面时执行select2
+            $('#singleSelect').select2();
+            $('#ghr_diagnosis').select2();
+            $('#ghr_kinship').select2();
+        });
+    </script>
+
+    <script>
+        {#验证码图片的生成#}
+        {#生成一个随机数#}
+        var verification_code = "";
+
+        function randomNum(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        {#生成一个随机色#}
+        function randomColor(min, max) {
+            var r = randomNum(min, max);
+            var g = randomNum(min, max);
+            var b = randomNum(min, max);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+
+        drawPic();
+        {#切换验证码图片#}
+        document.getElementById("changeImg").onclick = function (e) {
+            e.preventDefault();
+            drawPic();
+        }
+
+        {#绘制验证码图片#}
+        function drawPic() {
+            var canvas = document.getElementById("canvas");
+            var width = canvas.width;
+            var height = canvas.height;
+            var ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'bottom';
+
+            {#绘制背景色#}
+            ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
+            ctx.fillRect(0, 0, width, height);
+            {#绘制文字#}
+            var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
+            for (var i = 0; i < 4; i++) {
+                var txt = str[randomNum(0, str.length)];
+                verification_code=verification_code+txt;
+                ctx.fillStyle = randomColor(50, 160);  //随机生成字体颜色
+                ctx.font = randomNum(30, 40) + 'px SimHei'; //随机生成字体大小
+                var x = 10 + i * 25;
+                var y = randomNum(25, 45);
+                var deg = randomNum(-20, 20);
+                //修改坐标原点和旋转角度
+                ctx.translate(x, y);
+                ctx.rotate(deg * Math.PI / 180);
+                ctx.fillText(txt, 0, 0);
+                //恢复坐标原点和旋转角度
+                ctx.rotate(-deg * Math.PI / 180);
+                ctx.translate(-x, -y);
+            }
+            {#绘制干扰线#}
+            for (var i = 0; i < 5; i++) {
+                ctx.strokeStyle = randomColor(40, 180);
+                ctx.beginPath();
+                ctx.moveTo(randomNum(0, width), randomNum(0, height));
+                ctx.lineTo(randomNum(0, width), randomNum(0, height));
+                ctx.stroke();
+            }
+            {#绘制干扰点#}
+            for (var i = 0; i < 50; i++) {
+                ctx.fillStyle = randomColor(0, 255);
+                ctx.beginPath();
+                ctx.arc(randomNum(0, width), randomNum(0, height), 1, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+    </script>
+    <script>
+            function verification(){
+            var value_verification_input=document.getElementById("verification_input").value;
+            {#var value_verification_input=document.querySelector("#verification_input");#}
+            {#value_verification_input.addEventListener("keyup", function(e) {#}
+                if (verification_code == value_verification_input) {
+                    document.getElementById("verification_result").innerHTML = "验证码输入正确";
+                    $('#confirm_del_a_patient_button').prop('disabled', false);
+                } else {
+                    document.getElementById("verification_result").innerHTML = "验证码输入错误";
+                    $('#confirm_del_a_patient_button').prop('disabled', true);
+                }
+            {# }) #}
+             }
+    </script>
+
+
+
+
+
+{% endblock %}

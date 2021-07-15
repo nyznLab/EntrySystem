@@ -1,0 +1,347 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}学习情况{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+    <style>
+  .row input.labelauty + label{
+    margin-bottom:0px;
+    width:150px;
+	  display:inline-block;
+	  font-size: 13px;
+    padding: 3px;
+    text-align: center;
+	  background-color: #efefef;
+	  color: #b3b3b3;
+	  cursor: pointer;
+	  border-radius: 3px 3px 3px 3px;
+	  -moz-border-radius: 3px 3px 3px 3px;
+	  -webkit-border-radius: 3px 3px 3px 3px;
+  }
+</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+        <div class="container">
+        <div class="row show-grid">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                   <li ><a href="#">量表评估</a></li>
+                   <li><a href="#" >个人详细信息录入</a></li>
+                   <li class="active"><a href="#" >家庭信息</a></li>
+                   <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+              </ul>
+          </div>
+        </div>
+        </div> 
+        <div class="dashboard_graph x_panel" style="height:80%;">
+          <div id="wrapper">
+            <div id = "left-side" style="height: 100%;" class="col-md-2">
+              <ul class="scales_progress">
+                {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '一般资料－学习情况' %}
+                            <li class="step doing  ">
+                                <p>一般资料-{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+              </ul>
+            </div>   
+            <div id="right-side" class="col-md-10">
+              <div id="first" class="active">
+                  <form name="studyform" action="/scales/add_study?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}" method="post" onSubmit="return myCheck(this)">
+                                <div class="x_content">
+                                     <div class="x_title">
+                    <div class="clearfix"></div>
+                    <h2>学习情况 <small>Study</small></h2>
+                    <div class="clearfix"></div>
+                  </div>
+                    <br>
+<!--                    最后一次大考-->
+                    <div class="form-group row">
+                      <label class="control-label col-md-4 col-sm-6 col-md-offset-3">最近一次大考(期中或期末)中，您在班级的排名大约为:<span class="  "></span></label>
+                      <div class="col-md-2 col-sm-3">
+                          <select class="form-control" name="patient_current_achievement" id="patient_current_achievement" style="width:200px">
+                              <option value="0">未填=0</option>
+                              <option value="1">前10%=1</option>
+                            <option value="2">11-25%=2</option>
+                            <option value="3">26-50%=3</option>
+                            <option value="4">51-75%=4</option>
+                            <option value="5">后24%=5</option>
+                            <option value="6">学校不公布排名=6</option>
+                          </select>
+                      </div>
+                    </div>
+                    <br>
+<!--本学期相比于上个学期，学习成绩变动情况-->
+                    <div class="form-group row">
+                      <label class="control-label col-md-3 col-sm-5 col-md-offset-4">本学期相比于上个学期，学习成绩变动情况:<span class="  "></span></label>
+                      <div class="col-md-1 col-sm-3">
+                          <select class="form-control" name="patient_last_semester_achievement_difference" id="patient_last_semester_achievement_difference" style="width:200px">
+                              <option value="0">未填=0</option>
+                              <option value="1">进步=1</option>
+                            <option value="2">退步=2</option>
+                            <option value="3">稳定=3</option>
+                          </select>
+                      </div>
+                    </div>
+                    <br>
+<!--                    有情绪方面的症状前后，学习成绩变动情况-->
+                    <div class="form-group row" >
+                      <label class="control-label col-md-3 col-sm-5 col-md-offset-4">有情绪方面的症状前后，学习成绩变动情况:<span class="  "></span></label>
+                      <div class="col-md-1 col-sm-3">
+                          <select class="form-control" name="patient_mood_symptom_achievement_difference" id="patient_mood_symptom_achievement_difference" style="width:200px">
+                              <option value="0">未填=0</option>
+                              <option value="1">进步=1</option>
+                            <option value="2">退步=2</option>
+                            <option value="3">稳定=3</option>
+                          </select>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                          <label class="control-label col-md-3 col-sm-4 col-md-offset-2">是否担任过班级或学校的学生干部:<span class="  "></span></label>
+                          <div class="col-md-1 col-sm-1 " id="patient_leader_1">
+                            <input type="radio" name="patient_leader" value=1 data-labelauty="是"/>
+                          </div>
+                          <div class="col-md-1 col-sm-1 " id="patient_leader_2">
+                            <input type="radio" name="patient_leader" value=0 data-labelauty="否"/>
+                          </div>
+                          <div  class="patient_class_leader_occupation" style="display: none">
+                              <label class="control-label col-md-2 col-sm-2 " >担任职务:<span class="  "></span></label>
+                              <div class="col-md-2 col-sm-2 form-group" >
+                                <input type="text" id="patient_leader_occupation" name="patient_leader_occupation" class="form-control" >
+                              </div>
+                          </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                          <label class="control-label  col-md-2 col-sm-3 col-md-offset-3 col-sm-offset-1">是否在学校寄宿:<span class="  "></span></label>
+                          <div class="col-md-1 col-sm-1 " id="patient_live_school_1">
+                            <input type="radio" name="patient_live_school" value=1 data-labelauty="是"/>
+                          </div>
+                          <div class="col-md-1 col-sm-1 " id="patient_live_school_2">
+                            <input type="radio" name="patient_live_school" value=0 data-labelauty="否" />
+                          </div>
+                          <div  class="patient_go_home_frequency" style="display: none">
+                              <label class="control-label col-md-2 col-sm-2 ">每月回家的次数:<span class="  "></span></label>
+                              <div class="col-md-2 col-sm-2 form-group ">
+                                <input type="text" id="patient_home_frequency" name="patient_home_frequency" class="form-control"   >
+                              </div>
+                          </div>
+                    </div>
+                    <br>
+                  </div>
+{#0.重做按钮组合#}
+                    <div class="row" id="redo_bt_group">
+                        <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                            <a href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale0">
+                                <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                            </a>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success text-center" value="保存提交量表" id="study_bt">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               style="float: right"><u>跳过该量表</u></a>
+                        </div>
+                    </div>
+{#1.展示按钮组合#}
+                    <div class="row" id="bt_group" style="display: none">
+                            <div  class="col-md-4 col-sm-6 text-center"  >
+                               <a  href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale">
+                                   <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                               </a>
+                            </div>
+
+                            <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                 {% csrf_token %}
+                                <a href="/scales/get_next_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                </a>
+                            </div>
+                            <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                     {% csrf_token %}
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                    </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                            </div>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+    
+  <script>
+       function getData(){
+           var order = "{{ order }}";
+            if (order == 0) {
+                $("#last_scale0").attr("style", "display:none;");
+            }
+           var do_type="{{ do_type }}";
+           if(do_type=='1')
+           {
+               if('{{ patient_baseinfo_study }}'!='None')
+               {
+                   {#数据填充 读数据#}
+                   var patient_current_achievement = Number({{ patient_baseinfo_study.patient_current_achievement }});
+                   $("#patient_current_achievement option[value="+patient_current_achievement+"]").prop("selected",true);
+                   var patient_last_semester_achievement_difference = Number("{{ patient_baseinfo_study.patient_last_semester_achievement_difference }}");
+                   $("#patient_last_semester_achievement_difference option[value="+patient_last_semester_achievement_difference+"]").prop("selected",true);
+                   var patient_mood_symptom_achievement_difference = Number("{{ patient_baseinfo_study.patient_mood_symptom_achievement_difference }}");
+                   $("#patient_mood_symptom_achievement_difference option[value="+patient_mood_symptom_achievement_difference+"]").prop("selected",true);
+                   var patient_leader=Number("{{ patient_baseinfo_study.patient_leader }}");
+                   $("input[name='patient_leader'][value="+patient_leader+"]").prop("checked",true);
+                   if (patient_leader==0){
+                        $(".patient_class_leader_occupation").attr("style","display:none;");
+                       $("input[name='patient_leader_occupation']").val('');
+                   }else if(patient_leader==1){
+                       $(".patient_class_leader_occupation").attr("style","display:block;");
+                       $("input[name='patient_leader_occupation']").val('{{ patient_baseinfo_study.patient_leader_occupation|processNone }}');
+                   }
+                   var patient_live_school=Number("{{ patient_baseinfo_study.patient_live_school }}");
+                   $("input[name='patient_live_school'][value="+patient_live_school+"]").prop("checked",true);
+                    if (patient_live_school==0){
+                        $(".patient_go_home_frequency").attr("style","display:none;");
+                        $("input[name='patient_home_frequency']").val('');
+                    }else if(patient_live_school==1){
+                        $(".patient_go_home_frequency").attr("style","display:block;");
+                        $("input[name='patient_home_frequency']").val('{{ patient_baseinfo_study.patient_home_frequency|processNone }}');
+                    }
+               }
+
+               {#锁住#}
+               $("select[name='patient_current_achievement']").attr("disabled","disabled");
+               $("select[name='patient_last_semester_achievement_difference']").attr("disabled","disabled");
+               $("select[name='patient_mood_symptom_achievement_difference']").attr("disabled","disabled");
+               $("input[name='patient_leader']").attr("disabled","disabled");
+               $("input[name='patient_leader_occupation']").attr("disabled","disabled");
+               $("input[name='patient_live_school']").attr("disabled","disabled");
+               $("input[name='patient_home_frequency']").attr("disabled","disabled");
+               $("#bt_group").attr("style","display:block;");
+               $("#redo_bt_group").attr("style","display:none;");
+               var order = "{{ order }}";
+               if(order==0){{% comment %}第一个{% endcomment %}
+                   $("#last_scale").attr("style","display:none;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+               }else if(order==1){{% comment %}最后一个{% endcomment %}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:block;");
+                   $("#next_scale").attr("style","display:none;");
+               }else{{# 啥也不是 #}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+                }
+           }
+       }
+    </script>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+
+            $("input:radio[name='patient_leader']").click(function() {
+                patient_leader = $(this).val();
+                if (Number(patient_leader == 0)) {
+                    $(".patient_class_leader_occupation").hide();
+                    $(".patient_class_leader_occupation").removeAttr("required");
+                }
+                if (Number(patient_leader == 1)) {
+                    $(".patient_class_leader_occupation").show();
+                    $(".patient_class_leader_occupation").attr('required','required');
+                }
+            });
+            $("input:radio[name='patient_live_school']").click(function() {
+                patient_live_school = $(this).val();
+                if (Number(patient_live_school == 0)) {
+                    $(".patient_go_home_frequency").hide();
+                    $(".patient_go_home_frequency").removeAttr("required");
+                }
+                if (Number(patient_live_school == 1)) {
+                    $(".patient_go_home_frequency").show();
+                    $(".patient_go_home_frequency").attr('required','required');
+                }
+            });
+        });
+    </script>
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+{% comment %}<script type="text/javascript">
+      function myCheck(studyform)
+      {
+          if (document.studyform.patient_current_achievement.value=="") {
+              alert("问题一不能为空！");
+              return false;
+          }
+          if (document.studyform.patient_last_semester_achievement_difference.value=="") {
+              alert("问题二不能为空！");
+              return false;
+          }
+          if (document.studyform.patient_mood_symptom_achievement_difference.value=="") {
+              alert("问题三不能为空！");
+              return false;
+          }
+          if (document.studyform.patient_leader.value=="") {
+              alert("问题四不能为空！");
+              return false;
+          }
+
+          if (document.studyform.patient_live_school.value=="") {
+              alert("问题五不能为空！");
+              return false;
+          }
+          alert("提交成功！");
+          return true;
+      }
+    </script>{% endcomment %}
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+    <script>
+     function remove_disabled(){
+         $("select[name='patient_current_achievement']").removeAttr("disabled","disabled");
+         $("select[name='patient_last_semester_achievement_difference']").removeAttr("disabled","disabled");
+         $("select[name='patient_mood_symptom_achievement_difference']").removeAttr("disabled","disabled");
+         $("input[name='patient_leader']").removeAttr("disabled","disabled");
+         $("input[name='patient_leader_occupation']").removeAttr("disabled","disabled");
+         $("input[name='patient_live_school']").removeAttr("disabled","disabled");
+         $("input[name='patient_home_frequency']").removeAttr("disabled","disabled");
+         $("#redo_bt_group").removeAttr("style","display:none;");
+         $("#study_bt").attr("style","display:block;");
+         $("#bt_group").attr("style","display:none;");
+        }
+    </script>
+{% endblock %}

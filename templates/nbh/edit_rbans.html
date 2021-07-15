@@ -1,0 +1,424 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}重复成套性神经心理状态测验系统{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+	<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    input::-webkit-input-placeholder{
+    	color: #DCDCDC;
+    	font-size: 8px;
+    }
+
+	</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+		<div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >认知分数录入</a></li>
+						 <li class="active"><a href="#" >重复成套性神经心理状态测验系统（rbans）</a></li>
+						 <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="dashboard_graph x_panel" style="height:80%;margin-top:0px;">
+        	<div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+					{% for scale_name in scale_name_list %}
+					{% if scale_name|get_item:'scale__scale_name' == '重复成套性神经心理状态测验系统 (RBANS)' %}
+						<li class="step doing  ">
+							<p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+						</li>
+					{% elif scale_name|get_item:'state' == 0 %}
+						<li class="step nodone notclick">
+							<p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+						</li>
+					{% else %}
+						<li class="step done notclick">
+							<p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+						</li>
+					{% endif %}
+					{% endfor %}
+					<li class="finish nodone notclick">
+					  <p>完成</p>
+					</li>
+                  </ul>
+                </div>  
+				         
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+					<form id="sub_rbans" action="/scales/add_rbans?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}" method="post">
+                        {% csrf_token %}
+						<div class="row show-grid">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>重复成套性神经心理状态测验系统（rbans）</strong></h4>
+                                </div>
+                            </div>
+							<div class="col-md-12 column" style="text-align:center">
+                                 <br><br>
+                                <h5>
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    请参考评分指导，根据您过去1周的表现，填出合适的分数：
+                                </h5>
+                                 <br>
+							</div>
+						<div class="container">
+
+	                        <div class="row clearfix">
+
+		                        <div class="col-md-12 column">
+									<div class="col-md-2"></div>
+									<div class="col-md-8">
+			                        <table class="table">
+				                        <thead>
+					                    <tr>
+						                    <th>
+							                    认知功能
+						                    </th>
+						                    <th>
+							                    测查内容
+						                    </th>
+						                    <th>
+							                    原始分
+						                    </th>
+                                            <th>
+							                    量表分
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+					                        <tr>
+						                        <td rowspan="2">
+							                       即刻记忆
+						                        </td>
+						                        <td>
+							                        词汇学习
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="instant_memory_word" name="instant_memory_word" class="form-control"
+														   oninput="{notice2(1)}" value="{{ rbans_answer.instant_memory_word }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice1"></p>
+						                        </td>
+                                                <td rowspan="2">
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="instant_memory_total" name="instant_memory_total" class="form-control"
+														   oninput="{notice2(2)}" value="{{ rbans_answer.instant_memory_total }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice2"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       故事复述
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="instant_memory_story" name="instant_memory_story" class="form-control"
+														   oninput="{notice2(3)}" value="{{ rbans_answer.instant_memory_story }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice3"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="2">
+							                       视觉广度
+						                        </td>
+						                        <td>
+							                        图形临摹
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="vision_graph" name="vision_graph" class="form-control"
+														   oninput="{notice2(4)}" value="{{ rbans_answer.vision_graph }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice4"></p>
+
+						                        </td>
+                                                <td rowspan="2">
+
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="vision_total" name="vision_total" class="form-control"
+														   oninput="{notice2(5)}" value="{{ rbans_answer.vision_total }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice5"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        线条定位
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="vision_line" name="vision_line" class="form-control"
+														   oninput="{notice2(6)}" value="{{ rbans_answer.vision_line }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice6"></p>
+
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="2">
+							                       言语功能
+						                        </td>
+						                        <td>
+							                       图画命名
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="speech_graph" name="speech_graph" class="form-control"
+														   oninput="{notice2(7)}" value="{{ rbans_answer.speech_graph }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice7"></p>
+
+						                        </td>
+                                                <td rowspan="2">
+
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="speech_total" name="speech_total" class="form-control"
+														   oninput="{notice2(8)}" value="{{ rbans_answer.speech_total }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice8"></p>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        语义流畅性
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="speech_fluency" name="speech_fluency" class="form-control"
+														   oninput="{notice2(9)}" value="{{ rbans_answer.speech_fluency }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice9"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="2">
+							                       注意
+						                        </td>
+						                        <td>
+							                        数字广度
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="attention_number" name="attention_number" class="form-control"
+														   oninput="{notice2(10)}" value="{{ rbans_answer.attention_number }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice10"></p>
+
+						                        </td>
+                                                <td rowspan="2">
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="attention_total" name="attention_total" class="form-control"
+														   oninput="{notice2(11)}" value="{{ rbans_answer.attention_total }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice11"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        编码测验
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="attention_code" name="attention_code" class="form-control"
+														   oninput="{notice2(12)}" value="{{ rbans_answer.attention_code }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice12"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td rowspan="4">
+							                       延时记忆
+						                        </td>
+						                        <td>
+							                        词汇回忆
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="delayed_retention_word" name="delayed_retention_word" class="form-control"
+														   oninput="{notice2(13)}" value="{{ rbans_answer.delayed_retention_word }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice13"></p>
+
+						                        </td>
+                                                <td rowspan="4">
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="delayed_retention_total" name="delayed_retention_total" class="form-control"
+														   oninput="{notice2(14)}" value="{{ rbans_answer.delayed_retention_total }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice14"></p>
+
+						                        </td>
+					                        </tr>
+
+                                            <tr>
+						                        <td>
+							                        词汇再识
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="delayed_retention_word2" name="delayed_retention_word2" class="form-control"
+														   oninput="{notice2(15)}" value="{{ rbans_answer.delayed_retention_word2 }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice15"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        故事回忆
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="delayed_retention_story" name="delayed_retention_story" class="form-control"
+														   oninput="{notice2(16)}" value="{{ rbans_answer.delayed_retention_story }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice16"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                        图形回忆
+						                        </td>
+						                        <td>
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="delayed_retention_graph" name="delayed_retention_graph" class="form-control"
+														   oninput="{notice2(17)}" value="{{ rbans_answer.delayed_retention_graph }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice17"></p>
+
+						                        </td>
+					                        </tr>
+                                            <tr>
+                                                <td>
+                                                    总分
+                                                </td>
+						                        <td colspan="3">
+													<input type="number" placeholder="请输入大于等于0的整数" style="border-radius:5px;" id="total_score" name="total_score" class="form-control"
+														   oninput="{notice2(18)}" value="{{ rbans_answer.total_score }}" disabled required />
+													<p  style="display:inline-block; font-size:x-small; color:#8B0000" id="notice18"></p>
+
+						                        </td>
+					                        </tr>
+				                        </tbody>
+                                    </table>
+		                        </div>
+	                        </div>
+
+								<br><br>
+						        <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="rbans_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+
+                                <div class="row" id="bt_group">
+                                        <div  class="col-md-4 col-sm-6 text-center"  >
+                                           <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                               <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                           </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                        </div>
+
+                                </div>
+
+
+
+
+
+                        </div>
+						</div>
+                    </form>
+				  </div>
+			    </div>
+		    </div>
+	</div>
+</div>
+<script>
+       function getData(){
+        var order = "{{ order  }}";
+        if(order==0){
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+       }
+</script>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script>
+	$("input[name='instant_memory_word']").eq({{ rbans_answer.instant_memory_word }}).attr("checked","checked");
+	$("input[name='instant_memory_total']").eq({{ rbans_answer.instant_memory_total }}).attr("checked","checked");
+    $("input[name='instant_memory_story']").eq({{ rbans_answer.instant_memory_story }}).attr("checked","checked");
+    $("input[name='vision_graph']").eq({{ rbans_answer.vision_graph }}).attr("checked","checked");
+    $("input[name='vision_total']").eq({{ rbans_answer.vision_total }}).attr("checked","checked");
+    $("input[name='vision_line']").eq({{ rbans_answer.vision_line }}).attr("checked","checked");
+    $("input[name='speech_graph']").eq({{ rbans_answer.speech_graph }}).attr("checked","checked");
+    $("input[name='speech_total']").eq({{ rbans_answer.speech_total }}).attr("checked","checked");
+    $("input[name='speech_fluency']").eq({{ rbans_answer.speech_fluency }}).attr("checked","checked");
+    $("input[name='attention_number']").eq({{ rbans_answer.attention_number }}).attr("checked","checked");
+    $("input[name='attention_total']").eq({{ rbans_answer.attention_total }}).attr("checked","checked");
+    $("input[name='attention_code']").eq({{ rbans_answer.attention_code }}).attr("checked","checked");
+    $("input[name='delayed_retention_word']").eq({{ rbans_answer.delayed_retention_word }}).attr("checked","checked");
+    $("input[name='delayed_retention_total']").eq({{ rbans_answer.delayed_retention_total }}).attr("checked","checked");
+    $("input[name='delayed_retention_word2']").eq({{ rbans_answer.delayed_retention_word2 }}).attr("checked","checked");
+    $("input[name='delayed_retention_story']").eq({{ rbans_answer.delayed_retention_story }}).attr("checked","checked");
+    $("input[name='delayed_retention_graph']").eq({{ rbans_answer.delayed_retention_graph }}).attr("checked","checked");
+    $("input[name='total_score']").eq({{ rbans_answer.total_score }}).attr("checked","checked");
+
+    function remove_disabled(){
+            $("input[name='instant_memory_word']").removeAttr("disabled","disabled");
+            $("input[name='instant_memory_total']").removeAttr("disabled","disabled");
+            $("input[name='instant_memory_story']").removeAttr("disabled","disabled");
+            $("input[name='vision_graph']").removeAttr("disabled","disabled");
+            $("input[name='vision_total']").removeAttr("disabled","disabled");
+            $("input[name='vision_line']").removeAttr("disabled","disabled");
+            $("input[name='speech_graph']").removeAttr("disabled","disabled");
+            $("input[name='speech_total']").removeAttr("disabled","disabled");
+            $("input[name='speech_fluency']").removeAttr("disabled","disabled");
+            $("input[name='attention_number']").removeAttr("disabled","disabled");
+            $("input[name='attention_total']").removeAttr("disabled","disabled");
+            $("input[name='attention_code']").removeAttr("disabled","disabled");
+            $("input[name='delayed_retention_word']").removeAttr("disabled","disabled");
+            $("input[name='delayed_retention_total']").removeAttr("disabled","disabled");
+            $("input[name='delayed_retention_word2']").removeAttr("disabled","disabled");
+            $("input[name='delayed_retention_story']").removeAttr("disabled","disabled");
+            $("input[name='delayed_retention_graph']").removeAttr("disabled","disabled");
+            $("input[name='total_score']").removeAttr("disabled","disabled");
+            $("#rbans_bt").attr("style", "display:block;");
+       		$("#bt_group").attr("style", "display:none;");
+
+    }
+
+</script>
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+	cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+});
+</script>
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+{% endblock %}

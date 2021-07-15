@@ -1,0 +1,907 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}家庭信息{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <style>
+        .row input.labelauty + label {
+            margin-bottom: 0px;
+            width: 70px;
+            display: inline-block;
+            font-size: 13px;
+            padding: 3px;
+            text-align: center;
+            background-color: #efefef;
+            color: #b3b3b3;
+            cursor: pointer;
+            border-radius: 3px 3px 3px 3px;
+            -moz-border-radius: 3px 3px 3px 3px;
+            -webkit-border-radius: 3px 3px 3px 3px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+ <div class="right_col" role="main">
+        <div class="container">
+
+        <div class="row show-grid">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                   <li ><a href="#">量表评估</a></li>
+                   <li><a href="#" >个人详细信息录入</a></li>
+                   <li class="active"><a href="#" >家庭信息</a></li>
+                   <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+              </ul>
+          </div>
+        </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="height: 80%;overflow-x: hidden;">
+          <div id="wrapper">
+            <div id = "left-side" style="height: 100%;" class="col-md-2">
+              <ul class="scales_progress">
+                  {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '一般资料－个人及家庭信息' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                            <p>完成</p>
+                        </li>
+
+              </ul>
+            </div>
+
+    <div id="right-side" class="col-md-10">
+        <div id="first" class="active">
+            <form action="/scales/add_family_info?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}"
+                  method="POST">
+                <div class="container">
+                    <div class="x_content">
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                            <h2>一般资料 <small>General information</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content" width="80">
+
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-2">姓名<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-3 col-sm-2 form-group has-feedback">
+                                        {{ base_info.name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-2" for="tele">联系方式<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-1 col-sm-3 form-group has-feedback">
+                                        <input type="text" id="tele" name="phone" class="form-control has-feedback-left"
+                                               style="width:175px" value="{{ patient_detail.phone|processNone }}">
+                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-2 " for="height">身高<span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-2 col-sm-2 form-group has-feedback">
+                                        <input type="text" id="height" name="height" class="form-control"
+                                               style="width: 160px" PLACEHOLDER="CM" value="{{ patient_detail.height|processNone }}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-2">性别<span class="required">*</span></label>
+
+                                    {% if base_info.sex == 0 %}
+                                        <div class="col-md-4 col-sm-3 form-group has-feedback row">
+                                            <input type="radio" name="sex" value=0 data-labelauty="男" checked disabled/>
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-3 form-group has-feedback row">
+                                            <input type="radio" name="sex" value=1 data-labelauty="女" disabled/>
+                                        </div>
+
+                                    {% else %}
+                                        <div class="col-md-4 col-sm-3 form-group has-feedback row">
+                                            <input type="radio" name="sex" value=0 data-labelauty="男" disabled/>
+                                        </div>
+                                        <div class="col-md-4 col-sm-3 form-group has-feedback row">
+                                            <input type="radio" name="sex" value=1 data-labelauty="女" checked disabled/>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-2 " for="emotional_state">婚姻状况<span class="required">*</span></label>
+                                    <div class="col-md-1 col-sm-2">
+                                        <select class="form-control" name="emotional_state" id="emotional_state" style="width:175px" >
+                                            <option value="0">未填=0</option>
+                                            <option value="1">单身=1</option>
+                                            <option value="2">未婚=2</option>
+                                            <option value="3">已婚=3</option>
+                                            <option value="4">离婚=4</option>
+                                            <option value="5">再婚=5</option>
+                                            <option value="6">分居=6</option>
+                                            <option value="7">丧偶=7</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-2" for="weight">体重<span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback">
+                                        <input type="text" id="weight" name="weight" class="form-control"
+                                               style="width: 160px" PLACEHOLDER="KG" value="{{ patient_detail.weight|processNone }}">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-1" for="age">年龄<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-1 form-group ">
+                                        {{ age|processNone }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-2" for="occupation">职业<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-2 form-group ">
+                                        <input type="text" id="occupation" name="occupation" class="form-control"
+                                               style="width:175px" value="{{ patient_detail.occupation|processNone }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-2 " for="waist">腰围<span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback">
+
+                                        <input type="text" id="waist" name="waist" class="form-control"
+                                               style="width: 160px" PLACEHOLDER="CM" value="{{ patient_detail.waist|processNone }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-2" for="birthday">出生日期<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-3  form-group">
+                                        {{ base_info.birth_date|processNone }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-2 " for="nation">民族<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-2">
+                                        <select class="form-control" name="nation" id="nation" style="width: 175px">
+                                            {% for items in nation_list %}
+                                                {% if items.ethnicity_name == base_info.nation %}
+                                                    <option value="{{ items.ethnicity_name }}"
+                                                            selected="true">{{ items.ethnicity_name }}={{ items.id }}</option>
+                                                {% else %}
+                                                    <option value="{{ items.ethnicity_name}}">{{ items.ethnicity_name }}={{ items.id }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-2 col-sm-2 " for="hip">臀围<span
+                                            class="required">*</span>
+                                    </label>
+                                    <div class="col-md-2 col-sm-3  form-group has-feedback">
+                                        <input type="text" id="hip" name="hip" class="form-control"
+                                               style="width: 160px" PLACEHOLDER="CM" value="{{ patient_detail.hip|processNone }}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-2" for="handy">利手情况<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-3 col-sm-2 form-group ">
+                                        {% if handy == 1 %}
+                                            右利手
+                                        {% elif handy == 2  %}
+                                            左利手
+                                        {% elif handy == 0 %}
+                                            暂未填写
+                                        {% else %}
+                                            混合利手
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+
+                                    <label class="control-label col-md-3 col-sm-2" for="education">受教育程度<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-1 col-sm-2">
+                                        <input type="text" id="education" name="education" class="form-control"
+                                               style="width:175px" value="{{ patient_detail.education|processNone }}">
+                                    </div>
+                                </div>
+
+
+                            <div class="col-md-4 col-sm-4">
+                                  <div class=" col-md-3 col-sm-2">
+                                        <select class="form-control" name="contact_way" id="contact_way" style="width:85px;" >
+                                            <option value="1">QQ</option>
+                                            <option value="2">微信</option>
+                                            <option value="3">邮箱</option>
+                                        </select>
+                                  </div>
+                                <div class="col-md-1 col-sm-2">
+                                    <input type="text" id="contact_info" name="contact_info" class="form-control" style="width:175px" value="{{ patient_detail.contact_info|processNone }}">
+                                </div>
+                            </div>
+
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-4">
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label class="control-label  col-md-3 col-sm-2 " for="education">共<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-1 col-sm-2 ">
+                                        <input type="text" id="years" name="years"
+                                               class="form-control" style="width:175px" PLACEHOLDER="年" value="{{ patient_detail.years|processNone }}">
+                                  </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                            <h2>家庭及居住情况 <small>Family and living conditions</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br>
+                        <div class="x_content">
+
+                            <!--                    居住地 家庭地址-->
+                            <div class="form-group row">
+                                <label class="control-label col-md-1 col-sm-2">居住地<span
+                                        class="required">*</span></label>
+                                <div class="col-md-1 col-sm-2" id="patient_urban_rural_1">
+                                    <input type="radio" name="patient_urban_rural" value=0 data-labelauty="城市"/>
+                                </div>
+                                <div class="col-md-1 col-sm-2" id="patient_urban_rural_2">
+                                    <input type="radio" name="patient_urban_rural" value=1 data-labelauty="农村"/>
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2" for="patient_address">家庭住址<span
+                                        class="required">*</span></label>
+                                <div class="col-md-5 col-sm-3 form-group has-feedback">
+                                    <input type="text" id="patient_address" name="patient_address"
+                                           class="form-control has-feedback-left">
+                                    <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <br>
+                            <!--                    居住方式  其他  独生子女 父母偏爱-->
+
+                            <div class="form-group row">
+                                <label class="control-label col-md-1 col-sm-2" for="patient_live_type">居住方式<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-3">
+                                      <select class="form-control" name="patient_live_type" id="patient_live_type">
+                                        <option value="0">未填</option>
+                                        <option value="1">独自居住=1</option>
+                                        <option value="2">与父母同住=2</option>
+                                        <option value="3">与祖父母同住=3</option>
+                                        <option value="4">与丈夫/妻子同住=4</option>
+                                        <option value="5">集体宿舍/合租=5</option>
+                                        <option value="6">其他=6</option>
+                                      </select>
+                                </div>
+
+                                <div class="other_living_type">
+                                    <label class="control-label col-md-1 col-sm-3 " id="patient_live_text"
+                                           name="patient_live_text" for="patient_live_type_other">其他居住方式<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback ">
+                                        <input type="text" id="patient_live_type_other" name="patient_live_type_other"
+                                               class="form-control has-feedback-left" placeholder="">
+                                        <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+
+                                <label class="control-label col-md-1 col-sm-2">独生子女<span
+                                        class="required">*</span></label>
+                                <div class="col-md-1 col-sm-1 ">
+                                    <input type="radio" class="only_child_1" name="patient_only_child" value=1
+                                           data-labelauty="是"/>
+                                </div>
+                                <div class="col-md-1 col-sm-1">
+                                    <input type="radio" class="only_child_2" name="patient_only_child" value=0
+                                           data-labelauty="否"/>
+                                </div>
+                                <div id="preference_div" style="display: none">
+                                    <label class="control-label col-md-1 col-sm-4" for="parents_favour">父母偏爱<span
+                                            class="required">*</span></label>
+                                    <div class="col-md-2 col-sm-3">
+                                        <select class="form-control" name="parents_favour" id="parents_favour">
+                                            <option value="0">未填=0</option>
+                                            <option value="1">偏爱兄弟姐妹=1</option>
+                                            <option value="2">无偏爱=2</option>
+                                            <option value="3">偏爱自己=3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--                    兄弟姐妹-->
+
+
+                            <!--                    兄弟姐妹数量-->
+                            <div class="form-group row " id="brother_num_2" style="display: none;">
+                                <label class="control-label col-md-1 col-sm-1"
+                                       for="patient_older_brother_num">哥哥数量</label>
+                                <div class="col-md-2 col-sm-2 form-group ">
+                                    <input type="text" id="patient_older_brother_num" name="patient_older_brother_num"
+                                           class="form-control has-feedback-left" placeholder="">
+                                </div>
+                                <label class="control-label col-md-1 col-sm-1"
+                                       for="patient_youger_brother_num">弟弟数量</label>
+                                <div class="col-md-2 col-sm-2 form-group ">
+                                    <input type="text" id="patient_youger_brother_num" name="patient_younger_brother_num"
+                                           class="form-control has-feedback-left" placeholder="">
+                                </div>
+                                <label class="control-label col-md-1 col-sm-1"
+                                       for="patient_older_sister_num">姐姐数量</label>
+                                <div class="col-md-2 col-sm-2 form-group ">
+                                    <input type="text" id="patient_older_sister_num" name="patient_older_sister_num"
+                                           class="form-control has-feedback-left" placeholder="">
+                                </div>
+                                <label class="control-label col-md-1 col-sm-1"
+                                       for="patient_youger_sister_num">妹妹数量</label>
+                                <div class="col-md-2 col-sm-2 form-group ">
+                                    <input type="text" id="patient_youger_sister_num" name="pathent_younger_sister_num"
+                                           class="form-control has-feedback-left" placeholder="">
+                                </div>
+                            </div>
+                            <!--                   父母职业 手机 -->
+                            <div class="form-group row">
+                                <label class="control-label col-md-1 col-sm-2">父亲职业<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-4 form-group ">
+                                    <input type="text" id="father_occupation" name="father_occupation"
+                                           class="form-control ">
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2">父亲电话<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-4 form-group ">
+                                    <input type="text" id="father_tele" name="father_tele" class="form-control ">
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2">母亲职业<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-4 form-group has-feedback">
+                                    <input type="text" id="mother_occupation" name="mother_occupation"
+                                           class="form-control">
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2">母亲电话<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-4 form-group has-feedback">
+                                    <input type="text" id="mother_tele" name="mother_tele" class="form-control">
+                                </div>
+                            </div>
+
+                                <!--                    文化程度 婚姻状态-->
+
+                            <div class="form-group row">
+                                <label class="control-label col-md-1 col-sm-2">父亲文化 程度<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <select class="form-control" name="father_education" id="father_education">
+                                        <option value="0">未填=0</option>
+                                        <option value="1">小学=1</option>
+                                        <option value="2">初中=2</option>
+                                        <option value="3">高中/中专/技校/职高=3</option>
+                                        <option value="4">大专=4</option>
+                                        <option value="5">大学本科=5</option>
+                                        <option value="6">硕士=6</option>
+                                        <option value="7">博士=7</option>
+                                        <option value="8">未上学=8</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2">母亲文化 程度<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <select class="form-control" name="mother_education" id="mother_education">
+                                        <option value="0">未填=0</option>
+                                        <option value="1">小学=1</option>
+                                        <option value="2">初中=2</option>
+                                        <option value="3">高中/中专/技校/职高=3</option>
+                                        <option value="4">大专=4</option>
+                                        <option value="5">大学本科=5</option>
+                                        <option value="6">硕士=6</option>
+                                        <option value="7">博士=7</option>
+                                        <option value="8">未上学=8</option>
+                                    </select>
+                                </div>
+
+
+                                <!--                    父母婚姻状态选择离异 展示继父/继母问题 选择有一方过世 展示过世时自己年龄标签 否则都不展示-->
+                                <label class="control-label col-md-1 col-sm-2">父母婚姻 状态<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <select class="form-control parent_marry" name="parent_marry" id="parent_marry">
+                                        <option value="0">未填=0</option>
+                                        <option value="1">正常=1</option>
+                                        <option value="2">离异=2</option>
+                                        <option value="3">分居=3</option>
+                                        <option value="4">有一方过世=4</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2">父母争吵 频率<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <select class="form-control" name="parent_argument" id="parent_argument">
+                                        <option value="0">未填=0</option>
+                                        <option value="1">几乎每天=1</option>
+                                        <option value="2">一周数次=2</option>
+                                        <option value="3">一月两三次=3</option>
+                                        <option value="4">每月一次=4</option>
+                                        <option value="5">每年几次=5</option>
+                                        <option value="6">不吵架=6</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <label class="control-label col-md-1 col-sm-2 step_parent"
+                                       style="display: none;">继父/继母</label>
+
+                                <div class="col-md-2 col-sm-2 step_parent" style="display: none;">
+                                    <select class="form-control" name="step_parent" id="step_parent">
+                                        <option value="0">无</option>
+                                        <option value="1">继父=1</option>
+                                        <option value="2">继母=2</option>
+                                    </select>
+                                </div>
+
+                                <label class="control-label col-md-1 col-sm-2 patient_parent_death"
+                                       style="display: none;">父亲/母亲</label>
+
+                                <div class="col-md-2 col-sm-2 patient_parent_death" style="display: none;">
+                                    <select class="form-control" name="patient_parent_death">
+                                        <option name="patient_parent_deathvalue" value="1">父亲=1</option>
+                                        <option name="patient_parent_deathvalue" value="0">母亲=0</option>
+                                    </select>
+                                </div>
+
+
+                                <label class="control-label col-md-2 col-sm-3  patient_parent_death_age"
+                                       style="display: none;">父/母过世时自己的年龄</label>
+
+                                <div class="col-md-1 col-sm-1 form-group  patient_parent_death_age" style="display: none;">
+                                    <input type="text" id="parent_parent_death_age" name="patient_parent_death_age"
+                                           class="form-control">
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="form-group row">
+                                <label class="control-label col-md-1 col-sm-2">是否领养<span
+                                        class="required">*</span></label>
+                                <div class="col-md-1 col-sm-1 " >
+                                    <input type="radio" name="patient_adopt" id="patient_adopt_1" value=1 data-labelauty="是"/>
+                                </div>
+                                <div class="col-md-1 col-sm-1 " >
+                                    <input type="radio" name="patient_adopt" id="patient_adopt_2" value=0 data-labelauty="否"/>
+                                </div>
+                                <!--hidden-->
+                                <label class="control-label col-md-1 col-sm-2" id="adopt_age_1" style="display: none;">领养时的
+                                    年龄*</label>
+                                <div class="col-md-2 col-sm-1 form-group " id="adopt_age_2" style="display: none;">
+                                    <input type="text" id="patient_adopt_age" name="patient_adopt_age"
+                                           class="form-control ">
+                                </div>
+                                <!--                      offset-->
+                                <label class="control-label col-md-1 col-sm-2 ">与父亲的 关系<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <select class="form-control" name="father_relationship" id="father_relationship" >
+                                        <option value="0">未填=0</option>
+                                        <option value="1">非常好=1</option>
+                                        <option value="2">较好=2</option>
+                                        <option value="3">一般=3</option>
+                                        <option value="4">较差=4</option>
+                                        <option value="5">非常差=5</option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-md-1 col-sm-2">与母亲的 关系<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <select class="form-control" name="mother_relationship" id="mother_relationship" >
+                                        <option value="0">未填=0</option>
+                                        <option value="1">非常好=1</option>
+                                        <option value="2">较好=2</option>
+                                        <option value="3">一般=3</option>
+                                        <option value="4">较差=4</option>
+                                        <option value="5">非常差=5</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <br>
+                        </div>
+
+                        </br>
+
+
+{#0.重做按钮组合#}
+                    <div class="row" id="redo_bt_group">
+                        <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                            <a href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale0">
+                                <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                            </a>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success text-center" value="保存提交量表" id="family_bt">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               style="float: right"><u>跳过该量表</u></a>
+                        </div>
+                    </div>
+
+{#1.展示按钮组合#}
+                    <div class="row" id="bt_group" style="display: none">
+                            <div  class="col-md-4 col-sm-6 text-center"  >
+                               <a  href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale">
+                                   <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                               </a>
+                            </div>
+
+                            <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                 {% csrf_token %}
+                                <a href="/scales/get_next_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                </a>
+                            </div>
+                            <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                     {% csrf_token %}
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                    </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                            </div>
+                    </div>
+
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+  <script>
+      function getData(){
+           var order = "{{ order }}";
+            if (order == 0) {
+                $("#last_scale0").attr("style", "display:none;");
+            }
+           var do_type="{{ do_type }}";
+           if(do_type=='1')
+           {
+               if('{{ patient_baseinfo_family }}'!='None')
+               {
+                   {#数据填充 读数据#}
+                   var patient_urban_rural=Number("{{ patient_baseinfo_family.patient_urban_rural }}");
+                   $("input[name='patient_urban_rural'][value="+patient_urban_rural+"]").prop("checked",true);
+                   $("input[name='patient_address']").val('{{ patient_baseinfo_family.patient_address|processNone }}');
+                   var family_patient_live_type = "{{ patient_baseinfo_family.patient_live_type }}";
+                   var patient_live_type = Number(family_patient_live_type);
+                   $("#patient_live_type option[value="+patient_live_type+"]").prop("selected",true);
+                   if(patient_live_type == 6) {
+                       $('.other_living_type').show();
+                       $("input[name='patient_live_type_other']").val('{{ patient_baseinfo_family.patient_live_type_other|processNone }}');
+                   }else {
+                    $('.other_living_type').hide();
+                    $("input[name='patient_live_type_other']").val('');
+                   }
+                   var patient_only_child=Number("{{ patient_baseinfo_family.patient_only_child }}");
+                   $("input[name='patient_only_child'][value="+patient_only_child+"]").prop("checked",true);
+                   if(patient_only_child == 1) {
+                       $("#brother_num_2").hide();
+                       $("#preference_div").hide();
+                       $(".brother_num_2_val").val("");
+                    }else{
+                       $("#brother_num_2").show();
+                       $("#preference_div").show();
+                       $("input[name='patient_older_brother_num']").val('{{ patient_baseinfo_family.patient_older_brother_num|processNone }}');
+                       $("input[name='patient_younger_brother_num']").val('{{ patient_baseinfo_family.patient_younger_brother_num|processNone }}');
+                       $("input[name='patient_older_sister_num']").val('{{ patient_baseinfo_family.patient_older_sister_num|processNone }}');
+                       $("input[name='pathent_younger_sister_num']").val('{{ patient_baseinfo_family.pathent_younger_sister_num|processNone }}');
+                       var parents_favour = Number("{{ patient_baseinfo_family.parents_favour }}");
+                       $("#parents_favour option[value="+parents_favour+"]").prop("selected",true);
+                   }
+                   $("input[name='father_occupation']").val('{{ patient_baseinfo_family.father_occupation|processNone }}');
+                   $("input[name='mother_occupation']").val('{{ patient_baseinfo_family.mother_occupation|processNone }}');
+                   $("input[name='father_tele']").val('{{ patient_baseinfo_family.father_tele|processNone }}');
+                   $("input[name='mother_tele']").val('{{ patient_baseinfo_family.mother_tele|processNone }}');
+                   var parents_favour = Number("{{ patient_baseinfo_family.parents_favour }}");
+                   $("#parents_favour option[value="+parents_favour+"]").prop("selected",true);
+                   var father_education = Number("{{ patient_baseinfo_family.father_education }}");
+                   $("#father_education option[value="+father_education+"]").prop("selected",true);
+                   var mother_education = Number({{ patient_baseinfo_family.mother_education }});
+                   $("#mother_education option[value="+mother_education+"]").prop("selected",true);
+                   var parent_marry = Number({{ patient_baseinfo_family.parent_marry }});
+                   $("#parent_marry option[value="+parent_marry+"]").prop("selected",true);
+                   <!--       离异-->
+                    if (parent_marry == "2") {
+                        $(".step_parent").show();
+                        var step_parent = Number({{ patient_baseinfo_family.step_parent }});
+                        $("#step_parent option[value="+step_parent+"]").prop("selected",true);
+
+                        {#离异select#}
+                        $(".patient_parent_death").hide();
+                        $(".patient_parent_death_age").hide();
+                        $(".patient_parent_death_age").val("");
+                        /*--有一方过世*/
+                    } else if (parent_marry == "4") {
+                        $(".step_parent").hide();
+                        $(".patient_parent_death").show();
+                        $(".patient_parent_death_age").show();
+                        var family_patient_parent_death = "{{ patient_baseinfo_family.patient_parent_death }}";
+                        var patient_parent_death = Number(family_patient_parent_death);
+                        $("#patient_parent_death option[value="+patient_parent_death+"]").prop("selected",true);
+                        $("input[name='patient_parent_death_age']").val('{{ patient_baseinfo_family.patient_parent_death_age|processNone }}');
+                    } else {
+                        $(".patient_parent_death_age").hide();
+                        $(".step_parent").hide();
+                        $(".patient_parent_death").hide();
+                        $(".patient_parent_death_age").val("");
+                    }
+                   var parent_argument = Number("{{ patient_baseinfo_family.parent_argument }}");
+                   $("#parent_argument option[value="+parent_argument+"]").prop("selected",true);
+                   var patient_adopt = Number("{{ patient_baseinfo_family.patient_adopt }}");
+                   $("input[name='patient_adopt'][value="+patient_adopt+"]").prop("checked",true);
+                   var patient_adopt=Number("{{ patient_baseinfo_family.patient_adopt }}");
+                   if (patient_adopt == "0") {
+                       $("#adopt_age_1").hide();
+                       $("#adopt_age_2").hide();
+                       $("#adopt_age_2").val("");
+                   }else{
+                       $("#adopt_age_1").show();
+                       $("#adopt_age_2").show();
+                       $("input[name='patient_adopt_age']").val('{{ patient_baseinfo_family.patient_adopt_age|processNone }}');
+                   }
+                   var father_relationship = Number("{{ patient_baseinfo_family.father_relationship }}");
+                   $("#father_relationship option[value="+father_relationship+"]").prop("selected",true);
+                   var mother_relationship = Number("{{ patient_baseinfo_family.mother_relationship }}");
+                   $("#mother_relationship option[value="+mother_relationship+"]").prop("selected",true);
+               }
+
+                   {#锁住#}
+                   $("input[name='phone']").attr("disabled","disabled");
+                   $("select[name='emotional_state']").attr("disabled","disabled");
+                   $("input[name='occupation']").attr("disabled","disabled");
+                   $("select[name='nation']").attr("disabled","disabled");
+                   $("input[name='education']").attr("disabled","disabled");
+                   $("input[name='years']").attr("disabled","disabled");
+                   $("input[name='height']").attr("disabled","disabled");
+                   $("input[name='weight']").attr("disabled","disabled");
+                   $("input[name='waist']").attr("disabled","disabled");
+                   $("input[name='hip']").attr("disabled","disabled");
+                   $("select[name='contact_way']").attr("disabled","disabled");
+                   $("input[name='contact_info']").attr("disabled","disabled");
+                   $("input[name='patient_urban_rural']").attr("disabled","disabled");
+                   $("input[name='patient_address']").attr("disabled","disabled");
+                   $("select[name='patient_live_type']").attr("disabled","disabled");
+                   $("input[name='patient_live_type_other']").attr("disabled","disabled");
+                   $("input[name='patient_only_child']").attr("disabled","disabled");
+                   $("input[name='patient_older_brother_num']").attr("disabled","disabled");
+                   $("input[name='patient_younger_brother_num']").attr("disabled","disabled");
+                   $("input[name='patient_older_sister_num']").attr("disabled","disabled");
+                   $("input[name='pathent_younger_sister_num']").attr("disabled","disabled");
+                   $("select[name='parents_favour']").attr("disabled","disabled");
+                   $("input[name='father_occupation']").attr("disabled","disabled");
+                   $("input[name='mother_occupation']").attr("disabled","disabled");
+                   $("input[name='father_tele']").attr("disabled","disabled");
+                   $("input[name='mother_tele']").attr("disabled","disabled");
+                   $("select[name='father_education']").attr("disabled","disabled");
+                   $("select[name='mother_education']").attr("disabled","disabled");
+                   $("select[name='parent_marry']").attr("disabled","disabled");
+                   $("select[name='step_parent']").attr("disabled","disabled");
+                   $("select[name='patient_parent_death']").attr("disabled","disabled");
+                   $("input[name='patient_parent_death_age']").attr("disabled","disabled");
+                   $("select[name='parent_argument']").attr("disabled","disabled");
+                   $("input[name='patient_adopt']").attr("disabled","disabled");
+                   $("input[name='patient_adopt_age']").attr("disabled","disabled");
+                   $("select[name='father_relationship']").attr("disabled","disabled");
+                   $("select[name='mother_relationship']").attr("disabled","disabled");
+                   $("#bt_group").attr("style","display:block;");
+                   $("#redo_bt_group").attr("style","display:none;");
+                   var order = "{{ order }}";
+                   if(order==0){{% comment %}第一个{% endcomment %}
+                       $("#last_scale").attr("style","display:none;");
+                       $("#next_scale_final").attr("style","display:none;");
+                       $("#next_scale").attr("style","display:block;");
+                   }else if(order==1){{% comment %}最后一个{% endcomment %}
+                       $("#last_scale").attr("style","display:block;");
+                       $("#next_scale_final").attr("style","display:block;");
+                       $("#next_scale").attr("style","display:none;");
+                   }else{{# 啥也不是 #}
+                       $("#last_scale").attr("style","display:block;");
+                       $("#next_scale_final").attr("style","display:none;");
+                       $("#next_scale").attr("style","display:block;");
+                    }
+
+            }
+       }
+  </script>
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+            document.getElementById("emotional_state").value={{ patient_detail.emotional_state }};
+            document.getElementById("contact_way").value={{ patient_detail.contact_way }};
+        });
+        /*--居住方式--*/
+        $('.other_living_type').hide();
+        $('#patient_live_type').change(function () {
+            if ($('#patient_live_type option:selected').val() == 6) {
+                $('.other_living_type').show();
+
+            } else {
+                $('.other_living_type').hide();
+            }
+        });
+        /*--独生子女--*/
+        $(".only_child_1").on('click', function (event) {
+
+            $("#brother_num_2").hide();
+            $("#preference_div").hide();
+            $(".brother_num_2_val").val("");
+        });
+        $(".only_child_2").on('click', function (event) {
+
+            $("#brother_num_2").show();
+            $("#preference_div").show();
+        });
+        /*--收养--*/
+        $("#patient_adopt_2").on('click', function (event) {
+            $("#adopt_age_1").hide();
+            $("#adopt_age_2").hide();
+            $("#adopt_age_2").val("");
+        });
+        $("#patient_adopt_1").on('click', function (event) {
+            $("#adopt_age_1").show();
+            $("#adopt_age_2").show();
+        });
+
+        /*--父母婚姻状态*/
+        $("#parent_marry").change(function () {
+            var val = $("#parent_marry").val();
+            <!--       离异-->
+            if (val == "2") {
+                $(".step_parent").show();
+                $(".patient_parent_death").hide();
+                $(".patient_parent_death_age").hide();
+                $(".patient_parent_death_age").val("");
+                /*--有一方过世*/
+            } else if (val == "4") {
+                $(".step_parent").hide();
+                $(".patient_parent_death").show();
+                $(".patient_parent_death_age").show();
+            } else {
+                $(".patient_parent_death_age").hide();
+                $(".step_parent").hide();
+                $(".patient_parent_death").hide();
+                $(".patient_parent_death_age").val("");
+            }
+        });
+        /*--居住方式 其他居住方式*/
+        $("#patient_live_type").change(function () {
+            var val = $("#patient_live_type").val();
+            if (val == "6") {
+                $(".patient_live_type_other").show();
+
+            } else {
+                $(".patient_live_type_other").hide();
+                $(".patient_live_type_other").val("");
+            }
+        });
+    </script>
+
+    <script>
+     function remove_disabled(){
+            $("input[name='phone']").removeAttr("disabled","disabled");
+            $("select[name='emotional_state']").removeAttr("disabled","disabled");
+            $("input[name='occupation']").removeAttr("disabled","disabled");
+            $("select[name='nation']").removeAttr("disabled","disabled");
+            $("input[name='education']").removeAttr("disabled","disabled");
+            $("input[name='years']").removeAttr("disabled","disabled");
+            $("input[name='height']").removeAttr("disabled","disabled");
+            $("input[name='weight']").removeAttr("disabled","disabled");
+            $("input[name='waist']").removeAttr("disabled","disabled");
+            $("input[name='hip']").removeAttr("disabled","disabled");
+            $("select[name='contact_way']").removeAttr("disabled","disabled");
+            $("input[name='contact_info']").removeAttr("disabled","disabled");
+            $("input[name='patient_urban_rural']").removeAttr("disabled","disabled");
+            $("input[name='patient_address']").removeAttr("disabled","disabled");
+            $("select[name='patient_live_type']").removeAttr("disabled","disabled");
+            $("input[name='patient_live_type_other']").removeAttr("disabled","disabled");
+            $("input[name='patient_only_child']").removeAttr("disabled","disabled");
+            $("input[name='patient_older_brother_num']").removeAttr("disabled","disabled");
+            $("input[name='patient_younger_brother_num']").removeAttr("disabled","disabled");
+            $("input[name='patient_older_sister_num']").removeAttr("disabled","disabled");
+            $("input[name='pathent_younger_sister_num']").removeAttr("disabled","disabled");
+            $("select[name='parents_favour']").removeAttr("disabled","disabled");
+            $("input[name='father_occupation']").removeAttr("disabled","disabled");
+            $("input[name='mother_occupation']").removeAttr("disabled","disabled");
+            $("input[name='father_tele']").removeAttr("disabled","disabled");
+            $("input[name='mother_tele']").removeAttr("disabled","disabled");
+            $("select[name='father_education']").removeAttr("disabled","disabled");
+            $("select[name='mother_education']").removeAttr("disabled","disabled");
+            $("select[name='parent_marry']").removeAttr("disabled","disabled");
+            $("select[name='step_parent']").removeAttr("disabled","disabled");
+
+            {% comment %}少一个继父继母{% endcomment %}
+            $("select[name='patient_parent_death']").removeAttr("disabled","disabled");
+            $("input[name='patient_parent_death_age']").removeAttr("disabled","disabled");
+            $("select[name='parent_argument']").removeAttr("disabled","disabled");
+            $("input[name='patient_adopt']").removeAttr("disabled","disabled");
+            $("input[name='patient_adopt_age']").removeAttr("disabled","disabled");
+            $("select[name='father_relationship']").removeAttr("disabled","disabled");
+            $("select[name='mother_relationship']").removeAttr("disabled","disabled");
+            $("#redo_bt_group").removeAttr("style","display:none;");
+           $("#family_bt").attr("style","display:block;");
+           $("#bt_group").attr("style","display:none;");
+        }
+    </script>
+
+{% endblock %}

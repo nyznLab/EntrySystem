@@ -1,0 +1,732 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}简式父母养育方式问卷表（s_embu）{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+    <style>
+    .area_block input.labelauty + label{
+	    margin-bottom:0px;
+        width:100px;
+	    display:inline-block;
+	    font-size: 13px;
+        padding: 1px;
+        text-align: center;
+	    background-color: #efefef;
+	    color: #b3b3b3;
+	    cursor: pointer;
+	    border-radius: 3px 3px 3px 3px;
+	    -moz-border-radius: 3px 3px 3px 3px;
+	    -webkit-border-radius: 3px 3px 3px 3px;
+    }
+    .patient_block input.labelauty + label{
+	    margin-bottom:0px;
+        width:200px;
+	    display:inline-block;
+	    font-size: 13px;
+        padding: 1px;
+        text-align: center;
+	    background-color: #efefef;
+	    color: #b3b3b3;
+	    cursor: pointer;
+	    border-radius: 3px 3px 3px 3px;
+	    -moz-border-radius: 3px 3px 3px 3px;
+	    -webkit-border-radius: 3px 3px 3px 3px;
+    }
+    .area_block label{
+        vertical-align: middle;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表</a></li>
+                         <li class="active"><a href="#" >简式父母养育方式问卷表（s_embu）</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="dashboard_graph x_panel" style="margin-top:0px;height:85%">
+            <div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '简式父母养育方式问卷（S-Embu）' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>  
+				         
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+                            <div class="container">
+                                <div class="col-md-12  text-center">
+                                    <h4><strong>简式父母养育方式问卷（s-embu）</strong></h4>
+                                </div>
+  
+                                <div class="row" style="margin: 5px;">
+                                    <div class="col-md-3">
+                                        <label>入学年份:</label><input type="text" name="year_of_school"/>
+                                    </div>
+                                    <div class="col-md-3">    
+                                        <label>年级: </label> <input type="text" name="grade"/>
+                                    </div>
+                                    <div class="col-md-6 area_block">
+                                        <label>地区：</label>
+                                        <input type="radio" name="region" value=0 data-labelauty="城市" />
+                                        <input type="radio" name="region" value=1 data-labelauty="乡村" />
+                                    </div>
+                                </div>
+                                <div class="row" style="margin: 5px;"> 
+                                    <div class="col-md-3 area_block">
+                                        <label>父母情况:</label>
+                                    </div>  
+                                    <div class="col-md-6 patient_block">
+                                        <input type="radio" name="parents_status" value=0 data-labelauty="双亲家庭" style="width: 60px;"/>
+                                        <input type="radio" name="parents_status" value=1 data-labelauty="单亲（母亲死亡）"/>
+                                        <input type="radio" name="parents_status" value=2 data-labelauty="单亲（父亲死亡）"/>
+                                        <input type="radio" name="parents_status" value=3 data-labelauty="单亲（父母离异，跟母亲）"/>
+                                        <input type="radio" name="parents_status" value=4 data-labelauty="单亲（父母离异，跟父亲）"/>
+                                        <input type="radio" name="parents_status" value=5 data-labelauty="父母死亡"/>
+                                    </div>    
+                                </div> 
+                                <div class="row" style="margin: 5px;">
+                                    <div class="col-md-3 area_block">
+                                        <label>你认为你的成绩在班级中为：</label>
+                                    </div> 
+                                    <div class="col-md-6 area_block">   
+                                        <input type="radio" name="mark_level" value=0 data-labelauty="上" >
+                                        <input type="radio" name="mark_level" value=1 data-labelauty="中上"/>
+                                        <input type="radio" name="mark_level" value=2 data-labelauty="中"/>
+                                        <input type="radio" name="mark_level" value=3 data-labelauty="中下"/>
+                                        <input type="radio" name="mark_level" value=4 data-labelauty="下"/>
+                                    </div>
+                                </div>
+                                <div style="border: 1px solid #DDDDDD;margin-bottom: 10px;">
+                                </div>       
+                                <div class="row" style="margin: 5px;">
+                                    <strong>指导语：请您分别选择最适合您父亲和您母亲的等级。每题只准选一个答案。您父亲和母亲对您的教养方式可能是相同的，也可能是不同的。请您实事求是地分别回答。如果您幼小时候父母不全，可以只回答父亲或母亲一栏。</strong>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table ">
+
+				                        <tbody>
+                                             <tr>
+                                                 <th rowspan="2">1.父\母亲常常在我不知道原因的情况下对我大发脾气</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question1_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question1_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question1_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question1_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question1_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question1_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question1_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question1_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <th rowspan="2">2.父\母亲赞美我</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question2_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question2_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question2_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question2_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question2_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question2_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question2_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question2_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">3.我希望父\母亲对我正在做的事不要过分担心</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question3_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question3_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question3_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question3_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question3_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question3_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question3_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question3_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">4.父\母亲对我的惩罚往往超过我应受的程度</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question4_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question4_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question4_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question4_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question4_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question4_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question4_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question4_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">5.父\母亲要求我回到家里必须得向她说明我在外面做了什么事</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question5_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question5_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question5_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question5_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question5_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question5_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question5_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question5_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">6.我觉得父\母亲尽量使我的青少年时期的生活更有意义和丰富多彩</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question6_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question6_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question6_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question6_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question6_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question6_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question6_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question6_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">7.父\母亲经常当着别人的面批评我既懒惰又无用</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question7_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question7_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question7_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question7_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question7_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question7_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question7_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question7_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">8.父\母亲不允许我做一些其他孩子可以做的事情，因为他（她）害怕我会出事</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question8_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question8_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question8_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question8_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question8_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question8_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question8_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question8_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">9.父\母亲总试图鼓励我，使我成为佼佼者</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question9_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question9_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question9_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question9_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question9_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question9_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question9_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question9_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">10.我觉得父\母亲对我可能出事的担心是夸大的、过分的</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question10_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question10_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question10_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question10_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question10_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question10_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question10_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question10_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+
+                                        <tr>
+                                                 <th rowspan="2">11.当遇到不顺心的事时，我能感到父\母亲在尽量鼓励我，使我得到安慰</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question11_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question11_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question11_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question11_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question11_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question11_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question11_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question11_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <th rowspan="2">12.我在家里往往被当作“替罪羊”或“害群之马”</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question12_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question12_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question12_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question12_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question12_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question12_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question12_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question12_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">13.我能通过父\母亲的言谈、表情感受到他（她）很喜欢我</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question13_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question13_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question13_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question13_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question13_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question13_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question13_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question13_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">14.父\母亲常以一种使我很难堪的方式对待我</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question14_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question14_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question14_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question14_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question14_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question14_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question14_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question14_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">15.父\母亲常常允许我到我喜欢去的地方，而他（她）又不会过分担心</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question15_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question15_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question15_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question15_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question15_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question15_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question15_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question15_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">16.我觉得父\母亲干涉我做的任何一件事</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question16_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question16_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question16_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question16_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question16_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question16_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question16_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question16_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">17.我觉得与父\母亲之间存在一种温暖、体贴和亲热的感觉</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question17_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question17_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question17_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question17_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question17_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question17_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question17_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question17_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">18.父\母亲对我该做什么、不该做什么都有严格的限制而且决不让步</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question18_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question18_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question18_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question18_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question18_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question18_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question18_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question18_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">19.即使是很小的过错，父\母亲也惩罚我</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question19_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question19_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question19_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question19_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question19_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question19_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question19_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question19_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">20.父\母亲总是左右我该穿什么衣服或该打扮成什么样子</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question20_father" value=4 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question20_father" value=3 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question20_father" value=2 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question20_father" value=1 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question20_mother" value=4 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question20_mother" value=3 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question20_mother" value=2 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question20_mother" value=1 data-labelauty="总是" /></td>
+                                             </tr>
+                                        <tr>
+                                                 <th rowspan="2">21.当我做的事情取得成功时，我觉得父\母亲很为我自豪</th>
+                                                 <td>父</td>
+                                                 <td><input type="radio" name="question21_father" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question21_father" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question21_father" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question21_father" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                             <tr>
+                                                 <td>母</td>
+                                                 <td><input type="radio" name="question21_mother" value=1 data-labelauty="从不" /></td>
+						                         <td><input type="radio" name="question21_mother" value=2 data-labelauty="偶尔" /></td>
+                                                 <td><input type="radio" name="question21_mother" value=3 data-labelauty="经常" /></td>
+                                                 <td><input type="radio" name="question21_mother" value=4 data-labelauty="总是" /></td>
+                                             </tr>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                 <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">母亲拒绝平均分：{{ s_embu_answer.refusal_mother|processNone }}</a>
+                                 </div>
+                                    <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">父亲拒绝平均分：{{ s_embu_answer.refusal_father|processNone }}</a>
+                                 </div>
+                                    <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">母亲情感温暖平均分：{{ s_embu_answer.emotional_warmth_mother|processNone }}</a>
+                                 </div>
+                                    <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">父亲情感温暖平均分：{{ s_embu_answer.emotional_warmth_father|processNone }}</a>
+                                 </div>
+                                    <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">母亲过度保护平均分：{{ s_embu_answer.overprotection_mother|processNone }}</a>
+                                 </div>
+                                    <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">父亲过度保护平均分：{{ s_embu_answer.overprotection_father|processNone }}</a>
+                                 </div>
+
+                            </div>
+
+                           <div class="row" id="bt_group">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    <a href="/scales/get_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {{% comment %}第一个{% endcomment %}
+                $("#last_scale").attr("style", "display:none;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:block;");
+                $("#next_scale").attr("style", "display:none;");
+            } else {{# 啥也不是 #}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            }
+            if ('{{ s_embu_answer }}' != 'None') {
+                {#数据填充 读数据#}
+                $("input[name='year_of_school']").val('{{ s_embu_answer.year_of_school|processNone }}');
+                $("input[name='grade']").val('{{ s_embu_answer.grade|processNone }}');
+                if ('{{ s_embu_answer.region }}' != 'None') {
+                    $("input[name='region'][value=" + Number({{ s_embu_answer.region }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.mark_level }}' != 'None') {
+                    $("input[name='mark_level'][value=" + Number({{ s_embu_answer.mark_level }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.parents_status }}' != 'None') {
+                    $("input[name='parents_status'][value=" + Number({{ s_embu_answer.parents_status }}) + "]").prop("checked", true);
+                }
+
+
+
+                if ('{{ s_embu_answer.question1_father }}' != 'None') {
+                    $("input[name='question1_father'][value=" + Number({{ s_embu_answer.question1_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question2_father }}' != 'None') {
+                    $("input[name='question2_father'][value=" + Number({{ s_embu_answer.question2_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question3_father }}' != 'None') {
+                    $("input[name='question3_father'][value=" + Number({{ s_embu_answer.question3_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question4_father }}' != 'None') {
+                    $("input[name='question4_father'][value=" + Number({{ s_embu_answer.question4_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question5_father }}' != 'None') {
+                    $("input[name='question5_father'][value=" + Number({{ s_embu_answer.question5_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question6_father }}' != 'None') {
+                    $("input[name='question6_father'][value=" + Number({{ s_embu_answer.question6_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question7_father }}' != 'None') {
+                    $("input[name='question7_father'][value=" + Number({{ s_embu_answer.question7_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question8_father }}' != 'None') {
+                    $("input[name='question8_father'][value=" + Number({{ s_embu_answer.question8_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question9_father }}' != 'None') {
+                    $("input[name='question9_father'][value=" + Number({{ s_embu_answer.question9_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question10_father }}' != 'None') {
+                    $("input[name='question10_father'][value=" + Number({{ s_embu_answer.question10_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question11_father }}' != 'None') {
+                    $("input[name='question11_father'][value=" + Number({{ s_embu_answer.question11_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question12_father }}' != 'None') {
+                    $("input[name='question12_father'][value=" + Number({{ s_embu_answer.question12_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question13_father }}' != 'None') {
+                    $("input[name='question13_father'][value=" + Number({{ s_embu_answer.question13_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question14_father }}' != 'None') {
+                    $("input[name='question14_father'][value=" + Number({{ s_embu_answer.question14_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question15_father }}' != 'None') {
+                    $("input[name='question15_father'][value=" + Number({{ s_embu_answer.question15_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question16_father }}' != 'None') {
+                    $("input[name='question16_father'][value=" + Number({{ s_embu_answer.question16_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question17_father }}' != 'None') {
+                    $("input[name='question17_father'][value=" + Number({{ s_embu_answer.question17_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question18_father }}' != 'None') {
+                    $("input[name='question18_father'][value=" + Number({{ s_embu_answer.question18_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question19_father }}' != 'None') {
+                    $("input[name='question19_father'][value=" + Number({{ s_embu_answer.question19_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question20_father }}' != 'None') {
+                    $("input[name='question20_father'][value=" + Number({{ s_embu_answer.question20_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question21_father }}' != 'None') {
+                    $("input[name='question21_father'][value=" + Number({{ s_embu_answer.question21_father }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question1_mother }}' != 'None') {
+                    $("input[name='question1_mother'][value=" + Number({{ s_embu_answer.question1_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question2_mother }}' != 'None') {
+                    $("input[name='question2_mother'][value=" + Number({{ s_embu_answer.question2_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question3_mother }}' != 'None') {
+                    $("input[name='question3_mother'][value=" + Number({{ s_embu_answer.question3_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question4_mother }}' != 'None') {
+                    $("input[name='question4_mother'][value=" + Number({{ s_embu_answer.question4_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question5_mother }}' != 'None') {
+                    $("input[name='question5_mother'][value=" + Number({{ s_embu_answer.question5_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question6_mother }}' != 'None') {
+                    $("input[name='question6_mother'][value=" + Number({{ s_embu_answer.question6_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question7_mother }}' != 'None') {
+                    $("input[name='question7_mother'][value=" + Number({{ s_embu_answer.question7_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question8_mother }}' != 'None') {
+                    $("input[name='question8_mother'][value=" + Number({{ s_embu_answer.question8_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question9_mother }}' != 'None') {
+                    $("input[name='question9_mother'][value=" + Number({{ s_embu_answer.question9_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question10_mother }}' != 'None') {
+                    $("input[name='question10_mother'][value=" + Number({{ s_embu_answer.question10_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question11_mother }}' != 'None') {
+                    $("input[name='question11_mother'][value=" + Number({{ s_embu_answer.question11_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question12_mother }}' != 'None') {
+                    $("input[name='question12_mother'][value=" + Number({{ s_embu_answer.question12_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question13_mother }}' != 'None') {
+                    $("input[name='question13_mother'][value=" + Number({{ s_embu_answer.question13_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question14_mother }}' != 'None') {
+                    $("input[name='question14_mother'][value=" + Number({{ s_embu_answer.question14_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question15_mother }}' != 'None') {
+                    $("input[name='question15_mother'][value=" + Number({{ s_embu_answer.question15_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question16_mother }}' != 'None') {
+                    $("input[name='question16_mother'][value=" + Number({{ s_embu_answer.question16_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question17_mother }}' != 'None') {
+                    $("input[name='question17_mother'][value=" + Number({{ s_embu_answer.question17_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question18_mother }}' != 'None') {
+                    $("input[name='question18_mother'][value=" + Number({{ s_embu_answer.question18_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question19_mother }}' != 'None') {
+                    $("input[name='question19_mother'][value=" + Number({{ s_embu_answer.question19_mother }}) + "]").prop("checked", true);
+                }if ('{{ s_embu_answer.question20_mother }}' != 'None') {
+                    $("input[name='question20_mother'][value=" + Number({{ s_embu_answer.question20_mother }}) + "]").prop("checked", true);
+                }
+                if ('{{ s_embu_answer.question21_mother }}' != 'None') {
+                    $("input[name='question21_mother'][value=" + Number({{ s_embu_answer.question21_mother }}) + "]").prop("checked", true);
+                }
+            }
+            {#锁住#}
+            $("input[name='year_of_school']").attr("disabled", "disabled");
+            $("input[name='grade']").attr("disabled", "disabled");
+            $("input[name='region']").attr("disabled", "disabled");
+            $("input[name='mark_level']").attr("disabled", "disabled");
+            $("input[name='parents_status']").attr("disabled", "disabled");
+            $("input[name='question1_father']").attr("disabled", "disabled");
+            $("input[name='question2_father']").attr("disabled", "disabled");
+            $("input[name='question3_father']").attr("disabled", "disabled");
+            $("input[name='question4_father']").attr("disabled", "disabled");
+            $("input[name='question5_father']").attr("disabled", "disabled");
+            $("input[name='question6_father']").attr("disabled", "disabled");
+            $("input[name='question7_father']").attr("disabled", "disabled");
+            $("input[name='question8_father']").attr("disabled", "disabled");
+            $("input[name='question9_father']").attr("disabled", "disabled");
+            $("input[name='question10_father']").attr("disabled", "disabled");
+            $("input[name='question11_father']").attr("disabled", "disabled");
+            $("input[name='question12_father']").attr("disabled", "disabled");
+            $("input[name='question13_father']").attr("disabled", "disabled");
+            $("input[name='question14_father']").attr("disabled", "disabled");
+            $("input[name='question15_father']").attr("disabled", "disabled");
+            $("input[name='question16_father']").attr("disabled", "disabled");
+            $("input[name='question17_father']").attr("disabled", "disabled");
+            $("input[name='question18_father']").attr("disabled", "disabled");
+            $("input[name='question19_father']").attr("disabled", "disabled");
+            $("input[name='question20_father']").attr("disabled", "disabled");
+            $("input[name='question21_father']").attr("disabled", "disabled");
+            $("input[name='question1_mother']").attr("disabled", "disabled");
+            $("input[name='question2_mother']").attr("disabled", "disabled");
+            $("input[name='question3_mother']").attr("disabled", "disabled");
+            $("input[name='question4_mother']").attr("disabled", "disabled");
+            $("input[name='question5_mother']").attr("disabled", "disabled");
+            $("input[name='question6_mother']").attr("disabled", "disabled");
+            $("input[name='question7_mother']").attr("disabled", "disabled");
+            $("input[name='question8_mother']").attr("disabled", "disabled");
+            $("input[name='question9_mother']").attr("disabled", "disabled");
+            $("input[name='question10_mother']").attr("disabled", "disabled");
+            $("input[name='question11_mother']").attr("disabled", "disabled");
+            $("input[name='question12_mother']").attr("disabled", "disabled");
+            $("input[name='question13_mother']").attr("disabled", "disabled");
+            $("input[name='question14_mother']").attr("disabled", "disabled");
+            $("input[name='question15_mother']").attr("disabled", "disabled");
+            $("input[name='question16_mother']").attr("disabled", "disabled");
+            $("input[name='question17_mother']").attr("disabled", "disabled");
+            $("input[name='question18_mother']").attr("disabled", "disabled");
+            $("input[name='question19_mother']").attr("disabled", "disabled");
+            $("input[name='question20_mother']").attr("disabled", "disabled");
+            $("input[name='question21_mother']").attr("disabled", "disabled");
+
+
+        }
+    </script>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+{% endblock %}

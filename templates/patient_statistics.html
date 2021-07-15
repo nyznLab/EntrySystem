@@ -1,0 +1,561 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}被试管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet" >
+{% endblock %}
+
+{% block content %}
+<div class="modal fade" id="modal_report" role="dialog" aria-labelledby="myModalLabel"aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+                  <form action="" method="post">
+      <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="report_name" align="center">
+            评估报告
+          </h4>
+          <br/>
+          <table style="font-size: 10px; border-collapse:separate; border-spacing:0px 10px;"  width="100%">
+            <tr>
+              <td id='name' width="50%">name</td>
+              <td id='sex' width="50%">sex</td>
+            </tr>
+            <tr>
+              <td id='age' width="50%">age</td>
+              <td id='no' width="50%">0_0</td>
+            </tr>
+          </table>
+      </div>
+      <div class="modal-body">
+        <div class = "row">
+                          <div class="col-md-12">
+                              <table class="table table-hover "  style="font-size: 10px;" >
+                                    <thead>
+                                      <tr>
+                                        <th>量表</th>
+                                        <th>得分</th>
+                                        <th>参考范围</th>
+                                        <th>提示</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for scale in scales %}
+                                        <tr id="scale{{ scale.id }}" style="display:none">
+                                          <td id="scale{{ scale.id }}_name">{{ scale.scale_name }}</td>
+                                          <td id="scale{{ scale.id }}_score">0</td>
+                                          <td id="scale{{ scale.id }}_reference"><10</td>
+                                          <td id="scale{{ scale.id }}_tip">正常</td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                              </table>
+                          </div>
+        </div>
+      </div>
+                  </form>
+    </div>
+  </div>
+</div>
+        <div class="right_col" role="main">
+          <div class="dashboard_graph x_panel">
+
+            <!-- top tiles -->
+            <div class="row tile_count">
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> 健康人总数</span>
+                <div class="count green">{{ hc_n }}</div>
+                <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> -->
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> 患者总数</span>
+                <div class="count red">{{ patients_n }}</div>
+                <!-- <span class="count_bottom"><i class="green">4% </i> From last Week</span> -->
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> MDD总数</span>
+                <div class="count ">{{ mdd_n }}</div>
+                <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> BD总数</span>
+                <div class="count">{{ bd_n }}</div>
+                <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span> -->
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> SZ总数</span>
+                <div class="count">{{ sz_n }}</div>
+                <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> 受试总数</span>
+                <div class="count">{{ subject_n }}</div>
+                <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+              </div>
+            </div>
+            <!-- /top tiles -->
+
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                  <h2>年龄<small>单位-岁</small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li> -->
+                    <!-- <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                    </li> -->
+                    <!-- <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li> -->
+                  </ul>
+                  <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  <canvas id="age_bar_chart"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                  <h2>受教育年限<small>单位-年</small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li> -->
+                    <!-- <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                    </li> -->
+                    <!-- <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li> -->
+                  </ul>
+                  <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  <canvas id="education_bar_chart"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>疾病比例</h2>
+                    <!-- <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul> -->
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <canvas id="pieChart"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>受试性别比例</h2>
+                    <!-- <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul> -->
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <canvas id="canvasDoughnut"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard_graph x_panel">
+            <div class="x_title">
+              <h2>受试信息</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row" style="border-top: solid #ACC0D8 1px;margin:5px 0px"></div>
+                <div class="row clearfix">
+			        <div class="col-md-12 column">
+				        <table  id="datatable" class="table table-striped table-hover" style="font-size: 13px;cellspacing:15px;">
+					    <thead>
+						<tr>
+              <th>
+								姓名
+							</th>
+							<th>
+								受试编号
+							</th>
+							<th>
+								复扫编号
+							</th>
+							<th>
+                复扫时间
+              </th>
+              <th>
+                诊断
+              </th>
+              <th>
+                医生
+              </th>
+              <th>
+                一般信息表测查
+              </th>
+              <th>
+                他评测查
+              </th>
+              <th>
+                自评测查
+              </th>
+              <th>
+                认知测查
+              </th>
+              <th>
+                评估报告
+              </th>
+              <th>
+                操作
+              </th>
+						</tr>
+					    </thead>
+					    <tbody>
+                        {% for patient in patients %}
+                            {% if patient.id|divisibleby:"2" %}
+                                <tr class="success">
+                            {% else %}
+                                <tr >
+                            {% endif %}
+                                <td>
+                                    {{ patient.name }}
+                                </td>
+                                <td>
+                                    {{ patient.patient_id }}
+                                </td>
+                                <td>
+                                    {{ patient.session_id }}
+                                </td>
+                                <td>
+                                    {{ patient.create_time }}
+                                </td>
+                                <td>
+                                    {{ patient.diagnosis }}
+                                </td>
+                                <td>
+                                    {{ patient.doctor_id }}
+                                </td>
+                                <td>
+                                  <a href="/patients/subjectDetailInfo">查看</a>
+                                </td>
+                                <td>
+                                  <a href="#modal_OtherTest" data-toggle="modal">量表详情</a>
+                                </td>
+                                <td>
+                                  <a href="#modal_SelfTest" data-toggle="modal">量表详情</a>
+                                </td>
+                                <td>
+                                  <a href="#modal_cognitionTest" data-toggle="modal">量表详情</a>
+                                </td>
+                                <td>
+                                  <a href="#modal_report" data-toggle="modal" onclick='return change_report_data("{{ patient.id }}","{{ patient.patient_id }}", "{{ patient.session_id }}",{{ patient.scale_id_list}},{{ patient.scale_score_list}},"{{ patient.name}}","{{ patient.sex}}","{{ patient.age}}");'>查看</a>
+                                </td>
+                                <td>
+                                  <button class="btn btn-warning btn-xs">
+                                    <a onclick='return deleteItem("{{ patient.patient_id }}", "{{ patient.session_id }}");' href="/patients/del_followup?patient_id={{ patient.patient_id }}&patient_session_id={{ patient.session_id }}&from_page=patient_statistics" style="color:white;">删除</a>
+                                  </button>
+                                </td>
+                                </tr>
+                        {% endfor %}
+					    </tbody>
+				    </table>
+			        </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src = "{% static '/js/subjectEstablish.js' %}"></script>
+
+    <!-- /Datatables -->
+    <!-- jQuery -->
+    <script src="{% static '/vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static '/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+    <!-- iCheck -->
+    <script src="{% static '/vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- Datatables -->
+    <script src="{% static '/vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static '/vendors/datatables.net-scroller/js/dataTables.scroller.js' %}"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static '/vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static '/vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{% static '/build/js/custom.js' %}"></script>
+
+  	<!-- Datatables -->
+	  <script src="{% static '/build/js/index.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{%  static '/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{%  static '/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- Chart.js -->
+    <script src="{%  static '/vendors/Chart.js/dist/Chart.min.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{%  static '/build/js/custom.min.js' %}"></script>
+    <!-- Chart.js -->
+    <script>
+      Chart.defaults.global.legend = {
+        enabled: false
+      };
+
+      // 年龄 Bar chart
+      var man_age_num_list = {{ man_age_num_list|safe }};
+      var woman_age_num_list = {{ woman_age_num_list|safe }};
+      var age_labels_list = {{ age_labels_list|safe }};
+      var ctx = document.getElementById("age_bar_chart");
+      var age_bar_chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: age_labels_list,
+          datasets: [{
+            label: '男',
+            backgroundColor: "#26B99A",
+            data: man_age_num_list
+          }, {
+            label: '女',
+            backgroundColor: "#03586A",
+            data: woman_age_num_list
+          }]
+        },
+
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+      // 受教育年限 Bar chart
+      var man_education_num_list = {{ man_education_num_list|safe }};
+      var woman_education_num_list = {{ woman_education_num_list|safe }};
+      var education_labels_list = {{ education_labels_list|safe }};
+      var ctx = document.getElementById("education_bar_chart");
+      var education_bar_chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: education_labels_list,
+          datasets: [{
+            label: '男',
+            backgroundColor: "#26B99A",
+            data: man_education_num_list
+          }, {
+            label: '女',
+            backgroundColor: "#03586A",
+            data: woman_education_num_list
+          }]
+        },
+
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+
+      // 各种病的比例 Pie chart
+      var ctx = document.getElementById("pieChart");
+      var data = {
+        datasets: [{
+          data: [{{ mdd_n }}, {{ bd_n }}, {{ sz_n }}],
+          backgroundColor: [
+            "#BDC3C7",
+            "#26B99A",
+            "#3498DB"
+          ],
+          label: 'My dataset' // for legend
+        }],
+        labels: [
+          "MDD",
+          "BD",
+          "SZ"
+        ]
+      };
+
+      var pieChart = new Chart(ctx, {
+        data: data,
+        type: 'pie',
+        otpions: {
+          legend: false
+        }
+      });
+
+      // 患者性别比例 Doughnut chart
+      var ctx = document.getElementById("canvasDoughnut");
+      var data = {
+        labels: [
+          "男",
+          "女",
+        ],
+        datasets: [{
+          data: [{{ woman_n }}, {{ man_n }}],
+          backgroundColor: [
+            "#26B99A",
+            "#3498DB"
+          ],
+          hoverBackgroundColor: [
+            "#36CAAB",
+            "#49A9EA"
+          ]
+
+        }]
+      };
+
+      var canvasDoughnut = new Chart(ctx, {
+        type: 'doughnut',
+        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+        data: data
+      });
+
+      function deleteItem(patient_id, session_id)
+      {
+          var text = "确定要删除patient_id:" + patient_id + "，session_id:" + session_id + "，这一条信息吗?";
+          if(confirm(text))
+          {
+              return true;
+          }else{
+              return false;
+        }
+      };
+
+      function change_report_data(id,patient_id,session_id,scale_id_list,scale_score_list,name,sex,age)
+      {
+        var all_scale_id_list = {{ all_scale_id_list|safe }};
+        var all_scale_name_list = {{ all_scale_name_list|safe }};
+        var all_scale_value_range_list = {{ all_scale_value_range_list|safe }};
+        var all_scale_value_str_range_list = {{ all_scale_value_str_range_list|safe }};
+
+        for(var scale_id of all_scale_id_list){
+          $('#scale'+scale_id).hide()
+            console.log('---'+scale_id)
+        }
+
+        $('#report_name').html('评估报告');
+        $('#name').html('姓名:'+name)
+        if(sex=='0'){
+          $('#sex').html('性别:男')
+        }else{
+          $('#sex').html('性别:女')
+        }
+        $('#age').html('年龄:'+age)
+        $('#no').html('编号:'+patient_id+'_'+session_id)
+        console.log(scale_id_list)
+        for (var j in scale_id_list) {
+          scale_id = scale_id_list[j]
+          scale_score = scale_score_list[j]
+
+          $('#scale'+scale_id).show()
+          var scale_name = ''
+          var scale_value_range = new Array();
+          var scale_value_str_range = new Array();
+          for(var i in all_scale_id_list){
+            if(all_scale_id_list[i] == scale_id){
+              scale_name = all_scale_name_list[i]
+              scale_value_range = all_scale_value_range_list[i]
+              scale_value_str_range = all_scale_value_str_range_list[i]
+              break
+            }
+          }
+
+          console.log(scale_name)
+          console.log(scale_score)
+          $('#scale'+scale_id+'_name').html(scale_name)
+          $('#scale'+scale_id+'_score').html(scale_score)
+
+          var scale_value_index = 0
+          for(;scale_value_index<scale_value_range.length;scale_value_index++){
+            range = scale_value_range[scale_value_index]
+            if(scale_score < range){
+              break
+            }
+          }
+          reference = ''
+          evaluation = scale_value_str_range[scale_value_str_range.length-1]
+          if(scale_value_index == 0){
+            reference = '0-'+scale_value_range[scale_value_index+1]
+          }else if(scale_value_index>0 && scale_value_index<scale_value_range.length){
+            reference = scale_value_range[scale_value_index-1]+'-'+scale_value_range[scale_value_index]
+          }else{
+            reference = '>'+scale_value_range[scale_value_range.length-1]
+          }
+
+          evaluation = ''
+          if(scale_value_index<scale_value_range.length){
+            evaluation = scale_value_str_range[scale_value_index]
+          }
+
+          $('#scale'+scale_id+'_reference').html(reference)
+          $('#scale'+scale_id+'_tip').html(evaluation)
+        }
+        return true;
+      };
+    </script>
+    <!-- /Chart.js -->
+{% endblock %}

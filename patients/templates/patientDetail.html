@@ -1,0 +1,74 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}受试预约详情页{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="dashboard_graph x_panel">
+		    <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+			        <ul class="breadcrumb">
+                        <li><a href="#">受试预约信息</a></li>
+                        <li><a href="#">受试人：李丽</a></li>
+                        <li class="active">预约详情</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="x_content">
+                <div class = "row">
+                    <div class = "form-group has-success">
+						<label class = "col-sm-1 control-label" for="name">姓名:</label>
+                        <div class ="col-sm-4">李丽</div>
+                        <label class = "col-sm-1 control-label" for="name">性别：</label>
+                        <div class ="col-sm-4">
+							女
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-1 control-label" for="birthday">出生日期:</label>
+                        <div class ="col-sm-4">
+                            10/22/2020
+                        </div>
+                        <label class = "col-sm-1 control-label" for="education">学历:</label>
+                        <div class = "col-sm-4">
+                            小学
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-1 control-label" for="occupation">职业:</label>
+                        <div class ="col-sm-4">学生</div>
+                        <label class = "col-sm-1 control-label" for="emotional_state">情感状态:</label>
+                        <div class = "col-sm-4">无</div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-1 control-label" for="phone">联系电话:</label>
+                        <div class ="col-sm-4">1324567895</div>
+                        <label class = "col-sm-1 control-label" for="date">预约日期:</label>
+                        <div class ="col-sm-4">23/12/2020</div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "form-group has-success">
+                        <label class = "col-sm-1 control-label" for="note">备注:</label>
+                        <div class ="col-sm-10">
+                            焦虑、暴躁
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}{% endblock %}

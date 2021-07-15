@@ -1,0 +1,375 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter%}
+{% block title %}儿童期（16岁以前）的成长经历量表{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="modal fade" id="exit_confirm" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <h4 align="center"> 您确认要退出当前自评量表测评吗？</h4>
+            <div align="center">
+                <button type="button"
+                        onclick="location='/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&session_id={{ session_id }}'"
+                        class="btn btn-danger" style="width:68px;height:34px">退出
+                </button>
+                <button type="button" class="btn btn-success" style="width:68px;height:34px" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li>量表评估</li>
+                    <li>自评量表</li>
+                    <li class="active">儿童期（16岁以前）的成长经历量表</li>
+                    <div style="float: right;margin-bottom: 0;"></div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel" style="margin-top: 0;height:80%;">
+        <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+            <div align="center" style="padding-left: 22.5%; padding-right: 22.5%">
+                <h5>
+                    <strong>
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        指导语：本问卷调查的是您儿童期（16岁以前）的成长经历。请根据您当时的体会从“从来没有这种现象、偶尔、有时、经常、总是”五个选项中选出最适合您情况的答案，如果您不是很清楚，请尽量估计。
+                    </strong>
+                </h5>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        {% csrf_token %}
+        <div class="question_area" name="question_area" style="text-align: center">
+            <form id="question_form" name="question_form" action="#">
+                <h3>
+                    <div name="question_text" id="question_text" class="row">1.当时家里没人关心我的饥饱。</div>
+                </h3>
+                <div id="options" class="options" style=" text-align: left;padding-left: 47.5%">
+                    <div class="row show-grid" style="margin:10px">
+                        <label>
+                            <input type="radio" name="question1_answer" class="answer" value=1
+                                   data-labelauty="从来没有这种现象"/>
+                        </label>
+                    </div>
+                    <div class="row show-grid" style="margin:10px">
+                        <label>
+                            <input type="radio" name="question1_answer" class="answer" value=2 data-labelauty="偶尔"/>
+                        </label>
+                    </div>
+                    <div class="row show-grid" style="margin:10px">
+                        <label>
+                            <input type="radio" name="question1_answer" class="answer" value=3 data-labelauty="有时"/>
+                        </label>
+                    </div>
+                    <div class="row show-grid" style="margin:10px">
+                        <label>
+                            <input type="radio" name="question1_answer" class="answer" value=4 data-labelauty="经常"/>
+                        </label>
+                    </div>
+                    <div class="row show-grid" style="margin:10px">
+                        <label>
+                            <input type="radio" name="question1_answer" class="answer" value=5 data-labelauty="总是"/>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <input id="question_submit" type="button" class="btn btn-success text-center"
+                           style="width:68px;height:34px" value="下一题">
+                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
+                           value="退&nbsp;&nbsp;出">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script>
+    // dom加载完毕
+    const $m_btn = $('.exit_button');
+    const $modal = $('#exit_confirm');
+    $m_btn.on('click', function () {
+        $modal.modal({backdrop: 'static'});
+    });
+
+    // 测试 bootstrap 居中
+    $modal.on('show.bs.modal', function () {
+        const $this = $(this);
+        const $modal_dialog = $this.find('.modal-dialog');
+        // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
+        $this.css('display', 'block');
+        $modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - $modal_dialog.height()) / 2)});
+    });
+    let time = new Date();
+    let suicide = false;
+    let question_index = {{ question_index }} + 1;
+    let end_flag = 0;
+    for(let index = 1 ; index < question_index ; index ++){
+        update_question(index);
+        if(index == 28){
+            document.getElementById('question_text').innerHTML = "在您的一生中，第一次性行为时您多大年龄？（如从来没有，填“88”）";
+                const options = document.getElementById('options');
+                for (let i = 0; i < 10; i++) {
+                    options.removeChild(options.childNodes[0]);
+                }
+                const div = document.createElement("div");
+                div.className = 'row show-grid';
+                div.style.margin = '10px';
+                const input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("name", "first_sex_age");
+                input.style.width = "100";
+                const text = document.createTextNode('岁');
+                div.appendChild(input);
+                div.appendChild(text);
+                options.appendChild(div);
+                options.style.paddingLeft = '46%';
+                end_flag = 1;
+                question_index++;
+                // 跳转
+                document.getElementById('question_submit').setAttribute('onclick', "location=\'" +
+                    "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" +
+                    "\'"
+                );
+        }
+    }
+    $(document).ready(function () {
+        $("input[type='radio']").labelauty();
+        $("#question_submit").on('click', function () {
+            if (question_index > 29) {
+                alert("请不要重复提交！");
+            }
+            if (question_index == 29) {
+                ajax_post($('#question_form'));
+                question_index++;
+            } else if (question_index == 28) {
+                ajax_post($('#question_form'));
+                document.getElementById('question_text').innerHTML = "在您的一生中，第一次性行为时您多大年龄？（如从来没有，填“88”）";
+                const options = document.getElementById('options');
+                for (let i = 0; i < 10; i++) {
+                    options.removeChild(options.childNodes[0]);
+                }
+                const div = document.createElement("div");
+                div.className = 'row show-grid';
+                div.style.margin = '10px';
+                const input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("name", "first_sex_age");
+                input.style.width = "100";
+                const text = document.createTextNode('岁');
+                div.appendChild(input);
+                div.appendChild(text);
+                options.appendChild(div);
+                options.style.paddingLeft = '46%';
+                end_flag = 1;
+                question_index++;
+                // 跳转
+                document.getElementById('question_submit').setAttribute('onclick', "location=\'" +
+                    "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" +
+                    "\'"
+                );
+            } else {
+                const answers = document.getElementsByClassName("answer");
+                let flag = 0;
+                for (let i = 0; i < answers.length; i++) {
+                    if (answers[i].checked) {
+                        flag = 1;
+                    }
+                }
+                if (flag == 0) {
+                    alert("问题不能为空！");
+                } else {
+                    ajax_post($('#question_form'));
+                    update_question(question_index);
+                    question_index++;
+                }
+            }
+            $("input[type='radio']").removeAttr("checked");
+        });
+    });
+
+    function alter_option_names(option_class_name, name) {
+        const nodes = document.getElementsByClassName(option_class_name);
+        for (let i = 0; i < nodes.length; i++) {
+            nodes[i].setAttribute("name", name);
+        }
+    }
+
+    function get_duration() {
+        const current_time = new Date();
+        const duration = time - current_time;
+        time = current_time;
+        return -duration;
+    }
+   function change_radio_value(option_class_name){
+        const nodes = document.getElementsByClassName(option_class_name);
+        for (let i = 0; i < nodes.length; i++) {
+            nodes[i].setAttribute("value", 6-nodes[i].getAttribute('value'));
+        }
+    }
+    function update_question(index) {
+        switch (index) {
+            case 1:
+                document.getElementById('question_text').innerHTML = "2.当时有人照顾我、保护我。";
+                alter_option_names("answer", "question2_answer");
+                change_radio_value('answer');
+                break;
+            case 2:
+                document.getElementById('question_text').innerHTML = "3.当时家里有人喊我“笨蛋”、“懒虫”或“丑八怪”等。";
+                alter_option_names("answer", "question3_answer");
+                change_radio_value('answer');
+                break;
+            case 3:
+                document.getElementById('question_text').innerHTML = "4.当时我的父母因为酗酒、吸毒或赌博而不能照顾家庭。";
+                alter_option_names("answer", "question4_answer");
+                break;
+            case 4:
+                document.getElementById('question_text').innerHTML = "5.当时家里有人重视我。";
+                alter_option_names("answer", "question5_answer");
+                change_radio_value('answer');
+                break;
+            case 5:
+                document.getElementById('question_text').innerHTML = "6.当时家里没人管我衣着冷暖。";
+                alter_option_names("answer", "question6_answer");
+                change_radio_value('answer');
+                break;
+            case 6:
+                document.getElementById('question_text').innerHTML = "7.当时我感到家里人爱我。";
+                alter_option_names("answer", "question7_answer");
+                change_radio_value('answer');
+                break;
+            case 7:
+                document.getElementById('question_text').innerHTML = "8.当时我觉得父母希望从来没有生过我。";
+                alter_option_names("answer", "question8_answer");
+                change_radio_value('answer');
+                break;
+            case 8:
+                document.getElementById('question_text').innerHTML = "9.当时家里有人把我打伤的很重，不得不去医院。";
+                alter_option_names("answer", "question9_answer");
+                break;
+            case 9:
+                document.getElementById('question_text').innerHTML = "10.当时我家的状况需要改善。";
+                alter_option_names("answer", "question10_answer");
+                break;
+            case 10:
+                document.getElementById('question_text').innerHTML = "11.当时家里有人打得我皮肤青紫或留下伤痕。";
+                alter_option_names("answer", "question11_answer");
+                break;
+            case 11:
+                document.getElementById('question_text').innerHTML = "12.当时家里有人用皮带、绳子、木板或其它硬东西惩罚我。";
+                alter_option_names("answer", "question12_answer");
+                break;
+            case 12:
+                document.getElementById('question_text').innerHTML = "13.当时家里人彼此互相关心。";
+                alter_option_names("answer", "question13_answer");
+                change_radio_value('answer');
+                break;
+            case 13:
+                document.getElementById('question_text').innerHTML = "14.当时家里有人向我说过侮辱性或让我伤心的话。";
+                alter_option_names("answer", "question14_answer");
+                change_radio_value('answer');
+                break;
+            case 14:
+                document.getElementById('question_text').innerHTML = "15.我当时受到了躯体虐待。";
+                alter_option_names("answer", "question15_answer");
+                break;
+            case 15:
+                document.getElementById('question_text').innerHTML = "16.我觉得我的童年比任何人的都完美。";
+                alter_option_names("answer", "question16_answer");
+                break;
+            case 16:
+                document.getElementById('question_text').innerHTML = "17.当时我被打得很重，引起了老师、邻居或医生等人的注意。";
+                alter_option_names("answer", "question17_answer");
+                break;
+            case 17:
+                document.getElementById('question_text').innerHTML = "18.当时我觉得家里有人恨我。";
+                alter_option_names("answer", "question18_answer");
+                break;
+            case 18:
+                document.getElementById('question_text').innerHTML = "19.当时家里人关系很亲密。";
+                alter_option_names("answer", "question19_answer");
+                change_radio_value('answer');
+                break;
+            case 19:
+                document.getElementById('question_text').innerHTML = "20.当时有人以带有性色彩的方式触摸我或让我触摸他/她。";
+                alter_option_names("answer", "question20_answer");
+                change_radio_value('answer');
+                break;
+            case 20:
+                document.getElementById('question_text').innerHTML = "21.当时有人威胁让我同他/她做性方面";
+                alter_option_names("answer", "question21_answer");
+                break;
+            case 21:
+                document.getElementById('question_text').innerHTML = "22.我觉得当时我的家好得不能再好了。";
+                alter_option_names("answer", "question22_answer");
+                break;
+            case 22:
+                document.getElementById('question_text').innerHTML = "23.当时有人试图让我做或看性方面的事。";
+                alter_option_names("answer", "question23_answer");
+                break;
+            case 23:
+                document.getElementById('question_text').innerHTML = "24.当时有人猥亵我，如耍流氓、动手动脚等。";
+                alter_option_names("answer", "question24_answer");
+                break;
+            case 24:
+                document.getElementById('question_text').innerHTML = "25.当时我的心灵受到了折磨或虐待。";
+                alter_option_names("answer", "question25_answer");
+                break;
+            case 25:
+                document.getElementById('question_text').innerHTML = "26.当时有人关心我的身体健康。";
+                alter_option_names("answer", "question26_answer");
+                change_radio_value('answer');
+                break;
+            case 26:
+                document.getElementById('question_text').innerHTML = "27.我当时受到了性虐待。";
+                alter_option_names("answer", "question27_answer");
+                change_radio_value('answer');
+                break;
+            case 27:
+                document.getElementById('question_text').innerHTML = "28.当时家是我获得力量和支持的源泉。";
+                alter_option_names("answer", "question28_answer");
+                change_radio_value('answer');
+                break;
+        }
+    }
+
+    function ajax_post(form) {
+        const csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.ajax({
+            url: 'http://' + location.host +
+                '/scales/self_tests_submit?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}',
+            type: 'POST',
+            dataType: 'JSON',
+            async: false,
+            data: {
+                'data': form.serialize(),
+                'question_index': question_index,
+                'duration': get_duration(),
+                'test_name': 'ctq_sf',
+                'flag': end_flag,
+                'csrfmiddlewaretoken': csrf
+            }
+        })
+    }
+
+</script>
+
+{% endblock %}

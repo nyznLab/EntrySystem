@@ -1,0 +1,310 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}斯奈斯和汉密尔顿快乐量表(shaps){% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表</a></li>
+                         <li class="active"><a href="#" >斯奈斯和汉密尔顿快乐量表(shaps)</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel"  style="margin-top: 0px;height: 80%;">
+            <div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '斯奈斯和汉密尔顿快乐量表' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>  
+				         
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+                        <div class="container">
+                            <div class="row" style=" margin: 20px;">
+                                <h4><strong><center>斯奈斯和汉密尔顿快乐量表</center><br/></strong></h4>
+                                <strong><i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;该量表用于测试您在最近数日能体会快乐的能力过的项目时，请仔细阅读每个项目，并在合适的分数上打勾。1=绝对同意 2=同意 3=不同意 4=绝对不同意<br/></strong>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table   class="table" style="width:100%;">
+				                        <thead>
+					                    <tr>
+						                    <th >
+                                                <center> 问题</center>
+						                    </th>
+                                            <th  >
+                                                <center> 1</center>
+						                    </th>
+                                            <th  >
+                                                <center> 2</center>
+						                    </th>
+                                            <th  >
+                                                <center> 3</center>
+						                    </th>
+                                            <th  >
+                                                <center> 4</center>
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody align="left">
+                                             <tr >
+						                         <td style="width: 40%;">1.我会享受我最喜欢的电视或收音机节目</td>
+						                         <td style="width: 15%;"><input type="radio" name="question1_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                 <td style="width: 15%;"><input type="radio" name="question1_answer" value=2 data-labelauty="同意"/></td>
+                                                 <td style="width: 15%;"><input type="radio" name="question1_answer" value=3 data-labelauty="不同意"/></td>
+                                                 <td style="width: 15%;"><input type="radio" name="question1_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>2.我会享受和我的家人或亲密的朋友在一起</td>
+						                        <td><input type="radio" name="question2_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question2_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question2_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question2_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>3.我会在我的业余爱好和消遣中找到乐趣</td>
+                                                <td><input type="radio" name="question3_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question3_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question3_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question3_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>4.我能够享受我最喜欢的食物</td>
+                                                <td><input type="radio" name="question4_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question4_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question4_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question4_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>5.我会享受洗个热水澡或令人清新的淋浴</td>
+                                                <td><input type="radio" name="question5_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question5_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question5_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question5_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>6.我会在花的芳香或清新的海风或新鲜出炉的面包的气味中找到乐趣</td>
+                                                <td><input type="radio" name="question6_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question6_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question6_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question6_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>7.我会享受看到别人的笑脸</td>
+                                                <td><input type="radio" name="question7_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question7_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question7_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question7_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>8.我会享受我美观的外表,当我已经在我的外表下了很多功夫</td>
+                                                <td><input type="radio" name="question8_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question8_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question8_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question8_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>9.我会享受阅读书籍、杂志或者报纸</td>
+                                                <td><input type="radio" name="question9_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question9_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question9_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question9_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>10.我会享受饮用一杯茶或咖啡或我喜爱的饮料</td>
+                                                <td><input type="radio" name="question10_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question10_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question10_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question10_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>11.我会找到乐趣在小的事情，例如阳光明媚的一天，一个朋友打来的电话</td>
+                                                <td><input type="radio" name="question11_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question11_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question11_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question11_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>12.我会享受一道美丽的风景或景象</td>
+                                                <td><input type="radio" name="question12_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question12_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question12_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question12_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>13.我会从帮助他人中得到快乐</td>
+                                                <td><input type="radio" name="question13_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question13_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question13_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question13_answer" value=4 data-labelauty="绝对不同意"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>14.我会感到高兴,当我得到他人的赞美</td>
+                                                <td><input type="radio" name="question14_answer" value=1 data-labelauty="绝对同意"/></td>
+                                                <td><input type="radio" name="question14_answer" value=2 data-labelauty="同意"/></td>
+                                                <td><input type="radio" name="question14_answer" value=3 data-labelauty="不同意"/></td>
+                                                <td><input type="radio" name="question14_answer" value=4 data-labelauty="绝对不同意"/></td>
+                                  </tr>
+                                  <tr>
+                                    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                 <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">总分：{{ shaps_answer.total_score|processNone }}</a>
+                                 </div>
+                            </div>
+
+
+                               <div class="row" id="bt_group">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    {% csrf_token %}
+                                    <a href="/scales/get_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {{% comment %}第一个{% endcomment %}
+                $("#last_scale").attr("style", "display:none;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:block;");
+                $("#next_scale").attr("style", "display:none;");
+            } else {{# 啥也不是 #}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            }
+            if ('{{ shaps_answer }}' != 'None') {
+                {#数据填充 读数据#}
+                if ('{{ shaps_answer.question1_answer }}' != 'None') {
+                    $("input[name='question1_answer'][value=" + Number({{ shaps_answer.question1_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question2_answer }}' != 'None') {
+                    $("input[name='question2_answer'][value=" + Number({{ shaps_answer.question2_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question3_answer }}' != 'None') {
+                    $("input[name='question3_answer'][value=" + Number({{ shaps_answer.question3_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question4_answer }}' != 'None') {
+                    $("input[name='question4_answer'][value=" + Number({{ shaps_answer.question4_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question5_answer }}' != 'None') {
+                    $("input[name='question5_answer'][value=" + Number({{ shaps_answer.question5_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question6_answer }}' != 'None') {
+                    $("input[name='question6_answer'][value=" + Number({{ shaps_answer.question6_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question7_answer }}' != 'None') {
+                    $("input[name='question7_answer'][value=" + Number({{ shaps_answer.question7_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question8_answer }}' != 'None') {
+                    $("input[name='question8_answer'][value=" + Number({{ shaps_answer.question8_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question9_answer }}' != 'None') {
+                    $("input[name='question9_answer'][value=" + Number({{ shaps_answer.question9_answer }}) + "]").prop("checked", true);
+                }if ('{{ shaps_answer.question10_answer }}' != 'None') {
+                    $("input[name='question10_answer'][value=" + Number({{ shaps_answer.question10_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question11_answer }}' != 'None') {
+                    $("input[name='question11_answer'][value=" + Number({{ shaps_answer.question11_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question12_answer }}' != 'None') {
+                    $("input[name='question12_answer'][value=" + Number({{ shaps_answer.question12_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question13_answer }}' != 'None') {
+                    $("input[name='question13_answer'][value=" + Number({{ shaps_answer.question13_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ shaps_answer.question14_answer }}' != 'None') {
+                    $("input[name='question14_answer'][value=" + Number({{ shaps_answer.question14_answer }}) + "]").prop("checked", true);
+                }
+            }
+            {#锁住#}
+            $("input[name='question1_answer']").attr("disabled", "disabled");
+            $("input[name='question2_answer']").attr("disabled", "disabled");
+            $("input[name='question3_answer']").attr("disabled", "disabled");
+            $("input[name='question4_answer']").attr("disabled", "disabled");
+            $("input[name='question5_answer']").attr("disabled", "disabled");
+            $("input[name='question6_answer']").attr("disabled", "disabled");
+            $("input[name='question7_answer']").attr("disabled", "disabled");
+            $("input[name='question8_answer']").attr("disabled", "disabled");
+            $("input[name='question9_answer']").attr("disabled", "disabled");
+            $("input[name='question10_answer']").attr("disabled", "disabled");
+            $("input[name='question11_answer']").attr("disabled", "disabled");
+            $("input[name='question12_answer']").attr("disabled", "disabled");
+            $("input[name='question13_answer']").attr("disabled", "disabled");
+            $("input[name='question14_answer']").attr("disabled", "disabled");
+
+        }
+    </script>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+{% endblock %}
+

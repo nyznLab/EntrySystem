@@ -1,0 +1,288 @@
+gh{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}其他资料{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+<style>
+  .row input.labelauty + label{
+    margin-bottom:0px;
+    width:150px;
+	  display:inline-block;
+	  font-size: 13px;
+    padding: 3px;
+    text-align: center;
+	  background-color: #efefef;
+	  color: #b3b3b3;
+	  cursor: pointer;
+	  border-radius: 3px 3px 3px 3px;
+	  -moz-border-radius: 3px 3px 3px 3px;
+	  -webkit-border-radius: 3px 3px 3px 3px;
+  }
+
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="#">量表评估</a></li>
+                    <li><a href="#">个人详细信息录入</a></li>
+                    <li class="active"><a href="#">其他资料</a></li>
+                    <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel" style="height: 80%">
+        <div id="wrapper">
+            <div id="left-side" style="height: 100%;" class="col-md-2">
+                <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                    {% if scale_name|get_item:'scale__scale_name' == '一般资料－其他资料' %}
+                    <li class="step doing  ">
+                        <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                    </li>
+                    {% elif scale_name|get_item:'state' == 0 %}
+                    <li class="step nodone notclick">
+                        <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                    </li>
+                    {% else %}
+                    <li class="step done notclick">
+                        <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    <li class="finish nodone notclick">
+                        <p>完成</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="right-side" class="col-md-10">
+                <div id="first" class="active">
+                    <form name="otherform"
+                          action="/scales/add_other?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}"
+                          method="post" onSubmit="return myCheck(this)">
+
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                            <h2>社会支持 <small>Social support</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br>
+                        <div class="x_content">
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">您有几个亲密的朋友<span
+                                        class="required">*</span></label>
+                                <div class="col-md-2 col-sm-2">
+                                    <input type="radio" name="patient_friend_num" value=1 data-labelauty="0个"/>
+                                </div>
+                                <div class="col-md-2 col-sm-2">
+                                    <input type="radio" name="patient_friend_num" value=2 data-labelauty="1个"/>
+                                </div>
+                                <div class="col-md-2 col-sm-2">
+                                    <input type="radio" name="patient_friend_num" value=3 data-labelauty="2个"/>
+                                </div>
+                                <div class="col-md-2 col-sm-2">
+                                    <input type="radio" name="patient_friend_num" value=4 data-labelauty="3个及以上"/>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+
+                        <div class="x_title">
+                            <div class="clearfix"></div>
+                            <h2>重大生活事件 <small>Huge life events</small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br>
+                        <div class="x_content">
+                            <div class="form-group row">
+                                <label class="control-label col-md-12 col-sm-12">最近三个月内是否发生过对您有重大影响的生活事件？（如失恋、家庭变故、欠债、投资失败、辍学、人际关系紧张等）<span
+                                        class="required">*:</span></label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 " id="patient_big_event_1">
+                                    <center><input type="radio" name="patient_big_event" value=1 data-labelauty="是"/>
+                                    </center>
+                                </div>
+                                <div class="col-md-5 col-sm-5 " id="patient_big_event_2">
+                                    <input type="radio" name="patient_big_event" value=0 data-labelauty="否"/>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="form-group row other_description">
+                                <label class="control-label col-md-1 col-sm-1">描述<span class="required">:</span></label>
+                                <div class="col-md-11 col-sm-11 form-group  ">
+                                <textarea rows="3" cols="20" id="patient_big_event_describtion"
+                                          name="patient_big_event_describtion" class="form-control">
+                                </textarea>
+                                </div>
+                            </div>
+
+                            <br>
+                        </div>
+                        {#0.重做按钮组合#}
+                    <div class="row" id="redo_bt_group">
+                        <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                            <a href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale0">
+                                <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                            </a>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success text-center" value="保存提交量表" id="other_bt">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               style="float: right"><u>跳过该量表</u></a>
+                        </div>
+                    </div>
+                        {#1.展示按钮组合#}
+                    <div class="row" id="bt_group" style="display: none">
+                            <div  class="col-md-4 col-sm-6 text-center"  >
+                               <a  href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale">
+                                   <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                               </a>
+                            </div>
+
+                            <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                 {% csrf_token %}
+                                <a href="/scales/get_next_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                </a>
+                            </div>
+                            <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                     {% csrf_token %}
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                    </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                            </div>
+                    </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+  <script>
+       function getData(){
+           var order = "{{ order }}";
+            if (order == 0) {
+                $("#last_scale0").attr("style", "display:none;");
+            }
+           var do_type="{{ do_type }}";
+           if(do_type=='1')
+           {
+               if('{{ patient_baseinfo_other }}'!='None') {
+
+                   {#数据填充 读数据#}
+                   var patient_friend_num = Number("{{ patient_baseinfo_other.patient_friend_num }}");
+                   $("input[name='patient_friend_num'][value=" + patient_friend_num + "]").prop("checked", true);
+
+                   var patient_big_event = Number("{{ patient_baseinfo_other.patient_big_event }}");
+                   $("input[name='patient_big_event'][value=" + patient_big_event + "]").prop("checked", true);
+                   if (patient_big_event == 0) {
+                       $(".other_description").attr("style", "display:none;");
+                       document.getElementById("patient_big_event_describtion").value = ""
+                   } else if (patient_big_event == 1) {
+                       $(".other_description").removeAttr("style", "display:none;");
+                       document.getElementById("patient_big_event_describtion").value = "{{ patient_baseinfo_other.patient_big_event_describtion|processNone }}"
+                   }
+
+               }
+               {#锁住#}
+               $("input[name='patient_friend_num']").attr("disabled","disabled");
+               $("input[name='patient_big_event']").attr("disabled","disabled");
+               $("textarea[name='patient_big_event_describtion']").attr("disabled","disabled");
+               $("#bt_group").attr("style","display:block;");
+               $("#redo_bt_group").attr("style","display:none;");
+
+               var order = "{{ order }}";
+               if(order==0){{% comment %}第一个{% endcomment %}
+                   $("#last_scale").attr("style","display:none;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+               }else if(order==1){{% comment %}最后一个{% endcomment %}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:block;");
+                   $("#next_scale").attr("style","display:none;");
+               }else{{# 啥也不是 #}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+                }
+           }
+       }
+    </script>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+        <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+	cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+});
+
+
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".other_description").hide();
+    $("input:radio[name='patient_big_event']").click(function () {
+        patient_somatic_diseases = $(this).val();
+        if (Number(patient_somatic_diseases == 0)) {
+            $(".other_description").hide();
+            $("#patient_big_event_describtion").removeAttr("required");
+            $("#patient_big_event_describtion").val("");
+        }
+        if (Number(patient_somatic_diseases == 1)) {
+            $("#patient_big_event_describtion").attr('required', 'required');
+            $(".other_description").show();
+        }
+    });
+});
+    {% comment %}  function myCheck(otherform)
+      {
+          if (document.otherform.patient_friend_num.value=="") {
+              alert("问题一不能为空！");
+              return false;
+          }
+          alert("提交成功！");
+          return true;
+      }{% endcomment %}
+</script>
+<script>
+ function remove_disabled(){
+     $("input[name='patient_friend_num']").removeAttr("disabled","disabled");
+     $("input[name='patient_big_event']").removeAttr("disabled","disabled");
+     $("textarea[name='patient_big_event_describtion']").removeAttr("disabled","disabled");
+     $("#redo_bt_group").removeAttr("style","display:none;");
+     $("#other_bt").attr("style","display:block;");
+     $("#bt_group").attr("style","display:none;");
+    }
+</script>
+{% endblock %}

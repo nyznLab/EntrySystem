@@ -1,0 +1,190 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}随访管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href={% static '/css/tinyselect.css' %}>
+    <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet"/>
+
+    <style>
+        .sel_beauty {
+            background: #fafdfe;
+            height: 33px;
+            width: 180px;
+            line-height: 28px;
+            border: 1px solid #9bc0dd;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            width: 158px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!--弹出模态框 ，筛选随访条件 -->
+    <div class="modal fade" id="modal_container_search" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/followup/get_followup_by_search" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 class="modal-title" id="myModalLabel">
+                            筛选随访条件
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="start_time"
+                                   style="text-align: right">起始日期：</label>
+                            <div id="start_time" class="col-sm-4">
+                                <input type="date" class="sel_beauty form-control input-sm" name="start_time"
+                                       />
+                            </div>
+
+                            <label class="col-sm-2 control-label" for="start_time"
+                                   style="text-align: right">截止日期：</label>
+                            <div id="end_time" class="col-sm-4">
+                                <input type="date" class="sel_beauty form-control input-sm" name="end_time"
+                                       />
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="subject_number"
+                                   style="text-align: right">诊断情况<span class="required">:</span></label>
+                            <div class="col-md-8">
+                                <label><input name="diagnosis_list" type="checkbox" value=0/>未诊断 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=1/>健康者 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=2/>重性抑郁障碍 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=3/>焦虑障碍 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=4/>双相障碍 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=5/>精神分裂症 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=6/>强迫症 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=7/>高危遗传 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=8/>临床高危 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=9/>抑郁症状 </label>
+                                <label><input name="diagnosis_list" type="checkbox" value=99/>其他诊断 </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="text-center">
+                                <button class="btn btn-success" type="submit">查找</button>
+                                <button class="btn btn-warning" type="button">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框结束 -->
+
+
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="/patients/get_patient_baseinfo">被试信息</a></li>
+                        <li class="active"><a href="#">随访管理</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel">
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <a href="#modal_container_search" data-toggle="modal">
+                            <button class="btn btn-warning btn-sm"><span class="fa fa-search"></span><span>筛选随访条件</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="row" style="border-top: solid #ACC0D8 1px;margin:5px 0px"></div>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+
+                        <table id="" class="table table-striped table-hover" style="font-size: 13px;cellspacing:15px;">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>诊断</th>
+                                <th>第一次扫描时间</th>
+                                <th>最近一次扫描时间</th>
+                                <th>随访意向确认时间</th>
+                                <th>意向确认情况</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for patient in followup_list %}
+                                <tr>
+                                    <td>{{ patient.patient_session.standard_id }}</td>
+                                    <td>{{ patient.patient.name }}</td>
+                                    <td>
+                                        {% if patient.patient.sex == 0 %}
+                                            男
+                                        {% else %}
+                                            女
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ patient.patient_session.age }}</td>
+                                    <td>
+{#                                        {{ patient.patient|get_diagnosis_by_object }}#}
+                                    </td>
+                                    <td>{{ patient.first_scan_time }}</td>
+                                    <td>{{ patient.patient_session.scan_date }}</td>
+                                    <td>{{ patient.update_time }}</td>
+                                    <td>
+                                        {% if patient.followup_intention == 0 %}
+                                            <input type="radio" name="followup_intention" class="flat" value=0 checked/>
+                                            暂不接受
+                                            <input type="radio" name="followup_intention" class="flat" value=1/>接受随访
+                                        {% elif patient.followup_intention == 1 %}
+                                            <input type="radio" name="followup_intention" class="flat" value=0/>暂不接受
+                                            <input type="radio" name="followup_intention" class="flat" value=1 checked/>
+                                            接受随访
+                                        {% else %}
+                                            <input type="radio" name="followup_intention" class="flat" value=0/>暂不接受
+                                            <input type="radio" name="followup_intention" class="flat" value=1/>接受随访
+                                        {% endif %}
+                                        &nbsp;&nbsp;&nbsp;
+                                        随访意向备注：<input type="text" name="intention_note"
+                                                      value="{{ patient.intention_note|processNone }}"/>
+                                    </td>
+
+                                </tr>
+
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script src="{% static '/js/layerJquery.js' %}"></script>
+    <script src="{% static '/js/layer.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+{% endblock %}

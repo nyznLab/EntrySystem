@@ -1,0 +1,445 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}中国利手量表{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+		<div class="container">
+			<div class="row show-grid">
+			  <div class="col-md-12 col-sm-12 col-xs-12">
+				  <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+					   <li ><a href="#">量表评估</a></li>
+					   <li><a href="#" >个人详细信息录入</a></li>
+					   <li class="active"><a href="#" >利手信息</a></li>
+                      <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                      </div>
+
+				  </ul>
+			  </div>
+			</div>
+		</div>  
+        <div class="dashboard_graph x_panel" style="height: 80%">
+			  <div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '中国利手量表' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>
+				<div id="right-side" class="col-md-10">
+				  <div id="first" class="active">
+                        <form name="chiform" action="/scales/add_chinesehandle?patient_id={{ patient_id }}&patient_session_id={{ patient_session_id }}&questionnaire_type={{ questionnaire_type|add:1 }}" method="post" onSubmit="return myCheck(this)">
+                        	{%  csrf_token %}
+							<div class="container">
+                                <div class="x_title">
+                    <div class="clearfix"></div>
+                    <h2>左右利手量表 </h2>
+                    <div class="clearfix"></div>
+                  </div>
+	                        <div class="row clearfix">
+		                        <div class="col-md-12 column">
+			                        <table class="table">
+				                        <thead>
+					                    <tr>
+						                    <th>
+							                    项目
+						                    </th>
+						                    <th>
+							                    用右手
+						                    </th>
+						                    <th>
+							                    用左手
+						                    </th>
+						                    <th>
+							                    混合手
+						                    </th>
+					                    </tr>
+				                        </thead>
+				                        <tbody>
+					                        <tr>
+						                        <td>
+							                       1.执笔
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_pen" value=1 data-labelauty="1" /> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_pen" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_pen" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       2.执筷
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_chopsticks" value=1 data-labelauty="1"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_chopsticks" value=0  data-labelauty="0"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_chopsticks" value=2  data-labelauty="2"/>
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       3.掷东西
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="throw_things" value=1 data-labelauty="1"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="throw_things" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="throw_things" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       4.持牙刷刷牙
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="brush_tooth" value=1 data-labelauty="1" />
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="brush_tooth" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="brush_tooth" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       5.持剪刀
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_scissors" value=1 data-labelauty="1"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_scissors" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_scissors" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       6.划火柴
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_match" value=1 data-labelauty="1"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_match" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_match" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       7.持针穿线
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_needle" value=1 data-labelauty="1"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_needle" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="use_needle" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       8.握钉锤
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_hammer" value=1 data-labelauty="1"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_hammer" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_hammer" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       9.握球拍
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_racket" value=1 data-labelauty="1" />
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_racket" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="hold_racket" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+
+                                            <tr>
+						                        <td>
+							                       10.持毛巾洗脸
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="wash_face" value=1 data-labelauty="1"/>
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="wash_face" value=0 data-labelauty="0"/> 
+						                        </td>
+						                        <td>
+							                        <input type="radio"  name="wash_face" value=2 data-labelauty="2"/> 
+						                        </td>
+					                        </tr>
+
+				                        </tbody>
+                                    </table>
+		                        </div>
+	                        </div>
+                           
+                            <div class="row" style="margin-left: 5px;margin-top: 10px;">
+                               结果评定说明：<br>如果前六项都用右手或左手，后四项中任何一至四项用另一手，则称为右利或左利。<br>如果前六项中：有一至五项习用一手，其余则习用另手，或有一项为混合手，则称为混合利。
+                            </div>
+                            <br>
+
+                        </div>
+
+                            <br>
+                            <div class=" result row" style="display: none">
+                                <div class="col-md-12 col-sm-12">
+                                    <a  style="float: left;font-weight: bold">总分：{{ patient_baseinfo_chi.result }}</a>
+                                </div>
+                            </div>
+
+
+
+                        {#0.重做按钮组合#}
+                    <div class="row" id="redo_bt_group">
+                        <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                            <a href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale0">
+                                <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                            </a>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success text-center" value="保存提交量表" id="other_bt">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               style="float: right"><u>跳过该量表</u></a>
+                        </div>
+                    </div>
+                        {#1.展示按钮组合#}
+                    <div class="row" id="bt_group" style="display: none">
+                            <div  class="col-md-4 col-sm-6 text-center"  >
+                               <a  href="/scales/get_last_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                               id="last_scale">
+                                   <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                               </a>
+                            </div>
+
+                            <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                 {% csrf_token %}
+                                <a href="/scales/get_next_baseinfo_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                </a>
+                            </div>
+                            <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                     {% csrf_token %}
+                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                            </div>
+                    </div>
+                        </form>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <script>
+       function getData(){
+           var order = "{{ order }}";
+            if (order == 0) {
+                $("#last_scale0").attr("style", "display:none;");
+            }
+           var do_type="{{ do_type }}";
+           if(do_type=='1')
+           {
+               if('{{ patient_baseinfo_chi }}'!='None') {
+
+                   {#数据填充 读数据#}
+                   if ('{{ patient_baseinfo_chi.hold_pen }}' != 'None') {
+                       $("input[name='hold_pen'][value=" + Number({{ patient_baseinfo_chi.hold_pen }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.hold_chopsticks }}' != 'None') {
+                       $("input[name='hold_chopsticks'][value=" + Number({{ patient_baseinfo_chi.hold_chopsticks }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.throw_things }}' != 'None') {
+                       $("input[name='throw_things'][value=" + Number({{ patient_baseinfo_chi.throw_things }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.brush_tooth }}' != 'None') {
+                       $("input[name='brush_tooth'][value=" + Number({{ patient_baseinfo_chi.brush_tooth }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.use_scissors }}' != 'None') {
+                       $("input[name='use_scissors'][value=" + Number({{ patient_baseinfo_chi.use_scissors }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.use_match }}' != 'None') {
+                       $("input[name='use_match'][value=" + Number({{ patient_baseinfo_chi.use_match }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.use_needle }}' != 'None') {
+                       $("input[name='use_needle'][value=" + Number({{ patient_baseinfo_chi.use_needle }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.hold_hammer }}' != 'None') {
+                       $("input[name='hold_hammer'][value=" + Number({{ patient_baseinfo_chi.hold_hammer }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.hold_racket }}' != 'None') {
+                       $("input[name='hold_racket'][value=" + Number({{ patient_baseinfo_chi.hold_racket }}) + "]").prop("checked", true);
+                   }
+                   if ('{{ patient_baseinfo_chi.wash_face }}' != 'None') {
+                       $("input[name='wash_face'][value=" + Number({{ patient_baseinfo_chi.wash_face }}) + "]").prop("checked", true);
+                   }
+               }
+               {#锁住#}
+               $("input[name='hold_pen']").attr("disabled","disabled")
+               $("input[name='hold_chopsticks']").attr("disabled","disabled");
+               $("input[name='throw_things']").attr("disabled","disabled");
+               $("input[name='brush_tooth']").attr("disabled","disabled");
+               $("input[name='use_scissors']").attr("disabled","disabled");
+               $("input[name='use_match']").attr("disabled","disabled");
+               $("input[name='use_needle']").attr("disabled","disabled");
+               $("input[name='hold_hammer']").attr("disabled","disabled");
+               $("input[name='hold_racket']").attr("disabled","disabled");
+               $("input[name='wash_face']").attr("disabled","disabled");
+               $("#bt_group").attr("style","display:block;");
+               $("#redo_bt_group").attr("style","display:none;");
+
+               var order = "{{ order }}";
+               if(order==0){{% comment %}第一个{% endcomment %}
+                   $("#last_scale").attr("style","display:none;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+               }else if(order==1){{% comment %}最后一个{% endcomment %}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:block;");
+                   $("#next_scale").attr("style","display:none;");
+               }else{{# 啥也不是 #}
+                   $("#last_scale").attr("style","display:block;");
+                   $("#next_scale_final").attr("style","display:none;");
+                   $("#next_scale").attr("style","display:block;");
+                }
+           }
+       }
+    </script>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+	cookie_val = getCookie('enter_page')
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+});
+</script>
+{% comment %}<script type="text/javascript">
+      function myCheck(chiform)
+      {
+          if (document.chiform.hold_pen.value=="") {
+              alert("问题一不能为空！");
+              return false;
+          }
+          if (document.chiform.hold_chopsticks.value=="") {
+              alert("问题二不能为空！");
+              return false;
+          }
+          if (document.chiform.throw_things.value=="") {
+              alert("问题三不能为空！");
+              return false;
+          }
+          if (document.chiform.brush_tooth.value=="") {
+              alert("问题四不能为空！");
+              return false;
+          }
+          if (document.chiform.use_scissors.value=="") {
+              alert("问题五不能为空！");
+              return false;
+          }
+          if (document.chiform.use_match.value=="") {
+              alert("问题六不能为空！");
+              return false;
+          }
+          if (document.chiform.use_needle.value=="") {
+              alert("问题七不能为空！");
+              return false;
+          }
+
+          if (document.chiform.hold_hammer.value=="") {
+              alert("问题八不能为空！");
+              return false;
+          }
+          if (document.chiform.hold_racket.value=="") {
+              alert("问题九不能为空！");
+              return false;
+          }
+          if (document.chiform.wash_face.value=="") {
+              alert("问题十不能为空！");
+              return false;
+          }
+          alert("提交成功！");
+          return true;
+      }
+    </script>{% endcomment %}
+<script>
+ function remove_disabled(){
+       $("input[name='hold_pen']").removeAttr("disabled","disabled");
+       $("input[name='hold_chopsticks']").removeAttr("disabled","disabled");
+       $("input[name='throw_things']").removeAttr("disabled","disabled");
+       $("input[name='brush_tooth']").removeAttr("disabled","disabled");
+       $("input[name='use_scissors']").removeAttr("disabled","disabled");
+       $("input[name='use_match']").removeAttr("disabled","disabled");
+       $("input[name='use_needle']").removeAttr("disabled","disabled");
+       $("input[name='hold_hammer']").removeAttr("disabled","disabled");
+       $("input[name='hold_racket']").removeAttr("disabled","disabled");
+       $("input[name='wash_face']").removeAttr("disabled","disabled");
+     $("#redo_bt_group").removeAttr("style","display:none;");
+     $("#other_bt").attr("style","display:block;");
+     $("#bt_group").attr("style","display:none;");
+    }
+</script>
+{% endblock %}

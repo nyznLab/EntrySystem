@@ -1,0 +1,509 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}儿童期（16岁以前）的成长经历(ctq_sf){% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+    <style>
+       /*添加inpyt type=num 去掉箭头 css样式*/
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        }
+ 
+        input[type="number"] {
+            -moz-appearance: textfield;
+        } 
+    </style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表</a></li>
+                         <li class="active"><a href="#" >儿童期（16岁以前）的成长经历(ctq_sf)</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="dashboard_graph x_panel" style="margin-top:0px;height:80%">
+            <div id="wrapper">
+                <div id = "left-side" style="height: 100%; margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '儿童期（16岁以前）的成长经历' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>  
+				         
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+                            {%  csrf_token %}
+                            <div class="container">
+                                <div class="col-md-12  text-center">
+                                    <h4><strong>儿童期（16岁以前）的成长经历</strong></h4>
+                                </div>
+                                <div class="row" style="margin: 5px;">
+                                <strong><i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;本问卷调查的是您儿童期（16岁以前）的成长经历。请根据您当时的体会从“从来没有这种现象、偶尔、有时、经常、总是”五个选项中选出最适合您情况的答案，如果您不是很清楚，请尽量估计。<br/></strong>
+                                <strong><br/><i class="fa fa-star"></i>&nbsp;在16岁之前：<br/></strong>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table ">
+
+				                        <tbody>
+                                             <tr>
+						                        <td>1.当时家里没人关心我的饥饱。</td>
+                                                 <td><input type="radio" name="question1_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question1_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question1_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question1_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question1_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>2.当时有人照顾我、保护我。</td>
+                                                 <td><input type="radio" name="question2_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question2_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question2_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question2_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question2_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>3.当时家里有人喊我“笨蛋”、“懒虫”或“丑八怪”等。</td>
+                                                 <td><input type="radio" name="question3_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question3_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question3_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question3_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question3_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>4.当时我的父母因为酗酒、吸毒或赌博而不能照顾家庭。</td>
+                                                 <td><input type="radio" name="question4_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question4_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question4_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question4_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question4_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>5.当时家里有人重视我。</td>
+                                                 <td><input type="radio" name="question5_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question5_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question5_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question5_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question5_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>6.当时家里没人管我衣着冷暖。</td>
+                                                 <td><input type="radio" name="question6_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question6_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question6_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question6_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question6_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>7.当时我感到家里人爱我。</td>
+                                                 <td><input type="radio" name="question7_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question7_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question7_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question7_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question7_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>8.当时我觉得父母希望从来没有生过我。</td>
+                                                 <td><input type="radio" name="question8_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question8_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question8_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question8_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question8_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>9.当时家里有人把我打伤的很重，不得不去医院。</td>
+                                                 <td><input type="radio" name="question9_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question9_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question9_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question9_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question9_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>10.当时我家的状况需要改善。</td>
+                                                 <td><input type="radio" name="question10_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question10_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question10_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question10_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question10_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>11.当时家里有人打得我皮肤青紫或留下伤痕。</td>
+                                                 <td><input type="radio" name="question11_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question11_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question11_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question11_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question11_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>12.当时家里有人用皮带、绳子、木板或其它硬东西惩罚我。</td>
+                                                 <td><input type="radio" name="question12_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question12_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question12_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question12_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question12_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>13.当时家里人彼此互相关心。</td>
+                                                 <td><input type="radio" name="question13_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question13_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question13_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question13_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question13_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>14.当时家里有人向我说过侮辱性或让我伤心的话。</td>
+                                                 <td><input type="radio" name="question14_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question14_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question14_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question14_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question14_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>15.我当时受到了躯体虐待。</td>
+                                                 <td><input type="radio" name="question15_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question15_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question15_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question15_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question15_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                        <tr>
+						                        <td>16.我觉得我的童年比任何人的都完美。</td>
+                                                 <td><input type="radio" name="question16_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question16_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question16_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question16_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question16_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>17.当时我被打得很重，引起了老师、邻居或医生等人的注意。</td>
+                                                 <td><input type="radio" name="question17_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question17_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question17_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question17_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question17_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>18.当时我觉得家里有人恨我。</td>
+                                                 <td><input type="radio" name="question18_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question18_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question18_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question18_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question18_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>19.当时家里人关系很亲密。</td>
+                                                 <td><input type="radio" name="question19_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question19_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question19_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question19_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question19_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>20.当时有人以带有性色彩的方式触摸我或让我触摸他/她。</td>
+                                                 <td><input type="radio" name="question20_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question20_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question20_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question20_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question20_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>21.当时有人威胁让我同他/她做性方面</td>
+                                                 <td><input type="radio" name="question21_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question21_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question21_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question21_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question21_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>22.我觉得当时我的家好得不能再好了。</td>
+                                                 <td><input type="radio" name="question22_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question22_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question22_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question22_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question22_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>23.当时有人试图让我做或看性方面的事。</td>
+                                                 <td><input type="radio" name="question23_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question23_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question23_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question23_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question23_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>24.当时有人猥亵我，如耍流氓、动手动脚等。</td>
+                                                 <td><input type="radio" name="question24_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question24_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question24_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question24_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question24_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>25.当时我的心灵受到了折磨或虐待。</td>
+                                                 <td><input type="radio" name="question25_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question25_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question25_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question25_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question25_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>26.当时有人关心我的身体健康。</td>
+                                                 <td><input type="radio" name="question26_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question26_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question26_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question26_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question26_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>27.我当时受到了性虐待。</td>
+                                                 <td><input type="radio" name="question27_answer" value=1 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question27_answer" value=2 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question27_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question27_answer" value=4 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question27_answer" value=5 data-labelauty="总是" />
+					                        </tr>
+                                           <tr>
+						                        <td>28.当时家是我获得力量和支持的源泉。</td>
+                                                 <td><input type="radio" name="question28_answer" value=5 data-labelauty="从来没有这种现象" />
+                                                 <td><input type="radio" name="question28_answer" value=4 data-labelauty="偶尔" />
+                                                 <td><input type="radio" name="question28_answer" value=3 data-labelauty="有时" />
+                                                 <td><input type="radio" name="question28_answer" value=2 data-labelauty="经常" />
+                                                 <td><input type="radio" name="question28_answer" value=1 data-labelauty="总是" />
+					                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                在您的一生中，第一次性行为时您多大年龄？
+                                                <input type="number"  id = "sexage" name = "first_sex_age"/>
+                                                岁（如从来没有，填“88”）</td>
+                                        </tr>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">情感虐待总分：{{ ctq_sf_answer.emotion_abuse_score|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">躯体虐待总分：{{ ctq_sf_answer.body_abuse_score|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">性虐待总分：{{ ctq_sf_answer.sex_abuse_score|processNone }}</a>
+                                </div>
+                                   <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">情感忽视总分：{{ ctq_sf_answer.emotion_ignore_score|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">躯体忽视总分：{{ ctq_sf_answer.body_ignore_score|processNone }}</a>
+                                </div>
+                                
+                            </div>
+
+
+                                <div class="row" id="bt_group">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    {% csrf_token %}
+                                    <a href="/scales/get_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {{% comment %}第一个{% endcomment %}
+                $("#last_scale").attr("style", "display:none;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:block;");
+                $("#next_scale").attr("style", "display:none;");
+            } else {{# 啥也不是 #}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            }
+            if ('{{ ctq_sf_answer }}' != 'None') {
+                {#数据填充 读数据#}
+                if ('{{ ctq_sf_answer.question1_answer }}' != 'None') {
+                    $("input[name='question1_answer'][value=" + Number({{ ctq_sf_answer.question1_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question2_answer }}' != 'None') {
+                    $("input[name='question2_answer'][value=" + Number({{ ctq_sf_answer.question2_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question3_answer }}' != 'None') {
+                    $("input[name='question3_answer'][value=" + Number({{ ctq_sf_answer.question3_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question4_answer }}' != 'None') {
+                    $("input[name='question4_answer'][value=" + Number({{ ctq_sf_answer.question4_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question5_answer }}' != 'None') {
+                    $("input[name='question5_answer'][value=" + Number({{ ctq_sf_answer.question5_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question6_answer }}' != 'None') {
+                    $("input[name='question6_answer'][value=" + Number({{ ctq_sf_answer.question6_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question7_answer }}' != 'None') {
+                    $("input[name='question7_answer'][value=" + Number({{ ctq_sf_answer.question7_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question8_answer }}' != 'None') {
+                    $("input[name='question8_answer'][value=" + Number({{ ctq_sf_answer.question8_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question9_answer }}' != 'None') {
+                    $("input[name='question9_answer'][value=" + Number({{ ctq_sf_answer.question9_answer }}) + "]").prop("checked", true);
+                }if ('{{ ctq_sf_answer.question10_answer }}' != 'None') {
+                    $("input[name='question10_answer'][value=" + Number({{ ctq_sf_answer.question10_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question11_answer }}' != 'None') {
+                    $("input[name='question11_answer'][value=" + Number({{ ctq_sf_answer.question11_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question12_answer }}' != 'None') {
+                    $("input[name='question12_answer'][value=" + Number({{ ctq_sf_answer.question12_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question13_answer }}' != 'None') {
+                    $("input[name='question13_answer'][value=" + Number({{ ctq_sf_answer.question13_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question14_answer }}' != 'None') {
+                    $("input[name='question14_answer'][value=" + Number({{ ctq_sf_answer.question14_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question15_answer }}' != 'None') {
+                    $("input[name='question15_answer'][value=" + Number({{ ctq_sf_answer.question15_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question16_answer }}' != 'None') {
+                    $("input[name='question16_answer'][value=" + Number({{ ctq_sf_answer.question16_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question17_answer }}' != 'None') {
+                    $("input[name='question17_answer'][value=" + Number({{ ctq_sf_answer.question17_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question18_answer }}' != 'None') {
+                    $("input[name='question18_answer'][value=" + Number({{ ctq_sf_answer.question18_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question19_answer }}' != 'None') {
+                    $("input[name='question19_answer'][value=" + Number({{ ctq_sf_answer.question19_answer }}) + "]").prop("checked", true);
+                }if ('{{ ctq_sf_answer.question20_answer }}' != 'None') {
+                    $("input[name='question20_answer'][value=" + Number({{ ctq_sf_answer.question20_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question21_answer }}' != 'None') {
+                    $("input[name='question21_answer'][value=" + Number({{ ctq_sf_answer.question21_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question22_answer }}' != 'None') {
+                    $("input[name='question22_answer'][value=" + Number({{ ctq_sf_answer.question22_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question23_answer }}' != 'None') {
+                    $("input[name='question23_answer'][value=" + Number({{ ctq_sf_answer.question23_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question24_answer }}' != 'None') {
+                    $("input[name='question24_answer'][value=" + Number({{ ctq_sf_answer.question24_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question25_answer }}' != 'None') {
+                    $("input[name='question25_answer'][value=" + Number({{ ctq_sf_answer.question25_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question26_answer }}' != 'None') {
+                    $("input[name='question26_answer'][value=" + Number({{ ctq_sf_answer.question26_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question27_answer }}' != 'None') {
+                    $("input[name='question27_answer'][value=" + Number({{ ctq_sf_answer.question27_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ ctq_sf_answer.question28_answer }}' != 'None') {
+                    $("input[name='question28_answer'][value=" + Number({{ ctq_sf_answer.question28_answer }}) + "]").prop("checked", true);
+                }
+                $("input[name='first_sex_age']").val('{{ ctq_sf_answer.first_sex_age|processNone }}');
+
+            }
+            {#锁住#}
+            $("input[name='question1_answer']").attr("disabled", "disabled");
+            $("input[name='question2_answer']").attr("disabled", "disabled");
+            $("input[name='question3_answer']").attr("disabled", "disabled");
+            $("input[name='question4_answer']").attr("disabled", "disabled");
+            $("input[name='question5_answer']").attr("disabled", "disabled");
+            $("input[name='question6_answer']").attr("disabled", "disabled");
+            $("input[name='question7_answer']").attr("disabled", "disabled");
+            $("input[name='question8_answer']").attr("disabled", "disabled");
+            $("input[name='question9_answer']").attr("disabled", "disabled");
+            $("input[name='question10_answer']").attr("disabled", "disabled");
+            $("input[name='question11_answer']").attr("disabled", "disabled");
+            $("input[name='question12_answer']").attr("disabled", "disabled");
+            $("input[name='question13_answer']").attr("disabled", "disabled");
+            $("input[name='question14_answer']").attr("disabled", "disabled");
+            $("input[name='question15_answer']").attr("disabled", "disabled");
+            $("input[name='question16_answer']").attr("disabled", "disabled");
+            $("input[name='question17_answer']").attr("disabled", "disabled");
+            $("input[name='question18_answer']").attr("disabled", "disabled");
+            $("input[name='question19_answer']").attr("disabled", "disabled");
+            $("input[name='question20_answer']").attr("disabled", "disabled");
+            $("input[name='question21_answer']").attr("disabled", "disabled");
+            $("input[name='question22_answer']").attr("disabled", "disabled");
+            $("input[name='question23_answer']").attr("disabled", "disabled");
+            $("input[name='question24_answer']").attr("disabled", "disabled");
+            $("input[name='question25_answer']").attr("disabled", "disabled");
+            $("input[name='question26_answer']").attr("disabled", "disabled");
+            $("input[name='question27_answer']").attr("disabled", "disabled");
+            $("input[name='question28_answer']").attr("disabled", "disabled");
+            $("input[name='first_sex_age']").attr("disabled", "disabled");
+
+
+        }
+    </script>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+{% endblock %}

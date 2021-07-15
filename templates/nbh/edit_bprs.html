@@ -1,0 +1,459 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}简明精神量表（BPRS）{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+        <style>
+    .bprs_table input.labelauty + label {
+    margin-bottom: 2px;
+    width: 100%;
+    display: table;
+    font-size: 13px;
+    padding: 20px;
+    text-align: center;
+    background-color: #efefef;
+    color: #b3b3b3;
+    cursor: pointer;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    transition: background-color 0.25s;
+    -moz-transition: background-color 0.25s;
+    -webkit-transition: background-color 0.25s;
+    -o-transition: background-color 0.25s;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main" >
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >他评量表</a></li>
+                         <li class="active"><a href="#" >简明精神量表（BPRS）</a></li>
+                       <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height:80%">
+            <div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '简明精神病量表(BPRS)' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                      <form action="/scales/add_bprs?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" method="post" name="bprs_form" onSubmit="return myCheck(this)" >
+                          {%  csrf_token %}
+                        <div class="container">
+                            <div class="col-md-12 text-center">
+                                <h4><strong> 简明精神量表（BPRS）</strong></h4>
+                             </div>
+                            <div class="row title">
+                                    <strong style="FONT-SIZE: 17px">
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;
+                                        <font >圈出最适合病人情况的分数</font><br/>
+                                    </strong>
+                                    <strong>未测=0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 无=1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很轻=2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 轻度=3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中度=4 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;偏重=5 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 重度=6 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;极重=7<br/></strong>
+                            </div>
+                            <div class="ln_solid"></div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table bprs_table" frame="void" style="font-weight:bold;">
+                            <tbody>
+                              <tr>
+                                  <td style="width: 15%;">1.关心身体健康
+                                  <input type="radio" name="health_care" value = 0 data-labelauty="0" disabled />
+                                  <input type="radio" name="health_care" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="health_care" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="health_care" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="health_care" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="health_care" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="health_care" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="health_care" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                                  <td width="2%"></td>
+                                  <td style="width: 15%;">2.焦虑
+                                  <input type="radio" name="anxious" value = 0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="anxious" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="anxious" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="anxious" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="anxious" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="anxious" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="anxious" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="anxious" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                                  <td width="2%"></td>
+                                  <td style="width: 15%;">3.感情交流障碍
+                                  <input type="radio" name="emocommunicat_barrier" value= 0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="emocommunicat_barrier" value= 7 data-labelauty="7" disabled/>
+                                </td>
+                                  <td width="2%"></td>
+                                  <td style="width: 15%;">4.概念紊乱
+                                  <input type="radio" name="conceptual_disorder" value = 0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="conceptual_disorder" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                                  <td width="2%"></td>
+                                  <td style="width: 15%;">5.罪恶观念
+                                  <input type="radio"  name="guilt_concept" value= 0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="guilt_concept" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                                  <td width="2%"></td>
+                                  <td style="width: 15%;">6.紧张
+                                  <input type="radio" name="nervous" value= 0  data-labelauty="0" disabled/>
+                                  <input type="radio" name="nervous" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="nervous" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="nervous" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="nervous" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="nervous" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="nervous" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="nervous" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td >7.装相和作态
+                                  <input type="radio" name="look_act" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="look_act" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="look_act" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="look_act" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="look_act" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="look_act" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="look_act" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="look_act" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                                  <td></td>
+                                <td>8.夸大
+                                  <input type="radio" name="exaggerate" value= 0  data-labelauty="0" disabled/>
+                                  <input type="radio" name="exaggerate" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="exaggerate" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="exaggerate" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="exaggerate" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="exaggerate" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="exaggerate" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="exaggerate" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>9.心境抑郁
+                                  <input type="radio" name="mood_depression" value=0  data-labelauty="0" disabled/>
+                                  <input type="radio" name="mood_depression" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="mood_depression" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="mood_depression" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="mood_depression" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="mood_depression" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="mood_depression" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="mood_depression" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>10.敌对性
+                                  <input type="radio" name="hostility" value = 0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="hostility" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="hostility" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="hostility" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="hostility" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="hostility" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="hostility" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="hostility" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>11.猜疑
+                                  <input type="radio"  name="suspicion" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="suspicion" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="suspicion" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="suspicion" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="suspicion" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="suspicion" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="suspicion" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="suspicion" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>12.幻觉
+                                  <input type="radio"  name="hallucination" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="hallucination" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="hallucination" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="hallucination" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="hallucination" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="hallucination" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="hallucination" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="hallucination" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>13.动作迟缓
+                                  <input type="radio"  name="slow_movement" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="slow_movement" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="slow_movement" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="slow_movement" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="slow_movement" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="slow_movement" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="slow_movement" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="slow_movement" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>14.不合作
+                                  <input type="radio"  name="no_cooperation" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="no_cooperation" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>15.不寻常思维内容
+                                  <input type="radio" name="unusual_thinking" value=0 data-labelauty="0" disabled />
+                                  <input type="radio" name="unusual_thinking" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="unusual_thinking" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="unusual_thinking" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="unusual_thinking" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="unusual_thinking" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="unusual_thinking" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="unusual_thinking" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>16.情感平淡
+                                  <input type="radio" name="feeling_flat" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="feeling_flat" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>17.兴奋
+                                  <input type="radio"  name="excitement" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="excitement" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="excitement" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="excitement" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="excitement" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="excitement" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="excitement" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="excitement" value = 7 data-labelauty="7" disabled/>
+                                </td><td></td>
+                                <td>18.定向障碍
+                                  <input type="radio"  name="directional_disorder" value=0 data-labelauty="0" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 1 data-labelauty="1" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 2 data-labelauty="2" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 3 data-labelauty="3" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 4 data-labelauty="4" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 5 data-labelauty="5" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 6 data-labelauty="6" disabled/>
+                                  <input type="radio" name="directional_disorder" value = 7 data-labelauty="7" disabled/>
+                                </td>
+                              </tr>
+                              </tbody>
+                             </table>
+                             </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-md-offset-4 col-sm-12">
+                                            <a  style="font-weight: bold;">总分：{{ bprs_answer.total_score|processNone }}</a>
+                                        </div>
+                                </div>
+                             <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="bprs_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+
+                                <div class="row" id="bt_group">
+                                        <div  class="col-md-4 col-sm-6 text-center"  >
+                                           <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                               <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                           </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                        </div>
+
+                                </div>
+
+
+
+
+                        </div>
+                      </form>
+                    </div>
+			    </div>
+	          </div>
+        </div>
+	</div>
+      <script>
+       function getData(){
+        var order = "{{ order  }}";
+        if(order==0){
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+       }
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+        });
+    </script>
+    <script>
+        if('{{ bprs_answer }}'!='None'){
+
+           if('{{ bprs_answer.health_care }}'!='None'){
+               $("input[name='health_care'][value="+Number({{ bprs_answer.health_care }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.anxious }}'!='None'){
+               $("input[name='anxious'][value="+Number({{ bprs_answer.anxious }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.emocommunicat_barrier }}'!='None'){
+               $("input[name='emocommunicat_barrier'][value="+Number({{ bprs_answer.emocommunicat_barrier }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.conceptual_disorder }}'!='None'){
+               $("input[name='conceptual_disorder'][value="+Number({{ bprs_answer.conceptual_disorder }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.guilt_concept }}'!='None'){
+               $("input[name='guilt_concept'][value="+Number({{ bprs_answer.guilt_concept }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.nervous }}'!='None'){
+               $("input[name='nervous'][value="+Number({{ bprs_answer.nervous }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.look_act }}'!='None'){
+               $("input[name='look_act'][value="+Number({{ bprs_answer.look_act }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.exaggerate }}'!='None'){
+               $("input[name='exaggerate'][value="+Number({{ bprs_answer.exaggerate }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.mood_depression }}'!='None'){
+               $("input[name='mood_depression'][value="+Number({{ bprs_answer.mood_depression }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.hostility }}'!='None'){
+               $("input[name='hostility'][value="+Number({{ bprs_answer.hostility }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.suspicion }}'!='None'){
+               $("input[name='suspicion'][value="+Number({{ bprs_answer.suspicion }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.hallucination }}'!='None'){
+               $("input[name='hallucination'][value="+Number({{ bprs_answer.hallucination }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.slow_movement }}'!='None'){
+               $("input[name='slow_movement'][value="+Number({{ bprs_answer.slow_movement }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.no_cooperation }}'!='None'){
+               $("input[name='no_cooperation'][value="+Number({{ bprs_answer.no_cooperation }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.unusual_thinking }}'!='None'){
+               $("input[name='unusual_thinking'][value="+Number({{ bprs_answer.unusual_thinking }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.feeling_flat }}'!='None'){
+               $("input[name='feeling_flat'][value="+Number({{ bprs_answer.feeling_flat }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.excitement }}'!='None'){
+               $("input[name='excitement'][value="+Number({{ bprs_answer.excitement }})+"]").prop("checked",true);
+           }
+           if('{{ bprs_answer.directional_disorder }}'!='None'){
+               $("input[name='directional_disorder'][value="+Number({{ bprs_answer.directional_disorder }})+"]").prop("checked",true);
+           }
+        }
+
+
+
+
+        function remove_disabled(){
+            $("input[name='health_care']").removeAttr("disabled","disabled");
+            $("input[name='anxious']").removeAttr("disabled","disabled");
+            $("input[name='emocommunicat_barrier']").removeAttr("disabled","disabled");
+            $("input[name='conceptual_disorder']").removeAttr("disabled","disabled");
+            $("input[name='guilt_concept']").removeAttr("disabled","disabled");
+            $("input[name='nervous']").removeAttr("disabled","disabled");
+            $("input[name='look_act']").removeAttr("disabled","disabled");
+            $("input[name='exaggerate']").removeAttr("disabled","disabled");
+            $("input[name='mood_depression']").removeAttr("disabled","disabled");
+            $("input[name='hostility']").removeAttr("disabled","disabled");
+            $("input[name='suspicion']").removeAttr("disabled","disabled");
+            $("input[name='hallucination']").removeAttr("disabled","disabled");
+            $("input[name='slow_movement']").removeAttr("disabled","disabled");
+            $("input[name='no_cooperation']").removeAttr("disabled","disabled");
+            $("input[name='unusual_thinking']").removeAttr("disabled","disabled");
+            $("input[name='feeling_flat']").removeAttr("disabled","disabled");
+            $("input[name='excitement']").removeAttr("disabled","disabled");
+            $("input[name='directional_disorder']").removeAttr("disabled","disabled");
+            $("#bprs_bt").attr("style","display:block;");
+            $("#bt_group").attr("style","display:none;");
+
+        }
+    </script>
+
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}PHQ-9{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表</a></li>
+                         <li class="active"><a href="#" >PHQ-9</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>  
+        <div class="dashboard_graph x_panel" style="margin-top:0px;height: 80%;">
+            <div id="left-side" style="height: 100%;" class="col-md-2">
+                <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == 'PHQ-9' %}
+                            <li class="step doing">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 1 %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                             <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="finish nodone notclick">
+                        <p>完成</p>
+                    </li>
+                </ul>
+            </div>
+				         
+            <div id="right-side" class="col-md-10">
+                  <div id="first" class="active" >
+                            <div class="container" style="width: 95%">
+
+                            <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+                                <h4><strong><center>PHQ-9</center><br/></strong></h4>
+                            </div>
+                             <div  style="margin: 5px;">
+                                 在过去的两周里, 你生活中以下症状出现的频率有多少？把相应的数字总合加起来。
+                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table   class="table table-bordered table-condensed" style="table-layout: fixed; width:90%;">
+				                        <thead>
+					                    <tr>
+						                    <th style="width:5%">
+                                                <center> 序号</center>
+						                    </th>
+                                            <th style="width:30%">
+                                                <center> 项目</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 0</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 1</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 2</center>
+						                    </th>
+                                            <th  style="width:14%">
+                                                <center> 3</center>
+						                    </th>
+
+					                    </tr>
+				                        </thead>
+				                        <tbody align="left">
+                                             <tr>
+						                         <td >1</td>
+                                                 <td>做事时提不起劲或没有兴趣</td>
+                                                 <td><input type="radio"  name="question1_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question1_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question1_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question1_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                         <td>2</td>
+                                                 <td>感到心情低落, 沮丧或绝望</td>
+                                                 <td><input type="radio"  name="question2_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question2_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                         <td >3</td>
+                                                 <td >入睡困难、睡不安或睡得过多</td>
+                                                 <td><input type="radio"  name="question3_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question3_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                         <td >4</td>
+                                                 <td >感觉疲倦或没有活力</td>
+                                                 <td><input type="radio"  name="question4_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question4_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+                                                 <td >5</td>
+                                                 <td >食欲不振或吃太多</td>
+                                                 <td><input type="radio"  name="question5_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question5_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td >6</td>
+                                                 <td >觉得自己很糟或觉得自己很失败，或让自己、家人失望</td>
+                                                 <td><input type="radio"  name="question6_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question6_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td >7</td>
+                                                 <td >对事物专注有困难，例如看报纸或看电视时</td>
+                                                 <td><input type="radio"  name="question7_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question7_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td >8</td>
+                                                 <td >行动或说话速度缓慢到别人已经察觉？或刚好相反——变得比平日更烦躁或坐立不安，动来动去</td>
+                                                 <td><input type="radio"  name="question8_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question8_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td >9</td>
+                                                 <td >有不如死掉或用某种方式伤害自己的念头</td>
+                                                 <td><input type="radio"  name="question9_answer" value=0 data-labelauty="没有"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=1 data-labelauty="有几天"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=2 data-labelauty="一半以上时间"/></td>
+                                                 <td><input type="radio"  name="question9_answer" value=3 data-labelauty="几乎天天"/></td>
+					                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                                <div class="row">
+                                 <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">总分：{{ phq_9_answer.total_score|processNone }}</a>
+                                 </div>
+                            </div>
+
+                            <div class="row" id="bt_group">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    <a href="/scales/get_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {{% comment %}第一个{% endcomment %}
+                $("#last_scale").attr("style", "display:none;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:block;");
+                $("#next_scale").attr("style", "display:none;");
+            } else {{# 啥也不是 #}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            }
+            if ('{{ phq_9_answer }}' != 'None') {
+                {#数据填充 读数据#}
+                if ('{{ phq_9_answer.question1_answer }}' != 'None') {
+                    $("input[name='question1_answer'][value=" + Number({{ phq_9_answer.question1_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question2_answer }}' != 'None') {
+                    $("input[name='question2_answer'][value=" + Number({{ phq_9_answer.question2_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question3_answer }}' != 'None') {
+                    $("input[name='question3_answer'][value=" + Number({{ phq_9_answer.question3_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question4_answer }}' != 'None') {
+                    $("input[name='question4_answer'][value=" + Number({{ phq_9_answer.question4_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question5_answer }}' != 'None') {
+                    $("input[name='question5_answer'][value=" + Number({{ phq_9_answer.question5_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question6_answer }}' != 'None') {
+                    $("input[name='question6_answer'][value=" + Number({{ phq_9_answer.question6_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question7_answer }}' != 'None') {
+                    $("input[name='question7_answer'][value=" + Number({{ phq_9_answer.question7_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question8_answer }}' != 'None') {
+                    $("input[name='question8_answer'][value=" + Number({{ phq_9_answer.question8_answer }}) + "]").prop("checked", true);
+                }
+                if ('{{ phq_9_answer.question9_answer }}' != 'None') {
+                    $("input[name='question9_answer'][value=" + Number({{ phq_9_answer.question9_answer }}) + "]").prop("checked", true);
+                }
+                
+
+            }
+            {#锁住#}
+            $("input[name='question1_answer']").attr("disabled", "disabled");
+            $("input[name='question2_answer']").attr("disabled", "disabled");
+            $("input[name='question3_answer']").attr("disabled", "disabled");
+            $("input[name='question4_answer']").attr("disabled", "disabled");
+            $("input[name='question5_answer']").attr("disabled", "disabled");
+            $("input[name='question6_answer']").attr("disabled", "disabled");
+            $("input[name='question7_answer']").attr("disabled", "disabled");
+            $("input[name='question8_answer']").attr("disabled", "disabled");
+            $("input[name='question9_answer']").attr("disabled", "disabled");
+
+
+
+
+        }
+    </script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+{% endblock %}
