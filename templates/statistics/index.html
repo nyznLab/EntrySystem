@@ -306,7 +306,7 @@
                 ,icon: 'layui-icon-layouts'
             }]
             ,page: true
-            ,url: '{% url 'big_table_main' %}'
+            ,url: '{% url 'statistics' %}'
             ,skin: 'row'
             ,even: true
             ,text: {
@@ -551,7 +551,7 @@
                         layer.msg('请稍等...',{time:0})
 
                         // 全部导出
-                        $.get('{% url 'big_table_main' %}',{
+                        $.get('{% url 'statistics' %}',{
                             'operation':'export_all'
                         },function (res, status){
                             if(status === 'success'){
@@ -684,7 +684,7 @@
     $('input#click').click(function (){
             $.ajax({
                 type: 'get',
-                url:'{% url 'big_table_main' %}',
+                url:'{% url 'statistics' %}',
                 dataType: 'json',
                 success: function (res){
                     console.log(res.data)
