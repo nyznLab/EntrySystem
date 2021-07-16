@@ -83,6 +83,7 @@ def get_all_patient_by_filter(condition):
 def get_scales_score(patient_session_id):
 
     # 他评量表
+
     res_hama = scales_models.RPatientHama.objects.filter(patient_session_id=patient_session_id).values()
     res_hamd17 = scales_models.RPatientHamd17.objects.filter(patient_session_id=patient_session_id).values()
     res_ymrs = scales_models.RPatientYmrs.objects.filter(patient_session_id=patient_session_id).values()
