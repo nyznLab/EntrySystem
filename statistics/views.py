@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from . import dao as big_table_dao
+from . import dao as statistics_dao
 from tools.layuiPage import paginator
 from tools.Scale_tools import scales_condition_alloc
 
@@ -51,11 +51,11 @@ def get_patient_data(request):
 
             # 导出所有数据
             if data.get('operation') == 'export_all':
-                patients, count = big_table_dao.get_all_patient_by_filter(search_dict)
+                patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
                 # 把每条复扫记录基本信息与量表完成情况与得分情况组合
                 for patient_detail in patients:
-                    scales_do = big_table_dao.get_one_patient_scales(patient_detail['id'])
-                    scales_scores = big_table_dao.get_scales_score(patient_detail['id'])
+                    scales_do = statistics_dao.get_one_patient_scales(patient_detail['id'])
+                    scales_scores = statistics_dao.get_scales_score(patient_detail['id'])
                     patient_detail.update(scales_do)
                     patient_detail.update(scales_scores)
                     fact_data_list.append(patient_detail)
@@ -66,13 +66,13 @@ def get_patient_data(request):
             page_limit = int(data.get('limit', 10))
 
             scales_scores = []
-            patients, count = big_table_dao.get_all_patient_by_filter(search_dict)
+            patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
             patients = paginator(patients, page_num, page_limit)
 
             # 把每条复扫记录基本信息与量表完成情况与得分情况组合
             for patient_detail in patients:
-                scales_do = big_table_dao.get_one_patient_scales(patient_detail['id'])
-                scales_scores = big_table_dao.get_scales_score(patient_detail['id'])
+                scales_do = statistics_dao.get_one_patient_scales(patient_detail['id'])
+                scales_scores = statistics_dao.get_scales_score(patient_detail['id'])
                 patient_detail.update(scales_do)
                 patient_detail.update(scales_scores)
                 fact_data_list.append(patient_detail)

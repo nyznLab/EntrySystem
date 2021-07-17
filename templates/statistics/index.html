@@ -35,6 +35,9 @@
         .layui-laypage-btn{
             color: #000;
         }
+        .nav.side-menu a{
+            font-size:13px
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -75,7 +78,7 @@
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
-                        <input id="click" type="button" value="Click">
+{#                        <input id="click" type="button" value="Click">#}
                     </div>
                 </div>
             </div>
@@ -313,40 +316,40 @@
                 none:'没有记录哦'
             }
             ,cols: [[
-                {type:'checkbox', fixed: true},
-                {type:'numbers', fixed: true, title:'序号',width: 50}
-                ,{field:'standard_id', title: '标准编号',width: 170, sort:true, fixed: 'left'}
-                ,{field:'patient_id', title:'编号', hide:true, fixed:'left'}
-                ,{field:'name', title:'姓名',width: 100, fixed:'left'}
-                ,{field:'sex', title:'性别', sort:true, width: 80, templet:function (d) {
+                {type:'checkbox',rowspan:2, fixed: true},
+                {type:'numbers',rowspan:2, fixed: true, title:'序号',width: 50}
+                ,{field:'standard_id',rowspan:2, title: '标准编号',width: 170, sort:true, fixed: 'left'}
+                ,{field:'patient_id',rowspan:2, title:'编号', hide:true, fixed:'left'}
+                ,{field:'name',rowspan:2, title:'姓名',width: 100, fixed:'left'}
+                ,{field:'sex',rowspan:2, title:'性别', sort:true, width: 80, templet:function (d) {
                     return d.sex? '女':'男'
                 }}
-                ,{field:'age', title:'年龄', sort:true,width:80}
-                ,{field:'phone', title:'手机号码',edit:true,hide:true,width: 120,templet: function (d) {
+                ,{field:'age',rowspan:2, title:'年龄', sort:true,width:80}
+                ,{field:'phone',rowspan:2, title:'手机号码',edit:true,hide:true,width: 120,templet: function (d) {
                     if(d.phone === '' || d.phone === null){
                         return '暂无'
                     }
                     return d.phone
                 }}
-                ,{field:'height', title:'身高',hide:true, width: 90, templet:function (d) {
+                ,{field:'height',rowspan:2, title:'身高',hide:true, width: 90, templet:function (d) {
                     if (d.height === "" || d.height === null){
                         return "暂无"
                     }
                     return d.height + "cm"
                 }}
-                ,{field: 'waist', title:'腰围',hide:true, width:80, sort:true, templet:function (d) {
+                ,{field: 'waist',rowspan:2, title:'腰围',hide:true, width:80, sort:true, templet:function (d) {
                     if (d.waist === "" || d.waist === null){
                         return "暂无"
                     }
                     return d.waist + "cm"
                 }}
-                ,{field: 'hip', title:'臀围',hide:true, width:80, sort:true,templet:function (d) {
+                ,{field: 'hip',rowspan:2, title:'臀围',hide:true, width:80, sort:true,templet:function (d) {
                     if (d.waist === "" || d.waist === null){
                         return "暂无"
                     }
                     return d.hip + "cm"
                 }}
-                ,{field:'handy', title:'利手',hide:true, width:100, templet:function (d) {
+                ,{field:'handy',rowspan:2, title:'利手',hide:true, width:100, templet:function (d) {
                     switch (d.handy){
                         case 1:
                             return '右利手'
@@ -358,7 +361,7 @@
                             return '无'
                     }
                 }}
-                ,{field:'source', title:'被试来源',width: 100, templet: function (d) {
+                ,{field:'source',rowspan:2, title:'被试来源',width: 100, templet: function (d) {
                     switch (d.source){
                         case 0:
                             return '门诊'
@@ -370,7 +373,7 @@
                             return '无'
                     }
                 }}
-                ,{field:'diagnosis', title:'诊断', width:120, templet:function (d) {
+                ,{field:'diagnosis',rowspan:2, title:'诊断', width:120, templet:function (d) {
                     switch (d.diagnosis) {
                         case 0:
                             return '未诊断'
@@ -396,49 +399,49 @@
                             return '其他诊断'
                     }
                 }}
-                ,{field:'cognitive', title:'是否做认知评估',width:130, templet: function (d) {
+                ,{field:'cognitive',rowspan:2, title:'是否做认知评估',width:130, templet: function (d) {
                     if(d.cognitive === "" || d.cognitive === null){
                         return '无'
                     }
                     return d.cognitive?'是':'否'
                 }}
-                ,{field:'sound', title:'是否采集声音',width:120, templet: function (d) {
+                ,{field:'sound',rowspan:2, title:'是否采集声音',width:120, templet: function (d) {
                     if(d.sound === "" || d.sound === null){
                         return '无'
                     }
                     return d.sound?'是':'否'
                 }}
-                ,{field:'blood', title:'是否采集血液',width:120, templet: function (d) {
+                ,{field:'blood',rowspan:2, title:'是否采集血液',width:120, templet: function (d) {
                     if(d.blood === "" || d.blood === null){
                         return '无'
                     }
                     return d.blood?'是':'否'
                 }}
-                ,{field:'hairs', title:'是否采集毛发',width:120, templet:function (d) {
+                ,{field:'hairs',rowspan:2, title:'是否采集毛发',width:120, templet:function (d) {
                     if(d.hairs === "" || d.hairs === null){
                         return '无'
                     }
                     return d.hairs?'是':'否'
                 }}
-                ,{field:'manure', title:'是否采集粪便',width:120, templet:function (d) {
+                ,{field:'manure',rowspan:2, title:'是否采集粪便',width:120, templet:function (d) {
                     if(d.manure === "" || d.manure === null){
                         return '无'
                     }
                     return d.manure?'是':'否'
                 }}
-                ,{field:'first', title:'是否首发',width: 100, templet: function (d) {
+                ,{field:'first',rowspan:2, title:'是否首发',width: 100, templet: function (d) {
                     if(d.first === "" || d.first === null){
                         return '无'
                     }
                     return d.first?'是':'否'
                 }}
-                ,{field:'head_motion_parameters', title:'头动参数', width: 90,templet:function (d) {
+                ,{field:'head_motion_parameters',rowspan:2, title:'头动参数', width: 90,templet:function (d) {
                     if(d.head_motion_parameters === null || d.head_motion_parameters === ''){
                         return '无'
                     }
                     return d.head_motion_parameters
                 }}
-                ,{field:'inpatient_state', title:'住院情况', width:100, templet:function (d) {
+                ,{field:'inpatient_state',rowspan:2, title:'住院情况', width:100, templet:function (d) {
                     switch (d.inpatient_state) {
                         case 0:
                             return '未住院'
@@ -448,13 +451,17 @@
                             return '出院'
                     }
                 }}
-                ,{field:'scan_date', title:'扫描时间', width: 140, templet: function (d) {
+                ,{field:'scan_date',rowspan:2, title:'扫描时间', width: 140, templet: function (d) {
                     arr = d.scan_date.split('-')
                     return arr[0]+'年'+arr[1]+'月'+arr[2]+'日'
                 }}
 
-                ,{field:'doctor', title:'医生', width:90}
-                ,{field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',width: 270, templet:function (d) {
+                ,{field:'doctor',rowspan:2, title:'医生', width:90}
+                ,{title:'他评（others-rating）',colspan:4,align:'center'}
+
+                ,{title:'全量表总体概览',rowspan:2,align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
+            ],[
+                 {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',width: 270, templet:function (d) {
                     if(d.HAMA.total_score === undefined ){
                         return '--'
                     }
@@ -490,7 +497,6 @@
                     }
                     return d.BPRS.total_score
                 }}
-                ,{title:'全量表总体概览',align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
             ]]
             ,done:function (){
 
