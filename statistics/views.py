@@ -10,8 +10,6 @@ def get_patient_data(request):
     search_dict = {}
 
     if request.is_ajax():
-
-        # ajax的GET请求
         if request.method == 'GET':
             data = request.GET
 
@@ -39,11 +37,15 @@ def get_patient_data(request):
             if data.get('startDate') or data.get('endDate'):
                 search_dict['scan_date__range'] = (data['startDate'], data['endDate'])
 
-            # 以下为量表分数的条件筛选
-            scales_condition_alloc(data, 'hama', search_dict, 'RPatientHama')
-            scales_condition_alloc(data, 'hamd17', search_dict, 'RPatientHamd17')
-            scales_condition_alloc(data, 'ymrs', search_dict, 'RPatientYmrs')
-            scales_condition_alloc(data, 'bprs', search_dict, 'RPatientbprs')
+            # 以下为量表分数的条件筛选（由于执行几乎重复代码，所以封装成函数）
+            scales_models = {
+                'hama': 'RPatientHama',
+                'hamd17': 'RPatientHamd17',
+                'ymrs': 'RPatientYmrs',
+                'bprs': 'RPatientbprs'
+            }
+            for raw_name, models_name in scales_models.items():
+                scales_condition_alloc(data, raw_name, search_dict, models_name)
 
             patients = ''
             count = 0

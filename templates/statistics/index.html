@@ -78,7 +78,7 @@
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
-{#                        <input id="click" type="button" value="Click">#}
+                        <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
       <div class="layui-inline">
           <label class="layui-form-label">姓名</label>
           <div class="layui-input-block">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="name" >
+              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >
           </div>
       </div>
 
@@ -274,12 +274,13 @@
     })
     </script>
     <script>
-    layui.use(['table', 'layer', 'laydate', 'laytpl','element'],function () {
+    layui.use(['table', 'layer', 'laydate', 'laytpl','element','form'],function () {
         let table = layui.table
         ,layer = layui.layer
         ,laydate = layui.laydate
         ,laytpl = layui.laytpl
         ,element = layui.element
+        ,form = layui.form
 
         laydate.render({
             elem:'#scan_date'
@@ -295,9 +296,7 @@
             }
             console.log('刷新进度条！')
             element.progress('global_progress', n+'%');
-        }, 1000);
-
-
+        }, 1200);
 
         let tb_patient = table.render({
             elem: '#record'
@@ -316,40 +315,40 @@
                 none:'没有记录哦'
             }
             ,cols: [[
-                {type:'checkbox',rowspan:2, fixed: true},
-                {type:'numbers',rowspan:2, fixed: true, title:'序号',width: 50}
-                ,{field:'standard_id',rowspan:2, title: '标准编号',width: 170, sort:true, fixed: 'left'}
-                ,{field:'patient_id',rowspan:2, title:'编号', hide:true, fixed:'left'}
-                ,{field:'name',rowspan:2, title:'姓名',width: 100, fixed:'left'}
-                ,{field:'sex',rowspan:2, title:'性别', sort:true, width: 80, templet:function (d) {
+                {type:'checkbox',rowspan:3, fixed: true},
+                {type:'numbers',rowspan:3, fixed: true, title:'序号',width: 50}
+                ,{field:'standard_id',rowspan:3, title: '标准编号',width: 170, sort:true, fixed: 'left'}
+                ,{field:'patient_id',rowspan:3, title:'编号', hide:true, fixed:'left'}
+                ,{field:'name',rowspan:3, title:'姓名',width: 100, fixed:'left'}
+                ,{field:'sex',rowspan:3, title:'性别', sort:true, width: 80, templet:function (d) {
                     return d.sex? '女':'男'
                 }}
-                ,{field:'age',rowspan:2, title:'年龄', sort:true,width:80}
-                ,{field:'phone',rowspan:2, title:'手机号码',edit:true,hide:true,width: 120,templet: function (d) {
+                ,{field:'age',rowspan:3, title:'年龄', sort:true,width:80}
+                ,{field:'phone',rowspan:3, title:'手机号码',edit:true,hide:true,width: 120,templet: function (d) {
                     if(d.phone === '' || d.phone === null){
                         return '暂无'
                     }
                     return d.phone
                 }}
-                ,{field:'height',rowspan:2, title:'身高',hide:true, width: 90, templet:function (d) {
+                ,{field:'height',rowspan:3, title:'身高',hide:true, width: 90, templet:function (d) {
                     if (d.height === "" || d.height === null){
                         return "暂无"
                     }
                     return d.height + "cm"
                 }}
-                ,{field: 'waist',rowspan:2, title:'腰围',hide:true, width:80, sort:true, templet:function (d) {
+                ,{field: 'waist',rowspan:3, title:'腰围',hide:true, width:80, sort:true, templet:function (d) {
                     if (d.waist === "" || d.waist === null){
                         return "暂无"
                     }
                     return d.waist + "cm"
                 }}
-                ,{field: 'hip',rowspan:2, title:'臀围',hide:true, width:80, sort:true,templet:function (d) {
+                ,{field: 'hip',rowspan:3, title:'臀围',hide:true, width:80, sort:true,templet:function (d) {
                     if (d.waist === "" || d.waist === null){
                         return "暂无"
                     }
                     return d.hip + "cm"
                 }}
-                ,{field:'handy',rowspan:2, title:'利手',hide:true, width:100, templet:function (d) {
+                ,{field:'handy',rowspan:3, title:'利手',hide:true, width:100, templet:function (d) {
                     switch (d.handy){
                         case 1:
                             return '右利手'
@@ -361,7 +360,7 @@
                             return '无'
                     }
                 }}
-                ,{field:'source',rowspan:2, title:'被试来源',width: 100, templet: function (d) {
+                ,{field:'source',rowspan:3, title:'被试来源',width: 100, templet: function (d) {
                     switch (d.source){
                         case 0:
                             return '门诊'
@@ -373,7 +372,7 @@
                             return '无'
                     }
                 }}
-                ,{field:'diagnosis',rowspan:2, title:'诊断', width:120, templet:function (d) {
+                ,{field:'diagnosis',rowspan:3, title:'诊断', width:120, templet:function (d) {
                     switch (d.diagnosis) {
                         case 0:
                             return '未诊断'
@@ -399,49 +398,49 @@
                             return '其他诊断'
                     }
                 }}
-                ,{field:'cognitive',rowspan:2, title:'是否做认知评估',width:130, templet: function (d) {
+                ,{field:'cognitive',rowspan:3, title:'是否做认知评估',width:130, templet: function (d) {
                     if(d.cognitive === "" || d.cognitive === null){
                         return '无'
                     }
                     return d.cognitive?'是':'否'
                 }}
-                ,{field:'sound',rowspan:2, title:'是否采集声音',width:120, templet: function (d) {
+                ,{field:'sound',rowspan:3, title:'是否采集声音',width:120, templet: function (d) {
                     if(d.sound === "" || d.sound === null){
                         return '无'
                     }
                     return d.sound?'是':'否'
                 }}
-                ,{field:'blood',rowspan:2, title:'是否采集血液',width:120, templet: function (d) {
+                ,{field:'blood',rowspan:3, title:'是否采集血液',width:120, templet: function (d) {
                     if(d.blood === "" || d.blood === null){
                         return '无'
                     }
                     return d.blood?'是':'否'
                 }}
-                ,{field:'hairs',rowspan:2, title:'是否采集毛发',width:120, templet:function (d) {
+                ,{field:'hairs',rowspan:3, title:'是否采集毛发',width:120, templet:function (d) {
                     if(d.hairs === "" || d.hairs === null){
                         return '无'
                     }
                     return d.hairs?'是':'否'
                 }}
-                ,{field:'manure',rowspan:2, title:'是否采集粪便',width:120, templet:function (d) {
+                ,{field:'manure',rowspan:3, title:'是否采集粪便',width:120, templet:function (d) {
                     if(d.manure === "" || d.manure === null){
                         return '无'
                     }
                     return d.manure?'是':'否'
                 }}
-                ,{field:'first',rowspan:2, title:'是否首发',width: 100, templet: function (d) {
+                ,{field:'first',rowspan:3, title:'是否首发',width: 100, templet: function (d) {
                     if(d.first === "" || d.first === null){
                         return '无'
                     }
                     return d.first?'是':'否'
                 }}
-                ,{field:'head_motion_parameters',rowspan:2, title:'头动参数', width: 90,templet:function (d) {
+                ,{field:'head_motion_parameters',rowspan:3, title:'头动参数', width: 90,templet:function (d) {
                     if(d.head_motion_parameters === null || d.head_motion_parameters === ''){
                         return '无'
                     }
                     return d.head_motion_parameters
                 }}
-                ,{field:'inpatient_state',rowspan:2, title:'住院情况', width:100, templet:function (d) {
+                ,{field:'inpatient_state',rowspan:3, title:'住院情况', width:100, templet:function (d) {
                     switch (d.inpatient_state) {
                         case 0:
                             return '未住院'
@@ -451,17 +450,16 @@
                             return '出院'
                     }
                 }}
-                ,{field:'scan_date',rowspan:2, title:'扫描时间', width: 140, templet: function (d) {
+                ,{field:'scan_date',rowspan:3, title:'扫描时间', width: 140, templet: function (d) {
                     arr = d.scan_date.split('-')
                     return arr[0]+'年'+arr[1]+'月'+arr[2]+'日'
                 }}
-
-                ,{field:'doctor',rowspan:2, title:'医生', width:90}
-                ,{title:'他评（others-rating）',colspan:4,align:'center'}
-
-                ,{title:'全量表总体概览',rowspan:2,align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
+                ,{field:'doctor',rowspan:3, title:'医生', width:90}
+                ,{title:'他评（others-rating）',colspan:4,align:'center', style:'background-color:#000;color:#fff'}
+                ,{title:'自评（self-rating）',colspan:19,align:'center'}
+                ,{title:'全量表总体概览',rowspan:3,align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
             ],[
-                 {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',width: 270, templet:function (d) {
+                {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',rowspan: 2,width: 270, templet:function (d) {
                     if(d.HAMA.total_score === undefined ){
                         return '--'
                     }
@@ -470,7 +468,7 @@
                     }
                     return d.HAMA.total_score
                 }}
-                ,{field:'HAMD17', title:'汉密尔顿抑郁量表（HAMD-17）- 总分', width: 270, templet:function (d) {
+                ,{field:'HAMD17', title:'汉密尔顿抑郁量表（HAMD-17）- 总分',rowspan: 2, width: 270, templet:function (d) {
                     if(d.HAMD17.total_score === undefined){
                         return '--'
                     }
@@ -479,7 +477,7 @@
                     }
                     return d.HAMD17.total_score
                 }}
-                ,{field:'YMRS', title:'杨氏躁狂量表（YMRS）- 总分',width: 220,templet: function (d) {
+                ,{field:'YMRS', title:'杨氏躁狂量表（YMRS）- 总分',rowspan: 2,width: 220,templet: function (d) {
                     if(d.YMRS.total_score === undefined){
                         return '--'
                     }
@@ -488,7 +486,7 @@
                     }
                     return d.YMRS.total_score
                 }}
-                ,{field:'BPRS', title:'简明精神病量表（BPRS）- 总分',width: 240,templet: function (d) {
+                ,{field:'BPRS', title:'简明精神病量表（BPRS）- 总分',rowspan: 2,width: 240,templet: function (d) {
                     if(d.BPRS.total_score === undefined){
                         return '--'
                     }
@@ -496,6 +494,171 @@
                         return '暂无'
                     }
                     return d.BPRS.total_score
+                }}
+
+                ,{field:'adolescent_events', title:'青少年生活事件量表（ALSEC）- 总分',rowspan: 2,width:270, templet:function (d) {
+                    if(d.adolescent_events.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.adolescent_events.total_score === '' || d.adolescent_events.total_score === null){
+                        return '暂无'
+                    }
+                    return d.adolescent_events.total_score
+                }}
+                ,{field:'atq', title:'自动思维量表（ATQ）- 总分',rowspan: 2,width:230, templet:function (d) {
+                    if(d.atq.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.atq.total_score === '' || d.atq.total_score === null){
+                        return '暂无'
+                    }
+                    return d.atq.total_score
+                }}
+                ,{field: 'cognitive_emotion', title:'认知情绪调节问卷（CERQ-C）- 总分',rowspan: 2, width: 280, templet:function (d) {
+                    if(d.cognitive_emotion.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.cognitive_emotion.total_score === '' || d.cognitive_emotion.total_score === null){
+                        return '暂无'
+                    }
+                    return d.cognitive_emotion.total_score
+                }}
+                ,{field: 'happiness', title:'斯奈斯和汉密尔顿快乐量表（Happiness）- 总分',rowspan: 2 ,width: 330, templet:function (d) {
+                    if(d.happiness.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.happiness.total_score === '' || d.happiness.total_score === null){
+                        return '暂无'
+                    }
+                    return d.happiness.total_score
+                }}
+                ,{field: 'manicsymptom', title: '33项轻躁狂症状清单（HCL-33）- 总分',rowspan: 2, width: 300, templet:function (d) {
+                    if(d.manicsymptom.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.manicsymptom.total_score === '' || d.manicsymptom.total_score === null){
+                        return '暂无'
+                    }
+                    return d.manicsymptom.total_score
+                }}
+                ,{field: 'pleasure', title: '快感体验能力量表（TEPS）- 总分',rowspan: 2, width: 300, templet:function (d) {
+                    if(d.pleasure.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.pleasure.total_score === '' || d.pleasure.total_score === null){
+                        return '暂无'
+                    }
+                    return d.pleasure.total_score
+                }}
+                ,{field: 'suicidal', title: '自杀意念及行为史（BSS）- 总分',rowspan: 2, width: 300, templet: function (d) {
+                    if(d.suicidal.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.suicidal.total_score === '' || d.suicidal.total_score === null){
+                        return '暂无'
+                    }
+                    return d.suicidal.total_score
+                }}
+                ,{field: 'ybobsessiontable', title:'耶鲁布朗强迫症严重程度（YBOCS）- 总分',rowspan: 2, width: 320, templet:function (d) {
+                    if(d.ybobsessiontable.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.ybobsessiontable.total_score === '' || d.ybobsessiontable.total_score === null){
+                        return '暂无'
+                    }
+                    return d.ybobsessiontable.total_score
+                }}
+                ,{filed: 'sembu', title:'简式父母养育方式问卷（S-Embu）- 总分',rowspan: 2,width: 320, templet:function (d) {
+                    if(d.sembu.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.sembu.total_score === '' || d.sembu.total_score === null){
+                        return '暂无'
+                    }
+                    return d.sembu.total_score
+                }}
+                ,{field: 'gad', title:'广泛性焦虑障碍量表（GAD-7）- 总分',rowspan: 2,width: 320, templet:function (d) {
+                    if(d.gad.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.gad.total_score === '' || d.gad.total_score === null){
+                        return '暂无'
+                    }
+                    return d.gad.total_score
+                }}
+                ,{field: 'phq', title:'抑郁症筛查量表（PHQ-9）- 总分',rowspan: 2,width:320, templet:function (d) {
+                    if(d.phq.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.phq.total_score === '' || d.phq.total_score === null){
+                        return '暂无'
+                    }
+                    return d.phq.total_score
+                }}
+                ,{field: 'pss', title:'压力知觉量表（PSS）- 总分',rowspan: 2,width: 250, templet:function (d) {
+                    if(d.pss.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.pss.total_score === '' || d.pss.total_score === null){
+                        return '暂无'
+                    }
+                    return d.pss.total_score
+                }}
+                ,{field: 'insomnia', title: '失眠严重指数量表（Insomnia）- 总分',rowspan: 2,width: 280, templet:function (d) {
+                    if(d.insomnia.total_score === undefined ){
+                        return '--'
+                    }
+                    if(d.insomnia.total_score === '' || d.insomnia.total_score === null){
+                        return '暂无'
+                    }
+                    return d.insomnia.total_score
+                }}
+                ,{title: '儿童期（16岁以前）的成长经历量表',align:'center',colspan:5}
+            ],[
+                {field: 'growth.emotion_abuse_score', title: '情感虐待总分', width: 150, templet:function (d) {
+                    if(d.growth.emotion_abuse_score === undefined ){
+                        return '--'
+                    }
+                    if(d.growth.emotion_abuse_score === '' || d.insomnia.emotion_abuse_score === null){
+                        return '暂无'
+                    }
+                    return d.growth.emotion_abuse_score
+                }}
+                ,{field: 'growth.body_abuse_score', title: '躯体虐待总分', width: 150, templet:function (d) {
+                    if(d.growth.body_abuse_score === undefined ){
+                        return '--'
+                    }
+                    if(d.growth.body_abuse_score === '' || d.insomnia.body_abuse_score === null){
+                        return '暂无'
+                    }
+                    return d.growth.body_abuse_score
+                }}
+                ,{field: 'growth.sex_abuse_score', title: '性虐待总分', width: 150, templet:function (d) {
+                    if(d.growth.sex_abuse_score === undefined ){
+                        return '--'
+                    }
+                    if(d.growth.sex_abuse_score === '' || d.insomnia.sex_abuse_score === null){
+                        return '暂无'
+                    }
+                    return d.growth.sex_abuse_score
+                }}
+                ,{field: 'growth.emotion_ignore_score', title: '情感忽视总分', width: 150, templet:function (d) {
+                    if(d.growth.emotion_ignore_score === undefined ){
+                        return '--'
+                    }
+                    if(d.growth.emotion_ignore_score === '' || d.insomnia.emotion_ignore_score === null){
+                        return '暂无'
+                    }
+                    return d.growth.emotion_ignore_score
+                }}
+                ,{field: 'growth.body_ignore_score', title: '躯体忽视总分', width: 150, templet:function (d) {
+                    if(d.growth.body_ignore_score === undefined ){
+                        return '--'
+                    }
+                    if(d.growth.body_ignore_score === '' || d.insomnia.body_ignore_score === null){
+                        return '暂无'
+                    }
+                    return d.growth.body_ignore_score
                 }}
             ]]
             ,done:function (){
@@ -515,6 +678,7 @@
                         ,shadeClose: true
                         ,btn: ['确定','取消']
                         ,btn1: function(index, layero){
+
 
                             var diagnosis_list = []
                             $("input[name='diagnosis']:checked").each(function (){
@@ -665,8 +829,8 @@
                 text += "<blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"border-left: 5px solid red;font-size: 13px\">";
                 //text += "<div class='layui-btn-container'>"
                 text += "提示："
-                text += "<button class=\"layui-btn layui-btn-primary layui-btn-xs\">一般信息量表</button><button class=\"layui-btn layui-btn-xs\">他评量表</button>"
-                     + "<button class=\"layui-btn layui-btn-normal layui-btn-xs\">自评量表</button><button class=\"layui-btn layui-btn-warm layui-btn-xs\">认知量表</button><button class=\"layui-btn layui-btn-danger layui-btn-xs\">其他量表</button>"
+                text += "<button class=\"layui-btn layui-btn-primary layui-btn-xs\">一般信息表</button><button class=\"layui-btn layui-btn-xs\">他评量表</button>"
+                     + "<button class=\"layui-btn layui-btn-normal layui-btn-xs\">自评量表</button><button class=\"layui-btn layui-btn-warm layui-btn-xs\">认知量表</button><button class=\"layui-btn layui-btn-danger layui-btn-xs\">其他信息表</button>"
                 //text += "</div>"
                 text += "</blockquote>";
                 //text += "  </div>";

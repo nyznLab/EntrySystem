@@ -3,6 +3,7 @@ import json
 import patients.models as patients_models
 import scales.models as scales_models
 import users.models as users_models
+from django.apps import apps
 from django.forms import model_to_dict
 
 
@@ -82,27 +83,39 @@ def get_all_patient_by_filter(condition):
 # 获取量表单项得分与总分
 def get_scales_score(patient_session_id):
 
-    # 他评量表
+    scales_dict = {
+        'HAMA': 'RPatientHama',
+        'HAMD17': 'RPatientHamd17',
+        'YMRS': 'RPatientYmrs',
+        'BPRS': 'RPatientBprs',
 
-    res_hama = scales_models.RPatientHama.objects.filter(patient_session_id=patient_session_id).values()
-    res_hamd17 = scales_models.RPatientHamd17.objects.filter(patient_session_id=patient_session_id).values()
-    res_ymrs = scales_models.RPatientYmrs.objects.filter(patient_session_id=patient_session_id).values()
-    res_bprs = scales_models.RPatientBprs.objects.filter(patient_session_id=patient_session_id).values()
-    hama, hamd17, ymrs, bprs = '', '', '', ''
-    if res_hama:
-        hama = res_hama[0]
-    if res_hamd17:
-        hamd17 = res_hamd17[0]
-    if res_ymrs:
-        ymrs = res_ymrs[0]
-    if res_bprs:
-        bprs = res_bprs[0]
+        'adolescent_events': 'RPatientAdolescentEvents',
+        'atq': 'RPatientAtq',
+        'cognitive_emotion': 'RPatientCognitiveEmotion',
+        'happiness': 'RPatientHappiness',
+        'manicsymptom': 'RPatientManicsymptom',
+        'pleasure': 'RPatientPleasure',
+        'suicidal': 'RPatientSuicidal',
+        'ybobsessiontable': 'RPatientYbobsessiontable',
+        'sembu': 'RPatientSembu',
+        'gad': 'RPatientGad',
+        'phq': 'RPatientPhq',
+        'pss': 'RPatientPss',
+        'insomnia': 'RPatientInsomnia',
+        'growth': 'RPatientGrowth',
 
-    scales_score = {
-        'HAMA': hama,
-        'HAMD17': hamd17,
-        'YMRS': ymrs,
-        'BPRS': bprs,
+        'vept': 'RPatientVept',
+        'wcst': 'RPatientWcst',
+        'rbans': 'RPatientRbans',
+        'fept': 'RPatientFept'
     }
+    scales_score = {}
+    for scale_name, model_name in scales_dict.items():
+        model = apps.get_model('scales', model_name)
+        res = model.objects.filter(patient_session_id=patient_session_id).values()
+        if res.exists():
+            scales_score[scale_name] = res[0]
+        else:
+            scales_score[scale_name] = {}
     return scales_score
 
