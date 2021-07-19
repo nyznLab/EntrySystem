@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'EntrySystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
-        'NAME': 'exam',         # 你要存储数据的库名，事先要创建之
+        'NAME': 'entry_system',         # 你要存储数据的库名，事先要创建之
         'USER': 'root',         # 数据库用户名
         'PASSWORD': '123456',     # 密码
         'HOST': 'localhost',    # 主机

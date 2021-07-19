@@ -8,6 +8,8 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+
+#build/
 develop-eggs/
 #dist/
 downloads/
@@ -128,3 +130,4 @@ dmypy.json
 .pyre/
 
 /.idea
+/material
