@@ -611,3 +611,17 @@ def del_blood(request):
     redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
     return redirect(redirect_url)
 
+def add_blood(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    patient_id = request.GET.get('patient_id')
+    blood_res = patients_models.RPatientBlood.objects.filter(patient_session_id=patient_session_id).first()
+    if blood_res is not None:
+        blood_res.delete()
+    rPatientBlood= patients_models.RPatientBlood(patient_session_id=patient_session_id)
+    rPatientBlood=set_attr_by_post(request, rPatientBlood)
+    rPatientBlood.save()
+    patient_detail_res=patients_models.DPatientDetail.objects.filter(id=patient_session_id).first()
+    patient_detail_res.blood=1
+    patient_detail_res.save()
+    redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
+    return redirect(redirect_url)
