@@ -360,10 +360,11 @@ def get_select_scales(request):
         patient_session_id)
     tms = patients_models.DPatientDetail.objects.filter(id=patient_session_id)[0].tms
     r_patient_blood=patients_models.RPatientBlood.objects.filter(patient_session=patient_session_id).first()
-    if r_patient_blood.blood_sampling_date is not None:
-        r_patient_blood.blood_sampling_date = r_patient_blood.blood_sampling_date.strftime('%Y-%m-%d')
-    if r_patient_blood.inspect_date is not None:
-        r_patient_blood.inspect_date = r_patient_blood.inspect_date.strftime('%Y-%m-%d')
+    if r_patient_blood is not None:
+        if r_patient_blood.blood_sampling_date is not None:
+            r_patient_blood.blood_sampling_date = r_patient_blood.blood_sampling_date.strftime('%Y-%m-%d')
+        if r_patient_blood.inspect_date is not None:
+            r_patient_blood.inspect_date = r_patient_blood.inspect_date.strftime('%Y-%m-%d')
     return render(request, 'select_scales.html', {'patient_baseinfo': patient,
                                                   'patient_id': patient.id,
                                                   'standard_id': patient_detail.standard_id,
