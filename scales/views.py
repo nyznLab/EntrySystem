@@ -365,6 +365,8 @@ def get_select_scales(request):
             r_patient_blood.blood_sampling_date = r_patient_blood.blood_sampling_date.strftime('%Y-%m-%d')
         if r_patient_blood.inspect_date is not None:
             r_patient_blood.inspect_date = r_patient_blood.inspect_date.strftime('%Y-%m-%d')
+
+    options = ['无', '初扫', '只采血', '复扫', '出院前', '随访', '再次入院']
     return render(request, 'select_scales.html', {'patient_baseinfo': patient,
                                                   'patient_id': patient.id,
                                                   'standard_id': patient_detail.standard_id,
@@ -376,7 +378,8 @@ def get_select_scales(request):
                                                   "todo_self_test_scale_size": len(self_test_scale_list),
                                                   "todo_cognition_scale_size": len(cognition_scale_list),
                                                   'tms': tms,
-                                                  'r_patient_blood':r_patient_blood
+                                                  'r_patient_blood': r_patient_blood,
+                                                  'options_list': options
                                                   })
 
 
