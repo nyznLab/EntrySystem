@@ -280,8 +280,8 @@
                                            for="subject_number">扫描备注选项<span class="required">:</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 0px">
-                                        <select name="scan_option" id="scan_note_option" class="sel_beauty">
-                                            
+                                        <div class="" style="width: 140px">
+                                            <select name="scan_option" id="scan_note_option" class="sel_beauty">
                                             {% for option in options_list %}
                                                 <option value="{{ forloop.counter0 }}" {% if patient_detail.scan_note_option == forloop.counter0 %}selected{% endif %}>{{ option }}</option>
                                             {% endfor %}
@@ -292,8 +292,9 @@
 {#                                            <option value="4">出院前</option>#}
 {#                                            <option value="5">随访</option>#}
 {#                                            <option value="6">再次入院</option>#}
-                                        </select>
-                                        <input type="text" class="sel_beauty" id="scan_note_num" value="" style="margin-top: 10px;display: none">
+                                            </select>
+                                            <input type="text" class="sel_beauty" placeholder="第几次（输入数字）" id="scan_note_num" value="" style="margin-top: 10px;{% if patient_detail.scan_note_option < 3 %}display: none{% endif %}">
+                                        </div>
                                     </div>
                                 </div>
 
@@ -560,10 +561,18 @@ var num=1
             });
 
             // 扫描备注切换
-            let $option_num = $('#scan_note_num')
+            let $option_num = $('#scan_note_num');
+            let else_option = '<input type="text" class="sel_beauty" id="scan_note_num" value="" style="margin-top: 10px;display: none">'
             $('#scan_note_option').change(function (){
-                if($(this).find('option:selected').val() >= '3'){
+                let that = $(this)
+                let value = that.find('option:selected').val()
+                if(value >= '3'){
                     $option_num.show()
+                    if (value === '5'){
+                        that.siblings('.sel_beauty').attr('placeholder','第几月（输入数字）')
+                    }else{
+                        that.siblings('.sel_beauty').attr('placeholder','第几次（输入数字）')
+                    }
                 }else{
                     $option_num.hide()
                 }
