@@ -117,6 +117,7 @@
     let suicide = false;
     let end_flag = 0;
     let question_index = 1 + {{ question_index }};
+    let isClick=true;
     function alter_option_names(option_class_name, name) {
         const nodes = document.getElementsByClassName(option_class_name);
         for (let i = 0; i < nodes.length; i++) {
@@ -278,6 +279,13 @@
                 }
             }
             $("input[type='radio']").removeAttr("checked");
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick = false;
+            }, 1000);
+            if (isClick) {
+                return;
+            }
         });
     });
 
@@ -293,7 +301,7 @@
     {#    for (let i = 0; i < nodes.length; i++) {#}
     {#        nodes[i].setAttribute("name", name);#}
     {#    }#}
-    {#}#}
+
     {##}
     {#function update_question(index) {#}
     {#    switch (index) {#}
@@ -421,9 +429,10 @@
     {#            );#}
     {#            break;#}
     {#    }#}
-    {#}#}
+
 
     function ajax_post(form) {
+        isClick=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +
@@ -439,8 +448,7 @@
                 'test_name': "atq",
                 'csrfmiddlewaretoken': csrf
             }
-        });
+        })
     }
-
 </script>
 {% endblock %}

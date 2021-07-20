@@ -159,6 +159,7 @@
     let question_index_2 = 1;
     let question_index = 1 + {{ question_index }};
     let end_flag = 0;
+    let isClick1=isClick2=true;
     if(question_index <= 2){
         for(let index = 1 ; index < question_index ; index ++){
             update_question_1(index);
@@ -241,6 +242,13 @@
                 }
             }
             $("input[type='radio']").removeAttr("checked");
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick1 = false;
+            }, 1000);
+            if (isClick1) {
+                return;
+            }
         });
 
         $("#question_submit_2").on('click', function () {
@@ -268,6 +276,13 @@
                 }
             }
             $("input[type='radio']").removeAttr("checked");
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick2 = false;
+            }, 1000);
+            if (isClick2) {
+                return;
+            }
         });
     });
 
@@ -544,6 +559,7 @@
     }
 
     function ajax_post(form) {
+        isClick1=isClick2=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +

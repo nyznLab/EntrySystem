@@ -1351,7 +1351,9 @@
     let suicide = {{ suicide }};
     let end_flag = 0;
     let question_index = 1 + {{ question_index }};
-
+    let isClick1=isClick2=isClick3=isClick4=isClick5=isClick6=isClick7=isClick8=isClick9=isClick10=isClick11=isClick12=isClick13=isClick14=isClick15=true;
+    let isClick16=isClick17=isClick18=isClick19=isClick20=isClick21=isClick22=isClick23=isClick24=isClick25=isClick26=isClick27=isClick28=isClick29=isClick30=true;
+    let isClick31=isClick32=isClick33=isClick34=isClick35=isClick36=isClick37=isClick38=isClick39=isClick40=true;
     $(document).ready(function () {
         $("input[type='radio']").labelauty();
         // $("div[class='bss_0_1']").show();
@@ -1373,6 +1375,13 @@
                 $("div[class='bss_0_1']").hide();
                 $("div[class='bss_0_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick1 = false;
+            }, 1000);
+            if (isClick1) {
+                return;
+            }
         });
 
         $("#bss_0_2_submit").on('click', function () {
@@ -1382,6 +1391,13 @@
                 ajax_post($('#bss_0_2'))
                 $("div[class='bss_0_2']").hide();
                 $("div[class='bss_1_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick2 = false;
+            }, 1000);
+            if (isClick2) {
+                return;
             }
         });
 
@@ -1393,6 +1409,13 @@
                 $("div[class='bss_1_1']").hide();
                 $("div[class='bss_1_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick3 = false;
+            }, 1000);
+            if (isClick3) {
+                return;
+            }
         });
 
         $("#bss_1_2_submit").on('click', function () {
@@ -1402,6 +1425,13 @@
                 ajax_post($('#bss_1_2'))
                 $("div[class='bss_1_2']").hide();
                 $("div[class='bss_2_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick4 = false;
+            }, 1000);
+            if (isClick4) {
+                return;
             }
         });
 
@@ -1413,6 +1443,13 @@
                 $("div[class='bss_2_1']").hide();
                 $("div[class='bss_2_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick5 = false;
+            }, 1000);
+            if (isClick5) {
+                return;
+            }
         });
 
         $("#bss_2_2_submit").on('click', function () {
@@ -1422,6 +1459,13 @@
                 ajax_post($('#bss_2_2'))
                 $("div[class='bss_2_2']").hide();
                 $("div[class='bss_3_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick6 = false;
+            }, 1000);
+            if (isClick6) {
+                return;
             }
         });
 
@@ -1433,6 +1477,13 @@
                 $("div[class='bss_3_1']").hide();
                 $("div[class='bss_3_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick7 = false;
+            }, 1000);
+            if (isClick7) {
+                return;
+            }
         });
 
         $("#bss_3_2_submit").on('click', function () {
@@ -1442,6 +1493,13 @@
                 ajax_post($('#bss_3_2'))
                 $("div[class='bss_3_2']").hide();
                 $("div[class='bss_4_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick8 = false;
+            }, 1000);
+            if (isClick8) {
+                return;
             }
         });
 
@@ -1456,6 +1514,13 @@
                 $("div[class='bss_4_1']").hide();
                 $("div[class='bss_4_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick9 = false;
+            }, 1000);
+            if (isClick9) {
+                return;
+            }
         });
 
         $("#bss_4_2_submit").on('click', function () {
@@ -1469,6 +1534,13 @@
                 $("div[class='bss_4_2']").hide();
                 $("div[class='bss_5_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick10 = false;
+            }, 1000);
+            if (isClick10) {
+                return;
+            }
         });
 
         $("#bss_5_1_submit").on('click', function () {
@@ -1481,6 +1553,13 @@
                 ajax_post($('#bss_5_1'))
                 $("div[class='bss_5_1']").hide();
                 $("div[class='bss_5_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick11 = false;
+            }, 1000);
+            if (isClick11) {
+                return;
             }
         });
 
@@ -1505,6 +1584,13 @@
                 $("div[class='bss_5_2']").hide();
                 $("div[class='bss_6_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick12 = false;
+            }, 1000);
+            if (isClick12) {
+                return;
+            }
         });
 
         $("#bss_6_1_submit").on('click', function () {
@@ -1514,6 +1600,13 @@
                 ajax_post($('#bss_6_1'))
                 $("div[class='bss_6_1']").hide();
                 $("div[class='bss_6_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick13 = false;
+            }, 1000);
+            if (isClick13) {
+                return;
             }
         });
 
@@ -1525,6 +1618,13 @@
                 $("div[class='bss_6_2']").hide();
                 $("div[class='bss_7_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick14 = false;
+            }, 1000);
+            if (isClick14) {
+                return;
+            }
         });
 
         $("#bss_7_1_submit").on('click', function () {
@@ -1534,6 +1634,13 @@
                 ajax_post($('#bss_7_1'))
                 $("div[class='bss_7_1']").hide();
                 $("div[class='bss_7_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick15 = false;
+            }, 1000);
+            if (isClick15) {
+                return;
             }
         });
 
@@ -1545,6 +1652,13 @@
                 $("div[class='bss_7_2']").hide();
                 $("div[class='bss_8_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick16 = false;
+            }, 1000);
+            if (isClick16) {
+                return;
+            }
         });
 
         $("#bss_8_1_submit").on('click', function () {
@@ -1554,6 +1668,13 @@
                 ajax_post($('#bss_8_1'))
                 $("div[class='bss_8_1']").hide();
                 $("div[class='bss_8_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick17 = false;
+            }, 1000);
+            if (isClick17) {
+                return;
             }
         });
 
@@ -1565,6 +1686,13 @@
                 $("div[class='bss_8_2']").hide();
                 $("div[class='bss_9_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick18 = false;
+            }, 1000);
+            if (isClick18) {
+                return;
+            }
         });
 
         $("#bss_9_1_submit").on('click', function () {
@@ -1574,6 +1702,13 @@
                 ajax_post($('#bss_9_1'))
                 $("div[class='bss_9_1']").hide();
                 $("div[class='bss_9_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick19 = false;
+            }, 1000);
+            if (isClick19) {
+                return;
             }
         });
 
@@ -1585,6 +1720,13 @@
                 $("div[class='bss_9_2']").hide();
                 $("div[class='bss_10_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick20 = false;
+            }, 1000);
+            if (isClick20) {
+                return;
+            }
         });
 
         $("#bss_10_1_submit").on('click', function () {
@@ -1594,6 +1736,13 @@
                 ajax_post($('#bss_10_1'))
                 $("div[class='bss_10_1']").hide();
                 $("div[class='bss_10_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick21 = false;
+            }, 1000);
+            if (isClick21) {
+                return;
             }
         });
 
@@ -1605,6 +1754,13 @@
                 $("div[class='bss_10_2']").hide();
                 $("div[class='bss_11_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick22 = false;
+            }, 1000);
+            if (isClick22) {
+                return;
+            }
         });
 
         $("#bss_11_1_submit").on('click', function () {
@@ -1614,6 +1770,13 @@
                 ajax_post($('#bss_11_1'))
                 $("div[class='bss_11_1']").hide();
                 $("div[class='bss_11_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick23 = false;
+            }, 1000);
+            if (isClick23) {
+                return;
             }
         });
 
@@ -1625,6 +1788,13 @@
                 $("div[class='bss_11_2']").hide();
                 $("div[class='bss_12_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick24 = false;
+            }, 1000);
+            if (isClick24) {
+                return;
+            }
         });
 
         $("#bss_12_1_submit").on('click', function () {
@@ -1634,6 +1804,13 @@
                 ajax_post($('#bss_12_1'))
                 $("div[class='bss_12_1']").hide();
                 $("div[class='bss_12_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick25 = false;
+            }, 1000);
+            if (isClick25) {
+                return;
             }
         });
 
@@ -1645,6 +1822,13 @@
                 $("div[class='bss_12_2']").hide();
                 $("div[class='bss_13_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick26 = false;
+            }, 1000);
+            if (isClick26) {
+                return;
+            }
         });
 
         $("#bss_13_1_submit").on('click', function () {
@@ -1654,6 +1838,13 @@
                 ajax_post($('#bss_13_1'))
                 $("div[class='bss_13_1']").hide();
                 $("div[class='bss_13_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick27 = false;
+            }, 1000);
+            if (isClick27) {
+                return;
             }
         });
 
@@ -1665,6 +1856,13 @@
                 $("div[class='bss_13_2']").hide();
                 $("div[class='bss_14_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick28 = false;
+            }, 1000);
+            if (isClick28) {
+                return;
+            }
         });
 
         $("#bss_14_1_submit").on('click', function () {
@@ -1674,6 +1872,13 @@
                 ajax_post($('#bss_14_1'))
                 $("div[class='bss_14_1']").hide();
                 $("div[class='bss_14_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick29 = false;
+            }, 1000);
+            if (isClick29) {
+                return;
             }
         });
 
@@ -1685,6 +1890,13 @@
                 $("div[class='bss_14_2']").hide();
                 $("div[class='bss_15_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick30 = false;
+            }, 1000);
+            if (isClick30) {
+                return;
+            }
         });
 
         $("#bss_15_1_submit").on('click', function () {
@@ -1694,6 +1906,13 @@
                 ajax_post($('#bss_15_1'))
                 $("div[class='bss_15_1']").hide();
                 $("div[class='bss_15_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick31 = false;
+            }, 1000);
+            if (isClick31) {
+                return;
             }
         });
 
@@ -1705,6 +1924,13 @@
                 $("div[class='bss_15_2']").hide();
                 $("div[class='bss_16_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick32 = false;
+            }, 1000);
+            if (isClick32) {
+                return;
+            }
         });
 
         $("#bss_16_1_submit").on('click', function () {
@@ -1714,6 +1940,13 @@
                 ajax_post($('#bss_16_1'))
                 $("div[class='bss_16_1']").hide();
                 $("div[class='bss_16_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick33 = false;
+            }, 1000);
+            if (isClick33) {
+                return;
             }
         });
 
@@ -1725,6 +1958,13 @@
                 $("div[class='bss_16_2']").hide();
                 $("div[class='bss_17_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick34 = false;
+            }, 1000);
+            if (isClick34) {
+                return;
+            }
         });
 
         $("#bss_17_1_submit").on('click', function () {
@@ -1734,6 +1974,13 @@
                 ajax_post($('#bss_17_1'))
                 $("div[class='bss_17_1']").hide();
                 $("div[class='bss_17_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick35 = false;
+            }, 1000);
+            if (isClick35) {
+                return;
             }
         });
 
@@ -1745,6 +1992,13 @@
                 $("div[class='bss_17_2']").hide();
                 $("div[class='bss_18_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick36 = false;
+            }, 1000);
+            if (isClick36) {
+                return;
+            }
         });
 
         $("#bss_18_1_submit").on('click', function () {
@@ -1754,6 +2008,13 @@
                 ajax_post($('#bss_18_1'))
                 $("div[class='bss_18_1']").hide();
                 $("div[class='bss_18_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick37 = false;
+            }, 1000);
+            if (isClick37) {
+                return;
             }
         });
 
@@ -1765,6 +2026,13 @@
                 $("div[class='bss_18_2']").hide();
                 $("div[class='bss_19_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick38 = false;
+            }, 1000);
+            if (isClick38) {
+                return;
+            }
         });
 
         $("#bss_19_1_submit").on('click', function () {
@@ -1774,6 +2042,13 @@
                 ajax_post($('#bss_19_1'))
                 $("div[class='bss_19_1']").hide();
                 $("div[class='bss_19_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick39 = false;
+            }, 1000);
+            if (isClick39) {
+                return;
             }
         });
 
@@ -1786,6 +2061,13 @@
                 //跳转
                 location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick40 = false;
+            }, 1000);
+            if (isClick40) {
+                return;
+            }
         });
     });
 
@@ -1797,6 +2079,9 @@
     }
 
     function ajax_post(form) {
+        isClick1=isClick2=isClick3=isClick4=isClick5=isClick6=isClick7=isClick8=isClick9=isClick10=isClick11=isClick12=isClick13=isClick14=isClick15=true;
+        isClick16=isClick17=isClick18=isClick19=isClick20=isClick21=isClick22=isClick23=isClick24=isClick25=isClick26=isClick27=isClick28=isClick29=isClick30=true;
+        isClick31=isClick32=isClick33=isClick34=isClick35=isClick36=isClick37=isClick38=isClick39=isClick40=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +
