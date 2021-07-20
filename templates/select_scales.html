@@ -283,7 +283,7 @@
                                         <select name="scan_option" id="scan_note_option" class="sel_beauty">
                                             
                                             {% for option in options_list %}
-                                                <option value="{{ forloop.counter0 }}">{{ option }}</option>
+                                                <option value="{{ forloop.counter0 }}" {% if patient_detail.scan_note_option == forloop.counter0 %}selected{% endif %}>{{ option }}</option>
                                             {% endfor %}
 {#                                            <option value="0">无</option>#}
 {#                                            <option value="1">初扫</option>#}
