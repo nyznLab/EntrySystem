@@ -808,16 +808,22 @@
                 text += "        <div class=\"layui-card-header\">量表概况"+"（标准编号："+data.standard_id+"，姓名："+data.name+"）"+"</div>";
                 text += "        <div class=\"layui-card-body\">";
                 text += "            <blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"\">";
+                text += "<p style='font-size:14px'>已完成量表</p>"
+                text += "<hr/>"
                 text += "<div class='layui-btn-container'>";
                 text += done_arr;
                 text += "</div>";
                 text += "            </blockquote>";
                 text += "<blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"\">";
+                text += "<p style='font-size:14px'>未完成量表</p>"
+                text += "<hr/>"
                 text += "<div class='layui-btn-container'>"
                 text += not_done_arr;
                 text += "</div>"
                 text += "</blockquote>";
                 text += "<blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"\">";
+                text += "<p style='font-size:14px'>不必做量表</p>"
+                text += "<hr/>"
                 text += "<div class='layui-btn-container'>"
                 text += no_need_arr;
                 text += "</div>"
