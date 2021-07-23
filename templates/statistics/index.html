@@ -29,6 +29,7 @@
         }
         .layui-form-label{
             box-sizing: content-box;
+            width:130px;
         }
         .layui-table-cell .layui-form-checkbox[lay-skin=primary] {
             top: 6px;
@@ -90,34 +91,33 @@
 
 <form class="layui-form" id="filter_form" lay-filter="f_form" style="display:none;margin: 20px">
     <div class="layui-form-item">
-        <blockquote class="layui-elem-quote">基本筛选</blockquote>
+        <blockquote class="layui-elem-quote">基本筛选 <span>（可以任意组合查询）</span></blockquote>
     </div>
   <div class="layui-form-item">
       <div class="layui-inline">
           <label class="layui-form-label">编号</label>
-          <div class="layui-input-block">
+          <div class="layui-input-inline">
               <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="patient_id" >
           </div>
       </div>
   </div>
   <div class="layui-form-item">
-      <div class="layui-inline">
+
           <label class="layui-form-label">扫描编号</label>
           <div class="layui-input-block">
               {% for s in session_all_list %}
                   <input type="checkbox" title="{{ s.session_id|processSession }}" lay-skin="primary" value="{{ forloop.counter }}" name="session_id">
               {% endfor %}
-{#              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="session_id" >#}
           </div>
-      </div>
+
   </div>
   <div class="layui-form-item">
-      <div class="layui-inline">
+
           <label class="layui-form-label">姓名</label>
-          <div class="layui-input-block">
+          <div class="layui-input-inline">
               <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >
           </div>
-      </div>
+
 
   </div>
   <div class="layui-form-item">
@@ -137,7 +137,7 @@
       </div>
 
   </div>
-  <div class="layui-form-item" style="height:38px">
+  <div class="layui-form-item">
 
             <label class="layui-form-label">诊断</label>
                 <div class="layui-input-block">
@@ -153,6 +153,8 @@
                     <input type="checkbox" name="diagnosis" title="抑郁症状" lay-skin="primary" value="9">
                     <input type="checkbox" name="diagnosis" title="其他诊断" lay-skin="primary" value="99">
                 </div>
+
+
   </div>
   <div class="layui-form-item">
       <label class="layui-form-label">性别</label>
@@ -174,6 +176,35 @@
                 </select>
             </div>
         </div>
+    </div>
+    <div class="layui-form-item">
+
+            <label class="layui-form-label">是否采血</label>
+            <div class="layui-input-block">
+                <input type="radio" name="blood" value="" title="全部" checked>
+                <input type="radio" name="blood" value="1" title="是">
+                <input type="radio" name="blood" value="0" title="否">
+            </div>
+
+    </div>
+    <div class="layui-form-item">
+
+            <label class="layui-form-label">是否做认知</label>
+            <div class="layui-input-block">
+                <input type="radio" name="cognitive" value="" title="全部" checked>
+                <input type="radio" name="cognitive" value="1" title="是">
+                <input type="radio" name="cognitive" value="0" title="否">
+            </div>
+
+    </div>
+    <div class="layui-form-item">
+
+            <label class="layui-form-label">是否采集声音</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sound" value="" title="全部" checked>
+                <input type="radio" name="sound" value="1" title="是">
+                <input type="radio" name="sound" value="0" title="否">
+            </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
@@ -702,6 +733,9 @@
                                     age_compare:$("#age_compare_select option:selected").val(),
                                     sex:$("input[name='sex']:checked").val(),
                                     source: $("#source_select option:selected").val(),
+                                    blood: $("input[name='blood']:checked").val(),
+                                    cognitive: $("input[name='cognitive']:checked").val(),
+                                    sound: $("input[name='sound']:checked").val(),
                                     diagnosis: diagnosis_list,
                                     startDate:$("#startDate").val(),
                                     endDate:$("#endDate").val(),

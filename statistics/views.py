@@ -32,6 +32,12 @@ def get_patient_data(request):
                 search_dict['patient__sex__contains'] = data['sex']
             if data.get('source'):
                 search_dict['source'] = data['source']
+            if data.get('blood'):
+                search_dict['blood'] = data['blood']
+            if data.get('cognitive'):
+                search_dict['cognitive'] = data['cognitive']
+            if data.get('sound'):
+                search_dict['sound'] = data['sound']
             if data.getlist('diagnosis[]'):
                 search_dict['patient__diagnosis__in'] = data.getlist('diagnosis[]')
             if data.get('startDate') or data.get('endDate'):
