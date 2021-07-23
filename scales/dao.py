@@ -1123,3 +1123,29 @@ def del_suibe(patient_session_id, scale_id):
     res = scales_models.RPatientSuicideBehavior.objects.filter(patient_session_id=patient_session_id, scale_id=scale_id)
     if res.exists():
         res[0].delete()
+
+
+def get_scale_content_by_id(scale_id):
+    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id).order_by("-scale_version").first()
+    return res
+
+
+def get_scale_content_version_by_id(scale_id):
+    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id).order_by("-scale_version"). \
+        values("scale_version").first()
+    if res is None:
+        return res
+    return res["scale_version"]
+
+
+def insert_scale_content(scale_content_model):
+    try:
+        scale_content_model.save()
+        return True
+    except ValueError:
+        return False
+
+
+def get_scale_answers(scale_model, patient_session_id):
+    res = scale_model.objects.filter(patient_session_id=patient_session_id).get()
+    return res

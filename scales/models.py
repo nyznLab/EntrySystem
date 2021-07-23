@@ -9,6 +9,23 @@ from django.db import models
 from patients.models import DPatientDetail, BPatientBaseInfo
 
 
+class TScalesContent(models.Model):
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    scale_name = models.CharField(max_length=45, null=False, blank=False)
+    scale_definition_id = models.IntegerField(null=False, blank=False)
+    scale_group = models.IntegerField(default=0)
+    scale_version = models.IntegerField(null=False, blank=False)
+    scale_content = models.CharField(max_length=60000, null=False, blank=False)
+    comment = models.CharField(max_length=100, default="")
+    delete = models.IntegerField(null=False, default=0)
+    create_time = models.IntegerField(null=False, blank=False)
+    create_user = models.IntegerField(null=False, blank=False)
+
+    class Meta:
+        managed = False
+        db_table = 't_scales_content'
+
+
 class DScales(models.Model):
     scale_name = models.CharField(max_length=40)
     scale_type = models.IntegerField()

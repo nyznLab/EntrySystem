@@ -1,0 +1,11 @@
+<scale title="量表题目" warn="量表提示">
+    <question index="1" title="题目一">
+        <option type="radio" name="question_1" value="0">选项一内容</option>
+        <option type="radio" name="question_1" value="1">选项二内容</option>
+        <option type="radio" name="question_1" value="2">选项三内容</option>
+        <option type="radio" name="question_1" value="3">选项四内容</option>
+    </question>
+    <question index="2" title="题目二" rule="question_1 > 0">
+        <option type="text" name="question_2"/>
+    </question>
+</scale>

@@ -4,6 +4,7 @@ import scales.dao as scales_dao
 import scales.models as scales_models
 import tools.config as tools_config
 import patients.dao as patients_dao
+import scales.doSelfTest as Do
 import tools.Utils as tools_utils
 import patients.models  as patients_models
 from .models import RSelfTestDuration
@@ -2078,7 +2079,11 @@ def redo_self_tests(request):
 
 
 def testNewAjax(request):
-    return render(request, 'nbh/ajax_insomnia.html', {'question_index': 0})
+    # value = scales_dao.get_scale_content_version_by_id(1)
+    content = Do.get_scale_content_by_scale_id(1)
+    print(content)
+    return HttpResponse(str(content))
+    # return render(request, 'nbh/ajax_insomnia.html', {'question_index': 0})
 
 
 #自杀行为表
@@ -2129,11 +2134,45 @@ def get_check_suibe_form(request):
     suibe_answer = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
     is_first = scales_dao.get_suibe_isfirst(patient_session_id)
     return render(request, 'nbh/edit_suibe.html', {'patient_session_id': patient_session_id,
-                                                  'patient_id': request.GET.get('patient_id'),
-                                                  'username': request.session.get('username'),
-                                                  'scale_name_list': scale_name_list,
-                                                  'scale_id': scale_id,
-                                                  'suibe_answer': suibe_answer,
-                                                  'order': order,
-                                                  'isfirst': is_first,
-                                                  })
+                                                   'patient_id': request.GET.get('patient_id'),
+                                                   'username': request.session.get('username'),
+                                                   'scale_name_list': scale_name_list,
+                                                   'scale_id': scale_id,
+                                                   'suibe_answer': suibe_answer,
+                                                   'order': order,
+                                                   'isfirst': is_first,
+                                                   })
+
+
+def update_scales_content(request):
+    err = Do.update_scales_content_validate(request)
+    if err is not None:
+        return HttpResponse(err)
+    # 用户输入
+    scale_name = request.POST.get('scale_name')
+    # 用户选择
+    scale_definition_id = request.POST.get('scale_definition_id')
+    scale_group = request.POST.get('scale_group')
+    # XML格式需要校验
+    scale_content = request.POST.get('scale_content')
+    comment = request.POST.get('comment')
+    create_user = request.POST.get('create_user')
+
+    scale_content_model = scales_models.TScalesContent(scale_name=scale_name, scale_definition_id=scale_definition_id,
+                                                       scale_group=scale_group, scale_content=scale_content,
+                                                       comment=comment, create_user=create_user)
+    rsp = Do.update_scale_content(scale_content_model)
+    return HttpResponse(rsp)
+
+
+def get_next_question(request):
+    patient_session_id = request.GET.get("patient_session_id")
+    scale_id = request.GET.get("scale_id")
+    scale_content = Do.get_scale_content_by_scale_id(scale_id)
+    last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
+    while last_answered_question_index + 1 in scale_content.keys():
+        if "rule" in scale_content[last_answered_question_index+1] and Do.match_rules(
+                scale_content[last_answered_question_index+1]["rule"], scale_id, patient_session_id):
+            return HttpResponse(scale_content[last_answered_question_index + 1])
+        last_answered_question_index += 1
+    return HttpResponse(False)
