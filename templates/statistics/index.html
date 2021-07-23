@@ -1,5 +1,6 @@
 {% extends 'templates/index.html' %}
 {% load static %}
+{% load SelfDefinedFilter %}
 {% block css %}
 {#    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">#}
     <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
@@ -78,7 +79,7 @@
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
-{#                        <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">#}
+                        <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
                     </div>
                 </div>
             </div>
@@ -101,9 +102,12 @@
   </div>
   <div class="layui-form-item">
       <div class="layui-inline">
-          <label class="layui-form-label">第几次扫描</label>
+          <label class="layui-form-label">扫描编号</label>
           <div class="layui-input-block">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="session_id" >
+              {% for s in session_all_list %}
+                  <input type="checkbox" title="{{ s.session_id|processSession }}" lay-skin="primary" value="{{ forloop.counter }}" name="session_id">
+              {% endfor %}
+{#              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="session_id" >#}
           </div>
       </div>
   </div>
@@ -680,15 +684,19 @@
                         ,btn1: function(index, layero){
 
 
-                            var diagnosis_list = []
+                            let diagnosis_list = [],
+                                session_list = []
                             $("input[name='diagnosis']:checked").each(function (){
                                 diagnosis_list.push($(this).val())
+                            })
+                            $("input[name='session_id']:checked").each(function (){
+                                session_list.push($(this).val())
                             })
 
                             tb_patient.reload({
                                 where:{
                                     patient_id:$("#patient_id").val().trim(),
-                                    session_id:$("#session_id").val().trim(),
+                                    session_id:session_list,
                                     name:$("#name").val().trim(),
                                     age:$("#age").val().trim(),
                                     age_compare:$("#age_compare_select option:selected").val(),

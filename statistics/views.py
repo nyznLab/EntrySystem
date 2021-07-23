@@ -16,8 +16,8 @@ def get_patient_data(request):
             # 以下为基本筛选条件的组合
             if data.get('patient_id'):
                 search_dict['patient_id'] = data['patient_id']
-            if data.get('session_id'):
-                search_dict['session_id'] = data['session_id']
+            if data.getlist('session_id[]'):
+                search_dict['session_id__in'] = data.getlist('session_id[]')
             if data.get('name'):
                 search_dict['patient__name__contains'] = data['name']
             if data.get('age'):
@@ -92,9 +92,9 @@ def get_patient_data(request):
             pass
     else:
         username = request.session.get('username')
+        session = statistics_dao.get_session()
         return render(request, 'statistics/index.html', {
             'patients': patients,
-            'username': username
+            'username': username,
+            'session_all_list': session
         })
-
-

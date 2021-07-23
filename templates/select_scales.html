@@ -565,16 +565,16 @@ var num=1
             // 扫描备注切换
             let $option_num = $('#scan_note_num'),
                 $option_note = $('#scan_note_option')
-            let else_option = '<input type="text" class="sel_beauty" id="scan_note_num" value="" style="margin-top: 10px;display: none">'
-            let global_value = $option_num.find('input').val()
+            let global_num_value = $option_num.find('input').val()
+            ,global_option_value = $option_note.find('option:selected').val()
             $option_note.change(function (){
                 let that = $(this)
                 let value = that.find('option:selected').val()
-                console.log(global_value)
+                console.log(global_num_value)
                 if(value >= '3'){
                     $option_num.show()
-                    if (global_value === value){
-                        $option_num.find('input').val(global_value)
+                    if (global_option_value === value){
+                        $option_num.find('input').val(global_num_value)
                     }else{
                         $option_num.find('input').val('')
                     }
