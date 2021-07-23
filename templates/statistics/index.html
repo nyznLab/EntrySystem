@@ -48,7 +48,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <ul class="breadcrumb" style="background-color: white;font-weight:bold">
-                        <li class="active"><a href="">被试复扫信息</a></li>
+                        <li class="active"><a href="">复扫记录统计信息</a></li>
                     </ul>
                 </div>
             </div>
@@ -76,8 +76,8 @@
                         <table id="record" lay-filter="tb_record"></table>
                         <script type="text/html" id="filterTools">
                             <div class="layui-btn-group" style="display:inline-block">
-                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
-                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
+                                <button class="layui-btn-xs layui-btn layui-btn-primary" lay-event="filter_choice"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
+                                <button class="layui-btn-xs layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
                         <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
@@ -91,7 +91,7 @@
 
 <form class="layui-form" id="filter_form" lay-filter="f_form" style="display:none;margin: 20px">
     <div class="layui-form-item">
-        <blockquote class="layui-elem-quote">基本筛选 <span>（可以任意组合查询）</span></blockquote>
+        <blockquote class="layui-elem-quote">基本筛选 <span>（）</span></blockquote>
     </div>
   <div class="layui-form-item">
       <div class="layui-inline">
@@ -329,7 +329,6 @@
                 clearInterval(timer);
                 //othis.removeClass(DISABLED);
             }
-            console.log('刷新进度条！')
             element.progress('global_progress', n+'%');
         }, 1200);
 
@@ -342,10 +341,14 @@
                 ,layEvent: 'export_all_content'
                 ,icon: 'layui-icon-layouts'
             }]
+            ,title:'statistic_result'
             ,page: true
             ,url: '{% url 'statistics' %}'
+            ,height:'full-250'
             ,skin: 'row'
             ,even: true
+            ,limit:30
+            ,limits:[10,20,30,40,50,60,70,80,90,100]
             ,text: {
                 none:'没有记录哦'
             }
@@ -702,8 +705,12 @@
         })
 
         //监听表格头部筛选按钮
+        let isAll = true;
+        let condition;
         table.on('toolbar(tb_record)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
+            let checkStatus = table.checkStatus(obj.config.id);
+            let diagnosis_list = [],
+                session_list = [];
             switch (obj.event) {
                 case 'filter_choice':
                     layer.open({
@@ -712,11 +719,7 @@
                         content: $("#filter_form")
                         ,shadeClose: true
                         ,btn: ['确定','取消']
-                        ,btn1: function(index, layero){
-
-
-                            let diagnosis_list = [],
-                                session_list = []
+                        ,btn1: function (index, layero){
                             $("input[name='diagnosis']:checked").each(function (){
                                 diagnosis_list.push($(this).val())
                             })
@@ -724,61 +727,90 @@
                                 session_list.push($(this).val())
                             })
 
+                            condition = {
+                                patient_id:$("#patient_id").val().trim(),
+                                session_id:session_list,
+                                name:$("#name").val().trim(),
+                                age:$("#age").val().trim(),
+                                age_compare:$("#age_compare_select option:selected").val(),
+                                sex:$("input[name='sex']:checked").val(),
+                                source: $("#source_select option:selected").val(),
+                                blood: $("input[name='blood']:checked").val(),
+                                cognitive: $("input[name='cognitive']:checked").val(),
+                                sound: $("input[name='sound']:checked").val(),
+                                diagnosis: diagnosis_list,
+                                startDate:$("#startDate").val(),
+                                endDate:$("#endDate").val(),
+                                hama_total_score:$("#hama_total_score").val().trim(),
+                                hama_compare:$("#hama_total_score_compare_select option:selected").val(),
+                                hamd17_total_score:$("#hamd17_total_score").val().trim(),
+                                hamd17_compare:$("#hamd17_total_score_compare_select option:selected").val(),
+                                ymrs_total_score:$("#ymrs_total_score").val().trim(),
+                                ymrs_compare:$("#ymrs_total_score_compare_select option:selected").val(),
+                            };
+                            let n = 0;
+                            for(let i of Object.values(condition)){
+                                if (i === '' || i === null || i === 0 || i.length === 0 || i === '0'){
+                                    n++
+                                }
+                            }
+                            // 判断是否有筛选条件
+                            if (n === Object.keys(condition).length){
+                                isAll = true
+                            }else{
+                                isAll = false
+                            }
+                            // 重新渲染表格
                             tb_patient.reload({
-                                where:{
-                                    patient_id:$("#patient_id").val().trim(),
-                                    session_id:session_list,
-                                    name:$("#name").val().trim(),
-                                    age:$("#age").val().trim(),
-                                    age_compare:$("#age_compare_select option:selected").val(),
-                                    sex:$("input[name='sex']:checked").val(),
-                                    source: $("#source_select option:selected").val(),
-                                    blood: $("input[name='blood']:checked").val(),
-                                    cognitive: $("input[name='cognitive']:checked").val(),
-                                    sound: $("input[name='sound']:checked").val(),
-                                    diagnosis: diagnosis_list,
-                                    startDate:$("#startDate").val(),
-                                    endDate:$("#endDate").val(),
-                                    hama_total_score:$("#hama_total_score").val().trim(),
-                                    hama_compare:$("#hama_total_score_compare_select option:selected").val(),
-                                    hamd17_total_score:$("#hamd17_total_score").val().trim(),
-                                    hamd17_compare:$("#hamd17_total_score_compare_select option:selected").val(),
-                                    ymrs_total_score:$("#ymrs_total_score").val().trim(),
-                                    ymrs_compare:$("#ymrs_total_score_compare_select option:selected").val(),
-                                },
+                                where:condition,
                                 page:{
                                     curr:1
                                 }
-
                             })
-
                             layer.close(index)
                         }
                     })
                     break
                 case 'export_all_content':
-                    layer.confirm('确定导出所有数据吗？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
-                        layer.msg('请稍等...',{time:0})
+                    if(isAll){
+                        layer.confirm('确定导出所有数据吗（非当页数据，是全部复扫记录）？', {
+                            btn: ['确定','取消'] //按钮
+                        }, function(){
+                            layer.msg('请稍等...',{time:0})
+                            // 全部导出
+                            $.get('{% url 'statistics' %}',{all:1},function (res, status){
+                                if(status === 'success'){
+                                    layer.msg('导出成功！')
+                                    table.exportFile(tb_patient.config.id, res.data)
+                                }
+                            })
+                        }, function(){
 
-                        // 全部导出
-                        $.get('{% url 'statistics' %}',{
-                            'operation':'export_all'
-                        },function (res, status){
-                            if(status === 'success'){
-                                layer.msg('导出成功！')
-                                table.exportFile(tb_patient.config.id, res.data)
-                            }
+                        });
+                    }else{
+                        layer.confirm('确定导出目前有筛选条件后数据吗？',{
+                            btn: ['确定','取消']
+                        },function () {
+                            layer.msg('请稍等...',{time:0})
+                            $.get('{% url 'statistics' %}',{all:1,...condition},function (res, status){
+                                if(status === 'success'){
+                                    layer.msg('导出成功！')
+                                    table.exportFile(tb_patient.config.id, res.data)
+                                }
+                            })
                         })
-                    }, function(){
+                    }
 
-                    });
                     break
                 case 'checkbox_export':
                     let selected_data = checkStatus.data
                     if (checkStatus.data.length !== 0){
-
+                        layer.confirm('已选中了'+checkStatus.data.length+'条记录', {
+                            btn: ['确定','取消']
+                        },function (){
+                            layer.msg('导出成功！')
+                            table.exportFile(tb_patient.config.id, selected_data)
+                        })
                     }else{
                         layer.msg('没有选中任何数据！')
                     }
