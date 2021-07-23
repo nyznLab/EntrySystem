@@ -280,10 +280,10 @@
                                            for="subject_number">扫描备注选项<span class="required">:</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 0px">
-                                        <select name="scan_option" id="scan_note_option" class="sel_beauty">
-                                            
+                                        <div class="" style="width: 140px">
+                                            <select name="scan_note_option" id="scan_note_option" class="sel_beauty">
                                             {% for option in options_list %}
-                                                <option value="{{ forloop.counter0 }}">{{ option }}</option>
+                                                <option value="{{ forloop.counter0 }}" {% if patient_detail.scan_note_option == forloop.counter0 %}selected{% endif %}>{{ option }}</option>
                                             {% endfor %}
 {#                                            <option value="0">无</option>#}
 {#                                            <option value="1">初扫</option>#}
@@ -292,8 +292,11 @@
 {#                                            <option value="4">出院前</option>#}
 {#                                            <option value="5">随访</option>#}
 {#                                            <option value="6">再次入院</option>#}
-                                        </select>
-                                        <input type="text" class="sel_beauty" id="scan_note_num" value="" style="margin-top: 10px;display: none">
+                                            </select>
+                                            <div id="scan_note_num">
+                                                <span>第</span> <input type="text" class="sel_beauty" placeholder="输入数字" id="" value="{{ patient_detail.scan_note_num|processNone}}" style="width: 90px;margin-top: 10px;{% if patient_detail.scan_note_option < 3 %}display: none{% endif %}"> <span>次</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -560,10 +563,26 @@ var num=1
             });
 
             // 扫描备注切换
-            let $option_num = $('#scan_note_num')
-            $('#scan_note_option').change(function (){
-                if($(this).find('option:selected').val() >= '3'){
+            let $option_num = $('#scan_note_num'),
+                $option_note = $('#scan_note_option')
+            let global_num_value = $option_num.find('input').val()
+            ,global_option_value = $option_note.find('option:selected').val()
+            $option_note.change(function (){
+                let that = $(this)
+                let value = that.find('option:selected').val()
+                console.log(global_num_value)
+                if(value >= '3'){
                     $option_num.show()
+                    if (global_option_value === value){
+                        $option_num.find('input').val(global_num_value)
+                    }else{
+                        $option_num.find('input').val('')
+                    }
+                    if (value === '5'){
+                        $option_num.find('span').eq(1).html('月')
+                    }else{
+                        $option_num.find('span').eq(1).html('次')
+                    }
                 }else{
                     $option_num.hide()
                 }
