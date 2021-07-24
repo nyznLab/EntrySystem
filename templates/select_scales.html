@@ -389,19 +389,7 @@
 
 
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-offset-1 col-md-5"
-                                           for="subject_number">血液是否采集<span class="required">:</span></label>
-                                    <input type="radio" name="blood" value=0 data-labelauty="否"/>
-                                    <input type="radio" name="blood" value=1 data-labelauty="是"/>
-                                    <a href="#modal_blood_info" id="blood_typein" data-toggle="modal" style="position: absolute;display: none" >
-                                        <u>血液信息录入</u>
-                                    </a>
-                                    <a href="#modal_blood_info" id="blood_check" data-toggle="modal" style="position: absolute;display: none" >
-                                        <u>查看/修改血液信息</u>
-                                    </a>
 
-                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-md-offset-1 col-md-5"
                                            for="subject_number">毛发是否采集<span class="required">:</span></label>
@@ -435,6 +423,22 @@
                                             class="required">:</span></label>
                                         <input type="radio" name="first" value=0 data-labelauty="否"/>
                                         <input type="radio" name="first" value=1 data-labelauty="是" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-offset-1 col-md-5"
+                                           for="subject_number">血液信息<span class="required">:</span></label>
+                                    <div style="">
+
+                                        <a href="#modal_blood_info" id="blood_typein" data-toggle="modal" style="position: absolute;display: none" >
+                                        <u>血液信息录入</u>
+                                        </a>
+                                        <a href="#modal_blood_info" id="blood_check" data-toggle="modal" style="position: absolute;display: none" >
+                                            <u>查看/修改血液信息</u>
+                                        </a>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -472,11 +476,11 @@ var num=1
     <script>
         function getData() {
             var blood = Number("{{ patient_detail.blood }}");
-            {#alert(blood)#}
             if ('{{ patient_detail.blood }}' != 'None') {
-                $("input[name='blood'][value=" + blood + "]").prop("checked", true);
+                {#$("input[name='blood'][value=" + blood + "]").prop("checked", true);#}
                 if(blood==1){
                     $("#blood_check").removeAttr("style","display:none;");
+                    {#数据填充#}
                     if('{{ r_patient_blood }}'!='None'){
                         $("input[name='blood_sample_id']").val('{{ r_patient_blood.blood_sample_id|processNone }}');
                         $("input[name='blood_sampling_date']").val('{{ r_patient_blood.blood_sampling_date|processNone }}');
@@ -488,8 +492,14 @@ var num=1
                         $("input[name='note']").val('{{ r_patient_blood.note|processNone }}');
 
                     }
+                }else if(blood==0){
+                        {#alert(blood)#}
+                        $("#blood_typein").removeAttr("style","display:none;");
+                    }
 
-                }
+
+            }else{
+                $("#blood_typein").removeAttr("style","display:none;");
             }
 
             var cognitive = Number("{{ patient_detail.cognitive }}");
@@ -533,7 +543,7 @@ var num=1
         $(document).ready(function () {
             document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_baseinfo.id }}, 8)
             document.cookie = "enter_page=select;path=/"
-            $("input:radio[name='blood']").click(function() {
+      {% comment %}      $("input:radio[name='blood']").click(function() {
                 blood="{{ patient_detail.blood }}";
                 click_blood = $(this).val();
                 {#点击否#}
@@ -557,7 +567,7 @@ var num=1
                     }
 
                 }
-            });
+            });{% endcomment %}
 
             // 扫描备注切换
             let $option_num = $('#scan_note_num')
