@@ -1147,5 +1147,5 @@ def insert_scale_content(scale_content_model):
 
 
 def get_scale_answers(scale_model, patient_session_id):
-    res = scale_model.objects.filter(patient_session_id=patient_session_id).get()
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=0).get()
     return res

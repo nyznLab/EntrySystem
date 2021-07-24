@@ -5,6 +5,7 @@ import scales.dao as scales_dao
 import scales.xmlHandler as xmlHandler
 import scales.cash as cash
 import scales.config as config
+import scales.ruleParser as ruleParser
 
 
 def update_scale_content(t_scales_content_model):
@@ -60,7 +61,7 @@ def get_last_question_index_from_db(patient_session_id, scale_id):
     question_index = 1
     while hasattr(answer, "question{}".format(question_index)):
         if getattr(answer, "question{}".format(question_index)) is None:
-            return question_index
+            return question_index - 1
         question_index += 1
     return 0
 
@@ -76,5 +77,13 @@ def match_rules(rule, patient_session_id, scale_id):
     answer = scales_dao.get_scale_answers(config.scaleId_Models_Map[scale_id], patient_session_id)
     if answer is None:
         return False
+    return call_match_rules(rule, answer)
 
-    return False
+
+def call_match_rules(rule, answer):
+    rule_parser = ruleParser.RuleParser(answer)
+    try:
+        rule_parser.validate(rule)
+    except ValueError:
+        return False
+    return rule_parser.evaluate(rule)

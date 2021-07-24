@@ -2171,8 +2171,9 @@ def get_next_question(request):
     scale_content = Do.get_scale_content_by_scale_id(scale_id)
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
     while last_answered_question_index + 1 in scale_content.keys():
-        if "rule" in scale_content[last_answered_question_index+1] and Do.match_rules(
-                scale_content[last_answered_question_index+1]["rule"], scale_id, patient_session_id):
+        if "rule" not in scale_content[last_answered_question_index+1]:
+            return HttpResponse(scale_content[last_answered_question_index + 1])
+        elif Do.match_rules(scale_content[last_answered_question_index+1]["rule"], scale_id, patient_session_id):
             return HttpResponse(scale_content[last_answered_question_index + 1])
         last_answered_question_index += 1
     return HttpResponse(False)
