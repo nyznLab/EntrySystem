@@ -76,8 +76,8 @@
                         <table id="record" lay-filter="tb_record"></table>
                         <script type="text/html" id="filterTools">
                             <div class="layui-btn-group" style="display:inline-block">
-                                <button class="layui-btn-xs layui-btn layui-btn-primary" lay-event="filter_choice"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
-                                <button class="layui-btn-xs layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
+                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
+                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
                         <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
@@ -812,7 +812,7 @@
                             table.exportFile(tb_patient.config.id, selected_data)
                         })
                     }else{
-                        layer.msg('没有选中任何数据！')
+                        layer.msg('没有选中任何记录！')
                     }
                     break
             }
