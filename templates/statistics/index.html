@@ -76,8 +76,8 @@
                         <table id="record" lay-filter="tb_record"></table>
                         <script type="text/html" id="filterTools">
                             <div class="layui-btn-group" style="display:inline-block">
-                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
-                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
+                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice" id="filter_btn"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
+                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export" id="multiselect_export_btn"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
                         <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
@@ -93,38 +93,40 @@
     <div class="layui-form-item">
         <blockquote class="layui-elem-quote">基本筛选 <span>（）</span></blockquote>
     </div>
-  <div class="layui-form-item">
-      <div class="layui-inline">
-          <label class="layui-form-label">编号</label>
-          <div class="layui-input-inline">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="patient_id" >
-          </div>
-      </div>
+{#  <div class="layui-form-item">#}
+{#      <div class="layui-inline">#}
+{#          <label class="layui-form-label">编号</label>#}
+{#          <div class="layui-input-inline">#}
+{#              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="patient_id" >#}
+{#          </div>#}
+{#      </div>#}
+{#  </div>#}
+ <div class="layui-form-item">
+          <label class="layui-form-label">编号 / 姓名</label>
+{#          <div class="layui-input-inline">#}
+{#              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >#}
+{#          </div>#}
+            <div class="layui-input-inline" style="width:400px">
+                <div class="" id="name_select"></div>
+            </div>
   </div>
   <div class="layui-form-item">
 
           <label class="layui-form-label">扫描编号</label>
-          <div class="layui-input-block">
-              {% for s in session_all_list %}
-                  <input type="checkbox" title="{{ s.session_id|processSession }}" lay-skin="primary" value="{{ forloop.counter }}" name="session_id">
-              {% endfor %}
+          <div class="layui-input-inline" style="width:300px">
+{#              {% for s in session_all_list %}#}
+{#                  <input type="checkbox" title="{{ s.session_id|processSession }}" lay-skin="primary" value="{{ forloop.counter }}" name="session_id">#}
+{#              {% endfor %}#}
+              <div class="" id="session_select"></div>
           </div>
 
   </div>
-  <div class="layui-form-item">
 
-          <label class="layui-form-label">姓名</label>
-          <div class="layui-input-inline">
-              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >
-          </div>
-
-
-  </div>
   <div class="layui-form-item">
       <div class="layui-inline">
           <label class="layui-form-label">年龄</label>
           <div class="layui-input-inline">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="age" >
+              <input type="text" lay-verify="required" autocomplete="off" class="layui-input" id="age" >
           </div>
           <div class="layui-form-mid">-</div>
           <div class="layui-input-inline">
@@ -140,18 +142,19 @@
   <div class="layui-form-item">
 
             <label class="layui-form-label">诊断</label>
-                <div class="layui-input-block">
-                    <input type="checkbox" name="diagnosis" title="未诊断" lay-skin="primary" value="0">
-                    <input type="checkbox" name="diagnosis" title="健康者" lay-skin="primary" value="1">
-                    <input type="checkbox" name="diagnosis" title="重性抑郁障碍" lay-skin="primary" value="2">
-                    <input type="checkbox" name="diagnosis" title="焦虑障碍" lay-skin="primary" value="3">
-                    <input type="checkbox" name="diagnosis" title="双相障碍" lay-skin="primary" value="4">
-                    <input type="checkbox" name="diagnosis" title="精神分裂症" lay-skin="primary" value="5">
-                    <input type="checkbox" name="diagnosis" title="强迫症" lay-skin="primary" value="6">
-                    <input type="checkbox" name="diagnosis" title="高危遗传" lay-skin="primary" value="7">
-                    <input type="checkbox" name="diagnosis" title="临床高危" lay-skin="primary" value="8">
-                    <input type="checkbox" name="diagnosis" title="抑郁症状" lay-skin="primary" value="9">
-                    <input type="checkbox" name="diagnosis" title="其他诊断" lay-skin="primary" value="99">
+                <div class="layui-input-inline" style="width:300px">
+{#                    <input type="checkbox" name="diagnosis" title="未诊断" lay-skin="primary" value="0">#}
+{#                    <input type="checkbox" name="diagnosis" title="健康者" lay-skin="primary" value="1">#}
+{#                    <input type="checkbox" name="diagnosis" title="重性抑郁障碍" lay-skin="primary" value="2">#}
+{#                    <input type="checkbox" name="diagnosis" title="焦虑障碍" lay-skin="primary" value="3">#}
+{#                    <input type="checkbox" name="diagnosis" title="双相障碍" lay-skin="primary" value="4">#}
+{#                    <input type="checkbox" name="diagnosis" title="精神分裂症" lay-skin="primary" value="5">#}
+{#                    <input type="checkbox" name="diagnosis" title="强迫症" lay-skin="primary" value="6">#}
+{#                    <input type="checkbox" name="diagnosis" title="高危遗传" lay-skin="primary" value="7">#}
+{#                    <input type="checkbox" name="diagnosis" title="临床高危" lay-skin="primary" value="8">#}
+{#                    <input type="checkbox" name="diagnosis" title="抑郁症状" lay-skin="primary" value="9">#}
+{#                    <input type="checkbox" name="diagnosis" title="其他诊断" lay-skin="primary" value="99">#}
+                    <div class="" id="diagnosis_select"></div>
                 </div>
 
 
@@ -179,7 +182,7 @@
     </div>
     <div class="layui-form-item">
 
-            <label class="layui-form-label">是否采血</label>
+            <label class="layui-form-label">采集血液</label>
             <div class="layui-input-block">
                 <input type="radio" name="blood" value="" title="全部" checked>
                 <input type="radio" name="blood" value="1" title="是">
@@ -189,7 +192,7 @@
     </div>
     <div class="layui-form-item">
 
-            <label class="layui-form-label">是否做认知</label>
+            <label class="layui-form-label">认知评估</label>
             <div class="layui-input-block">
                 <input type="radio" name="cognitive" value="" title="全部" checked>
                 <input type="radio" name="cognitive" value="1" title="是">
@@ -199,7 +202,7 @@
     </div>
     <div class="layui-form-item">
 
-            <label class="layui-form-label">是否采集声音</label>
+            <label class="layui-form-label">采集声音</label>
             <div class="layui-input-block">
                 <input type="radio" name="sound" value="" title="全部" checked>
                 <input type="radio" name="sound" value="1" title="是">
@@ -303,19 +306,133 @@
 {#    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>#}
     <script src="{% static '/js/layerJquery.js' %}"></script>
     <script src="{% static '/layui/layui.js' %}"></script>
+    <script src="{% static '/layui/layui-base-plugin/xm-select.js' %}"></script>
     <script>
     $.ajaxSetup({
         data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
     })
     </script>
     <script>
-    layui.use(['table', 'layer', 'laydate', 'laytpl','element','form'],function () {
+
+
+    // 姓名筛选单独渲染
+    let name_select = xmSelect.render({
+        el:"#name_select"
+        ,autoRow: true
+        ,size: 'large'
+        ,searchTips:'输入姓名或编号'
+        ,theme: {
+		    color: '#5FB878',
+	    },
+        model: {
+            label: {
+                block: {
+                    template: function(item, sels){
+                        return item.id + ' ' + item.name;
+                    },
+                },
+            }
+	    }
+        ,prop: {
+            name: 'name',
+            value: 'id',
+	    },
+		toolbar: { show: true },
+		filterable: true,
+        template({item, sels, name, value}){
+            return item.name + '<span style="position: absolute; right: 10px; color: #8799a3">'+'编号：'+value+'</span>'
+        },
+		remoteSearch: true,
+        remoteMethod: function(val, cb, show){
+			//这里如果val为空, 则不触发搜索
+			if(!val){
+				return cb([]);
+			}
+            $.get('{% url 'getNames' %}',{
+                keyword: val
+            },function (res, status) {
+                if(status === 'success'){
+                    cb(res.data)
+                }
+            })
+
+		},
+        on: function(data){
+            //arr:  当前多选已选中的数据
+            var arr = data.arr;
+            //change, 此次选择变化的数据,数组
+            var change = data.change;
+            //isAdd, 此次操作是新增还是删除
+            var isAdd = data.isAdd;
+
+            if (arr.length > 5){
+                name_select.warning()
+            }
+            //可以return一个数组, 代表想选中的数据
+            //return []
+	    },
+    })
+
+    // 扫描编号单独渲染
+    let results, session_id_select;
+    $.get("{% url 'getSessions' %}",function (res, status) {
+        if(status === 'success'){
+            results = res.data
+            session_id_select = xmSelect.render({
+                el: "#session_select"
+                ,autoRow: true
+                ,size: 'large'
+                ,theme: {
+                    color: '#5FB878',
+                }
+                ,toolbar: { show: true }
+                ,prop:{
+                    name: 'session_id_standard',
+                    value: 'session_id'
+                }
+                ,data: results
+            })
+        }
+    })
+
+    // 诊断单独渲染
+    let diagnosis_select = xmSelect.render({
+        el: '#diagnosis_select'
+        ,autoRow: true
+        ,size: 'large'
+        ,theme: {
+            color: '#5FB878',
+        }
+        ,toolbar: { show: true }
+        ,filterable: true
+        ,data:[
+            {name: '未诊断', value:0},
+            {name: '健康', value:1},
+            {name: '重症抑郁障碍', value:2},
+            {name: '焦虑障碍', value:3},
+            {name: '双相障碍', value:4},
+            {name: '精神分裂症', value:5},
+            {name: '强迫症', value:6},
+            {name: '高危遗传', value:7},
+            {name: '临床高危', value:8},
+            {name: '抑郁症状', value:9},
+            {name: '其他诊断', value:99},
+        ]
+    })
+
+
+
+
+
+    layui.use(['table', 'layer', 'laydate', 'laytpl','element','form','transfer'],function () {
         let table = layui.table
         ,layer = layui.layer
         ,laydate = layui.laydate
         ,laytpl = layui.laytpl
         ,element = layui.element
         ,form = layui.form
+        ,transfer = layui.transfer
+
 
         laydate.render({
             elem:'#scan_date'
@@ -347,7 +464,7 @@
             ,height:'full-250'
             ,skin: 'row'
             ,even: true
-            ,limit:30
+            ,limit: 30
             ,limits:[10,20,30,40,50,60,70,80,90,100]
             ,text: {
                 none:'没有记录哦'
@@ -436,37 +553,37 @@
                             return '其他诊断'
                     }
                 }}
-                ,{field:'cognitive',rowspan:3, title:'是否做认知评估',width:130, templet: function (d) {
+                ,{field:'cognitive',rowspan:3, title:'认知评估',width:90, templet: function (d) {
                     if(d.cognitive === "" || d.cognitive === null){
                         return '无'
                     }
                     return d.cognitive?'是':'否'
                 }}
-                ,{field:'sound',rowspan:3, title:'是否采集声音',width:120, templet: function (d) {
+                ,{field:'sound',rowspan:3, title:'采集声音',width:90, templet: function (d) {
                     if(d.sound === "" || d.sound === null){
                         return '无'
                     }
                     return d.sound?'是':'否'
                 }}
-                ,{field:'blood',rowspan:3, title:'是否采集血液',width:120, templet: function (d) {
+                ,{field:'blood',rowspan:3, title:'采集血液',width:90, templet: function (d) {
                     if(d.blood === "" || d.blood === null){
                         return '无'
                     }
                     return d.blood?'是':'否'
                 }}
-                ,{field:'hairs',rowspan:3, title:'是否采集毛发',width:120, templet:function (d) {
+                ,{field:'hairs',rowspan:3, title:'采集毛发',width:90, templet:function (d) {
                     if(d.hairs === "" || d.hairs === null){
                         return '无'
                     }
                     return d.hairs?'是':'否'
                 }}
-                ,{field:'manure',rowspan:3, title:'是否采集粪便',width:120, templet:function (d) {
+                ,{field:'manure',rowspan:3, title:'采集粪便',width:90, templet:function (d) {
                     if(d.manure === "" || d.manure === null){
                         return '无'
                     }
                     return d.manure?'是':'否'
                 }}
-                ,{field:'first',rowspan:3, title:'是否首发',width: 100, templet: function (d) {
+                ,{field:'first',rowspan:3, title:'首发',width: 60, templet: function (d) {
                     if(d.first === "" || d.first === null){
                         return '无'
                     }
@@ -720,17 +837,10 @@
                         ,shadeClose: true
                         ,btn: ['确定','取消']
                         ,btn1: function (index, layero){
-                            $("input[name='diagnosis']:checked").each(function (){
-                                diagnosis_list.push($(this).val())
-                            })
-                            $("input[name='session_id']:checked").each(function (){
-                                session_list.push($(this).val())
-                            })
-
-                            condition = {
-                                patient_id:$("#patient_id").val().trim(),
-                                session_id:session_list,
-                                name:$("#name").val().trim(),
+                            let condition = {
+                                patient_id:name_select.getValue('value'),
+                                session_id:session_id_select.getValue('value'),
+                                name:name_select.getValue('name'),
                                 age:$("#age").val().trim(),
                                 age_compare:$("#age_compare_select option:selected").val(),
                                 sex:$("input[name='sex']:checked").val(),
@@ -738,7 +848,7 @@
                                 blood: $("input[name='blood']:checked").val(),
                                 cognitive: $("input[name='cognitive']:checked").val(),
                                 sound: $("input[name='sound']:checked").val(),
-                                diagnosis: diagnosis_list,
+                                diagnosis: diagnosis_select.getValue('value'),
                                 startDate:$("#startDate").val(),
                                 endDate:$("#endDate").val(),
                                 hama_total_score:$("#hama_total_score").val().trim(),
@@ -788,24 +898,30 @@
 
                         });
                     }else{
-                        layer.confirm('确定导出目前有筛选条件后数据吗？',{
-                            btn: ['确定','取消']
-                        },function () {
-                            layer.msg('请稍等...',{time:0})
-                            $.get('{% url 'statistics' %}',{all:1,...condition},function (res, status){
-                                if(status === 'success'){
-                                    layer.msg('导出成功！')
-                                    table.exportFile(tb_patient.config.id, res.data)
-                                }
-                            })
+                        //layer.confirm('确定导出目前有筛选条件后数据吗？',{ btn: ['确定','取消'] }
+                        //,function () {
+                            //layer.msg('请稍等...',{time:0})
+                            //$.get('{ url 'statistics' %}',{all:1,...condition},function (res, status){
+                                //if(status === 'success'){
+                                    //layer.msg('导出成功！')
+                                    //table.exportFile(tb_patient.config.id, res.data)
+                                //}
+                            //})
+                        //})
+                        layer.open({
+                            type: 4,
+                            content:['确定导出目前是有筛选条件的所有记录吗？','#filter_btn'],
+                            closeBtn: 0,
+                            shade: 0,
+                            tips: 1
                         })
                     }
 
                     break
                 case 'checkbox_export':
                     let selected_data = checkStatus.data
-                    if (checkStatus.data.length !== 0){
-                        layer.confirm('已选中了'+checkStatus.data.length+'条记录', {
+                    if (selected_data.length !== 0){
+                        layer.confirm('已选中了'+selected_data.length+'条记录要导出！', {
                             btn: ['确定','取消']
                         },function (){
                             layer.msg('导出成功！')

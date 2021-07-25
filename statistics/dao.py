@@ -120,6 +120,6 @@ def get_scales_score(patient_session_id):
     return scales_score
 
 
-def get_session():
+def get_all_session():
     session = patients_models.DPatientDetail.objects.values('session_id').annotate(Count('session_id')).order_by()
     return session

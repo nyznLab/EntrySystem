@@ -294,7 +294,7 @@
 {#                                            <option value="6">再次入院</option>#}
                                             </select>
                                             <div id="scan_note_num" style="{% if patient_detail.scan_note_option < 3 or patient_detail.scan_note_option == null  %}display: none{% endif %}">
-                                                <span>第</span> <input type="text" class="sel_beauty" placeholder="输入数字" value="{{ patient_detail.scan_note_num|processNone}}" style="width: 90px;margin-top: 10px;"> <span>次</span>
+                                                <span>第</span> <input type="text" name="scan_note_num" class="sel_beauty" placeholder="输入数字" value="{{ patient_detail.scan_note_num|processNone}}" style="width: 90px;margin-top: 10px;"> <span>次</span>
                                             </div>
                                         </div>
                                     </div>
