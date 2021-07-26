@@ -1,4 +1,4 @@
-import os
+import json
 import time
 
 import scales.dao as scales_dao
@@ -57,10 +57,12 @@ def get_scale_content_by_scale_id(scale_id):
 def get_last_question_index_from_db(patient_session_id, scale_id):
     answer = scales_dao.get_scale_answers(config.scaleId_Models_Map[scale_id], patient_session_id)
     if answer is None:
+        cash.scales_answer_schedule[patient_session_id][scale_id] = 0
         return 0
     question_index = 1
     while hasattr(answer, "question{}".format(question_index)):
         if getattr(answer, "question{}".format(question_index)) is None:
+            cash.scales_answer_schedule[patient_session_id][scale_id] = question_index - 1
             return question_index - 1
         question_index += 1
     return 0
@@ -87,3 +89,42 @@ def call_match_rules(rule, answer):
     except ValueError:
         return False
     return rule_parser.evaluate(rule)
+
+
+def submit_scales_input_validate(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    if patient_session_id is None:
+        return "patient_session_id is None"
+    scale_id = request.POST.get("scale_id")
+    if scale_id is None:
+        return "scale_id is None"
+    doctor_id = request.POST.get('doctor_id')
+    if doctor_id is None:
+        return "doctor_id is None"
+    form_data = request.POST.get('data')
+    if form_data is None:
+        return "form_data is None"
+    form_content = json.load(form_data)
+    for key in form_content.keys():
+        if form_content[key] is None:
+            return "{} is None".format(key)
+    duration = request.POST.get('duration')
+    if duration is None:
+        return "duration is None"
+
+
+def write_scale_answer(scale_id, patient_session_id, form_content, doctor_id):
+    scales_dao.update_scales(config.scaleId_Models_Map[scale_id], patient_session_id, form_content, doctor_id)
+
+
+def write_scale_duration(patient_session_id, scale_id, duration):
+    if patient_session_id in cash.scales_answer_schedule.keys():
+        if scale_id not in cash.scales_answer_schedule[patient_session_id].keys():
+            cash.scales_answer_schedule[patient_session_id][scale_id] = get_last_question_index_from_db(
+                patient_session_id, scale_id)
+    else:
+        cash.scales_answer_schedule[patient_session_id] = {scale_id: get_last_question_index_from_db(
+            patient_session_id, scale_id)}
+    scales_dao.insert_scale_duration(patient_session_id, scale_id,
+                                     cash.scales_answer_schedule[patient_session_id][scale_id], duration)
+    cash.scales_answer_schedule[patient_session_id][scale_id] += 1

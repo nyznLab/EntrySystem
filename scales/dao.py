@@ -1149,3 +1149,18 @@ def insert_scale_content(scale_content_model):
 def get_scale_answers(scale_model, patient_session_id):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=0).get()
     return res
+
+
+def update_scales(scale_model, patient_session_id, form_content, doctor_id):
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=0).get()
+    if res is None:
+        res = scale_model.objects.create(patient_session_id=patient_session_id, doctor_id=doctor_id)
+    for key in form_content.keys():
+        setattr(res, key, str(form_content[key]))
+    res.doctor_id = doctor_id
+    res.save()
+
+
+def insert_scale_duration(patient_session_id, scale_id, question_index, duration):
+    scales_models.RSelfTestDuration.objects.create(patient_session_id=patient_session_id, scale_id=scale_id,
+                                                   question_index=question_index, duration=duration)

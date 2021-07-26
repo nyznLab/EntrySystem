@@ -9,6 +9,58 @@ from django.db import models
 from patients.models import DPatientDetail, BPatientBaseInfo
 
 
+class TScaleBss(models.Model):
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    patient_session_id = models.IntegerField(null=False, blank=False)
+    question1 = models.CharField(max_length=100, null=False, default="")
+    question2 = models.CharField(max_length=100, null=False, default="")
+    question3 = models.CharField(max_length=100, null=False, default="")
+    question4 = models.CharField(max_length=100, null=False, default="")
+    question5 = models.CharField(max_length=100, null=False, default="")
+    question6 = models.CharField(max_length=100, null=False, default="")
+    question7 = models.CharField(max_length=100, null=False, default="")
+    question8 = models.CharField(max_length=100, null=False, default="")
+    question9 = models.CharField(max_length=100, null=False, default="")
+    question10 = models.CharField(max_length=100, null=False, default="")
+    question11 = models.CharField(max_length=100, null=False, default="")
+    question12 = models.CharField(max_length=100, null=False, default="")
+    question13 = models.CharField(max_length=100, null=False, default="")
+    question14 = models.CharField(max_length=100, null=False, default="")
+    question15 = models.CharField(max_length=100, null=False, default="")
+    question16 = models.CharField(max_length=100, null=False, default="")
+    question17 = models.CharField(max_length=100, null=False, default="")
+    question18 = models.CharField(max_length=100, null=False, default="")
+    question19 = models.CharField(max_length=100, null=False, default="")
+    question20 = models.CharField(max_length=100, null=False, default="")
+    question21 = models.CharField(max_length=100, null=False, default="")
+    question22 = models.CharField(max_length=100, null=False, default="")
+    question23 = models.CharField(max_length=100, null=False, default="")
+    question24 = models.CharField(max_length=100, null=False, default="")
+    question25 = models.CharField(max_length=100, null=False, default="")
+    question26 = models.CharField(max_length=100, null=False, default="")
+    question27 = models.CharField(max_length=100, null=False, default="")
+    question28 = models.CharField(max_length=100, null=False, default="")
+    question29 = models.CharField(max_length=100, null=False, default="")
+    question30 = models.CharField(max_length=100, null=False, default="")
+    question31 = models.CharField(max_length=100, null=False, default="")
+    question32 = models.CharField(max_length=100, null=False, default="")
+    question33 = models.CharField(max_length=100, null=False, default="")
+    question34 = models.CharField(max_length=100, null=False, default="")
+    question35 = models.CharField(max_length=100, null=False, default="")
+    question36 = models.CharField(max_length=100, null=False, default="")
+    question37 = models.CharField(max_length=100, null=False, default="")
+    question38 = models.CharField(max_length=100, null=False, default="")
+    total_score_last_week = models.FloatField(null=False, default=0)
+    total_score_most_depressed = models.FloatField(null=False, default=0)
+    delete = models.IntegerField(null=False, default=0)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_scale_bss'
+
+
 class TScalesContent(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
     scale_name = models.CharField(max_length=45, null=False, blank=False)

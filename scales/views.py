@@ -360,7 +360,7 @@ def get_select_scales(request):
     generalinfo_scale_list, other_test_scale_list, self_test_scale_list, cognition_scale_list = scales_dao.get_uodo_scales(
         patient_session_id)
     tms = patients_models.DPatientDetail.objects.filter(id=patient_session_id)[0].tms
-    r_patient_blood=patients_models.RPatientBlood.objects.filter(patient_session=patient_session_id).first()
+    r_patient_blood = patients_models.RPatientBlood.objects.filter(patient_session=patient_session_id).first()
     if r_patient_blood is not None:
         if r_patient_blood.blood_sampling_date is not None:
             r_patient_blood.blood_sampling_date = r_patient_blood.blood_sampling_date.strftime('%Y-%m-%d')
@@ -1524,8 +1524,8 @@ def self_tests_submit(request):
     test_name = request.POST.get('test_name')
     duration = request.POST.get('duration')
     logging.debug("self_tests_submit, patientSessionId={}, scale_id={}, form_data={}, question_index={}, flag={}"
-                 ", test_name={}, duration={}".format(patient_session_id, scale_id, form_data, question_index, flag,
-                                                      test_name, duration))
+                  ", test_name={}, duration={}".format(patient_session_id, scale_id, form_data, question_index, flag,
+                                                       test_name, duration))
     # print(patient_session_id, scale_id, form_data, question_index, flag, test_name, duration)
     logging.debug("ajax_buffer_before, ajax_buffer={}, patient_session_id={}".format((ajax_buffer),
                                                                                      patient_session_id))
@@ -1610,7 +1610,8 @@ def self_tests_submit(request):
             if ajax_buffer[patient_session_id][key][0] is not None:
                 clean_patient_session_flag = False
                 break
-        logging.debug("parm clean buffer, patient_session_id={}, clean_patient_flat={}".format(patient_session_id, clean_patient_session_flag))
+        logging.debug("parm clean buffer, patient_session_id={}, clean_patient_flat={}".format(patient_session_id,
+                                                                                               clean_patient_session_flag))
         if clean_patient_session_flag:
             # print('clean patient')
             ajax_buffer.pop(patient_session_id)
@@ -2079,14 +2080,12 @@ def redo_self_tests(request):
 
 
 def testNewAjax(request):
-    # value = scales_dao.get_scale_content_version_by_id(1)
-    content = Do.get_scale_content_by_scale_id(1)
-    print(content)
-    return HttpResponse(str(content))
-    # return render(request, 'nbh/ajax_insomnia.html', {'question_index': 0})
+    ans = scales_models.TScaleBss.objects.first()
+    print(ans.patient_session_id)
+    return HttpResponse(str(ans))
 
 
-#自杀行为表
+# 自杀行为表
 def add_suibe(request):
     patient_session_id = request.GET.get('patient_session_id')
     scale_id = tools_config.suibe
@@ -2094,14 +2093,14 @@ def add_suibe(request):
     patient_id = request.GET.get('patient_id')
     rPatientsuibe = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
     rPatientsuibe_new = scales_models.RPatientSuicideBehavior(patient_session_id=patient_session_id, scale_id=scale_id,
-                                                  doctor_id=doctor_id)
+                                                              doctor_id=doctor_id)
     if rPatientsuibe is not None:
         rPatientsuibe_new.create_time = rPatientsuibe.create_time
         rPatientsuibe_new.id = rPatientsuibe.id
     rPatientsuibe_new = set_attr_by_post(request, rPatientsuibe_new)
     scales_dao.add_suibe_database(rPatientsuibe_new, 1)
     redirect_url = '/scales/get_check_suibe_form?patient_session_id={}&patient_id={}'.format(patient_session_id,
-                                                                                            patient_id)
+                                                                                             patient_id)
     # redirect_url = return_next(request)
     return redirect(redirect_url)
 
@@ -2115,16 +2114,16 @@ def get_suibe_form(request):
         scales_dao.update_rscales_state(patient_session_id, scale_id, 0)
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
     suibe_answer = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
-    is_first=scales_dao.get_suibe_isfirst(patient_session_id)
+    is_first = scales_dao.get_suibe_isfirst(patient_session_id)
     return render(request, 'nbh/add_suibe.html', {'patient_session_id': patient_session_id,
-                                                 'patient_id': request.GET.get('patient_id'),
-                                                 'username': request.session.get('username'),
-                                                 'scale_name_list': scale_name_list,
-                                                 'scale_id': scale_id,
-                                                 'suibe_answer': suibe_answer,
-                                                 'order': order,
-                                                 'isfirst':is_first,
-                                                 })
+                                                  'patient_id': request.GET.get('patient_id'),
+                                                  'username': request.session.get('username'),
+                                                  'scale_name_list': scale_name_list,
+                                                  'scale_id': scale_id,
+                                                  'suibe_answer': suibe_answer,
+                                                  'order': order,
+                                                  'isfirst': is_first,
+                                                  })
 
 
 def get_check_suibe_form(request):
@@ -2153,7 +2152,7 @@ def update_scales_content(request):
     # 用户选择
     scale_definition_id = request.POST.get('scale_definition_id')
     scale_group = request.POST.get('scale_group')
-    # XML格式需要校验
+
     scale_content = request.POST.get('scale_content')
     comment = request.POST.get('comment')
     create_user = request.POST.get('create_user')
@@ -2166,14 +2165,31 @@ def update_scales_content(request):
 
 
 def get_next_question(request):
-    patient_session_id = request.GET.get("patient_session_id")
-    scale_id = request.GET.get("scale_id")
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
     scale_content = Do.get_scale_content_by_scale_id(scale_id)
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
     while last_answered_question_index + 1 in scale_content.keys():
-        if "rule" not in scale_content[last_answered_question_index+1]:
+        if "rule" not in scale_content[last_answered_question_index + 1]:
             return HttpResponse(scale_content[last_answered_question_index + 1])
-        elif Do.match_rules(scale_content[last_answered_question_index+1]["rule"], scale_id, patient_session_id):
+        elif Do.match_rules(scale_content[last_answered_question_index + 1]["rule"], scale_id, patient_session_id):
             return HttpResponse(scale_content[last_answered_question_index + 1])
         last_answered_question_index += 1
     return HttpResponse(False)
+
+
+def submit_scale(request):
+    err = Do.submit_scales_input_validate(request)
+    if err is not None:
+        return HttpResponse(err)
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    doctor_id = request.POST.get('doctor_id')
+    form_data = json.load(request.POST.get('data'))
+    duration = request.POST.get('duration')
+    try:
+        Do.write_scale_answer(scale_id, patient_session_id, form_data, doctor_id)
+        Do.write_scale_duration(patient_session_id, scale_id, duration)
+    except ValueError as e:
+        return HttpResponse(e)
+    return HttpResponse(True)
