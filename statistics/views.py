@@ -72,7 +72,7 @@ def get_patient_data(request):
 
             # table的page设置为true后渲染会自动传给后台page和limit值
             page_num = int(data.get('page', 1))
-            page_limit = int(data.get('limit', 20))
+            page_limit = int(data.get('limit', 30))
 
             scales_scores = []
             patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
