@@ -192,10 +192,8 @@
                                     <label class="control-label col-md-6 col-sm-6 col-xs-6"
                                            for="subject_number">受试编号<span class="required">:</span></label>
                                     <a href="/patients/get_patient_detail?patient_id={{ patient_baseinfo.id }}">
-                                        <p class="col-md-6 col-sm-6 col-xs-6" id="patient_id"
-                                       style="padding-top: 7px;margin-bottom: 0;text-align: left;text-decoration: underline">{{ standard_id }}</p>
+                                        <p class="col-md-6 col-sm-6 col-xs-6" id="patient_id" style="padding-top: 7px;margin-bottom: 0;text-align: left;text-decoration: underline">{{ standard_id }}</p>
                                     </a>
-
                                 </div>
 
                                 <div class="form-group">
@@ -389,8 +387,6 @@
                                            for="subject_number">录音是否完成<span class="required">:</span></label>
                                         <input type="radio" name="sound" value=0 data-labelauty="否" />
                                         <input type="radio" name="sound" value=1 data-labelauty="是"/>
-
-
                                 </div>
 
                                 <div class="form-group">
@@ -433,10 +429,10 @@
                                            for="subject_number">血液信息<span class="required">:</span></label>
                                     <div style="">
 
-                                        <a href="#modal_blood_info" id="blood_typein" data-toggle="modal" style="position: absolute;display: none" >
+                                        <a href="#modal_blood_info" id="blood_typein" data-toggle="modal" style="display: none" >
                                         <u>血液信息录入</u>
                                         </a>
-                                        <a href="#modal_blood_info" id="blood_check" data-toggle="modal" style="position: absolute;display: none" >
+                                        <a href="#modal_blood_info" id="blood_check" data-toggle="modal" style="display: none" >
                                             <u>查看/修改血液信息</u>
                                         </a>
                                     </div>
