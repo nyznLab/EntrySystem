@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 import json
 import tools.insertCascadeCheck as tools_insertCascadeCheck
 import tools.calculatingScores as tools_calculatingScores
+import scales.config as config
 import tools.Utils as tools_utils
 import scales.models as scales_models
 import patients.models as patient_models
@@ -1126,13 +1127,14 @@ def del_suibe(patient_session_id, scale_id):
 
 
 def get_scale_content_by_id(scale_id):
-    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id).order_by("-scale_version").first()
+    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, delete=config.Del_No
+                                                      ).order_by("-scale_version").first()
     return res
 
 
 def get_scale_content_version_by_id(scale_id):
-    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id).order_by("-scale_version"). \
-        values("scale_version").first()
+    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, delete=config.Del_No
+                                                      ).order_by("-scale_version").values("scale_version").first()
     if res is None:
         return res
     return res["scale_version"]
@@ -1147,12 +1149,12 @@ def insert_scale_content(scale_content_model):
 
 
 def get_scale_answers(scale_model, patient_session_id):
-    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=0).get()
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).get()
     return res
 
 
 def update_scales(scale_model, patient_session_id, form_content, doctor_id):
-    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=0).get()
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).get()
     if res is None:
         res = scale_model.objects.create(patient_session_id=patient_session_id, doctor_id=doctor_id)
     for key in form_content.keys():

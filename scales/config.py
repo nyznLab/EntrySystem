@@ -16,3 +16,9 @@ scaleId_Models_Map = {
     31: models.RPatientInsomnia,
     32: models.RPatientPss,
 }
+
+Scale_Completed = 1
+Scale_Not_Completed = 0
+
+Del_Yse = 1
+Del_No = 0

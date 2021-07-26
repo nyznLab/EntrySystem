@@ -2175,6 +2175,7 @@ def get_next_question(request):
         elif Do.match_rules(scale_content[last_answered_question_index + 1]["rule"], scale_id, patient_session_id):
             return HttpResponse(scale_content[last_answered_question_index + 1])
         last_answered_question_index += 1
+    Do.complete_scale(patient_session_id, scale_id)
     return HttpResponse(False)
 
 
@@ -2190,6 +2191,6 @@ def submit_scale(request):
     try:
         Do.write_scale_answer(scale_id, patient_session_id, form_data, doctor_id)
         Do.write_scale_duration(patient_session_id, scale_id, duration)
-    except ValueError as e:
-        return HttpResponse(e)
+    except ValueError:
+        return HttpResponse(False)
     return HttpResponse(True)

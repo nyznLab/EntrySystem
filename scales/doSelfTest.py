@@ -128,3 +128,7 @@ def write_scale_duration(patient_session_id, scale_id, duration):
     scales_dao.insert_scale_duration(patient_session_id, scale_id,
                                      cash.scales_answer_schedule[patient_session_id][scale_id], duration)
     cash.scales_answer_schedule[patient_session_id][scale_id] += 1
+
+
+def complete_scale(scale_id, patient_session_id):
+    scales_dao.update_rscales_state(patient_session_id, scale_id, config.Scale_Completed)
