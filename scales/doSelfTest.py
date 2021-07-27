@@ -73,30 +73,24 @@ def get_last_question_index_from_db(patient_session_id, scale_id):
 def get_last_question_index(patient_session_id, scale_id):
     if patient_session_id in cash.scales_answer_schedule.keys():
         if scale_id in cash.scales_answer_schedule[patient_session_id].keys():
-            print("question_index_from_chche {} ".format(cash.scales_answer_schedule[patient_session_id][scale_id]))
             return cash.scales_answer_schedule[patient_session_id][scale_id]
     return get_last_question_index_from_db(patient_session_id, scale_id)
 
 
 def match_rules(rule, scale_id, patient_session_id):
-    print(rule, patient_session_id, scale_id)
     answer = scales_dao.get_scale_answers(config.scaleId_Models_Map[scale_id], patient_session_id)
-    print(answer)
     if answer is None:
         return False
-    print("call_match_rules")
     return call_match_rules(rule, answer)
 
 
 def call_match_rules(rule, answer):
-    print("call_match_rules rule: {} answer {}".format(rule, answer))
     rule_parser = ruleParser.RuleParser()
-    print("call_match_rules rule_parser")
     # try:
     rule_parser.validate(json.loads(rule))
+    # TODO 这里return false不方便定位错误，后面return false的同时把错误打印到日志文件里，目前先直接抛ERROR处理
     # except ValueError:
     #     return False
-    print("rule_parser validate pass")
     return rule_parser.evaluate(answer, json.loads(rule))
 
 

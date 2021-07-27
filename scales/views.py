@@ -2170,7 +2170,6 @@ def get_next_question(request):
     scale_id = request.POST.get("scale_id")
     scale_content = Do.get_scale_content_by_scale_id(scale_id)
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
-    print("last_answered_question_index {}".format(last_answered_question_index))
     while str(last_answered_question_index + 1) in scale_content.keys():
         key_str = str(last_answered_question_index + 1)
         if "rule" not in scale_content[key_str]:

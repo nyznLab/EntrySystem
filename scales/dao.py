@@ -1158,11 +1158,9 @@ def get_scale_answers(scale_model, patient_session_id):
 def update_scales(scale_model, patient_session_id, form_content, doctor_id):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).get()
     if res is None:
-        print("\n\n create \n\n")
         res = scale_model.objects.create(patient_session_id=patient_session_id, doctor_id=doctor_id,
                                          create_time=int(time.time()))
     for key in form_content.keys():
-        print("\n\nkey {}, value {}\n\n".format(key, form_content[key]))
         setattr(res, key, str(form_content[key]))
     res.update_time = int(time.time())
     res.doctor_id = doctor_id

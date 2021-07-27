@@ -16,8 +16,6 @@ class RuleParser(object):
     }
 
     def equals(self, answer, *args):
-        # return args[0] == args[1]
-        print(type(answer))
         return float(getattr(answer, args[0])) == float(args[1])
 
     def not_equals(self, answer, *args):
