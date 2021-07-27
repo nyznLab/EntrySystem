@@ -53,8 +53,8 @@ class TScaleBss(models.Model):
     total_score_last_week = models.FloatField(null=False, default=0)
     total_score_most_depressed = models.FloatField(null=False, default=0)
     delete = models.IntegerField(null=False, default=0)
-    create_time = models.DateTimeField(auto_now_add=True)
-    update_time = models.DateTimeField(auto_now=True)
+    create_time = models.IntegerField()
+    update_time = models.IntegerField()
 
     class Meta:
         managed = False

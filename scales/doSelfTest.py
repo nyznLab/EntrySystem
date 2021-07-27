@@ -34,7 +34,7 @@ def update_scales_content_validate(request):
         return "scale_content is None"
     try:
         handler = xmlHandler.loadScaleXML(scale_content)
-    except KeyError:
+    except BaseException:
         return "XML Illegal"
     cash.scales_content_handler_dic[scale_definition_id] = handler
     create_user = request.POST.get('create_user')
@@ -61,7 +61,9 @@ def get_last_question_index_from_db(patient_session_id, scale_id):
         return 0
     question_index = 1
     while hasattr(answer, "question{}".format(question_index)):
-        if getattr(answer, "question{}".format(question_index)) is None:
+        if getattr(answer, "question{}".format(question_index)) is "":
+            if patient_session_id not in cash.scales_answer_schedule.keys():
+                cash.scales_answer_schedule[patient_session_id] = {}
             cash.scales_answer_schedule[patient_session_id][scale_id] = question_index - 1
             return question_index - 1
         question_index += 1
@@ -71,24 +73,31 @@ def get_last_question_index_from_db(patient_session_id, scale_id):
 def get_last_question_index(patient_session_id, scale_id):
     if patient_session_id in cash.scales_answer_schedule.keys():
         if scale_id in cash.scales_answer_schedule[patient_session_id].keys():
+            print("question_index_from_chche {} ".format(cash.scales_answer_schedule[patient_session_id][scale_id]))
             return cash.scales_answer_schedule[patient_session_id][scale_id]
     return get_last_question_index_from_db(patient_session_id, scale_id)
 
 
-def match_rules(rule, patient_session_id, scale_id):
+def match_rules(rule, scale_id, patient_session_id):
+    print(rule, patient_session_id, scale_id)
     answer = scales_dao.get_scale_answers(config.scaleId_Models_Map[scale_id], patient_session_id)
+    print(answer)
     if answer is None:
         return False
+    print("call_match_rules")
     return call_match_rules(rule, answer)
 
 
 def call_match_rules(rule, answer):
-    rule_parser = ruleParser.RuleParser(answer)
-    try:
-        rule_parser.validate(rule)
-    except ValueError:
-        return False
-    return rule_parser.evaluate(rule)
+    print("call_match_rules rule: {} answer {}".format(rule, answer))
+    rule_parser = ruleParser.RuleParser()
+    print("call_match_rules rule_parser")
+    # try:
+    rule_parser.validate(json.loads(rule))
+    # except ValueError:
+    #     return False
+    print("rule_parser validate pass")
+    return rule_parser.evaluate(answer, json.loads(rule))
 
 
 def submit_scales_input_validate(request):
@@ -104,7 +113,7 @@ def submit_scales_input_validate(request):
     form_data = request.POST.get('data')
     if form_data is None:
         return "form_data is None"
-    form_content = json.load(form_data)
+    form_content = json.loads(form_data)
     for key in form_content.keys():
         if form_content[key] is None:
             return "{} is None".format(key)

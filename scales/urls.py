@@ -104,6 +104,10 @@ urlpatterns = [
     url(r'^testtesttest', views.testNewAjax),
     url(r'^get_suibe_form', views.get_suibe_form),
     url(r'^add_suibe', views.add_suibe),
-    url(r'^get_check_suibe_form', views.get_check_suibe_form)
+    url(r'^get_check_suibe_form', views.get_check_suibe_form),
+
+    url('get_next_question', views.get_next_question),
+    url('submit_scale', views.submit_scale),
+    url('update_scales_content', views.update_scales_content),
 ]
 

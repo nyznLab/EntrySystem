@@ -5,7 +5,25 @@
         <option type="radio" name="question_1" value="2">选项三内容</option>
         <option type="radio" name="question_1" value="3">选项四内容</option>
     </question>
-    <question index="2" title="题目二" rule="question_1 > 0">
+    <question index="2" title="题目二" rule="['==', 'question1', '0']">
         <option type="text" name="question_2"/>
+    </question>
+    <question index="3" title="题目三">
+        <option type="radio" name="question_1" value="0">选项一内容</option>
+        <option type="radio" name="question_1" value="1">选项二内容</option>
+        <option type="radio" name="question_1" value="2">选项三内容</option>
+        <option type="radio" name="question_1" value="3">选项四内容</option>
+    </question>
+    <question index="4" title="题目四">
+        <option type="radio" name="question_1" value="0">选项一内容</option>
+        <option type="radio" name="question_1" value="1">选项二内容</option>
+        <option type="radio" name="question_1" value="2">选项三内容</option>
+        <option type="radio" name="question_1" value="3">选项四内容</option>
+    </question>
+    <question index="5" title="题目五">
+        <option type="radio" name="question_1" value="0">选项一内容</option>
+        <option type="radio" name="question_1" value="1">选项二内容</option>
+        <option type="radio" name="question_1" value="2">选项三内容</option>
+        <option type="radio" name="question_1" value="3">选项四内容</option>
     </question>
 </scale>

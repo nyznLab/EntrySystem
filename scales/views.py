@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 import json
 import scales.dao as scales_dao
@@ -2169,11 +2170,13 @@ def get_next_question(request):
     scale_id = request.POST.get("scale_id")
     scale_content = Do.get_scale_content_by_scale_id(scale_id)
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
-    while last_answered_question_index + 1 in scale_content.keys():
-        if "rule" not in scale_content[last_answered_question_index + 1]:
-            return HttpResponse(scale_content[last_answered_question_index + 1])
-        elif Do.match_rules(scale_content[last_answered_question_index + 1]["rule"], scale_id, patient_session_id):
-            return HttpResponse(scale_content[last_answered_question_index + 1])
+    print("last_answered_question_index {}".format(last_answered_question_index))
+    while str(last_answered_question_index + 1) in scale_content.keys():
+        key_str = str(last_answered_question_index + 1)
+        if "rule" not in scale_content[key_str]:
+            return JsonResponse(scale_content[key_str])
+        elif Do.match_rules(scale_content[key_str]["rule"], scale_id, patient_session_id):
+            return JsonResponse(scale_content[key_str])
         last_answered_question_index += 1
     Do.complete_scale(patient_session_id, scale_id)
     return HttpResponse(False)
@@ -2186,7 +2189,7 @@ def submit_scale(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
     doctor_id = request.POST.get('doctor_id')
-    form_data = json.load(request.POST.get('data'))
+    form_data = json.loads(request.POST.get('data'))
     duration = request.POST.get('duration')
     try:
         Do.write_scale_answer(scale_id, patient_session_id, form_data, doctor_id)
