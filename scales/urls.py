@@ -109,5 +109,7 @@ urlpatterns = [
     url('get_next_question', views.get_next_question),
     url('submit_scale', views.submit_scale),
     url('update_scales_content', views.update_scales_content),
+    url('redo_scale', views.redo_scale),
+    url('delete_scale_content', views.delete_scale_content),
 ]
 

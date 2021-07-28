@@ -1,13 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
-import json
+import scales.config as config
 import scales.dao as scales_dao
 import scales.models as scales_models
 import tools.config as tools_config
 import patients.dao as patients_dao
 import scales.doSelfTest as Do
-import tools.Utils as tools_utils
-import patients.models  as patients_models
+import scales.cash as cash
+import patients.models as patients_models
 from .models import RSelfTestDuration
 import logging
 import json
@@ -2081,9 +2081,12 @@ def redo_self_tests(request):
 
 
 def testNewAjax(request):
-    ans = scales_models.TScaleBss.objects.first()
-    print(ans.patient_session_id)
-    return HttpResponse(str(ans))
+    # ans1 = scales_dao.get_version_of_history_scale(config.scaleId_Models_Map["12"], 1)
+    # ans2 = scales_dao.get_version_of_history_scale(config.scaleId_Models_Map["12"], 2)
+    # print(ans1, type(ans1))
+    # print(ans2, type(ans2))
+    # return HttpResponse(ans1)
+    return render(request, r"nbh/test.html")
 
 
 # 自杀行为表
@@ -2145,7 +2148,7 @@ def get_check_suibe_form(request):
 
 
 def update_scales_content(request):
-    err = Do.update_scales_content_validate(request)
+    err, handler = Do.update_scales_content_validate(request)
     if err is not None:
         return HttpResponse(err)
     # 用户输入
@@ -2162,13 +2165,17 @@ def update_scales_content(request):
                                                        scale_group=scale_group, scale_content=scale_content,
                                                        comment=comment, create_user=create_user)
     rsp = Do.update_scale_content(scale_content_model)
+    cash.scales_content_handler_dic[scale_definition_id] = {
+        "scaleHandler": handler,
+        "version": scale_content_model.version,
+    }
     return HttpResponse(rsp)
 
 
 def get_next_question(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
-    scale_content = Do.get_scale_content_by_scale_id(scale_id)
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
     while str(last_answered_question_index + 1) in scale_content.keys():
         key_str = str(last_answered_question_index + 1)
@@ -2196,3 +2203,13 @@ def submit_scale(request):
     except ValueError:
         return HttpResponse(False)
     return HttpResponse(True)
+
+
+def redo_scale(request):
+    patient_session_id = request.POST.get('patient_session_is')
+    scale_id = request.POST.get('scale_id')
+    return HttpResponse(Do.redo_scale(scale_id, patient_session_id))
+
+
+def delete_scale_content(scale_id, version):
+    return Do.delete_scale_content(scale_id, version)

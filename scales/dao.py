@@ -1134,6 +1134,12 @@ def get_scale_content_by_id(scale_id):
     return res
 
 
+def get_scale_content_by_id_and_version(scale_id, scale_version):
+    res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, scale_version=scale_version,
+                                                      delete=config.Del_No).order_by("-scale_version").first()
+    return res
+
+
 def get_scale_content_version_by_id(scale_id):
     res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, delete=config.Del_No
                                                       ).order_by("-scale_version").values("scale_version").first()
@@ -1150,16 +1156,30 @@ def insert_scale_content(scale_content_model):
         return False
 
 
-def get_scale_answers(scale_model, patient_session_id):
-    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).get()
+def delete_scale_content(scale_id, scale_version):
+    res = scales_models.TScalesContent.objects.filter(scale_id=scale_id,
+                                                      scale_version=scale_version).update(delete=config.Del_Yse)
     return res
 
 
-def update_scales(scale_model, patient_session_id, form_content, doctor_id):
-    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).get()
+def get_scale_answers(scale_model, patient_session_id):
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
+    return res
+
+
+def delete_scale_answers(scale_model, patient_session_id):
+    res = scale_model.objects.filter(patient_session_id=patient_session_id,
+                                     delete=config.Del_No).update(delete=config.Del_Yse)
+    return res
+
+
+def update_scales(scale_model, patient_session_id, form_content, doctor_id, scale_id):
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
     if res is None:
-        res = scale_model.objects.create(patient_session_id=patient_session_id, doctor_id=doctor_id,
-                                         create_time=int(time.time()))
+        res = scale_model.objects.create(patient_session_id=patient_session_id,
+                                         doctor_id=doctor_id,
+                                         create_time=int(time.time()),
+                                         version=get_scale_content_version_by_id(scale_id))
     for key in form_content.keys():
         setattr(res, key, str(form_content[key]))
     res.update_time = int(time.time())
@@ -1170,3 +1190,9 @@ def update_scales(scale_model, patient_session_id, form_content, doctor_id):
 def insert_scale_duration(patient_session_id, scale_id, question_index, duration):
     scales_models.RSelfTestDuration.objects.create(patient_session_id=patient_session_id, scale_id=scale_id,
                                                    question_index=question_index, duration=duration)
+
+
+def get_version_of_history_scale(scale_model, patient_session_id):
+    res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).\
+        values("version").first()["version"]
+    return res

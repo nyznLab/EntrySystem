@@ -1,748 +1,439 @@
 {% extends 'templates/index.html' %}
 {% load static %}
-{% load SelfDefinedFilter%}
-{% block title %}失眠严重指数量表{% endblock %}
+{% load SelfDefinedFilter %}
+{% block title %}杨氏躁狂量表（YMRS）{% endblock %}
 {% block css %}
-<link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    </style>
 {% endblock %}
 {% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="#">量表评估</a></li>
+                        <li><a href="#">他评量表</a></li>
+                        <li class="active"><a href="#">杨氏躁狂量表（YMRS）</a></li>
+                        <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
 
-<div class="modal fade" id="exit_confirm" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <h4 align="center"> 您确认要退出当前自评量表测评吗？</h4>
-            <div align="center">
-                <button type="button"
-                        onclick="location='/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&session_id={{ session_id }}'"
-                        class="btn btn-danger" style="width:68px;height:34px">退出
-                </button>
-                <button type="button" class="btn btn-success" style="width:68px;height:34px" data-dismiss="modal">关闭
-                </button>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+            <div id="wrapper">
+                <div id="left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                    <ul class="scales_progress">
+                        {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '杨氏躁狂量表（YMRS）' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                    </ul>
+                </div>
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                        <form id="sub_ymrs" action="/scales/add_ymrs?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" method="post">
+                          <div class="col-md-12 text-center">
+                            <h4><strong> 杨氏躁狂量表</strong></h4>
+                          </div>
+                            <div class="col-md-12 column" style="text-align:center">
+                                 <br><br>
+                                <strong style="FONT-SIZE: 17px">
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    <i class="fa fa-hand-o-down"></i>&nbsp;
+                                    请参考评分指导，根据您过去1周的表现，填出合适的分数：
+                                </strong>
+                                <br><br>
+                            </div>
+                            {% csrf_token %}
+                            <div class="container" >
+                                <div class="row">
+                                  <div class="col-md-2 column"></div>
+                                    <div class="col-md-8 column" style="text-align: center">
+                                        <table class="table" style="border:1px solid white">
+                                            <tbody style="font-weight:bold;">
+                                            <tr>
+                                                <td width="30%">1.情感高涨</td>
+                                                <td width="20%">0-4分</td>
+                                                <td width="30%" class='bid-floor-col'>
+                                                    <input type="number" placeholder="请输入0~4的整数" class="form-control" name="emotional_upsurge" id="emotional_upsurge"
+                                                           oninput="{notice(1)}" value="{{ ymrs_answer.emotional_upsurge }}" disabled />
+                                                    <p style="display:inline-block; font-size: x-small;color: #942a25" id="notice1"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.活动增多、精力旺盛</td>
+                                                <td>0-4分</td>
+                                                <td>
+                                                    <input type="number" placeholder="请输入0~4的整数" name="vigorous_energy" class="form-control" id="vigorous_energy"
+                                                           oninput="{notice(2)}" value="{{ ymrs_answer.vigorous_energy }}" disabled  />
+                                                    <p style="display:inline-block; font-size: x-small;color: #942a25" id="notice2"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.性欲</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="sexual_desire" class="form-control" id="sexual_desire"
+                                                           oninput="{notice(3)}" value="{{ ymrs_answer.sexual_desire }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice3"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.睡眠</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="sleep" class="form-control" id="sleep"
+                                                           oninput="{notice(4)}" value="{{ ymrs_answer.sleep }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice4"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.易激惹性</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="irritability" class="form-control" id="irritability"
+                                                           oninput="{notice(5)}" value="{{ ymrs_answer.irritability }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice5"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.言语（速度和量）</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="speech" class="form-control" id="speech"
+                                                           oninput="{notice(6)}" value="{{ ymrs_answer.speech }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice6"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.语言（思维障碍）</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="language" class="form-control" id="language"
+                                                           oninput="{notice(7)}" value="{{ ymrs_answer.language }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice7"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.思维内容</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="thinking_content" class="form-control" id="thinking_content"
+                                                           oninput="{notice(8)}" value="{{ ymrs_answer.thinking_content }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice8"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>9.破坏-攻击性行为</td>
+                                                <td >0-8分</td>
+                                                <td><input type="number" placeholder="请输入0~8的整数" name="aggressive_behavior" class="form-control" id="aggressive_behavior"
+                                                           oninput="{notice(9)}" value="{{ ymrs_answer.aggressive_behavior }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice9"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10.外貌</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="appearance" class="form-control" id="appearance"
+                                                           oninput="{notice(10)}" value="{{ ymrs_answer.appearance }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice10"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>11.自知力</td>
+                                                <td >0-4分</td>
+                                                <td><input type="number" placeholder="请输入0~4的整数" name="self_awareness" class="form-control" id="self_awareness"
+                                                           oninput="{notice(11)}" value="{{ ymrs_answer.self_awareness }}" disabled />
+                                                <p class="error" style="display:inline-block; font-size: x-small;color: #942a25" id="notice11"></p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-12  col-sm-12">
+                                            <a style="float: left;font-weight: bold">总分：{{ ymrs_answer.total_score|processNone }}</a><br>
+                                        </div>
+                                </div>
+
+                                <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="ymrs_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+
+                                <div class="row" id="bt_group">
+                                        <div  class="col-md-4 col-sm-6 text-center"  >
+                                           <a  href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                               <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                           </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                        </div>
+                                        <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                        </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="right_col" role="main">
-    <div class="container">
-        <div class="row show-grid">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
-                    <li>量表录入</li>
-                    <li>自评量表</li>
-                    <li class="active">失眠严重指数量表</li>
-                    <div style="float: right;margin-bottom: 0;"></div>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    {% csrf_token %}
-    <div class="dashboard_graph x_panel" style="margin-top: 0;height:80%;">
-        <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
-            <div align="center" style="padding-left: 22.5%; padding-right: 22.5%">
-                <h5>
-                    <strong>
-                        <i class="fa fa-hand-o-down"></i>&nbsp;
-                        <i class="fa fa-hand-o-down"></i>&nbsp;
-                        <i class="fa fa-hand-o-down"></i>&nbsp;
-                        指导语：请评估你过去两个星期睡眠问题的严重程度。
-                    </strong>
-                </h5>
-            </div>
-        </div>
-        <div class="insomnia_1" style="text-align: center;display: none">
-            <form id="insomnia_1" name="insomnia_1" action="#">
-                <div class="row"><h3>a.入睡困难</h3></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="forced_frequency" class="forced_frequency_0" value=0
-                                   data-labelauty="0=没有"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="forced_frequency" class="forced_frequency_others" value=1
-                                   data-labelauty="1=轻微"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="forced_frequency" class="forced_frequency_others" value=2
-                                   data-labelauty="2=普通"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="forced_frequency" class="forced_frequency_others" value=3
-                                   data-labelauty="3=严重"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="forced_frequency" class="forced_frequency_others" value=4
-                                   data-labelauty="4=非常严重"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_1_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_2" style="text-align: center;display: none">
-            <form id="insomnia_2" name="insomnia_2" action="#">
-                <div class="row"><h3>2. 您的强迫思维对社交、学业成就或工作能力有多大妨碍？</h3></div>
-                <div class="row"><h4>（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）</h4></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="impediment_degree1" value=0 data-labelauty="0=不受妨碍"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree1" value=1
-                                   data-labelauty="1=轻微。稍微妨碍社交或工作活动，但整体表现并无大碍"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree1" value=2
-                                   data-labelauty="2=中度。确实妨碍社交或工作活动，但仍可应付"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree1" value=3 data-labelauty="3=重度。导致社交或工作表现的障碍"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree1" value=4 data-labelauty="4=极度。无能力应付社交或工作"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_2_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_2_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_3" style="text-align: center;display: none">
-            <form id="insomnia_3" name="insomnia_3" action="#">
-                <div class="row"><h3>3. 您的强迫思维给您带来多大的苦恼或困扰？</h3></div>
-                <div class="options" style=" text-align: left;padding-left: 30%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="distress" value=0 data-labelauty="0=没有"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="distress" value=1 data-labelauty="1=轻微。不会太烦人"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="distress" value=2 data-labelauty="2=中度。觉得很烦，但尚可应付"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="distress" value=3 data-labelauty="3=重度。非常烦人"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="distress" value=4 data-labelauty="4=极重。几乎一直持续且令人丧志地苦恼"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_3_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_3_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_4" style="text-align: center;display: none">
-            <form id="insomnia_4" name="insomnia_4" action="#">
-                <div class="row"><h3>4. 您有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）</h3></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="fightforced_degree" value=0
-                                   data-labelauty="0=一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="fightforced_degree" value=1
-                                   data-labelauty="1=大部分时间都试图与之对抗（超过一半的时间我都试图与之对抗）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="fightforced_degree" value=2 data-labelauty="2=用些许努力去对抗"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="fightforced_degree" value=3
-                                   data-labelauty="3=屈服于所有的强迫思维，未试图控制，但仍有些不甘心。"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="fightforced_degree" value=4 data-labelauty="4=完全愿意屈服于强迫思维"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_4_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_4_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_5" style="text-align: center;display: none">
-            <form id="insomnia_5" name="insomnia_5" action="#">
-                <div class="row"><h3>5. 您控制强迫思维的能力有多少？您停止或转移强迫思维的效果如何？</h3></div>
-                <div class="row"><h4>（不包括通过强迫行为来停止强迫思维）</h4></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="control_ability1" value=0 data-labelauty="0=完全控制。我可以完全控制"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability1" value=1
-                                   data-labelauty="1=大多能控制。只要花些力气与注意力，即能停止或转移强迫思维"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability1" value=2
-                                   data-labelauty="2=中等程度控制。“有时”能停止或转移强迫思维"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability1" value=3
-                                   data-labelauty="3=控制力弱。很少能成功地停止或消除强迫思维，只能转移"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability1" value=4
-                                   data-labelauty="4=无法控制。完全不能自主，连转移一下强迫思维的能力都没有主诉的强迫行为"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_5_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_5_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_6" style="text-align: center;display: none">
-            <form id="insomnia_6" name="insomnia_6" action="#">
-                <div class="row"><h3>6. 您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？</h3></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" class="compulsion_frequency_0 " name="compulsion_frequency" value=0
-                                   data-labelauty="0=完全无强迫行为"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=1
-                                   data-labelauty="1=轻微（少于一小时），或偶尔有（一天不超过8次）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=2
-                                   data-labelauty="2=中度（一至三小时），或常常有（一天超过8次，但一天大部分时间没有强迫行为）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=3
-                                   data-labelauty="3=重度（多于三小时但不超过八小时），或频率非常高（一天超过8次，且一天大部分时间有强迫行为）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=4
-                                   data-labelauty="4=极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_6_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_6_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_7" style="text-align: center;display: none">
-            <form id="insomnia_7" name="insomnia_7" action="#">
-                <div class="row"><h3>7. 您的强迫行为对社交、学业成就或工作能力有多大妨碍？</h3></div>
-                <div class="row"><h4>（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）</h4></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="impediment_degree2" value=0 data-labelauty="0=不受妨碍"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree2" value=1
-                                   data-labelauty="1=轻微。稍微妨碍社交或工作活动，但整体表现并无大碍"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree2" value=2
-                                   data-labelauty="2=中度。确实妨碍社交或工作活动，但仍可应付"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree2" value=3 data-labelauty="3=重度。导致社交或工作表现的障碍"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="impediment_degree2" value=4 data-labelauty="4=极度。无能力应付社交或工作"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_7_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_7_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_8" style="text-align: center;display: none">
-            <form id="insomnia_8" name="insomnia_8" action="#">
-                <div class="row"><h3>8. 假如被制止从事强迫行为时，您有什么感觉？您会多焦虑？</h3></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="stopcompulsion_anxiety" value=0 data-labelauty="0=没有焦虑"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopcompulsion_anxiety" value=1
-                                   data-labelauty="1=轻微。假如强迫行为被阻止，只是稍微焦虑"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopcompulsion_anxiety" value=2
-                                   data-labelauty="2=中度。假如强迫行为被阻止，会有中等程度的焦虑，但是仍可以应付"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopcompulsion_anxiety" value=3
-                                   data-labelauty="3=严重。假如强迫行为被阻止，会明显且困扰地增加焦虑"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopcompulsion_anxiety" value=4
-                                   data-labelauty="4=极度。假如有任何需要改变强迫行为的处置时，会导致极度地焦虑"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_8_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_8_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_9" style="text-align: center;display: none">
-            <form id="insomnia_9" name="insomnia_9" action="#">
-                <div class="row"><h3>9. 您有多努力去对抗强迫行为？或尝试停止强迫行为的频率？</h3></div>
-                <div class="row"><h4>（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估您停止强迫行为的效果有多好）</h4></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="stopforced_frequency" value=0
-                                   data-labelauty="0=一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopforced_frequency" value=1
-                                   data-labelauty="1=大部分时间都试图与之对抗（超过一半的时间我都试图与之对抗）"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopforced_frequency" value=2 data-labelauty="2=用些许努力去对抗"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopforced_frequency" value=3
-                                   data-labelauty="3=屈服于所有的强迫行为，未试图控制，但仍有些不甘心"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="stopforced_frequency" value=4 data-labelauty="4=完全愿意屈服于强迫行为"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_9_back" type="button" class="btn btn-info text-center" style="width:68px;height:34px"
-                           value="上一题">
-                    <input id="insomnia_9_submit" type="button" class="btn btn-success text-center"
-                           style="width:68px;height:34px" value="下一题">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-        <div class="insomnia_10" style="text-align: center;display: none">
-            <form id="insomnia_10" name="insomnia_10" action="#">
-                <div class="row"><h3>10. 您控制强迫行为的能力如何？您停止强迫（仪式）行为的效果如何？</h3></div>
-                <div class="row"><h4>（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）</h4></div>
-                <div class="options" style=" text-align: left;padding-left: 25%">
-                    <div class="row show-grid" style="margin:10px 0 10px 10px">
-                        <label>
-                            <input type="radio" name="control_ability2" value=0 data-labelauty="0=完全控制。我可以完全控制"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability2" value=1
-                                   data-labelauty="1=大多能控制。只要花些力气与注意力，即能停止强迫行为"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability2" value=2
-                                   data-labelauty="2=中等程度控制。“有时”控制强迫行为，有些困难"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability2" value=3
-                                   data-labelauty="3=控制力弱。只能忍耐耽搁一下时间，但最终还是必须完成强迫行为"/>
-                        </label>
-                    </div>
-                    <div class="row show-grid" style="margin:10px">
-                        <label>
-                            <input type="radio" name="control_ability2" value=4 data-labelauty="4=完全无法控制。连耽搁一下的能力都没有"/>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input id="insomnia_10_back" type="button" class="btn btn-info text-center"
-                           style="width:68px;height:34px"
-                           value="上一题">
-                    <!--						跳转-->
-                    <input id="insomnia_10_submit" type="button"
-                           class="btn btn-success text-center" style="width:68px;height:34px" value="完&nbsp;&nbsp;成">
-                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
-                           value="退&nbsp;&nbsp;出">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+    <script>
+       function getData(){
+        var order = "{{ order  }}";
+        if(order==0){
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+       }
+    </script>
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
-<script>
-    // dom加载完毕
-    const $m_btn = $('.exit_button');
-    const $modal = $('#exit_confirm');
-    $m_btn.on('click', function () {
-        $modal.modal({backdrop: 'static'});
-    });
-
-    // 测试 bootstrap 居中
-    $modal.on('show.bs.modal', function () {
-        const $this = $(this);
-        const $modal_dialog = $this.find('.modal-dialog');
-        // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
-        $this.css('display', 'block');
-        $modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - $modal_dialog.height()) / 2)});
-    });
-
-
-    let time = new Date();
-    let end_flag = 0;
-    let question_index = 1 + {{ question_index }};
-    $(document).ready(function () {
-        $("input[type='radio']").labelauty();
-        if(question_index > 10){
-            $("div[class='insomnia_1']").show();
-        }else{
-            $(this.getElementsByClassName('insomnia_' + question_index)).show();
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+        });
+        var ttttest = $.post("/scales/get_next_question", { patient_session_id: "1", scale_id: "12" } );
+        alert(ttttest);
+    </script>
+    <script type="text/javascript">
+    function notice(num){
+        if(num==1){
+            val=document.getElementsByName('emotional_upsurge')[0].value;
+            if (val<0||val>4){
+                    document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice1').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else{
+                    document.getElementById('notice1').innerHTML="";}
+            }
         }
-
-        $("#insomnia_1_submit").on('click', function () {
-            if (document.insomnia_1.forced_frequency.value === "") {
-                alert("问题不能为空！");
-            } else if (document.insomnia_1.forced_frequency.value === "0") {
-                // 如果第一题0设置跳过的题目也为0，并提交
-                {#$("input:radio[name='impediment_degree1']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='distress']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='fightforced_degree']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='control_ability1']").eq(0).attr("checked",'checked');#}
-                question_index += 4;
-                ajax_post($('#insomnia_1'));
-                {#ajax_post($('#insomnia_2'));#}
-                {#ajax_post($('#insomnia_3'));#}
-                {#ajax_post($('#insomnia_4'));#}
-                {#ajax_post($('#insomnia_5'));#}
-                $("div[class='insomnia_1']").hide();
-                $("div[class='insomnia_6']").show();
-            } else {
-                ajax_post($('#insomnia_1'))
-                $("div[class='insomnia_1']").hide();
-                $("div[class='insomnia_2']").show();
+        else if(num==2){
+            val=document.getElementsByName('vigorous_energy')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
             }
-        });
-
-        $("#insomnia_2_submit").on('click', function () {
-            if (document.insomnia_2.impediment_degree1.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_2'));
-                $("div[class='insomnia_2']").hide();
-                $("div[class='insomnia_3']").show();
-            }
-        });
-
-        $("#insomnia_3_submit").on('click', function () {
-            if (document.insomnia_3.distress.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_3'));
-                $("div[class='insomnia_3']").hide();
-                $("div[class='insomnia_4']").show();
-            }
-        });
-
-        $("#insomnia_4_submit").on('click', function () {
-            if (document.insomnia_4.fightforced_degree.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_4'));
-                $("div[class='insomnia_4']").hide();
-                $("div[class='insomnia_5']").show();
-            }
-        });
-
-        $("#insomnia_5_submit").on('click', function () {
-            if (document.insomnia_5.control_ability1.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_5'));
-                $("div[class='insomnia_5']").hide();
-                $("div[class='insomnia_6']").show();
-            }
-        });
-
-        $("#insomnia_6_submit").on('click', function () {
-            if (document.insomnia_6.compulsion_frequency.value === "") {
-                alert("问题不能为空！");
-            } else if (document.insomnia_6.compulsion_frequency.value === "0") {
-
-                // 第六题选0 默认将跳过的题置为0并提交
-                {% comment %}$("input[name='impediment_degree2'][value= '0']").prop("checked", true);
-                $("input[name='stopcompulsion_anxiety'][value='0']").prop("checked", true);
-                $("input[name='stopforced_frequency'][value='0']").prop("checked", true);
-                $("input[name='control_ability2'][value='0']").prop("checked", true);{% endcomment %}
-
-
-                {#$("input:radio[name='impediment_degree2']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='stopcompulsion_anxiety']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='stopforced_frequency']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='control_ability2']").eq(0).attr("checked",'checked');#}
-                end_flag = 1;
-                question_index += 4;
-                ajax_post($('#insomnia_6'));
-                {#ajax_post($('#insomnia_7'));#}
-                {#ajax_post($('#insomnia_8'));#}
-                {#ajax_post($('#insomnia_9'));#}
-
-                {#ajax_post($('#insomnia_10'));#}
-
-                // 跳转
-                location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
-            } else {
-                ajax_post($('#insomnia_6'));
-                $("div[class='insomnia_6']").hide();
-                $("div[class='insomnia_7']").show();
-            }
-        });
-
-        $("#insomnia_7_submit").on('click', function () {
-            if (document.insomnia_7.impediment_degree2.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_7'));
-                $("div[class='insomnia_7']").hide();
-                $("div[class='insomnia_8']").show();
-            }
-        });
-
-        $("#insomnia_8_submit").on('click', function () {
-            if (document.insomnia_8.stopcompulsion_anxiety.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_8'));
-                $("div[class='insomnia_8']").hide();
-                $("div[class='insomnia_9']").show();
-            }
-        });
-
-        $("#insomnia_9_submit").on('click', function () {
-            if (document.insomnia_9.stopforced_frequency.value === "") {
-                alert("问题不能为空！");
-            } else {
-                ajax_post($('#insomnia_9'));
-                $("div[class='insomnia_9']").hide();
-                $("div[class='insomnia_10']").show();
-            }
-        });
-
-        $("#insomnia_10_submit").on('click', function () {
-            if (question_index > 10) {
-                alert("请不要重复提交");
-            }
-            if (document.insomnia_10.control_ability2.value === "") {
-                alert("问题不能为空！");
-            } else {
-                end_flag = 1;
-                ajax_post($('#insomnia_10'));
-                // 跳转
-                location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
-            }
-        });
-
-        //     $("#insomnia_2_back").on('click', function () {
-        //         $("div[class='insomnia_2']").hide();
-        //         $("div[class='insomnia_1']").show();
-        //     });
-        //
-        //     $("#insomnia_3_back").on('click', function () {
-        //         $("div[class='insomnia_3']").hide();
-        //         $("div[class='insomnia_2']").show();
-        //     });
-        //
-        //     $("#insomnia_4_back").on('click', function () {
-        //         $("div[class='insomnia_4']").hide();
-        //         $("div[class='insomnia_3']").show();
-        //     });
-        //
-        //     $("#insomnia_5_back").on('click', function () {
-        //         $("div[class='insomnia_5']").hide();
-        //         $("div[class='insomnia_4']").show();
-        //     });
-        //
-        //     $("#insomnia_6_back").on('click', function () {
-        //         if (document.insomnia_1.forced_frequency.value === "0") {
-        //             $("div[class='insomnia_6']").hide();
-        //             $("div[class='insomnia_1']").show();
-        //         } else {
-        //             $("div[class='insomnia_6']").hide();
-        //             $("div[class='insomnia_5']").show();
-        //         }
-        //     });
-        //
-        //     $("#insomnia_7_back").on('click', function () {
-        //         $("div[class='insomnia_7']").hide();
-        //         $("div[class='insomnia_6']").show();
-        //     });
-        //
-        //     $("#insomnia_8_back").on('click', function () {
-        //         $("div[class='insomnia_8']").hide();
-        //         $("div[class='insomnia_7']").show();
-        //     });
-        //
-        //     $("#insomnia_9_back").on('click', function () {
-        //         $("div[class='insomnia_9']").hide();
-        //         $("div[class='insomnia_8']").show();
-        //     });
-        //
-        //     $("#insomnia_10_back").on('click', function () {
-        //         $("div[class='insomnia_10']").hide();
-        //         $("div[class='insomnia_9']").show();
-        //     });
-        // });
-
-        function get_duration() {
-            const current_time = new Date();
-            const duration = time - current_time;
-            time = current_time;
-            return -duration;
-        }
-
-        function ajax_post(form) {
-            const csrf = $('input[name="csrfmiddlewaretoken"]').val();
-            $.ajax({
-                url: 'http://' + location.host +
-                    '/scales/self_tests_submit?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}',
-                type: 'POST',
-                dataType: 'JSON',
-                async: false,
-                data: {
-                    'data': form.serialize(),
-                    'html': document.getElementsByTagName('html')[0].innerHTML,
-                    'duration': get_duration(),
-                    'question_index': question_index,
-                    'test_name': 'insomnia',
-                    'flag': end_flag,
-                    'csrfmiddlewaretoken': csrf
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice2').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice2').innerHTML = "";
                 }
-            });
-            question_index++;
+            }
+        }else if(num==3){
+            val=document.getElementsByName('sexual_desire')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice3').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice3').innerHTML = "";
+                }
+            }
+        }else if(num==4){
+            val=document.getElementsByName('sleep')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice4').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice4').innerHTML = "";
+                }
+            }
+        }else if(num==5){
+            val=document.getElementsByName('irritability')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～8的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice5').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice5').innerHTML = "";
+                }
+            }
+        }else if(num==6){
+            val=document.getElementsByName('speech')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～8的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice6').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice6').innerHTML = "";
+                }
+            }
+        }else if(num==7){
+           val=document.getElementsByName('language')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice7').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice7').innerHTML = "";
+                }
+            }
+        }else if(num==8){
+            val=document.getElementsByName('thinking_content')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice8').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice8').innerHTML = "";
+                }
+            }
+        }else if(num==9){
+            val=document.getElementsByName('aggressive_behavior')[0].value;
+            if (val<0||val>8){
+            document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice9').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice9').innerHTML = "";
+                }
+            }
+        }else if(num==10){
+            val=document.getElementsByName('appearance')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice10').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice10').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice10').innerHTML = "";
+                }
+            }
+        }else if(num==11){
+            val=document.getElementsByName('self_awareness')[0].value;
+            if (val<0||val>4){
+            document.getElementById('notice11').innerHTML="&nbsp;&nbsp;&nbsp;请输入0～4的整数";
+            }
+            else{
+                if(parseInt(val) != parseFloat(val)){
+                    document.getElementById('notice11').innerHTML="&nbsp;&nbsp;&nbsp;请输入整数";
+                }else {
+                    document.getElementById('notice11').innerHTML = "";
+                }
+            }
         }
-    });
 
+    }
+    </script>
+<script type="text/javascript">
+
+    $("#sub").click(function() {
+        emotional_upsurge =$('#emotional_upsurge').val();
+        vigorous_energy = $('#vigorous_energy').val();
+        sexual_desire = $('#sexual_desire').val();
+        sleep = $('#sleep').val();
+        irritability = $('#irritability').val();
+        speech = $('#speech').val();
+        language = $('#language').val();
+        thinking_content = $('#thinking_content').val();
+        aggressive_behavior = $('#aggressive_behavior').val();
+        appearance = $('#appearance').val();
+        self_awareness = $('#self_awareness').val();
+         if(emotional_upsurge=='' ||  vigorous_energy==''|| sexual_desire=='' || sleep ==''|| irritability ==''||
+            speech ==''|| language ==''|| thinking_content =='' || aggressive_behavior=='' ||appearance==''||self_awareness=='' ) {
+         alert("请填入整数后提交！！！");
+        }else if (0 <= emotional_upsurge && emotional_upsurge <= 4 && 0 <= vigorous_energy && vigorous_energy <= 4 && 0 <= sexual_desire && sexual_desire <= 4
+            && 0 <= sleep && sleep <= 4 && 0 <= irritability && irritability <= 8 && 0 <= speech && speech <= 8 && 0 <= language && language <= 4
+            && 0 <= thinking_content && thinking_content <= 8 && 0 <= aggressive_behavior && aggressive_behavior <= 8 && 0 <= appearance
+            && appearance <= 4 && 0 <= self_awareness && self_awareness <= 4)
+        {
+            $('#sub_ymrs').submit();
+        } else{
+            alert("请填入正确的整数后提交！！！");
+        }
+
+    });
 </script>
+    <script>
+    function remove_disabled() {
+        $("input[name='emotional_upsurge']").removeAttr("disabled", "disabled");
+        $("input[name='vigorous_energy']").removeAttr("disabled", "disabled");
+        $("input[name='sexual_desire']").removeAttr("disabled", "disabled");
+        $("input[name='sleep']").removeAttr("disabled", "disabled");
+        $("input[name='irritability']").removeAttr("disabled", "disabled");
+        $("input[name='speech']").removeAttr("disabled", "disabled");
+        $("input[name='language']").removeAttr("disabled", "disabled");
+        $("input[name='thinking_content']").removeAttr("disabled", "disabled");
+        $("input[name='aggressive_behavior']").removeAttr("disabled", "disabled");
+        $("input[name='appearance']").removeAttr("disabled", "disabled");
+        $("input[name='self_awareness']").removeAttr("disabled", "disabled");
+        $("#ymrs_bt").attr("style", "display:block;");
+        $("#bt_group").attr("style", "display:none;");
+    }
+    </script>
+
 {% endblock %}

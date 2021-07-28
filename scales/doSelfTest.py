@@ -35,22 +35,32 @@ def update_scales_content_validate(request):
     try:
         handler = xmlHandler.loadScaleXML(scale_content)
     except BaseException:
-        return "XML Illegal"
-    cash.scales_content_handler_dic[scale_definition_id] = handler
+        return "XML Illegal", None
     create_user = request.POST.get('create_user')
     if create_user is None:
-        return "create_user is None"
-    return None
+        return "create_user is None", None
+    return None, handler
 
 
-def get_scale_content_by_scale_id(scale_id):
-    if scale_id in cash.scales_content_handler_dic.keys():
-        return cash.scales_content_handler_dic[scale_id].scaleContent
-    scale_content_model = scales_dao.get_scale_content_by_id(scale_id)
+def get_right_scale_content(scale_id, patient_session_id):
+    print(scale_id, patient_session_id)
+    version = scales_dao.get_version_of_history_scale(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
+    print(version)
+    if scale_id not in cash.scales_content_handler_dic.keys():
+        scale_content_model = scales_dao.get_scale_content_by_id(scale_id)
+        if scale_content_model is None:
+            raise ValueError
+        handler = xmlHandler.loadScaleXML(scale_content_model.scale_content)
+        cash.scales_content_handler_dic[scale_id] = {
+            "scaleHandler": handler,
+            "version": scale_content_model.scale_version,
+        }
+    if cash.scales_content_handler_dic[scale_id]["version"] == version:
+        return cash.scales_content_handler_dic[scale_id]["scaleHandler"].scaleContent
+    scale_content_model = scales_dao.get_scale_content_by_id_and_version(scale_id, version)
     if scale_content_model is None:
         raise ValueError
     handler = xmlHandler.loadScaleXML(scale_content_model.scale_content)
-    cash.scales_content_handler_dic[scale_id] = handler
     return handler.scaleContent
 
 
@@ -117,7 +127,7 @@ def submit_scales_input_validate(request):
 
 
 def write_scale_answer(scale_id, patient_session_id, form_content, doctor_id):
-    scales_dao.update_scales(config.scaleId_Models_Map[scale_id], patient_session_id, form_content, doctor_id)
+    scales_dao.update_scales(config.scaleId_Models_Map[scale_id], patient_session_id, form_content, doctor_id, scale_id)
 
 
 def write_scale_duration(patient_session_id, scale_id, duration):
@@ -135,3 +145,22 @@ def write_scale_duration(patient_session_id, scale_id, duration):
 
 def complete_scale(scale_id, patient_session_id):
     scales_dao.update_rscales_state(patient_session_id, scale_id, config.Scale_Completed)
+
+
+def not_complete_scale(scale_id, patient_session_id):
+    scales_dao.update_rscales_state(patient_session_id, scale_id, config.Scale_Not_Completed)
+
+
+def delete_scale_content(scale_id, version):
+    return scales_dao.delete_scale_content(scale_id, version)
+
+
+def redo_scale(scale_id, patient_session_id):
+    if patient_session_id in cash.scales_answer_schedule.keys():
+        if scale_id in cash.scales_answer_schedule[patient_session_id]:
+            cash.scales_answer_schedule[patient_session_id].pop(scale_id)
+    res = scales_dao.delete_scale_answers(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
+    if res is None:
+        return False
+    not_complete_scale(scale_id, patient_session_id)
+    return True

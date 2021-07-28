@@ -52,6 +52,7 @@ class TScaleBss(models.Model):
     question38 = models.CharField(max_length=100, null=False, default="")
     total_score_last_week = models.FloatField(null=False, default=0)
     total_score_most_depressed = models.FloatField(null=False, default=0)
+    version = models.IntegerField(null=False, blank=False)
     delete = models.IntegerField(null=False, default=0)
     create_time = models.IntegerField()
     update_time = models.IntegerField()
