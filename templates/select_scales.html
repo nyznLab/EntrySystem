@@ -292,7 +292,7 @@
 {#                                            <option value="6">再次入院</option>#}
                                             </select>
 
-                                            <div id="scan_note_num" style="{% if patient_detail.scan_note_option < 3 or patient_detail.scan_note_option == null  %}display: none{% endif %}">
+                                            <div id="scan_note_num_container" style="{% if patient_detail.scan_note_option < 3 or patient_detail.scan_note_option == null  %}display: none{% endif %}">
                                                 <span>第</span> <input type="text" name="scan_note_num" class="sel_beauty" placeholder="输入数字" value="{{ patient_detail.scan_note_num|processNone}}" style="width: 90px;margin-top: 10px;"> <span>次</span>
                                             </div>
                                         </div>
@@ -570,27 +570,34 @@ var num=1
             });{% endcomment %}
 
             // 扫描备注切换
-            let $option_num = $('#scan_note_num'),
+            let $option_num = $('#scan_note_num_container'),
                 $option_note = $('#scan_note_option')
             let global_num_value = $option_num.find('input').val()
             ,global_option_value = $option_note.find('option:selected').val()
+            var value;
             $option_note.change(function (){
+                console.log('global: '+global_option_value)
                 let that = $(this)
-                let value = that.find('option:selected').val()
-                console.log(global_num_value)
+                value = that.find('option:selected').val()
+                console.log('value: '+value)
                 if(value >= '3'){
+                    console.log('3，4，5,6走这边!')
                     $option_num.show()
                     if (global_option_value === value){
-                        $option_num.find('input').val(global_num_value)
+                        console.log('相等')
+                        $option_num.find("input").val(global_num_value)
                     }else{
-                        $option_num.find('input').val('')
+                        console.log('不相等')
+                        $option_num.find("input").val(0)
                     }
                     if (value === '5'){
-                        $option_num.find('span').eq(1).html('月')
+                        $option_num.find("span").eq(1).html('月')
                     }else{
-                        $option_num.find('span').eq(1).html('次')
+                        $option_num.find("span").eq(1).html('次')
                     }
                 }else{
+                    console.log('0，1，2走这边!')
+                    $option_num.find("input").val(0)
                     $option_num.hide()
                 }
             })

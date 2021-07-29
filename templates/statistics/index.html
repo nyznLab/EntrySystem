@@ -40,6 +40,13 @@
         .nav.side-menu a{
             font-size:13px
         }
+        th > div.layui-table-cell{
+            overflow:visible;
+            text-overflow:inherit;
+            white-space:normal;
+            word-break: break-all;
+            height:auto;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -54,10 +61,13 @@
             </div>
         </div>
         <div class="dashboard_graph x_panel" style="">
-            <div class="layui-progress" style="position:absolute;top:0;left: 0;width: 100%;border-radius:unset;" lay-filter="global_progress">
-                <div class="layui-progress-bar" lay-percent="0%" style="border-radius:unset;"></div>
-            </div>
-            <div class="x_content">
+            <div class="layui-tab layui-tab-brief" lay-filter="table_container_tab" lay-allowClose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="main_table">复扫记录表</li>
+                </ul>
+                <div class="layui-tab-content" style="position:relative">
+                    <div class="layui-tab-item layui-show">
+                        <div class="x_content">
 {#                <div class="row">#}
 {#                    <div class="col-md-12 col-sm-12 col-xs-12">#}
 {#                        <a href="#modal_container_subjectBaseInfo_build" data-toggle="modal">#}
@@ -73,6 +83,9 @@
 {#                <div class="row" style="border-top: solid #ACC0D8 1px;margin:5px 0px"></div>#}
                 <div class="row clearfix">
                     <div class="col-md-12 column">
+                        <div class="layui-progress" style="position:absolute;top:4px;left: 10px;right:10px;width: auto;border-radius:unset;" lay-filter="global_progress">
+                <div class="layui-progress-bar" lay-percent="0%" style="border-radius:unset;"></div>
+            </div>
                         <table id="record" lay-filter="tb_record"></table>
                         <script type="text/html" id="filterTools">
                             <div class="layui-btn-group" style="display:inline-block">
@@ -82,11 +95,15 @@
                         </script>
 {#                        <blockquote class="layui-elem-quote layui-quote-nm" id="filter_compare_content">#}
 {#                            提示：由于数据较多，加载比较慢，请耐心等待。#}
-{#                            <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">#}
+                            <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
 {#                        </blockquote>#}
                     </div>
                 </div>
             </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -125,7 +142,7 @@
       <div class="layui-inline">
           <label class="layui-form-label">年龄</label>
           <div class="layui-input-inline">
-              <input type="text" lay-verify="required" autocomplete="off" class="layui-input" id="age" >
+              <input type="text" lay-verify="required" name="age" autocomplete="off" class="layui-input" id="age" >
           </div>
           <div class="layui-form-mid">-</div>
           <div class="layui-input-inline">
@@ -181,31 +198,31 @@
     </div>
                 <div class="layui-form-item">
 
-                        <label class="layui-form-label">采集血液</label>
+                        <label class="layui-form-label">血液</label>
                         <div class="layui-input-block">
                             <input type="radio" name="blood" value="" title="全部" checked>
-                            <input type="radio" name="blood" value="1" title="是">
-                            <input type="radio" name="blood" value="0" title="否">
+                            <input type="radio" name="blood" value="1" title="已采集">
+                            <input type="radio" name="blood" value="0" title="未采集">
                         </div>
 
                 </div>
                 <div class="layui-form-item">
 
-                        <label class="layui-form-label">认知评估</label>
+                        <label class="layui-form-label">认知</label>
                         <div class="layui-input-block">
                             <input type="radio" name="cognitive" value="" title="全部" checked>
-                            <input type="radio" name="cognitive" value="1" title="是">
-                            <input type="radio" name="cognitive" value="0" title="否">
+                            <input type="radio" name="cognitive" value="1" title="已做">
+                            <input type="radio" name="cognitive" value="0" title="未做">
                         </div>
 
                 </div>
                 <div class="layui-form-item">
 
-                        <label class="layui-form-label">采集声音</label>
+                        <label class="layui-form-label">声音</label>
                         <div class="layui-input-block">
                             <input type="radio" name="sound" value="" title="全部" checked>
-                            <input type="radio" name="sound" value="1" title="是">
-                            <input type="radio" name="sound" value="0" title="否">
+                            <input type="radio" name="sound" value="1" title="已采集">
+                            <input type="radio" name="sound" value="0" title="未采集">
                         </div>
                 </div>
                 <div class="layui-form-item">
@@ -213,11 +230,11 @@
                         <label class="layui-form-label">扫描日期</label>
                         <div class="layui-inline" id="scan_date">
                             <div class="layui-input-inline">
-                                <input type="text" autocomplete="off" id="startDate" class="layui-input" placeholder="开始日期">
+                                <input type="text" autocomplete="off" id="startDate" name="startDate" class="layui-input" placeholder="开始日期">
                             </div>
                             <div class="layui-form-mid">-</div>
                             <div class="layui-input-inline">
-                                <input type="text" autocomplete="off" id="endDate" class="layui-input" placeholder="结束日期">
+                                <input type="text" autocomplete="off" id="endDate" name="endDate" class="layui-input" placeholder="结束日期">
                             </div>
                         </div>
                     </div>
@@ -228,7 +245,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style="width:260px">汉密尔顿焦虑量表（HAMA）总分</label>
                             <div class="layui-input-inline">
-                                <select id="hama_total_score_compare_select">
+                                <select id="hama_total_score_compare_select" name="hama_select">
                                     <option value="0" selected>等于</option>
                                     <option value="1">大于（包含）</option>
                                     <option value="2">小于（包含）</option>
@@ -236,7 +253,7 @@
                             </div>
                             <div class="layui-form-mid">-</div>
                             <div class="layui-input-inline">
-                                <input type="text" lay-verify="required" placeholder="请输入分数" class="layui-input" id="hama_total_score" >
+                                <input type="text" lay-verify="required" name="hama_total_score" placeholder="请输入分数" class="layui-input" id="hama_total_score" >
                             </div>
                         </div>
                     </div>
@@ -244,7 +261,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style="width:260px">汉密尔顿抑郁量表-17项（HAMD17）总分</label>
                             <div class="layui-input-inline">
-                                <select id="hamd17_total_score_compare_select">
+                                <select id="hamd17_total_score_compare_select" name="hamd17_select">
                                     <option value="0" selected>等于</option>
                                     <option value="1">大于（包含）</option>
                                     <option value="2">小于（包含）</option>
@@ -252,7 +269,7 @@
                             </div>
                             <div class="layui-form-mid">-</div>
                             <div class="layui-input-inline">
-                                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="hamd17_total_score" >
+                                <input type="text" lay-verify="required" placeholder="请输入分数" name="hamd17_total_score"  class="layui-input" id="hamd17_total_score" >
                             </div>
                         </div>
                     </div>
@@ -260,7 +277,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style="width:260px">杨氏躁狂量表（YMRS）总分</label>
                             <div class="layui-input-inline">
-                                <select id="ymrs_total_score_compare_select">
+                                <select id="ymrs_total_score_compare_select" name="ymrs_select">
                                     <option value="0" selected>等于</option>
                                     <option value="1">大于（包含）</option>
                                     <option value="2">小于（包含）</option>
@@ -268,7 +285,7 @@
                             </div>
                             <div class="layui-form-mid">-</div>
                             <div class="layui-input-inline">
-                                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="ymrs_total_score" >
+                                <input type="text" lay-verify="required" placeholder="请输入分数"  name="ymrs_total_score" class="layui-input" id="ymrs_total_score" >
                             </div>
                         </div>
                     </div>
@@ -276,7 +293,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style="width:260px">简明精神病量表（BPRS）总分</label>
                             <div class="layui-input-inline">
-                                <select id="bprs_total_score_compare_select">
+                                <select id="bprs_total_score_compare_select" name="bprs_select">
                                     <option value="0" selected>等于</option>
                                     <option value="1">大于（包含）</option>
                                     <option value="2">小于（包含）</option>
@@ -284,7 +301,7 @@
                             </div>
                             <div class="layui-form-mid">-</div>
                             <div class="layui-input-inline">
-                                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="bprs_total_score" >
+                                <input type="text" lay-verify="required" placeholder="请输入分数" name="bprs_total_score"  class="layui-input" id="bprs_total_score" >
                             </div>
                         </div>
                     </div>
@@ -439,6 +456,7 @@
         ,transfer = layui.transfer
 
 
+
         laydate.render({
             elem:'#scan_date'
             ,range: ['#startDate', '#endDate']
@@ -453,6 +471,20 @@
             }
             element.progress('global_progress', n+'%');
         }, 1200);
+
+
+        // 主页面选项卡
+
+        element.on('tab(table_container_tab)', function(data){
+            console.log(this); //当前Tab标题所在的原始DOM元素
+            console.log(data.index); //得到当前Tab的所在下标
+            console.log(data.elem); //得到当前的Tab大容器
+
+        });
+
+
+
+
 
         let tb_patient = table.render({
             elem: '#record'
@@ -470,7 +502,7 @@
             ,title:'statistic_result'
             ,page: true
             ,url: '{% url 'statistics' %}'
-            ,height:'full-220'
+            ,height:'full-300'
             ,skin: 'row'
             ,even: true
             ,limit: 30
@@ -481,9 +513,11 @@
             ,cols: [[
                 {type:'checkbox',rowspan:3, fixed: true},
                 {type:'numbers',rowspan:3, fixed: true, title:'序号',width: 50}
-                ,{field:'standard_id',rowspan:3, title: '标准编号',width: 170, sort:true, fixed: 'left'}
-                ,{field:'patient_id',rowspan:3, title:'编号', hide:true, fixed:'left'}
-                ,{field:'name',rowspan:3, title:'姓名',width: 100, fixed:'left'}
+                ,{field:'id',rowspan:3,fixed: true, title:'复扫序号',width: 90}
+                ,{title:'量表完成详情',rowspan:3,align:'center', width: 90, toolbar:'#scalesTpl', fixed:true}
+                ,{field:'standard_id',rowspan:3, title: '标准编号',width: 170, sort:true, fixed: true}
+                ,{field:'patient_id',rowspan:3, title:'编号', hide:true, fixed:true}
+                ,{field:'name',rowspan:3, title:'姓名',width: 90, fixed:true}
                 ,{field:'sex',rowspan:3, title:'性别', sort:true, width: 80, templet:function (d) {
                     return d.sex? '女':'男'
                 }}
@@ -524,7 +558,7 @@
                             return '无'
                     }
                 }}
-                ,{field:'source',rowspan:3, title:'被试来源',width: 100, templet: function (d) {
+                ,{field:'source',rowspan:3, title:'被试来源',width: 90, templet: function (d) {
                     switch (d.source){
                         case 0:
                             return '门诊'
@@ -562,49 +596,49 @@
                             return '其他诊断'
                     }
                 }}
-                ,{field:'cognitive',rowspan:3, title:'认知评估',width:90, templet: function (d) {
+                ,{field:'cognitive',rowspan:3, title:'认知',width:60, templet: function (d) {
                     if(d.cognitive === "" || d.cognitive === null){
-                        return '无'
+                        return '--'
                     }
-                    return d.cognitive?'<span style="color:#5FB878">是</span>':'否'
+                    return d.cognitive?'<span style="color:#5FB878">已做</span>':'<span style="color:#FF5722">未做</span>'
                 }}
-                ,{field:'sound',rowspan:3, title:'采集声音',width:90, templet: function (d) {
+                ,{field:'sound',rowspan:3, title:'声音',width:75, templet: function (d) {
                     if(d.sound === "" || d.sound === null){
-                        return '无'
+                        return '--'
                     }
-                    return d.sound?'<span style="color:#5FB878">是</span>':'否'
+                    return d.sound?'<span style="color:#5FB878">已采集</span>':'<span style="color:#FF5722">未采集</span>'
                 }}
-                ,{field:'blood',rowspan:3, title:'采集血液',width:90, templet: function (d) {
+                ,{field:'blood',rowspan:3, title:'血液',width:75, templet: function (d) {
                     if(d.blood === "" || d.blood === null){
-                        return '无'
+                        return '--'
                     }
-                    return d.blood?'<span style="color:#5FB878">是</span>':'否'
+                    return d.blood?'<span style="color:#5FB878">已采集</span>':'<span style="color:#FF5722">未采集</span>'
                 }}
-                ,{field:'hairs',rowspan:3, title:'采集毛发',width:90, templet:function (d) {
+                ,{field:'hairs',rowspan:3, title:'毛发',width:75, templet:function (d) {
                     if(d.hairs === "" || d.hairs === null){
-                        return '无'
+                        return '--'
                     }
-                    return d.hairs?'<span style="color:#5FB878">是</span>':'否'
+                    return d.hairs?'<span style="color:#5FB878">已采集</span>':'<span style="color:#FF5722">未采集</span>'
                 }}
-                ,{field:'manure',rowspan:3, title:'采集粪便',width:90, templet:function (d) {
+                ,{field:'manure',rowspan:3, title:'粪便',width:75, templet:function (d) {
                     if(d.manure === "" || d.manure === null){
-                        return '无'
+                        return '--'
                     }
-                    return d.manure?'<span style="color:#5FB878">是</span>':'否'
+                    return d.manure?'<span style="color:#5FB878">已采集</span>':'<span style="color:#FF5722">未采集</span>'
                 }}
                 ,{field:'first',rowspan:3, title:'首发',width: 60, templet: function (d) {
                     if(d.first === "" || d.first === null){
-                        return '无'
+                        return '--'
                     }
                     return d.first?'<span style="color:#5FB878">是</span>':'否'
                 }}
-                ,{field:'head_motion_parameters',rowspan:3, title:'头动参数', width: 90,templet:function (d) {
+                ,{field:'head_motion_parameters',rowspan:3, title:'头动参数', width: 60,templet:function (d) {
                     if(d.head_motion_parameters === null || d.head_motion_parameters === ''){
-                        return '无'
+                        return '--'
                     }
                     return d.head_motion_parameters
                 }}
-                ,{field:'inpatient_state',rowspan:3, title:'住院情况', width:100, templet:function (d) {
+                ,{field:'inpatient_state',rowspan:3, title:'住院情况', width:90, templet:function (d) {
                     switch (d.inpatient_state) {
                         case 0:
                             return '未住院'
@@ -618,13 +652,46 @@
                     arr = d.scan_date.split('-')
                     return arr[0]+'年'+arr[1]+'月'+arr[2]+'日'
                 }}
+                ,{field:'scan_note_option', rowspan: 3,title:'扫描备注',width: 90,templet:function (d) {
+                    if(d.scan_note_option === null){
+                        return '--'
+                    }
+                    switch(d.scan_note_option){
+                        case 0:
+                            return '无'
+                        case 1:
+                            return '<span style="color:#FF5722">初扫</span>'
+                        case 2:
+                            return '只采血'
+                        case 3:
+                            return '复扫'
+                        case 4:
+                            return '出院前'
+                        case 5:
+                            return '随访'
+                        case 6:
+                            return '再次入院'
+
+                    }
+                }}
+                ,{field:'scan_note_num', rowspan: 3, title:'扫描备注次数或月数',width: 90,templet:function (d) {
+                    if(d.scan_note_num === null){
+                        return '--'
+                    }
+                    if(d.scan_note_option === 5){
+                        return "第"+d.scan_note_num+"月"
+                    }else{
+                        return "第"+d.scan_note_num+"次"
+                    }
+
+                }}
                 ,{field:'doctor',rowspan:3, title:'医生', width:90}
                 ,{title:'他评（others-rating）',colspan:4,align:'center', style:'background-color:#000;color:#fff'}
                 ,{title:'自评（self-rating）',colspan:19,align:'center'}
-                ,{title:'量表完成详情',rowspan:3,align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
+
                 ,{title:'操作',rowspan: 3,align:'center',width: 120, toolbar: '#filterCompareTpl',fixed: 'right'}
             ],[
-                {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',rowspan: 2,width: 270, templet:function (d) {
+                {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',rowspan: 2,width: 120, templet:function (d) {
                     if(d.HAMA.total_score === undefined ){
                         return '--'
                     }
@@ -633,7 +700,7 @@
                     }
                     return d.HAMA.total_score
                 }}
-                ,{field:'HAMD17', title:'汉密尔顿抑郁量表（HAMD-17）- 总分',rowspan: 2, width: 270, templet:function (d) {
+                ,{field:'HAMD17', title:'汉密尔顿抑郁量表（HAMD-17）- 总分',rowspan: 2, width: 120, templet:function (d) {
                     if(d.HAMD17.total_score === undefined){
                         return '--'
                     }
@@ -642,7 +709,7 @@
                     }
                     return d.HAMD17.total_score
                 }}
-                ,{field:'YMRS', title:'杨氏躁狂量表（YMRS）- 总分',rowspan: 2,width: 220,templet: function (d) {
+                ,{field:'YMRS', title:'杨氏躁狂量表（YMRS）- 总分',rowspan: 2,width: 120,templet: function (d) {
                     if(d.YMRS.total_score === undefined){
                         return '--'
                     }
@@ -651,7 +718,7 @@
                     }
                     return d.YMRS.total_score
                 }}
-                ,{field:'BPRS', title:'简明精神病量表（BPRS）- 总分',rowspan: 2,width: 240,templet: function (d) {
+                ,{field:'BPRS', title:'简明精神病量表（BPRS）- 总分',rowspan: 2,width: 120,templet: function (d) {
                     if(d.BPRS.total_score === undefined){
                         return '--'
                     }
@@ -661,7 +728,7 @@
                     return d.BPRS.total_score
                 }}
 
-                ,{field:'adolescent_events', title:'青少年生活事件量表（ALSEC）- 总分',rowspan: 2,width:270, templet:function (d) {
+                ,{field:'adolescent_events', title:'青少年生活事件量表（ALSEC）- 总分',rowspan: 2,width: 120, templet:function (d) {
                     if(d.adolescent_events.total_score === undefined ){
                         return '--'
                     }
@@ -670,7 +737,7 @@
                     }
                     return d.adolescent_events.total_score
                 }}
-                ,{field:'atq', title:'自动思维量表（ATQ）- 总分',rowspan: 2,width:230, templet:function (d) {
+                ,{field:'atq', title:'自动思维量表（ATQ）- 总分',rowspan: 2,width:120, templet:function (d) {
                     if(d.atq.total_score === undefined ){
                         return '--'
                     }
@@ -679,7 +746,7 @@
                     }
                     return d.atq.total_score
                 }}
-                ,{field: 'cognitive_emotion', title:'认知情绪调节问卷（CERQ-C）- 总分',rowspan: 2, width: 280, templet:function (d) {
+                ,{field: 'cognitive_emotion', title:'认知情绪调节问卷（CERQ-C）- 总分',rowspan: 2, width: 120, templet:function (d) {
                     if(d.cognitive_emotion.total_score === undefined ){
                         return '--'
                     }
@@ -688,7 +755,7 @@
                     }
                     return d.cognitive_emotion.total_score
                 }}
-                ,{field: 'happiness', title:'斯奈斯和汉密尔顿快乐量表（Happiness）- 总分',rowspan: 2 ,width: 330, templet:function (d) {
+                ,{field: 'happiness', title:'斯奈斯和汉密尔顿快乐量表（Happiness）- 总分',rowspan: 2 ,width: 120, templet:function (d) {
                     if(d.happiness.total_score === undefined ){
                         return '--'
                     }
@@ -697,7 +764,7 @@
                     }
                     return d.happiness.total_score
                 }}
-                ,{field: 'manicsymptom', title: '33项轻躁狂症状清单（HCL-33）- 总分',rowspan: 2, width: 300, templet:function (d) {
+                ,{field: 'manicsymptom', title: '33项轻躁狂症状清单（HCL-33）- 总分',rowspan: 2, width: 120, templet:function (d) {
                     if(d.manicsymptom.total_score === undefined ){
                         return '--'
                     }
@@ -706,7 +773,7 @@
                     }
                     return d.manicsymptom.total_score
                 }}
-                ,{field: 'pleasure', title: '快感体验能力量表（TEPS）- 总分',rowspan: 2, width: 300, templet:function (d) {
+                ,{field: 'pleasure', title: '快感体验能力量表（TEPS）- 总分',rowspan: 2, width: 120, templet:function (d) {
                     if(d.pleasure.total_score === undefined ){
                         return '--'
                     }
@@ -715,7 +782,7 @@
                     }
                     return d.pleasure.total_score
                 }}
-                ,{field: 'suicidal', title: '自杀意念及行为史（BSS）- 总分',rowspan: 2, width: 300, templet: function (d) {
+                ,{field: 'suicidal', title: '自杀意念及行为史（BSS）- 总分',rowspan: 2, width: 120, templet: function (d) {
                     if(d.suicidal.total_score === undefined ){
                         return '--'
                     }
@@ -724,7 +791,7 @@
                     }
                     return d.suicidal.total_score
                 }}
-                ,{field: 'ybobsessiontable', title:'耶鲁布朗强迫症严重程度（YBOCS）- 总分',rowspan: 2, width: 320, templet:function (d) {
+                ,{field: 'ybobsessiontable', title:'耶鲁布朗强迫症严重程度（YBOCS）- 总分',rowspan: 2, width: 120, templet:function (d) {
                     if(d.ybobsessiontable.total_score === undefined ){
                         return '--'
                     }
@@ -733,7 +800,7 @@
                     }
                     return d.ybobsessiontable.total_score
                 }}
-                ,{filed: 'sembu', title:'简式父母养育方式问卷（S-Embu）- 总分',rowspan: 2,width: 320, templet:function (d) {
+                ,{filed: 'sembu', title:'简式父母养育方式问卷（S-Embu）- 总分',rowspan: 2,width: 120, templet:function (d) {
                     if(d.sembu.total_score === undefined ){
                         return '--'
                     }
@@ -742,7 +809,7 @@
                     }
                     return d.sembu.total_score
                 }}
-                ,{field: 'gad', title:'广泛性焦虑障碍量表（GAD-7）- 总分',rowspan: 2,width: 320, templet:function (d) {
+                ,{field: 'gad', title:'广泛性焦虑障碍量表（GAD-7）- 总分',rowspan: 2,width: 120, templet:function (d) {
                     if(d.gad.total_score === undefined ){
                         return '--'
                     }
@@ -751,7 +818,7 @@
                     }
                     return d.gad.total_score
                 }}
-                ,{field: 'phq', title:'抑郁症筛查量表（PHQ-9）- 总分',rowspan: 2,width:320, templet:function (d) {
+                ,{field: 'phq', title:'抑郁症筛查量表（PHQ-9）- 总分',rowspan: 2,width:120, templet:function (d) {
                     if(d.phq.total_score === undefined ){
                         return '--'
                     }
@@ -760,7 +827,7 @@
                     }
                     return d.phq.total_score
                 }}
-                ,{field: 'pss', title:'压力知觉量表（PSS）- 总分',rowspan: 2,width: 250, templet:function (d) {
+                ,{field: 'pss', title:'压力知觉量表（PSS）- 总分',rowspan: 2,width: 120, templet:function (d) {
                     if(d.pss.total_score === undefined ){
                         return '--'
                     }
@@ -769,7 +836,7 @@
                     }
                     return d.pss.total_score
                 }}
-                ,{field: 'insomnia', title: '失眠严重指数量表（Insomnia）- 总分',rowspan: 2,width: 280, templet:function (d) {
+                ,{field: 'insomnia', title: '失眠严重指数量表（Insomnia）- 总分',rowspan: 2,width: 120, templet:function (d) {
                     if(d.insomnia.total_score === undefined ){
                         return '--'
                     }
@@ -780,7 +847,7 @@
                 }}
                 ,{title: '儿童期（16岁以前）的成长经历量表',align:'center',colspan:5}
             ],[
-                {field: 'growth.emotion_abuse_score', title: '情感虐待总分', width: 150, templet:function (d) {
+                {field: 'growth.emotion_abuse_score', title: '情感虐待总分', width: 60, templet:function (d) {
                     if(d.growth.emotion_abuse_score === undefined ){
                         return '--'
                     }
@@ -789,7 +856,7 @@
                     }
                     return d.growth.emotion_abuse_score
                 }}
-                ,{field: 'growth.body_abuse_score', title: '躯体虐待总分', width: 150, templet:function (d) {
+                ,{field: 'growth.body_abuse_score', title: '躯体虐待总分', width: 60, templet:function (d) {
                     if(d.growth.body_abuse_score === undefined ){
                         return '--'
                     }
@@ -798,7 +865,7 @@
                     }
                     return d.growth.body_abuse_score
                 }}
-                ,{field: 'growth.sex_abuse_score', title: '性虐待总分', width: 150, templet:function (d) {
+                ,{field: 'growth.sex_abuse_score', title: '性虐待总分', width: 60, templet:function (d) {
                     if(d.growth.sex_abuse_score === undefined ){
                         return '--'
                     }
@@ -807,7 +874,7 @@
                     }
                     return d.growth.sex_abuse_score
                 }}
-                ,{field: 'growth.emotion_ignore_score', title: '情感忽视总分', width: 150, templet:function (d) {
+                ,{field: 'growth.emotion_ignore_score', title: '情感忽视总分', width: 60, templet:function (d) {
                     if(d.growth.emotion_ignore_score === undefined ){
                         return '--'
                     }
@@ -816,7 +883,7 @@
                     }
                     return d.growth.emotion_ignore_score
                 }}
-                ,{field: 'growth.body_ignore_score', title: '躯体忽视总分', width: 150, templet:function (d) {
+                ,{field: 'growth.body_ignore_score', title: '躯体忽视总分', width: 60, templet:function (d) {
                     if(d.growth.body_ignore_score === undefined ){
                         return '--'
                     }
@@ -826,8 +893,8 @@
                     return d.growth.body_ignore_score
                 }}
             ]]
-            ,done:function (){
-
+            ,done:function (res, curr, count){
+                layer.msg('一共 '+count+' 条记录加载完毕！')
             }
         })
 
@@ -844,7 +911,7 @@
                         content: $("#filter_form")
                         ,closeBtn:0
                         ,shadeClose: true
-                        ,btn: ['确定','取消']
+                        ,btn: ['确定','取消','清除筛选条件']
                         ,btn1: function (index, layero){
                             let condition = {
                                 patient_id:name_select.getValue('value'),
@@ -883,6 +950,33 @@
                                 }
                             })
                             layer.close(index)
+                        }
+                        ,btn3: function () {
+                            name_select.setValue([])
+                            session_id_select.setValue([])
+                            name_select.setValue([])
+                            diagnosis_select.setValue([])
+                            form.val("f_form",{
+                                "age":'',
+                                "age_compare": 0
+                                ,'sex':''
+                                ,'source':''
+                                ,"blood":''
+                                ,"cognitive":''
+                                ,"sound":''
+                                ,"startDate":''
+                                ,"endDate":''
+                                ,'hama_select':0
+                                ,'hamd17_select':0
+                                ,'ymrs_select':0
+                                ,'bprs_select':0
+                                ,'hama_total_score':''
+                                ,'hamd17_total_score':''
+                                ,'ymrs_total_score':''
+                                ,'bprs_total_score':''
+                            })
+                            form.render()
+                            return false
                         }
                     })
                     break
@@ -927,7 +1021,9 @@
                             table.exportFile(tb_patient.config.id, selected_data)
                         })
                     }else{
-                        layer.msg('没有选中任何记录！')
+                        layer.msg('没有选中任何记录！',{
+                            anim:6
+                        })
                     }
                     break
                 case 'statistics_tips':
@@ -1051,7 +1147,16 @@
                     resize:false,
                     content:text
                 })
+
+                element.tabAdd('table_container_tab',{
+                    title: data.standard_id + ' 量表详情'
+                    ,content: ''
+                    ,id: data.id
+                })
+                element.render('tab')
+
             }
+
             else if(layEvent === 'addToCompare'){
                 //
                 //var compare_data = layui.data('compare').data
@@ -1066,20 +1171,24 @@
             }
         })
 
-    })
-    $('input#click').click(function (){
+
+        $('input#click').click(function (){
             $.ajax({
                 type: 'get',
                 url:'{% url 'statistics' %}',
                 dataType: 'json',
                 success: function (res){
                     console.log(res.data)
+
                 },
                 error: function (){
                     alert('error!!')
                 }
             })
     })
+
+    })
+
 
     </script>
 {% endblock %}
