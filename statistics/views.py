@@ -133,6 +133,5 @@ def get_sessions(request):
     session = statistics_dao.get_all_session()
     for s in session:
         s['session_id_standard'] = 'S' + str(s['session_id']).zfill(3)
-    print(session)
     return JsonResponse({'code': 0, 'msg': 'ok', 'data': list(session)})
 
