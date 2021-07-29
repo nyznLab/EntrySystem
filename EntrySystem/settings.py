@@ -104,6 +104,7 @@ DATABASES = {
         'PASSWORD': 'EntrySystem123456:',  # 密码
         'HOST': '192.168.0.201',  # 主机
         'PORT': '3306',  # 数据库使用的端口
+
     }
 }
 
