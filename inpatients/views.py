@@ -340,3 +340,5 @@ def upload_out_record(request):
 #             raise BussinessException('{} 在数据库不存在,请联系管理员'.format(object.medical_name))
 #         return type
 
+def get_program_log(request):
+    return render(request, 'templates/program_log.html')

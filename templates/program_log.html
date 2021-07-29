@@ -1,0 +1,66 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>使用说明及日志</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#</body>#}
+{#</html>#}
+
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}使用说明及日志{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+	<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    input::-webkit-input-placeholder{
+    	color: #DCDCDC;
+    	font-size: 8px;
+    }
+    .gridContainer{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 5fr 1fr;}
+	</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+		<div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">使用说明及日志</a></li>
+						 <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="#"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+        	<div id="wrapper">
+		    </div>
+	    </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script>
+
+</script>
+{% endblock %}
