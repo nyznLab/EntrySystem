@@ -625,3 +625,6 @@ def add_blood(request):
     patient_detail_res.save()
     redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
     return redirect(redirect_url)
+
+def get_program_log(request):
+    return render(request, 'templates/program_log.html')
