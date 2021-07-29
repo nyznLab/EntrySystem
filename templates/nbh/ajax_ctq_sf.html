@@ -157,6 +157,7 @@
         $("#question_submit").on('click', function () {
             if (question_index > 29) {
                 alert("请不要重复提交！");
+                return;
             }
             if (question_index == 29) {
                 ajax_post($('#question_form'));
@@ -197,6 +198,7 @@
                 }
                 if (flag == 0) {
                     alert("问题不能为空！");
+                    return;
                 } else {
                     ajax_post($('#question_form'));
                     update_question(question_index);

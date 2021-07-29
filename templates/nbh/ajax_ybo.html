@@ -517,6 +517,7 @@
         $("#ybo_1_submit").on('click', function () {
             if (document.ybo_1.forced_frequency.value === "") {
                 alert("问题不能为空！");
+                return;
             } else if (document.ybo_1.forced_frequency.value === "0") {
                 // 如果第一题0设置跳过的题目也为0，并提交
                 {#$("input:radio[name='impediment_degree1']").eq(0).attr("checked",'checked');#}
@@ -548,6 +549,7 @@
         $("#ybo_2_submit").on('click', function () {
             if (document.ybo_2.impediment_degree1.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_2'));
                 $("div[class='ybo_2']").hide();
@@ -565,6 +567,7 @@
         $("#ybo_3_submit").on('click', function () {
             if (document.ybo_3.distress.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_3'));
                 $("div[class='ybo_3']").hide();
@@ -582,6 +585,7 @@
         $("#ybo_4_submit").on('click', function () {
             if (document.ybo_4.fightforced_degree.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_4'));
                 $("div[class='ybo_4']").hide();
@@ -599,6 +603,7 @@
         $("#ybo_5_submit").on('click', function () {
             if (document.ybo_5.control_ability1.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_5'));
                 $("div[class='ybo_5']").hide();
@@ -616,6 +621,7 @@
         $("#ybo_6_submit").on('click', function () {
             if (document.ybo_6.compulsion_frequency.value === "") {
                 alert("问题不能为空！");
+                return;
             } else if (document.ybo_6.compulsion_frequency.value === "0") {
 
                 // 第六题选0 默认将跳过的题置为0并提交
@@ -657,6 +663,7 @@
         $("#ybo_7_submit").on('click', function () {
             if (document.ybo_7.impediment_degree2.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_7'));
                 $("div[class='ybo_7']").hide();
@@ -674,6 +681,7 @@
         $("#ybo_8_submit").on('click', function () {
             if (document.ybo_8.stopcompulsion_anxiety.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_8'));
                 $("div[class='ybo_8']").hide();
@@ -691,6 +699,7 @@
         $("#ybo_9_submit").on('click', function () {
             if (document.ybo_9.stopforced_frequency.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#ybo_9'));
                 $("div[class='ybo_9']").hide();
@@ -708,9 +717,11 @@
         $("#ybo_10_submit").on('click', function () {
             if (question_index > 10) {
                 alert("请不要重复提交");
+                return;
             }
             if (document.ybo_10.control_ability2.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 end_flag = 1;
                 ajax_post($('#ybo_10'));
