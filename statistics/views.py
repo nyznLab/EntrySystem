@@ -14,12 +14,13 @@ def get_patient_data(request):
             data = request.GET
 
             # 以下为基本筛选条件的组合
-            if data.get('patient_id'):
-                search_dict['patient_id'] = data['patient_id']
+            # if data.get('patient_id'):
+            #     search_dict['patient_id'] = data['patient_id']
+            if data.getlist('name[]') or data.getlist('patient_id[]'):
+                search_dict['patient__name__in'] = data.getlist('name[]', [])
+                search_dict['patient_id__in'] = data.getlist('patient_id[]', [])
             if data.getlist('session_id[]'):
                 search_dict['session_id__in'] = data.getlist('session_id[]')
-            if data.get('name'):
-                search_dict['patient__name__contains'] = data['name']
             if data.get('age'):
                 if int(data.get('age_compare')) == 0:
                     search_dict['age'] = data['age']
@@ -71,7 +72,7 @@ def get_patient_data(request):
 
             # table的page设置为true后渲染会自动传给后台page和limit值
             page_num = int(data.get('page', 1))
-            page_limit = int(data.get('limit', 20))
+            page_limit = int(data.get('limit', 30))
 
             scales_scores = []
             patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
@@ -99,9 +100,39 @@ def get_patient_data(request):
             pass
     else:
         username = request.session.get('username')
-        session = statistics_dao.get_session()
+        session = statistics_dao.get_all_session()
         return render(request, 'statistics/index.html', {
             'patients': patients,
             'username': username,
             'session_all_list': session
         })
+
+
+# ajax请求所有被试姓名与ID
+def get_names(request):
+    import patients.models as pm
+    data = request.GET
+    if data.get('keyword'):
+        kw = data.get('keyword')
+        if kw.isdigit():
+            id_list = pm.BPatientBaseInfo.objects.filter(id=kw).values('id', 'name')
+            return JsonResponse({'code': 0, 'msg': 'ok', 'data': list(id_list)})
+        else:
+            name_list = pm.BPatientBaseInfo.objects.filter(name__contains=data.get('keyword')).values('id', 'name')
+            return JsonResponse({'code': 0, 'msg': 'ok', 'data': list(name_list)})
+    else:
+        return JsonResponse({
+            'code': 1,
+            'msg': 'nothing',
+            'data': []
+        })
+
+
+# ajax请求所有扫描编号
+def get_sessions(request):
+    session = statistics_dao.get_all_session()
+    for s in session:
+        s['session_id_standard'] = 'S' + str(s['session_id']).zfill(3)
+    print(session)
+    return JsonResponse({'code': 0, 'msg': 'ok', 'data': list(session)})
+
