@@ -187,9 +187,11 @@
         $("#question_submit_1").on('click', function () {
             if (question_index > 46) {
                 alert("请不要重复提交！");
+                return;
             } else if (question_index_1 == 2) {
                 if (document.getElementsByName('question2').value === "") {
                     alert("问题不能为空！");
+                    return;
                 }
                 ajax_post($('#question_form_1'));
                 update_question_1(question_index_1);
@@ -213,11 +215,13 @@
                     question_index_1++;
                 } else {
                     alert("问题不能为空！");
+                    return;
                 }
             }else if(question_index_1 === 11){
                 const answer = document.getElementsByName('question8').value;
                 if (answer === ""){
                     alert("问题不能为空！");
+                    return;
                 }else{
                     ajax_post($('#question_form_1'));
                     update_question_1(question_index_1);
@@ -239,6 +243,7 @@
                 }
                 if(flag == 0){
                     alert("问题不能为空！");
+                    return;
                 }
             }
             $("input[type='radio']").removeAttr("checked");
@@ -273,6 +278,7 @@
                 }
                 if (flag == 0) {
                     alert("问题不能为空！");
+                    return;
                 }
             }
             $("input[type='radio']").removeAttr("checked");

@@ -140,6 +140,7 @@
 
             if (question_index > 19) {
                 alert("请不要重复提交！");
+                return;
             } else {
                 const answers = document.getElementsByClassName("answer");
                 let flag = 0;
@@ -154,6 +155,7 @@
                 }
                 if (flag == 0) {
                     alert("问题不能为空！");
+                    return;
                 }
             }
             $("input[type='radio']").removeAttr("checked");
