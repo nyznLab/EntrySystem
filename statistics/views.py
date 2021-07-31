@@ -21,13 +21,16 @@ def get_patient_data(request):
                 search_dict['patient_id__in'] = data.getlist('patient_id[]', [])
             if data.getlist('session_id[]'):
                 search_dict['session_id__in'] = data.getlist('session_id[]')
-            if data.get('age'):
-                if int(data.get('age_compare')) == 0:
-                    search_dict['age'] = data['age']
-                elif int(data.get('age_compare')) == 1:
-                    search_dict['age__gte'] = data['age']
-                else:
-                    search_dict['age__lte'] = data['age']
+            # if data.get('age'):
+            #     if int(data.get('age_compare')) == 0:
+            #         search_dict['age'] = data['age']
+            #     elif int(data.get('age_compare')) == 1:
+            #         search_dict['age__gte'] = data['age']
+            #     else:
+            #         search_dict['age__lte'] = data['age']
+            if data.get('age_min') and data.get('age_max'):
+                if data.get('age_min') != '0' and data.get('age_max') != '0':
+                    search_dict['age__range'] = (data.get('age_min'), data.get('age_max'))
 
             if data.get('sex'):
                 search_dict['patient__sex__contains'] = data['sex']

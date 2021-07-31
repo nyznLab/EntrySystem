@@ -7,7 +7,7 @@
 {#    <link rel="stylesheet" href={% static '/css/tinyselect.css' %}>#}
     <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />
     <link rel="stylesheet" href="{% static '/layui/css/layui.css' %}">
-
+    <link rel="stylesheet" href="{% static '/guide/driver.css' %}">
     <style>
         .sel_beauty {
             background: #fafdfe;
@@ -47,6 +47,18 @@
             word-break: break-all;
             height:auto;
         }
+        .layui-layer{
+            position:absolute !important;
+        }
+        .layui-table-fixed{
+            z-index:0
+        }
+        .layui-table-tool{
+            z-index:1
+        }
+        .layui-table-tool-panel{
+
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -61,13 +73,13 @@
             </div>
         </div>
         <div class="dashboard_graph x_panel" style="">
-            <div class="layui-tab layui-tab-brief" lay-filter="table_container_tab" lay-allowClose="true">
+            <div class="layui-tab layui-tab-brief" lay-filter="table_container_tab" lay-allowClose="true" style="margin-top:0">
                 <ul class="layui-tab-title">
                     <li class="layui-this" lay-id="main_table">复扫记录表</li>
                 </ul>
                 <div class="layui-tab-content" style="position:relative">
                     <div class="layui-tab-item layui-show">
-                        <div class="x_content">
+                        <div class="x_content" id="content_box">
 {#                <div class="row">#}
 {#                    <div class="col-md-12 col-sm-12 col-xs-12">#}
 {#                        <a href="#modal_container_subjectBaseInfo_build" data-toggle="modal">#}
@@ -84,18 +96,19 @@
                 <div class="row clearfix">
                     <div class="col-md-12 column">
                         <div class="layui-progress" style="position:absolute;top:4px;left: 10px;right:10px;width: auto;border-radius:unset;" lay-filter="global_progress">
-                <div class="layui-progress-bar" lay-percent="0%" style="border-radius:unset;"></div>
-            </div>
+                            <div class="layui-progress-bar" lay-percent="0%" style="border-radius:unset;"></div>
+                        </div>
                         <table id="record" lay-filter="tb_record"></table>
                         <script type="text/html" id="filterTools">
                             <div class="layui-btn-group" style="display:inline-block">
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice" id="filter_btn"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export" id="multiselect_export_btn"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
+                            <button class="layui-btn-sm layui-btn layui-btn-primary layui-border-green" lay-event="guide" id="guide_btn">使用引导</button>
                         </script>
 {#                        <blockquote class="layui-elem-quote layui-quote-nm" id="filter_compare_content">#}
 {#                            提示：由于数据较多，加载比较慢，请耐心等待。#}
-                            <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">
+{#                            <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">#}
 {#                        </blockquote>#}
                     </div>
                 </div>
@@ -112,13 +125,13 @@
 <form class="layui-form" id="filter_form" lay-filter="f_form" style="display:none;margin:20px">
     <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
-            <li class="layui-this">基本筛选</li>
-            <li>量表分数筛选</li>
+            <li class="layui-this" id="base_filter">基本筛选</li>
+            <li id="scales_score_filter">量表分数筛选</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <div class="layui-form-item">
-          <label class="layui-form-label"><span class="layui-badge-dot"></span> 编号 / 姓名</label>
+                <div class="layui-form-item" id="id_and_name_item">
+          <label class="layui-form-label">编号 / 姓名</label>
 {#          <div class="layui-input-inline">#}
 {#              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >#}
 {#          </div>#}
@@ -126,7 +139,7 @@
                 <div class="" id="name_select"></div>
             </div>
   </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" id="session_id_item">
 
           <label class="layui-form-label">扫描编号</label>
           <div class="layui-input-inline" style="width:300px">
@@ -138,24 +151,25 @@
 
   </div>
 
-                <div class="layui-form-item">
+                <div class="layui-form-item" id="age_item">
       <div class="layui-inline">
           <label class="layui-form-label">年龄</label>
-          <div class="layui-input-inline">
-              <input type="text" lay-verify="required" name="age" autocomplete="off" class="layui-input" id="age" >
+          <div class="layui-input-inline" style="width:300px">
+{#              <input type="text" lay-verify="required" name="age" autocomplete="off" class="layui-input" id="age" >#}
+              <div class="" id="age_slider_container" style="margin-top: 16px"></div>
           </div>
-          <div class="layui-form-mid">-</div>
-          <div class="layui-input-inline">
-              <select name="age_compare" id="age_compare_select">
-                  <option value="0" selected>等于</option>
-                  <option value="1">大于（包含）</option>
-                  <option value="2">小于（包含）</option>
-              </select>
-          </div>
+{#          <div class="layui-form-mid">-</div>#}
+{#          <div class="layui-input-inline">#}
+{#              <select name="age_compare" id="age_compare_select">#}
+{#                  <option value="0" selected>等于</option>#}
+{#                  <option value="1">大于（包含）</option>#}
+{#                  <option value="2">小于（包含）</option>#}
+{#              </select>#}
+{#          </div>#}
       </div>
 
   </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" id="diagnosis_item">
 
             <label class="layui-form-label">诊断</label>
                 <div class="layui-input-inline" style="width:300px">
@@ -175,7 +189,9 @@
 
 
   </div>
-                <div class="layui-form-item">
+
+                <div id="simple_item">
+                    <div class="layui-form-item">
       <label class="layui-form-label">性别</label>
       <div class="layui-input-block">
           <input type="radio" name="sex" value="" title="全部" checked>
@@ -183,7 +199,7 @@
           <input type="radio" name="sex" value="1" title="女">
       </div>
   </div>
-                <div class="layui-form-item">
+                    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">被试来源</label>
             <div class="layui-input-inline">
@@ -196,7 +212,7 @@
             </div>
         </div>
     </div>
-                <div class="layui-form-item">
+                    <div class="layui-form-item">
 
                         <label class="layui-form-label">血液</label>
                         <div class="layui-input-block">
@@ -206,7 +222,7 @@
                         </div>
 
                 </div>
-                <div class="layui-form-item">
+                    <div class="layui-form-item">
 
                         <label class="layui-form-label">认知</label>
                         <div class="layui-input-block">
@@ -216,7 +232,7 @@
                         </div>
 
                 </div>
-                <div class="layui-form-item">
+                    <div class="layui-form-item">
 
                         <label class="layui-form-label">声音</label>
                         <div class="layui-input-block">
@@ -225,7 +241,10 @@
                             <input type="radio" name="sound" value="0" title="未采集">
                         </div>
                 </div>
-                <div class="layui-form-item">
+                </div>
+
+
+                <div class="layui-form-item" id="scan_date_item">
                     <div class="layui-inline">
                         <label class="layui-form-label">扫描日期</label>
                         <div class="layui-inline" id="scan_date">
@@ -312,7 +331,7 @@
 
 </form>
 <script type="text/html" id="scalesTpl">
-    <button class="layui-btn layui-border-green layui-btn-primary layui-btn-xs" lay-event="show" style="padding: 0 9px;line-height: 28px;height: 28px">查看</button>
+    <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="show" style="padding: 0 9px;line-height: 28px;height: 28px">查看</button>
 </script>
 <script type="text/html" id="filterCompareTpl">
     <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="addToCompare" style="padding: 0 9px;line-height: 28px;height: 28px">添加到对比</button>
@@ -331,6 +350,7 @@
     <script src="{% static '/js/layerJquery.js' %}"></script>
     <script src="{% static '/layui/layui.js' %}"></script>
     <script src="{% static '/layui/layui-base-plugin/xm-select.js' %}"></script>
+    <script src="{% static '/guide/driver.js'%}"></script>
     <script>
     $.ajaxSetup({
         data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
@@ -446,16 +466,18 @@
     })
 
 
-    layui.use(['table', 'layer', 'laydate', 'laytpl','element','form','transfer'],function () {
+    layui.use(['table', 'layer', 'laydate','element','form','slider'],function () {
         let table = layui.table
         ,layer = layui.layer
         ,laydate = layui.laydate
-        ,laytpl = layui.laytpl
         ,element = layui.element
         ,form = layui.form
-        ,transfer = layui.transfer
+        ,slider = layui.slider
 
 
+
+
+        let filter_layer;
 
         laydate.render({
             elem:'#scan_date'
@@ -483,7 +505,7 @@
         });
 
 
-
+        let driver;
 
 
         let tb_patient = table.render({
@@ -502,7 +524,7 @@
             ,title:'statistic_result'
             ,page: true
             ,url: '{% url 'statistics' %}'
-            ,height:'full-300'
+            ,height:'full-270'
             ,skin: 'row'
             ,even: true
             ,limit: 30
@@ -894,31 +916,203 @@
                 }}
             ]]
             ,done:function (res, curr, count){
-                layer.msg('一共 '+count+' 条记录加载完毕！')
+                // 这里添加id是为了driver能够通过id找到这些按钮
+                $('[lay-event="LAYTABLE_COLS"]').attr('id','cols_btn')
+                $('[lay-event="LAYTABLE_PRINT"]').attr('id','print_btn')
+                $('[lay-event="LAYTABLE_EXPORT"]').attr('id','export_curr_page_btn')
+                $('[lay-event="export_all_content"]').attr('id','export_all_btn')
+                $('[lay-id="patient_table"] span.layui-laypage-limits select').attr('id','page_limit_change_btn')
+                driver = new Driver({
+                    doneBtnText: '完成',
+                    closeBtnText: '关闭',
+                    nextBtnText: '下一步',
+                    prevBtnText: '上一步',
+                    allowClose: false,
+                })
+                driver.defineSteps([
+                    {
+                        element: '#content_box',
+                        popover: {
+                            title: '<span style="color:#5FB878 ">欢迎使用复扫记录统计表！</span>',
+                            description: '你可以在这里检索到你想要的结果，并导出成excel或csv格式的通用数据文件，方便你查看对比或进一步的研究整理。',
+                            position: 'top'
+                        }
+                    },
+                    {
+                        element: '#filter_btn',
+                        popover: {
+                            title: '过滤器功能',
+                            description: '这是一个具有筛选功能的过滤器，可以筛选符合条件的复扫记录，接下来，请点击<button class="layui-btn-xs layui-btn layui-btn-primary"><i class="layui-icon layui-icon-search"></i> 过滤器</button> 按钮！',
+                            position: 'top',
+                        },
+                        onNext: function (){
+                            driver.preventMove()
+                        },
+                    },
+
+                        {
+                            element:'#base_filter',
+                            popover:{
+                                title:'基本筛选',
+                                description: '这里是一些基本条件的筛选，用的最多的也是这些条件。接下来，我们来看一下怎么使用过滤条件。',
+                                position:'top'
+                            },
+                            onPrevious: function () {
+                                driver.preventMove()
+                            }
+                        },
+                    {
+                        element: '#id_and_name_item',
+                        popover: {
+                            title: '<span class="layui-badge-dot"></span> 编号与姓名筛选',
+                            description: '点开选择框，可以搜索姓名或编号，但不要两者同时输入，而且提供多选和清除选择后的内容的功能！',
+                            position: 'top'
+                        }
+                    },{
+                        element: '#session_id_item',
+                        popover: {
+                            title: '扫描编号同上',
+                            description: '点开后显示目前最大扫描编号，同样是多选。',
+                            position: 'top'
+                        }
+                    },{
+                        element: '#age_item',
+                        popover: {
+                            title: '年龄筛选',
+                            description: '通过滑动条去划出年龄筛选范围，有两个圆形滑块可以滑动，但一开始会看到只有一个圆形滑块（因为重叠了，默认也是重叠），点击拖动就会出现另一个！如果你想查看所有年龄的人，把两个圆形滑动块拖到最左边就好。',
+                            position: 'top'
+                        }
+                    },{
+                        element:'#diagnosis_item',
+                        popover:{
+                            title:'诊断筛选',
+                            description:'同样是多选，也可以搜索诊断内容，快速定位！',
+                            position: 'top'
+                        }
+                    }, {
+                        element:'#simple_item',
+                        popover:{
+                            title:'简单筛选',
+                            description: '这些筛选都非常简单，不多做介绍。',
+                            position:'top'
+                        }
+                    }, {
+                        element:'#scan_date_item',
+                        popover:{
+                            title:'扫描日期筛选',
+                            description: '使用日期选择器范围筛选复扫记录。',
+                            position:'top'
+                        },
+                        onNext: function () {
+                            layer.close(filter_layer);
+                        }
+                    }, {
+                        element:'#multiselect_export_btn',
+                        popover:{
+                            title:'多选导出',
+                            description: '选中每条记录前的方框，再点击多选导出就可以导出想要的数据！',
+                            position:'top'
+                        },
+                        onPrevious:function () {
+                            driver.preventMove()
+                        }
+                    }, {
+                        element:'#cols_btn',
+                        popover:{
+                            title:'选择显示列',
+                            description: '默认隐藏了一些字段，如果你想查看它们，打勾就好了！',
+                            position: 'left'
+                        }
+                    },{
+                        element:'#print_btn',
+                        popover: {
+                            title:'打印',
+                            description: '点击此按钮可以打印当前页复扫记录！',
+                            position:'left'
+                        }
+                    },{
+                        element:'#export_curr_page_btn',
+                        popover:{
+                            title:'导出当前页记录',
+                            description: '点击此按钮可以导出excel或csv的两种方便处理的数据格式文件。',
+                            position: 'left'
+                        }
+                    },{
+                        element:'#export_all_btn',
+                        popover:{
+                            title:'导出所有记录',
+                            description: '点击此按钮可以导出全部的复扫记录或是筛选条件后的全部记录，但注意，每次导出筛选后记录都需要点击过滤器中的确定按钮！',
+                            position:'left'
+                        }
+                    },{
+                        element:'#page_limit_change_btn',
+                        popover:{
+                            title:'切换每页展示记录条数',
+                            description: '点击该选项可以切换每页展示记录的数量，对于想一次性看更多记录的使用者来说这很有帮助！',
+                            position: 'top'
+                        }
+                    },{
+                        element:'#content_box',
+                        popover:{
+                            title:'<span style="color:#5FB878 ">恭喜！你已经学会怎么使用该统计表。</span>',
+                            description: '',
+                            position: 'top'
+                        }
+                    }
+    ])
             }
         })
 
         //监听表格头部筛选按钮
-        let isAll = true;
-        let condition;
+
+        /*
+         *   引导页配置
+         *   driver.js
+         */
+        let isOpened = false;
+
+
+
+
+
+        let isAll = true
+        let condition
+        let age_min = 0, age_max = 0
+        let age_slider = slider.render({
+            elem: '#age_slider_container'
+            ,value: [0,0]
+            ,max: 90
+            ,theme:'#5FB878'
+            ,setTips: function (val) {
+                return val + '岁'
+            }
+            ,range: true
+            ,change: function (vals) {
+                age_min = vals[0]
+                age_max = vals[1]
+            }
+        })
         table.on('toolbar(tb_record)', function (obj) {
             let checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'filter_choice':
-                    layer.open({
+                    filter_layer = layer.open({
+                        id: 'filter_layer',
                         type: 1,
                         title: ['过滤器','font-size:18px;background-color:#2A3F54;color:#fff'],
                         content: $("#filter_form")
                         ,closeBtn:0
-                        ,shadeClose: true
+                        ,shade:0
                         ,btn: ['确定','取消','清除筛选条件']
                         ,btn1: function (index, layero){
                             let condition = {
                                 patient_id:name_select.getValue('value'),
                                 session_id:session_id_select.getValue('value'),
                                 name:name_select.getValue('name'),
-                                age:$("#age").val().trim(),
-                                age_compare:$("#age_compare_select option:selected").val(),
+                                age_min:age_min,
+                                age_max:age_max,
+                                {#age:$("#age").val().trim(),#}
+                                {#age_compare:$("#age_compare_select option:selected").val(),#}
                                 sex:$("input[name='sex']:checked").val(),
                                 source: $("#source_select option:selected").val(),
                                 blood: $("input[name='blood']:checked").val(),
@@ -936,7 +1130,7 @@
                             };
                             let n = 0;
                             for(let i of Object.values(condition)){
-                                if (i === '' || i === null || i === 0 || i.length === 0 || i === '0'){
+                                if (i === '' || i === null || i === 0 || i === '0' || i.length === 0){
                                     n++
                                 }
                             }
@@ -956,10 +1150,10 @@
                             session_id_select.setValue([])
                             name_select.setValue([])
                             diagnosis_select.setValue([])
+                            age_slider.setValue(0,0)
+                            age_slider.setValue(0,1)
                             form.val("f_form",{
-                                "age":'',
-                                "age_compare": 0
-                                ,'sex':''
+                                'sex':''
                                 ,'source':''
                                 ,"blood":''
                                 ,"cognitive":''
@@ -977,6 +1171,15 @@
                             })
                             form.render()
                             return false
+                        }
+                        ,success: function (layero, index) {
+                            isOpened = true
+                            if(driver.isActivated){
+                                if(driver.hasNextStep()){
+                                    driver.moveNext()
+                                }
+
+                            }
                         }
                     })
                     break
@@ -1029,9 +1232,12 @@
                 case 'statistics_tips':
                     layer.tips('一个具有筛选功能的复扫记录的统计表格','#statistics_title',{
                         tips:3
-                        ,time:0
+                        ,time:3000
                     })
 
+                    break
+                case 'guide':
+                    driver.start()
                     break
             }
         })
@@ -1148,12 +1354,6 @@
                     content:text
                 })
 
-                element.tabAdd('table_container_tab',{
-                    title: data.standard_id + ' 量表详情'
-                    ,content: ''
-                    ,id: data.id
-                })
-                element.render('tab')
 
             }
 
