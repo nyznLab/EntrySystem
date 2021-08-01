@@ -115,13 +115,23 @@
     let suicide = false;
     let question_index = 1 + {{ question_index }};
     let end_flag = 0;
-    let isClick=true;
+    let isClick=false;
     for(let index  = 1 ; index < question_index ; index ++){
         update_question(index);
     }
     $(document).ready(function () {
         $("input[type='radio']").labelauty();
         $("#question_submit").on('click', function () {
+            {# 1s内点击过 直接返回 #}
+            if (isClick) {
+                return;
+            }
+            {#点击成功 置为true#}
+            isClick=true;
+            {#重新开始计时#}
+            setTimeout(function () {
+                isClick = false;
+            }, 1000);
             if (question_index > 7) {
                 alert("请不要重复提交！");
             } else {
@@ -141,13 +151,6 @@
                 }
             }
             $("input[type='radio']").removeAttr("checked");
-            {# 限制点击频率 #}
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
-            if (isClick) {
-                return;
-            }
         });
     });
 
@@ -202,7 +205,6 @@
     }
 
     function ajax_post(form) {
-        isClick=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +
