@@ -515,13 +515,10 @@
         }
 
         $("#ybo_1_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -529,16 +526,8 @@
                 alert("问题不能为空！");
             } else if (document.ybo_1.forced_frequency.value === "0") {
                 // 如果第一题0设置跳过的题目也为0，并提交
-                {#$("input:radio[name='impediment_degree1']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='distress']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='fightforced_degree']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='control_ability1']").eq(0).attr("checked",'checked');#}
                 question_index += 4;
                 ajax_post($('#ybo_1'));
-                {#ajax_post($('#ybo_2'));#}
-                {#ajax_post($('#ybo_3'));#}
-                {#ajax_post($('#ybo_4'));#}
-                {#ajax_post($('#ybo_5'));#}
                 $("div[class='ybo_1']").hide();
                 $("div[class='ybo_6']").show();
             } else {
@@ -549,13 +538,10 @@
         });
 
         $("#ybo_2_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -569,13 +555,10 @@
         });
 
         $("#ybo_3_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -589,13 +572,10 @@
         });
 
         $("#ybo_4_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -609,13 +589,10 @@
         });
 
         $("#ybo_5_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -629,13 +606,10 @@
         });
 
         $("#ybo_6_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -644,24 +618,16 @@
             } else if (document.ybo_6.compulsion_frequency.value === "0") {
 
                 // 第六题选0 默认将跳过的题置为0并提交
-                {% comment %}$("input[name='impediment_degree2'][value= '0']").prop("checked", true);
+                {% comment %}
+                $("input[name='impediment_degree2'][value= '0']").prop("checked", true);
                 $("input[name='stopcompulsion_anxiety'][value='0']").prop("checked", true);
                 $("input[name='stopforced_frequency'][value='0']").prop("checked", true);
-                $("input[name='control_ability2'][value='0']").prop("checked", true);{% endcomment %}
+                $("input[name='control_ability2'][value='0']").prop("checked", true);
+                {% endcomment %}
 
-
-                {#$("input:radio[name='impediment_degree2']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='stopcompulsion_anxiety']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='stopforced_frequency']").eq(0).attr("checked",'checked');#}
-                {#$("input:radio[name='control_ability2']").eq(0).attr("checked",'checked');#}
                 end_flag = 1;
                 question_index += 4;
                 ajax_post($('#ybo_6'));
-                {#ajax_post($('#ybo_7'));#}
-                {#ajax_post($('#ybo_8'));#}
-                {#ajax_post($('#ybo_9'));#}
-
-                {#ajax_post($('#ybo_10'));#}
 
                 // 跳转
                 location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
@@ -673,11 +639,9 @@
         });
 
         $("#ybo_7_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
             {#重新开始计时#}
             setTimeout(function () {
@@ -693,13 +657,10 @@
         });
 
         $("#ybo_8_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -713,13 +674,10 @@
         });
 
         $("#ybo_9_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -733,13 +691,10 @@
         });
 
         $("#ybo_10_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -755,57 +710,6 @@
                 location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
             }
         });
-
-        //     $("#ybo_2_back").on('click', function () {
-        //         $("div[class='ybo_2']").hide();
-        //         $("div[class='ybo_1']").show();
-        //     });
-        //
-        //     $("#ybo_3_back").on('click', function () {
-        //         $("div[class='ybo_3']").hide();
-        //         $("div[class='ybo_2']").show();
-        //     });
-        //
-        //     $("#ybo_4_back").on('click', function () {
-        //         $("div[class='ybo_4']").hide();
-        //         $("div[class='ybo_3']").show();
-        //     });
-        //
-        //     $("#ybo_5_back").on('click', function () {
-        //         $("div[class='ybo_5']").hide();
-        //         $("div[class='ybo_4']").show();
-        //     });
-        //
-        //     $("#ybo_6_back").on('click', function () {
-        //         if (document.ybo_1.forced_frequency.value === "0") {
-        //             $("div[class='ybo_6']").hide();
-        //             $("div[class='ybo_1']").show();
-        //         } else {
-        //             $("div[class='ybo_6']").hide();
-        //             $("div[class='ybo_5']").show();
-        //         }
-        //     });
-        //
-        //     $("#ybo_7_back").on('click', function () {
-        //         $("div[class='ybo_7']").hide();
-        //         $("div[class='ybo_6']").show();
-        //     });
-        //
-        //     $("#ybo_8_back").on('click', function () {
-        //         $("div[class='ybo_8']").hide();
-        //         $("div[class='ybo_7']").show();
-        //     });
-        //
-        //     $("#ybo_9_back").on('click', function () {
-        //         $("div[class='ybo_9']").hide();
-        //         $("div[class='ybo_8']").show();
-        //     });
-        //
-        //     $("#ybo_10_back").on('click', function () {
-        //         $("div[class='ybo_10']").hide();
-        //         $("div[class='ybo_9']").show();
-        //     });
-        // });
 
         function get_duration() {
             const current_time = new Date();

@@ -122,13 +122,10 @@
     $(document).ready(function () {
         $("input[type='radio']").labelauty();
         $("#question_submit").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);

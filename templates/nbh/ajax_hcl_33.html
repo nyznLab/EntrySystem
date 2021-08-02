@@ -184,13 +184,10 @@
 
     $(document).ready(function () {
         $("#question_submit_1").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
@@ -254,13 +251,10 @@
         });
 
         $("#question_submit_2").on('click', function () {
-            {# 1s内点击过 直接返回 #}
             if (isClick) {
                 return;
             }
-            {#点击成功 置为true#}
             isClick=true;
-            {#重新开始计时#}
             setTimeout(function () {
                 isClick = false;
             }, 1000);
