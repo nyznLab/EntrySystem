@@ -1,5 +1,6 @@
 {% extends 'templates/index.html' %}
 {% load static %}
+{% load SelfDefinedFilter %}
 {% block css %}
 {#    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">#}
     <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
@@ -28,6 +29,7 @@
         }
         .layui-form-label{
             box-sizing: content-box;
+            width:130px;
         }
         .layui-table-cell .layui-form-checkbox[lay-skin=primary] {
             top: 6px;
@@ -46,7 +48,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <ul class="breadcrumb" style="background-color: white;font-weight:bold">
-                        <li class="active"><a href="">被试复扫信息</a></li>
+                        <li class="active"><a href="" id="statistics_title">复扫记录统计信息</a></li>
                     </ul>
                 </div>
             </div>
@@ -74,11 +76,14 @@
                         <table id="record" lay-filter="tb_record"></table>
                         <script type="text/html" id="filterTools">
                             <div class="layui-btn-group" style="display:inline-block">
-                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
-                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
+                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice" id="filter_btn"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
+                                <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export" id="multiselect_export_btn"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                         </script>
-{#                        <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">#}
+{#                        <blockquote class="layui-elem-quote layui-quote-nm" id="filter_compare_content">#}
+{#                            提示：由于数据较多，加载比较慢，请耐心等待。#}
+{#                            <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">#}
+{#                        </blockquote>#}
                     </div>
                 </div>
             </div>
@@ -87,40 +92,40 @@
 
 
 
-<form class="layui-form" id="filter_form" lay-filter="f_form" style="display:none;margin: 20px">
-    <div class="layui-form-item">
-        <blockquote class="layui-elem-quote">基本筛选</blockquote>
-    </div>
-  <div class="layui-form-item">
-      <div class="layui-inline">
-          <label class="layui-form-label">编号</label>
-          <div class="layui-input-block">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="patient_id" >
-          </div>
-      </div>
+<form class="layui-form" id="filter_form" lay-filter="f_form" style="display:none;margin:20px">
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">基本筛选</li>
+            <li>量表分数筛选</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-form-item">
+          <label class="layui-form-label"><span class="layui-badge-dot"></span> 编号 / 姓名</label>
+{#          <div class="layui-input-inline">#}
+{#              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >#}
+{#          </div>#}
+            <div class="layui-input-inline" style="width:400px">
+                <div class="" id="name_select"></div>
+            </div>
   </div>
-  <div class="layui-form-item">
-      <div class="layui-inline">
-          <label class="layui-form-label">第几次扫描</label>
-          <div class="layui-input-block">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="session_id" >
+                <div class="layui-form-item">
+
+          <label class="layui-form-label">扫描编号</label>
+          <div class="layui-input-inline" style="width:300px">
+{#              {% for s in session_all_list %}#}
+{#                  <input type="checkbox" title="{{ s.session_id|processSession }}" lay-skin="primary" value="{{ forloop.counter }}" name="session_id">#}
+{#              {% endfor %}#}
+              <div class="" id="session_select"></div>
           </div>
-      </div>
-  </div>
-  <div class="layui-form-item">
-      <div class="layui-inline">
-          <label class="layui-form-label">姓名</label>
-          <div class="layui-input-block">
-              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >
-          </div>
-      </div>
 
   </div>
-  <div class="layui-form-item">
+
+                <div class="layui-form-item">
       <div class="layui-inline">
           <label class="layui-form-label">年龄</label>
           <div class="layui-input-inline">
-              <input type="text" lay-verify="required" autocomplete="on" class="layui-input" id="age" >
+              <input type="text" lay-verify="required" autocomplete="off" class="layui-input" id="age" >
           </div>
           <div class="layui-form-mid">-</div>
           <div class="layui-input-inline">
@@ -133,24 +138,27 @@
       </div>
 
   </div>
-  <div class="layui-form-item" style="height:38px">
+                <div class="layui-form-item">
 
             <label class="layui-form-label">诊断</label>
-                <div class="layui-input-block">
-                    <input type="checkbox" name="diagnosis" title="未诊断" lay-skin="primary" value="0">
-                    <input type="checkbox" name="diagnosis" title="健康者" lay-skin="primary" value="1">
-                    <input type="checkbox" name="diagnosis" title="重性抑郁障碍" lay-skin="primary" value="2">
-                    <input type="checkbox" name="diagnosis" title="焦虑障碍" lay-skin="primary" value="3">
-                    <input type="checkbox" name="diagnosis" title="双相障碍" lay-skin="primary" value="4">
-                    <input type="checkbox" name="diagnosis" title="精神分裂症" lay-skin="primary" value="5">
-                    <input type="checkbox" name="diagnosis" title="强迫症" lay-skin="primary" value="6">
-                    <input type="checkbox" name="diagnosis" title="高危遗传" lay-skin="primary" value="7">
-                    <input type="checkbox" name="diagnosis" title="临床高危" lay-skin="primary" value="8">
-                    <input type="checkbox" name="diagnosis" title="抑郁症状" lay-skin="primary" value="9">
-                    <input type="checkbox" name="diagnosis" title="其他诊断" lay-skin="primary" value="99">
+                <div class="layui-input-inline" style="width:300px">
+{#                    <input type="checkbox" name="diagnosis" title="未诊断" lay-skin="primary" value="0">#}
+{#                    <input type="checkbox" name="diagnosis" title="健康者" lay-skin="primary" value="1">#}
+{#                    <input type="checkbox" name="diagnosis" title="重性抑郁障碍" lay-skin="primary" value="2">#}
+{#                    <input type="checkbox" name="diagnosis" title="焦虑障碍" lay-skin="primary" value="3">#}
+{#                    <input type="checkbox" name="diagnosis" title="双相障碍" lay-skin="primary" value="4">#}
+{#                    <input type="checkbox" name="diagnosis" title="精神分裂症" lay-skin="primary" value="5">#}
+{#                    <input type="checkbox" name="diagnosis" title="强迫症" lay-skin="primary" value="6">#}
+{#                    <input type="checkbox" name="diagnosis" title="高危遗传" lay-skin="primary" value="7">#}
+{#                    <input type="checkbox" name="diagnosis" title="临床高危" lay-skin="primary" value="8">#}
+{#                    <input type="checkbox" name="diagnosis" title="抑郁症状" lay-skin="primary" value="9">#}
+{#                    <input type="checkbox" name="diagnosis" title="其他诊断" lay-skin="primary" value="99">#}
+                    <div class="" id="diagnosis_select"></div>
                 </div>
+
+
   </div>
-  <div class="layui-form-item">
+                <div class="layui-form-item">
       <label class="layui-form-label">性别</label>
       <div class="layui-input-block">
           <input type="radio" name="sex" value="" title="全部" checked>
@@ -158,7 +166,7 @@
           <input type="radio" name="sex" value="1" title="女">
       </div>
   </div>
-    <div class="layui-form-item">
+                <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">被试来源</label>
             <div class="layui-input-inline">
@@ -171,93 +179,130 @@
             </div>
         </div>
     </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">扫描日期</label>
-            <div class="layui-inline" id="scan_date">
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" id="startDate" class="layui-input" placeholder="开始日期">
+                <div class="layui-form-item">
+
+                        <label class="layui-form-label">采集血液</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="blood" value="" title="全部" checked>
+                            <input type="radio" name="blood" value="1" title="是">
+                            <input type="radio" name="blood" value="0" title="否">
+                        </div>
+
                 </div>
-                <div class="layui-form-mid">-</div>
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" id="endDate" class="layui-input" placeholder="结束日期">
+                <div class="layui-form-item">
+
+                        <label class="layui-form-label">认知评估</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="cognitive" value="" title="全部" checked>
+                            <input type="radio" name="cognitive" value="1" title="是">
+                            <input type="radio" name="cognitive" value="0" title="否">
+                        </div>
+
+                </div>
+                <div class="layui-form-item">
+
+                        <label class="layui-form-label">采集声音</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="sound" value="" title="全部" checked>
+                            <input type="radio" name="sound" value="1" title="是">
+                            <input type="radio" name="sound" value="0" title="否">
+                        </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">扫描日期</label>
+                        <div class="layui-inline" id="scan_date">
+                            <div class="layui-input-inline">
+                                <input type="text" autocomplete="off" id="startDate" class="layui-input" placeholder="开始日期">
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline">
+                                <input type="text" autocomplete="off" id="endDate" class="layui-input" placeholder="结束日期">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:260px">汉密尔顿焦虑量表（HAMA）总分</label>
+                            <div class="layui-input-inline">
+                                <select id="hama_total_score_compare_select">
+                                    <option value="0" selected>等于</option>
+                                    <option value="1">大于（包含）</option>
+                                    <option value="2">小于（包含）</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline">
+                                <input type="text" lay-verify="required" placeholder="请输入分数" class="layui-input" id="hama_total_score" >
+                            </div>
+                        </div>
+                    </div>
+                <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:260px">汉密尔顿抑郁量表-17项（HAMD17）总分</label>
+                            <div class="layui-input-inline">
+                                <select id="hamd17_total_score_compare_select">
+                                    <option value="0" selected>等于</option>
+                                    <option value="1">大于（包含）</option>
+                                    <option value="2">小于（包含）</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline">
+                                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="hamd17_total_score" >
+                            </div>
+                        </div>
+                    </div>
+                <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:260px">杨氏躁狂量表（YMRS）总分</label>
+                            <div class="layui-input-inline">
+                                <select id="ymrs_total_score_compare_select">
+                                    <option value="0" selected>等于</option>
+                                    <option value="1">大于（包含）</option>
+                                    <option value="2">小于（包含）</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline">
+                                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="ymrs_total_score" >
+                            </div>
+                        </div>
+                    </div>
+                <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:260px">简明精神病量表（BPRS）总分</label>
+                            <div class="layui-input-inline">
+                                <select id="bprs_total_score_compare_select">
+                                    <option value="0" selected>等于</option>
+                                    <option value="1">大于（包含）</option>
+                                    <option value="2">小于（包含）</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline">
+                                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="bprs_total_score" >
+                            </div>
+                        </div>
+                    </div>
+            </div>
         </div>
     </div>
-    <div class="layui-form-item">
-        <blockquote class="layui-elem-quote">量表分数筛选</blockquote>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label" style="width:260px">汉密尔顿焦虑量表（HAMA）总分</label>
-            <div class="layui-input-inline">
-                <select id="hama_total_score_compare_select">
-                    <option value="0" selected>等于</option>
-                    <option value="1">大于（包含）</option>
-                    <option value="2">小于（包含）</option>
-                </select>
-            </div>
-            <div class="layui-form-mid">-</div>
-            <div class="layui-input-inline">
-                <input type="text" lay-verify="required" placeholder="请输入分数" class="layui-input" id="hama_total_score" >
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label" style="width:260px">汉密尔顿抑郁量表-17项（HAMD17）总分</label>
-            <div class="layui-input-inline">
-                <select id="hamd17_total_score_compare_select">
-                    <option value="0" selected>等于</option>
-                    <option value="1">大于（包含）</option>
-                    <option value="2">小于（包含）</option>
-                </select>
-            </div>
-            <div class="layui-form-mid">-</div>
-            <div class="layui-input-inline">
-                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="hamd17_total_score" >
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label" style="width:260px">杨氏躁狂量表（YMRS）总分</label>
-            <div class="layui-input-inline">
-                <select id="ymrs_total_score_compare_select">
-                    <option value="0" selected>等于</option>
-                    <option value="1">大于（包含）</option>
-                    <option value="2">小于（包含）</option>
-                </select>
-            </div>
-            <div class="layui-form-mid">-</div>
-            <div class="layui-input-inline">
-                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="ymrs_total_score" >
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label" style="width:260px">简明精神病量表（BPRS）总分</label>
-            <div class="layui-input-inline">
-                <select id="bprs_total_score_compare_select">
-                    <option value="0" selected>等于</option>
-                    <option value="1">大于（包含）</option>
-                    <option value="2">小于（包含）</option>
-                </select>
-            </div>
-            <div class="layui-form-mid">-</div>
-            <div class="layui-input-inline">
-                <input type="text" lay-verify="required" placeholder="请输入分数"  class="layui-input" id="bprs_total_score" >
-            </div>
-        </div>
-    </div>
+
+
 </form>
 <script type="text/html" id="scalesTpl">
-    {% verbatim %}
-    <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="show" style="padding: 0 9px;line-height: 28px;height: 28px">查看详情</button>
-    {% endverbatim %}
+    <button class="layui-btn layui-border-green layui-btn-primary layui-btn-xs" lay-event="show" style="padding: 0 9px;line-height: 28px;height: 28px">查看</button>
 </script>
+<script type="text/html" id="filterCompareTpl">
+    <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="addToCompare" style="padding: 0 9px;line-height: 28px;height: 28px">添加到对比</button>
+</script>
+    <div class="" id="teach_tips" style="display:none">
+        <p>这是一个具有筛选功能的复扫记录统计表格</p>
+    </div>
 {% endblock %}
 
 
@@ -268,19 +313,131 @@
 {#    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>#}
     <script src="{% static '/js/layerJquery.js' %}"></script>
     <script src="{% static '/layui/layui.js' %}"></script>
+    <script src="{% static '/layui/layui-base-plugin/xm-select.js' %}"></script>
     <script>
     $.ajaxSetup({
         data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
     })
     </script>
     <script>
-    layui.use(['table', 'layer', 'laydate', 'laytpl','element','form'],function () {
+
+
+    // 姓名筛选单独渲染
+    let name_select = xmSelect.render({
+        el:"#name_select"
+        ,autoRow: true
+        ,size: 'large'
+        ,searchTips:'输入姓名或编号'
+        ,theme: {
+		    color: '#5FB878',
+	    },
+        model: {
+            label: {
+                block: {
+                    template: function(item, sels){
+                        return item.id + ' ' + item.name;
+                    },
+                },
+            }
+	    }
+        ,prop: {
+            name: 'name',
+            value: 'id',
+	    },
+		toolbar: { show: true },
+		filterable: true,
+        template({item, sels, name, value}){
+            return item.name + '<span style="position: absolute; right: 10px; color: #8799a3">'+'编号：'+value+'</span>'
+        },
+		remoteSearch: true,
+        remoteMethod: function(val, cb, show){
+			//这里如果val为空, 则不触发搜索
+			if(!val){
+				return cb([]);
+			}
+            $.get('{% url 'getNames' %}',{
+                keyword: val
+            },function (res, status) {
+                if(status === 'success'){
+                    cb(res.data)
+                }
+            })
+
+		},
+        on: function(data){
+            //arr:  当前多选已选中的数据
+            var arr = data.arr;
+            //change, 此次选择变化的数据,数组
+            var change = data.change;
+            //isAdd, 此次操作是新增还是删除
+            var isAdd = data.isAdd;
+
+            if (arr.length > 5){
+                name_select.warning()
+            }
+            //可以return一个数组, 代表想选中的数据
+            //return []
+	    },
+    })
+
+    // 扫描编号单独渲染
+    let results, session_id_select;
+    $.get("{% url 'getSessions' %}",function (res, status) {
+        if(status === 'success'){
+            results = res.data
+            session_id_select = xmSelect.render({
+                el: "#session_select"
+                ,autoRow: true
+                ,size: 'large'
+                ,theme: {
+                    color: '#5FB878',
+                }
+                ,toolbar: { show: true }
+                ,prop:{
+                    name: 'session_id_standard',
+                    value: 'session_id'
+                }
+                ,data: results
+            })
+        }
+    })
+
+    // 诊断单独渲染
+    let diagnosis_select = xmSelect.render({
+        el: '#diagnosis_select'
+        ,autoRow: true
+        ,size: 'large'
+        ,theme: {
+            color: '#5FB878',
+        }
+        ,searchTips: '搜索'
+        ,toolbar: { show: true }
+        ,filterable: true
+        ,data:[
+            {name: '未诊断', value:0},
+            {name: '健康', value:1},
+            {name: '重症抑郁障碍', value:2},
+            {name: '焦虑障碍', value:3},
+            {name: '双相障碍', value:4},
+            {name: '精神分裂症', value:5},
+            {name: '强迫症', value:6},
+            {name: '高危遗传', value:7},
+            {name: '临床高危', value:8},
+            {name: '抑郁症状', value:9},
+            {name: '其他诊断', value:99},
+        ]
+    })
+
+
+    layui.use(['table', 'layer', 'laydate', 'laytpl','element','form','transfer'],function () {
         let table = layui.table
         ,layer = layui.layer
         ,laydate = layui.laydate
         ,laytpl = layui.laytpl
         ,element = layui.element
         ,form = layui.form
+        ,transfer = layui.transfer
+
 
         laydate.render({
             elem:'#scan_date'
@@ -294,7 +451,6 @@
                 clearInterval(timer);
                 //othis.removeClass(DISABLED);
             }
-            console.log('刷新进度条！')
             element.progress('global_progress', n+'%');
         }, 1200);
 
@@ -306,11 +462,19 @@
                 title: '全部导出'
                 ,layEvent: 'export_all_content'
                 ,icon: 'layui-icon-layouts'
+            },{
+                title:'大表使用提示'
+                ,layEvent: 'statistics_tips'
+                ,icon: 'layui-icon-tips'
             }]
+            ,title:'statistic_result'
             ,page: true
             ,url: '{% url 'statistics' %}'
+            ,height:'full-220'
             ,skin: 'row'
             ,even: true
+            ,limit: 30
+            ,limits:[10,20,30,40,50,60,70,80,90,100]
             ,text: {
                 none:'没有记录哦'
             }
@@ -398,41 +562,41 @@
                             return '其他诊断'
                     }
                 }}
-                ,{field:'cognitive',rowspan:3, title:'是否做认知评估',width:130, templet: function (d) {
+                ,{field:'cognitive',rowspan:3, title:'认知评估',width:90, templet: function (d) {
                     if(d.cognitive === "" || d.cognitive === null){
                         return '无'
                     }
-                    return d.cognitive?'是':'否'
+                    return d.cognitive?'<span style="color:#5FB878">是</span>':'否'
                 }}
-                ,{field:'sound',rowspan:3, title:'是否采集声音',width:120, templet: function (d) {
+                ,{field:'sound',rowspan:3, title:'采集声音',width:90, templet: function (d) {
                     if(d.sound === "" || d.sound === null){
                         return '无'
                     }
-                    return d.sound?'是':'否'
+                    return d.sound?'<span style="color:#5FB878">是</span>':'否'
                 }}
-                ,{field:'blood',rowspan:3, title:'是否采集血液',width:120, templet: function (d) {
+                ,{field:'blood',rowspan:3, title:'采集血液',width:90, templet: function (d) {
                     if(d.blood === "" || d.blood === null){
                         return '无'
                     }
-                    return d.blood?'是':'否'
+                    return d.blood?'<span style="color:#5FB878">是</span>':'否'
                 }}
-                ,{field:'hairs',rowspan:3, title:'是否采集毛发',width:120, templet:function (d) {
+                ,{field:'hairs',rowspan:3, title:'采集毛发',width:90, templet:function (d) {
                     if(d.hairs === "" || d.hairs === null){
                         return '无'
                     }
-                    return d.hairs?'是':'否'
+                    return d.hairs?'<span style="color:#5FB878">是</span>':'否'
                 }}
-                ,{field:'manure',rowspan:3, title:'是否采集粪便',width:120, templet:function (d) {
+                ,{field:'manure',rowspan:3, title:'采集粪便',width:90, templet:function (d) {
                     if(d.manure === "" || d.manure === null){
                         return '无'
                     }
-                    return d.manure?'是':'否'
+                    return d.manure?'<span style="color:#5FB878">是</span>':'否'
                 }}
-                ,{field:'first',rowspan:3, title:'是否首发',width: 100, templet: function (d) {
+                ,{field:'first',rowspan:3, title:'首发',width: 60, templet: function (d) {
                     if(d.first === "" || d.first === null){
                         return '无'
                     }
-                    return d.first?'是':'否'
+                    return d.first?'<span style="color:#5FB878">是</span>':'否'
                 }}
                 ,{field:'head_motion_parameters',rowspan:3, title:'头动参数', width: 90,templet:function (d) {
                     if(d.head_motion_parameters === null || d.head_motion_parameters === ''){
@@ -457,7 +621,8 @@
                 ,{field:'doctor',rowspan:3, title:'医生', width:90}
                 ,{title:'他评（others-rating）',colspan:4,align:'center', style:'background-color:#000;color:#fff'}
                 ,{title:'自评（self-rating）',colspan:19,align:'center'}
-                ,{title:'全量表总体概览',rowspan:3,align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
+                ,{title:'量表完成详情',rowspan:3,align:'center', width: 130, toolbar:'#scalesTpl', fixed:'right'}
+                ,{title:'操作',rowspan: 3,align:'center',width: 120, toolbar: '#filterCompareTpl',fixed: 'right'}
             ],[
                 {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',rowspan: 2,width: 270, templet:function (d) {
                     if(d.HAMA.total_score === undefined ){
@@ -667,79 +832,110 @@
         })
 
         //监听表格头部筛选按钮
+        let isAll = true;
+        let condition;
         table.on('toolbar(tb_record)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
+            let checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'filter_choice':
                     layer.open({
                         type: 1,
-                        title: '被试筛选',
+                        title: ['过滤器','font-size:18px;background-color:#2A3F54;color:#fff'],
                         content: $("#filter_form")
+                        ,closeBtn:0
                         ,shadeClose: true
                         ,btn: ['确定','取消']
-                        ,btn1: function(index, layero){
-
-
-                            var diagnosis_list = []
-                            $("input[name='diagnosis']:checked").each(function (){
-                                diagnosis_list.push($(this).val())
-                            })
-
+                        ,btn1: function (index, layero){
+                            let condition = {
+                                patient_id:name_select.getValue('value'),
+                                session_id:session_id_select.getValue('value'),
+                                name:name_select.getValue('name'),
+                                age:$("#age").val().trim(),
+                                age_compare:$("#age_compare_select option:selected").val(),
+                                sex:$("input[name='sex']:checked").val(),
+                                source: $("#source_select option:selected").val(),
+                                blood: $("input[name='blood']:checked").val(),
+                                cognitive: $("input[name='cognitive']:checked").val(),
+                                sound: $("input[name='sound']:checked").val(),
+                                diagnosis: diagnosis_select.getValue('value'),
+                                startDate:$("#startDate").val(),
+                                endDate:$("#endDate").val(),
+                                hama_total_score:$("#hama_total_score").val().trim(),
+                                hama_compare:$("#hama_total_score_compare_select option:selected").val(),
+                                hamd17_total_score:$("#hamd17_total_score").val().trim(),
+                                hamd17_compare:$("#hamd17_total_score_compare_select option:selected").val(),
+                                ymrs_total_score:$("#ymrs_total_score").val().trim(),
+                                ymrs_compare:$("#ymrs_total_score_compare_select option:selected").val(),
+                            };
+                            let n = 0;
+                            for(let i of Object.values(condition)){
+                                if (i === '' || i === null || i === 0 || i.length === 0 || i === '0'){
+                                    n++
+                                }
+                            }
+                            // 判断是否有筛选条件
+                            isAll = n === Object.keys(condition).length;
+                            // 重新渲染表格
                             tb_patient.reload({
-                                where:{
-                                    patient_id:$("#patient_id").val().trim(),
-                                    session_id:$("#session_id").val().trim(),
-                                    name:$("#name").val().trim(),
-                                    age:$("#age").val().trim(),
-                                    age_compare:$("#age_compare_select option:selected").val(),
-                                    sex:$("input[name='sex']:checked").val(),
-                                    source: $("#source_select option:selected").val(),
-                                    diagnosis: diagnosis_list,
-                                    startDate:$("#startDate").val(),
-                                    endDate:$("#endDate").val(),
-                                    hama_total_score:$("#hama_total_score").val().trim(),
-                                    hama_compare:$("#hama_total_score_compare_select option:selected").val(),
-                                    hamd17_total_score:$("#hamd17_total_score").val().trim(),
-                                    hamd17_compare:$("#hamd17_total_score_compare_select option:selected").val(),
-                                    ymrs_total_score:$("#ymrs_total_score").val().trim(),
-                                    ymrs_compare:$("#ymrs_total_score_compare_select option:selected").val(),
-                                },
+                                where:condition,
                                 page:{
                                     curr:1
                                 }
-
                             })
-
                             layer.close(index)
                         }
                     })
                     break
                 case 'export_all_content':
-                    layer.confirm('确定导出所有数据吗？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
-                        layer.msg('请稍等...',{time:0})
+                    if(isAll){
+                        layer.confirm('确定导出所有数据吗（非当页数据，是全部复扫记录）？', {
+                            btn: ['确定','取消'] //按钮
+                        }, function(){
+                            layer.msg('请稍等...',{time:0})
+                            // 全部导出
+                            $.get('{% url 'statistics' %}',{all:1},function (res, status){
+                                if(status === 'success'){
+                                    layer.msg('导出成功！')
+                                    table.exportFile(tb_patient.config.id, res.data)
+                                }
+                            })
+                        }, function(){
 
-                        // 全部导出
-                        $.get('{% url 'statistics' %}',{
-                            'operation':'export_all'
-                        },function (res, status){
-                            if(status === 'success'){
-                                layer.msg('导出成功！')
-                                table.exportFile(tb_patient.config.id, res.data)
-                            }
+                        });
+                    }else{
+                        layer.confirm('确定导出目前有筛选条件后数据吗？',{ btn: ['确定','取消'] }
+                        ,function () {
+                            layer.msg('请稍等...',{time:0})
+                            $.get('{% url 'statistics' %}',{all:1,...condition},function (res, status){
+                                if(status === 'success'){
+                                    layer.msg('导出成功！')
+                                    table.exportFile(tb_patient.config.id, res.data)
+                                }
+                            })
                         })
-                    }, function(){
 
-                    });
+                    }
+
                     break
                 case 'checkbox_export':
                     let selected_data = checkStatus.data
-                    if (checkStatus.data.length !== 0){
-
+                    if (selected_data.length !== 0){
+                        layer.confirm('已选中了'+selected_data.length+'条记录要导出', {
+                            btn: ['确定','取消']
+                        },function (){
+                            layer.msg('导出成功！')
+                            table.exportFile(tb_patient.config.id, selected_data)
+                        })
                     }else{
-                        layer.msg('没有选中任何数据！')
+                        layer.msg('没有选中任何记录！')
                     }
+                    break
+                case 'statistics_tips':
+                    layer.tips('一个具有筛选功能的复扫记录的统计表格','#statistics_title',{
+                        tips:3
+                        ,time:0
+                    })
+
                     break
             }
         })
@@ -754,8 +950,8 @@
 
         // TODO 监听行单击事件
         table.on('row(tb_record)', function(obj){
-            console.log(obj.tr) //得到当前行元素对象
-            console.log(obj.data) //得到当前行数据
+            //console.log(obj.tr) //得到当前行元素对象
+            //console.log(obj.data) //得到当前行数据
             //obj.del(); //删除当前行
             //obj.update(fields) //修改当前行数据
         });
@@ -768,10 +964,12 @@
         });
 
         // TODO 监听行工具条
+        var storage_list = []
         table.on('tool(tb_record)',function (obj){
             var data = obj.data;
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr;
+
 
 
             function do_btn_alloc(obj_list, arr) {
@@ -808,16 +1006,22 @@
                 text += "        <div class=\"layui-card-header\">量表概况"+"（标准编号："+data.standard_id+"，姓名："+data.name+"）"+"</div>";
                 text += "        <div class=\"layui-card-body\">";
                 text += "            <blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"\">";
+                text += "<p style='font-size:14px'>已完成量表</p>"
+                text += "<hr/>"
                 text += "<div class='layui-btn-container'>";
                 text += done_arr;
                 text += "</div>";
                 text += "            </blockquote>";
                 text += "<blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"\">";
+                text += "<p style='font-size:14px'>未完成量表</p>"
+                text += "<hr/>"
                 text += "<div class='layui-btn-container'>"
                 text += not_done_arr;
                 text += "</div>"
                 text += "</blockquote>";
                 text += "<blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"\">";
+                text += "<p style='font-size:14px'>不必做量表</p>"
+                text += "<hr/>"
                 text += "<div class='layui-btn-container'>"
                 text += no_need_arr;
                 text += "</div>"
@@ -847,6 +1051,18 @@
                     resize:false,
                     content:text
                 })
+            }
+            else if(layEvent === 'addToCompare'){
+                //
+                //var compare_data = layui.data('compare').data
+                //console.log(compare_data)
+                //storage_list.push(data)
+                //var f_content = $('#filter_compare_content')
+                //layui.data('compare',{
+                    //key: 'data'
+                    //,value: storage_list
+                //})
+
             }
         })
 
