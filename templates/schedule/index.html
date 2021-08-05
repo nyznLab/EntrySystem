@@ -1,0 +1,573 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}待办管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static '/layui/admin/css/style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static '/layui/admin/css/global.css' %}" media="all">
+    <!-- 后台模板样式 -->
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/admin.css' %}" media="all"/>
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/template.css' %}" media="all"/>
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/cascader.css' %}" media="all"/>
+
+    <script src="{% static '/layui/common/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/layui/common/layui/layui-2.6.7.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="{% url 'index_appointment' %}"><i class="layui-icon layui-icon-extend layui-extend-tag"></i> 预约和待办</a></li>
+                        <li class="active"><a href="{% url 'index_schedule' %}">待办管理</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-fluid-ted">
+            <div class="layui-card">
+
+                <div class="layui-card-body ">
+                    <div class="layui-form" style="padding-bottom: 10px;">
+                        <button type="button" class="layui-btn ted-create"><i class="layui-icon layui-icon-extend layui-extend-plus-circle"></i>新增</button>
+                        <button type="button" class="layui-btn layui-btn-danger ted-delete-batch"
+                                data-type="tedDeleteBatch"><i class="layui-icon layui-icon-extend layui-extend-delete"> 删除</i>
+                        </button>
+
+                        <div class="layui-inline ted-ml ted-mt5">
+                            <label class="layui-form-label ted-layui-form-label">状态</label>
+                            <div class="layui-input-inline" style="width: 90px;">
+                                <select name="status" id="status" lay-verify="" lay-search>
+                                    <option value="">不限</option>
+                                    <option value="10">未处理</option>
+                                    <option value="1">已处理</option>
+                                    <option value="2">已取消</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline ted-ml ted-mt5">
+                            <label class="layui-form-label ted-layui-form-label">是否紧急</label>
+                            <div class="layui-input-inline" style="width: 90px;">
+                                <select name="is_urgent" id="is_urgent" lay-verify="" lay-search>
+                                    <option value="">不限</option>
+                                    <option value="10">默认</option>
+                                    <option value="1">紧急</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline ted-mt5">
+                            <label class="layui-form-label ted-layui-form-label">待办日期</label>
+                            <div class="layui-input-inline" style="width: 100px;">
+                                <input type="search" name="schedule_date" id="schedule_date" value="" placeholder="待办日期"
+                                       autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline ted-mt5">
+                            <label class="layui-form-label ted-layui-form-label">关键词</label>
+                            <div class="layui-input-inline">
+                                <input type="search" name="keywords" id="keywords" value="" placeholder="Keywords..."
+                                       autocomplete="on" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label ted-layui-form-label"></label>
+                            <button type="button" class="layui-btn layui-btn-normal layuiadmin-btn-useradmin ted-search">
+                                <i class="layui-icon layui-icon-extend layui-extend-search "> 检索</i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <table class="layui-hide" id="ted-list" lay-filter="ted-list"></table>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/html" id="urgentTpl">
+            {% verbatim %}
+            <input type="checkbox" name="is_urgent" value="{{d.schedule_id}}" lay-skin="switch" lay-text="紧急|默认" lay-filter="is_urgent" {{#  if(d.is_urgent === 1){ }}checked{{#  } }}>
+            {% endverbatim %}
+        </script>
+        <script type="text/html" id="startDateTpl">
+            <i class="layui-icon layui-icon-extend layui-extend-calendar-alt"></i> {% verbatim %}{{ d.start_date }}{% endverbatim %}
+        </script>
+        <script type="text/html" id="endDateTpl">
+            <i class="layui-icon layui-icon-extend layui-extend-calendar-alt"></i> {% verbatim %}{{ d.end_date }}{% endverbatim %}
+        </script>
+        <script type="text/html" id="phoneTpl">
+            <i class="layui-icon layui-icon-extend layui-extend-mobile-alt"></i> {% verbatim %}{{ d.phone }}{% endverbatim %}
+        </script>
+        <script type="text/html" id="statusTpl">
+            {% verbatim %}
+            {{#  if(d.status == 1){ }}
+            <i class="layui-icon layui-icon-extend layui-extend-check-circle" style="color: #009688;"> {{d.status_label}}</i>
+            {{#  } else if(d.status == 2) { }}
+            <i class="layui-icon layui-icon-extend layui-extend-times-circle" style="color: #C2C2C2;"> {{d.status_label}}</i>
+            {{#  } else { }}
+            <i class="layui-icon layui-icon-extend layui-extend-exclamation-circle" style="color: #FF5722;"> {{d.status_label}}</i>
+            {{#  } }}
+            {% endverbatim %}
+        </script>
+        <script type="text/html" id="operationTpl">
+            {% verbatim %}
+            <button type="button" class="layui-btn layui-btn-sm ted-edit" data-id="{{d.schedule_id}}">编辑</button>
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal ted-done" data-id="{{d.schedule_id}}">完成</button>
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-warm ted-cancel" data-id="{{d.schedule_id}}">取消</button>
+            <button type="button" class="layui-btn layui-btn-danger layui-btn-sm ted-delete" data-id="{{d.schedule_id}}">删除</button>
+            {% endverbatim %}
+        </script>
+        <script>
+            function getData(){}
+            layui.config({
+                base: "{% static '/layui/layui-exts/' %}"
+            }).extend({
+                iconExtend: 'iconExtend/iconExtend'
+            }).use(['form', 'laydate', 'laypage', 'table', 'iconExtend'], function () {
+                var form = layui.form,
+                    layer = layui.layer,
+                    laydate = layui.laydate,
+                    $ = layui.jquery;
+                var laypage = layui.laypage;
+                var table = layui.table;
+                var iconExtend = layui.iconExtend;//console.log(laydate);
+                // 加载Project对象 项目名称，配置
+                var aliyun = iconExtend.loadProject('aliyun', {icon_class: 'a', style: {'color': 'cyan'}})
+
+                // 列表table
+                table.render({
+                    elem: '#ted-list'
+                    ,id: 'ted-list'
+                    ,skin: ''
+                    ,even: true // 开启隔行背景
+                    ,url: "{% url 'list_schedule' %}" // 接口地址
+                    ,where: {} // 额外参数
+                    ,method: 'get'
+                    ,page: {
+                        layout: ['prev', 'page', 'next', 'skip', 'count'] //自定义分页布局
+                        ,prev: '上一页'
+                        ,next: '下一页'
+                    }
+                    //,limits: [10,15,20,30,50]
+                    ,limit: 10 // 每页默认显示的数量
+                    ,cols: [ // 表头
+                        [
+                            {type: 'checkbox', fixed: 'left'}
+                            ,{field: 'schedule_id', title: 'ID', width: 80, sort: true}
+                            ,{field: 'patient', title: '病人', width: 120}
+                            ,{field: 'patient_standard_id', title: '扫描编号', width: 170}
+                            ,{field: 'phone', title: '手机号码', width: 140, templet: '#phoneTpl'}
+                            ,{field: 'title', title: '待办标题', width: 120}
+                            ,{field: 'content', title: '待办内容'}
+                            ,{field: 'start_date', title: '起始日期', width: 120, templet: '#startDateTpl'}
+                            ,{field: 'end_date', title: '截止日期', width: 120, templet: '#endDateTpl'}
+                            ,{field: 'status', title: '状态', width: 96, templet: '#statusTpl'}
+                            ,{field: 'urgentLabel', title: '是否紧急', width: 92, templet: '#urgentTpl'}
+                            ,{field: 'operation_text', title: '操作', width: 258, fixed: 'right', templet: '#operationTpl'}
+                        ]
+                    ]
+                    ,text: {
+                        none: '没有或没有找到合适的数据'
+                    }
+                    ,done: function (res, curr, count) {
+                        $('body,html').animate({
+                                scrollTop: 0
+                            },
+                            500);
+                    }
+                });
+
+                // 日期选择器
+                laydate.render({
+                    elem: '#date_range'
+                    ,type: 'date'
+                    ,range: '~'
+                    ,format: 'yyyy-MM-dd'
+                });
+
+                laydate.render({
+                    elem: '#schedule_date'
+                    ,type: 'date'
+                    ,format: 'yyyy-MM-dd'
+                });
+
+                // 检索
+                $('body').delegate('.ted-search', 'click', function(){
+                    var keywords = $('#keywords').val();
+                    var status = $('#status').val();
+                    var doctor_id = $('#doctor_id').val();
+                    var schedule_date = $('#schedule_date').val();
+                    var is_urgent = $('#is_urgent').val();
+
+                    table.reload('ted-list', {
+                        page: {
+                            curr: 1
+                        }
+                        ,where: {
+                            'keywords': keywords,
+                            'doctor_id': doctor_id,
+                            'status': status,
+                            'date': schedule_date,
+                            'is_urgent': is_urgent,
+                        }
+                    }, 'data');
+                });
+
+                // 新增
+                $('body').delegate('.ted-create', 'click', function () {
+                    // 弹窗
+                    layer.open({
+                        resize: false,
+                        type: 2,
+                        id : 'ted-create',
+                        title: '新增待办',
+                        maxmin: true,
+                        shadeClose: false, // 点击遮罩关闭层
+                        shade: false,
+                        area : ['50%' , '85%'],
+                        content: "{% url 'create_schedule' %}",
+                        end: function(){
+                            //layui.table.reload('ted-list');
+                        }
+                    });
+                });
+
+                // 编辑
+                $('body').delegate('.ted-edit', 'click', function () {
+                    var id = $(this).data('id');
+                    console.log(id);
+
+                    layer.load({ time: 0 });
+                    $.ajax({
+                        type	: 'GET',
+                        url		: '/schedule/check/'+id+'/',
+                        data	: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        dataType: 'json',
+                        contentType:"application/x-www-form-urlencoded",
+
+                        error: function(request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success	: function(data){
+                            layer.closeAll('loading');
+                            //console.log(data);//return false;
+                            var jsonobj = eval(data);
+                            if ( jsonobj.code == 0 )
+                            {
+                                // 弹窗
+                                layer.open({
+                                    resize: false,
+                                    type: 2,
+                                    id : 'ted-edit-'+id,
+                                    title: '编辑待办 - ' + id,
+                                    maxmin: true,
+                                    shadeClose: false, // 点击遮罩关闭层
+                                    shade: false,
+                                    area : ['50%' , '85%'],
+                                    content: '/schedule/edit/'+id+'/',
+                                    end: function(){
+                                        //layui.table.reload('ted-list');
+                                    }
+                                });
+                            } else {
+                                layer.msg('未找到数据记录', { time: 1000 }, function(){
+                                    layui.table.reload('ted-list');
+                                });
+                            }
+                        }
+                    });
+                });
+
+                // 删除
+                $('body').delegate('.ted-delete', 'click', function () {
+                    var id = $(this).data('id');
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/schedule/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    layer.confirm('您确定要执行删除操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: '/schedule/delete/'+id+'/',
+                            dataType: 'json',
+                            data	: {
+                                'id' : id,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    layui.table.reload('ted-list');
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+                // 批量删除
+                $('body').delegate('.ted-delete-batch', 'click', function(){
+                    var checkStatus = layui.table.checkStatus('ted-list').data;
+                    var curr = $(".layui-laypage-em").next().html();
+                    //console.log(checkStatus);return false;
+                    if ( checkStatus.length == 0 )
+                    {
+                        layer.msg('请至少选择一个要删除的记录！', {
+                            time: 1000,
+                        });
+                        return false;
+                    }
+
+                    var ids = '';
+                    if ( checkStatus.length > 0 )
+                    {
+                        for (i = 0; i < checkStatus.length; i++)
+                        {
+                            if ( checkStatus[i].schedule_id )
+                            {
+                                //ids.push(checkStatus[i].schedule_id);
+                                ids += checkStatus[i].schedule_id + ',';
+                            }
+                        }
+                    }
+                    //console.log(ids);return false;
+                    layer.confirm('您确定要执行删除操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] //按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: "{% url 'delete_batch_schedule' %}",
+                            dataType: 'json',
+                            data	: {
+                                'ids' : ids,
+                                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    layui.table.reload('ted-list');
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+                // 取消待办
+                $('body').delegate('.ted-cancel', 'click', function () {
+                    var id = $(this).data('id');
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/schedule/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    layer.confirm('您确定要执行【取消待办】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: '/schedule/cancel/'+id+'/',
+                            dataType: 'json',
+                            data	: {
+                                'id' : id,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+                // 紧急状态更新
+                form.on('switch(is_urgent)', function(obj){
+                    var id = this.value;
+                    //form.on('checkbox(status)', function(obj){
+                    //layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+                    layer.load({ time: 0 });
+                    // console.log(this.value);
+                    // console.log(obj.elem.checked);
+                    // return false;
+                    // 执行
+                    $.ajax({
+                        type	: 'GET',
+                        url		: "{% url 'toggle_schedule' %}",
+                        dataType: 'json',
+                        data	: {
+                            'id' : this.value,
+                            'key' : 'is_urgent',
+                            'value' : obj.elem.checked ? 1 : 0,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        contentType:"application/x-www-form-urlencoded",
+
+                        error: function(request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success	: function(data){
+                            layer.closeAll('loading');
+                            //console.log(data);return false;
+                            var jsonobj = eval(data);
+                            layer.tips(jsonobj.message, obj.othis, {
+                                tips: 1,
+                                time: 500,
+                            });
+                        }
+                    });
+                });
+
+                // 处理
+                $('body').delegate('.ted-done', 'click', function () {
+                    var id = $(this).data('id');
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/schedule/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    layer.confirm('您确定要执行【完成】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: '/schedule/done/'+id+'/',
+                            dataType: 'json',
+                            data	: {
+                                'id' : id,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+
+            });
+        </script>
+
+
+    </div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

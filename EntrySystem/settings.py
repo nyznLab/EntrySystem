@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'users',
     'inpatients',
     'followup',
-    'statistics'
+    'statistics',
+    'appointment',
+    'schedule',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +78,7 @@ TEMPLATES = [
 
             'libraries': {
                 'SelfDefinedFilter': 'patients.templatetags.SelfDefinedFilter',
-
+                'TagFilter': 'filter.TagFilter',
             }
         },
     },
@@ -84,18 +86,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'EntrySystem.wsgi.application'
 
-
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
-        'NAME': 'entrySystem',         # 你要存储数据的库名，事先要创建之
+        'NAME': 'EntrySystem',         # 你要存储数据的库名，事先要创建之
         'USER': 'root',         # 数据库用户名
-        'PASSWORD': 'EntrySystem123456:',     # 密码
-        'HOST': '192.168.0.201',    # 主机
+        'PASSWORD': '123456',     # 密码
+        'HOST': 'localhost',    # 主机
         'PORT': '3306',         # 数据库使用的端口
     }
 }
@@ -169,3 +169,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 设置关闭浏览器时失效
 # 在settings文件内添加下面的代码
 INTERNAL_IPS = ['127.0.0.1']
+X_FRAME_OPTIONS = 'ALLOWALL'

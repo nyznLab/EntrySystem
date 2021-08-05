@@ -20,12 +20,13 @@ from django.conf.urls.static import static
 from users import views as users_view
 
 urlpatterns = [
-    path('', users_view.user_login),
-    path('admin/', admin.site.urls),
-    path('patients/', include('patients.urls')),
-    path('scales/', include('scales.urls')),
-    path('inpatients/', include('inpatients.urls')),
-    path('followup/', include('followup.urls')),
-    path('statistics/', include('statistics.urls'))
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+                  path('', users_view.user_login),
+                  path('admin/', admin.site.urls),
+                  path('patients/', include('patients.urls')),
+                  path('scales/', include('scales.urls')),
+                  path('inpatients/', include('inpatients.urls')),
+                  path('followup/', include('followup.urls')),
+                  path('statistics/', include('statistics.urls')),
+                  path('appointment/', include('appointment.urls')),
+                  path('schedule/', include('schedule.urls')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

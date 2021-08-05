@@ -1,0 +1,429 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}预约管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static '/layui/admin/css/style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static '/layui/admin/css/global.css' %}" media="all">
+    <!-- 后台模板样式 -->
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/admin.css' %}" media="all"/>
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/template.css' %}" media="all"/>
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/cascader.css' %}" media="all"/>
+
+    <script src="{% static '/layui/common/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/layui/common/layui/layui-2.6.7.js' %}"></script>
+{% endblock %}
+{% block body %}
+
+    <div id="app">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body"><!--  style="padding: 15px;" -->
+
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend><i class="layui-icon layui-icon-extend layui-extend-tag"></i> 预约管理</legend>
+                    </fieldset>
+
+                    <form class="layui-form layui-form-pane" id="TedForm" enctype="multipart/form-data" action="{% if is_edit == 1 %}{% url 'edit_appointment' appointment.appointment_id %}{% else %}{% url 'create_appointment' %}{% endif %}" method="POST" style="overflow: visible">
+                        {% csrf_token %}
+                        <input type="hidden" name="appointment_id" id="appointment_id" value="{% if is_edit == 1 %}{{ appointment.appointment_id }}{% endif %}">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-required"><font color=red>* </font>姓名</label>
+                            <div class="layui-input-block">
+                                <input type="search" name="name" value="{{ appointment.name|default:'' }}" required lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-required"><font color=red>* </font>手机号码</label>
+                            <div class="layui-input-block">
+                                <input type="number" name="phone" value="{{ appointment.phone|default:'' }}" required lay-verify="required" placeholder="手机号码" autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color=red>* </font>性别</label>
+                            <div class="layui-input-block" style="width: 30%;">
+                                <input type="radio" name="sex" value="0" title="男" {% if appointment.sex == 0 or is_edit == 0 %}checked{% endif %}>
+                                <input type="radio" name="sex" value="1" title="女" {% if appointment.sex == 1 %}checked{% endif %}>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" >
+                            <label class="layui-form-label"><font color=red>* </font>生日</label>
+                            <div class="layui-input-block">
+                                <input type="search" name="birth_date" id="birth_date" value="{{ appointment.birth_date|default:'' }}" required lay-verify="required" placeholder="年/月/日" autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" >
+                            <label class="layui-form-label"><font color=red>* </font>预约日期</label>
+                            <div class="layui-input-block">
+                                <input type="search" name="appointment_date" id="appointment_date" value="{{ appointment.appointment_date|default:'' }}" required lay-verify="required" placeholder="年/月/日" autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" >
+                            <label class="layui-form-label"><font color=red>* </font>预约时间</label>
+                            <div class="layui-input-block">
+                                <select name="appointment_time" id="appointment_time" required lay-verify="required" lay-search>
+                                    <option value="">请选择</option>
+                                    {% for time_key, time_value in appointment_time_data.items %}
+                                        <option value="{{ time_key }}" {% if time_key == appointment.appointment_time %}selected{% endif %}>{{ time_value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color=red>* </font>预约项目</label>
+                            <div class="layui-input-block">
+                                {% load TagFilter %}
+                                {% for items_key, items_value in appointment_items_data.items %}
+                                    <input type="checkbox" name="items" lay-skin="primary" title="{{ items_value.title }}" value="{{ items_key }}" {% if items_key|to_str in had_items_data %}checked{% endif %}>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="备注" class="layui-textarea" name="remark" id="remark">{{ appointment.remark|default:'' }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-layout-admin">
+                            <div class="layui-input-block">
+                                {% if appointment.status != 1 %}
+                                    <button class="layui-btn" lay-submit lay-filter="submit"><i class="layui-icon layui-icon-extend layui-extend-check-circle"></i> 提交保存
+                                    </button>
+                                {% endif %}
+                                {% if appointment.status == 1 %}
+                                    <!-- 已完成 -->
+                                {% elif appointment.status == 2 %}
+                                    <!-- 已取消 -->
+                                    <button type="button" class="layui-btn layui-btn-normal ted-init"><i class="layui-icon layui-icon-extend layui-extend-paper-plane"></i> 恢复预约</button>
+                                {% elif appointment.status == 0 %}
+                                    <!-- 进行中 -->
+                                    <button type="button" class="layui-btn layui-btn-normal ted-done"><i class="layui-icon layui-icon-extend layui-extend-check"></i> 报到</button>
+                                    <button type="button" class="layui-btn layui-btn-warm ted-cancel"><i class="layui-icon layui-icon-extend layui-extend-times"></i> 取消预约</button>
+                                {% endif %}
+                                <button type="button" class="layui-btn layui-btn-primary ted-close-iframe"><i class="layui-icon layui-icon-extend layui-extend-times-circle"></i> 关闭窗口
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            layui.config({
+                base: "{% static '/layui/layui-exts/' %}"
+            }).extend({
+                iconExtend: 'iconExtend/iconExtend'
+            }).use(['form', 'laydate', 'laypage', 'table', 'iconExtend'], function () {
+                var form = layui.form,
+                    layer = layui.layer,
+                    laydate = layui.laydate,
+                    $ = layui.jquery;
+                var laypage = layui.laypage;
+                var table = layui.table;
+                var iconExtend = layui.iconExtend;//console.log(laydate);
+                // 加载Project对象 项目名称，配置
+                var aliyun = iconExtend.loadProject('aliyun', {icon_class: 'a', style: {'color': 'cyan'}})
+
+                laydate.render({
+                    elem: '#birth_date',
+                    type: 'date',
+                });
+                laydate.render({
+                    elem: '#appointment_date',
+                    type: 'date',
+                });
+
+                // 编辑
+                $('body').delegate('.ted-done', 'click', function () {
+                    var id = {{ appointment.appointment_id }};
+                    //console.log(id);return false;
+
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/appointment/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    // 执行删除操作
+                    layer.load({ time: 0 });
+                    $.ajax({
+                        type	: 'post',
+                        url		: '/appointment/check_patient/'+id+'/',
+                        dataType: 'json',
+                        data	: {
+                            'id' : id,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        contentType:"application/x-www-form-urlencoded",
+
+                        error: function(request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success	: function(data){
+                            layer.closeAll('loading');
+                            //console.log(data);return false;
+                            var jsonobj = eval(data);
+                            //$("tr[data-index='"+index+"']").remove();
+                            var i = layer.confirm();layer.close(i);
+                            var icon = 1;
+                            if ( jsonobj.code == 0 )
+                            {
+                                if ( jsonobj.data.patient_id <= 0 )
+                                {
+                                    // 新患者用户
+                                    layer.prompt({title: '输入用户编号', formType: 0}, function(patient_id, index){
+                                        layer.close(index);
+                                        check_in(id, patient_id, 1)
+                                    });
+                                } else {
+                                    check_in(id, jsonobj.data.patient_id, 0)
+                                }
+                            } else {
+                                icon = 2;
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                });
+                            }
+                        }
+                    });
+                });
+
+                function check_in(appointment_id, patient_id, is_new) {
+                    //console.log(appointment_id);console.log(patient_id);return false;
+                    layer.confirm('您确定要执行【报到】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: "{% url 'check_in_appointment' %}",
+                            dataType: 'json',
+                            data	: {
+                                'appointment_id' : appointment_id,
+                                'patient_id' : patient_id,
+                                'is_new' : is_new,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                        parent.layer.close(index);
+                                        parent.layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                }
+
+                $('body').delegate('.ted-init', 'click', function () {
+                    layer.confirm('您确定要执行【恢复】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        layer.load({ time: 0 });
+                        // console.log(this.value);
+                        // console.log(obj.elem.checked);
+                        // return false;
+                        // 执行
+                        $.ajax({
+                            type	: 'GET',
+                            url		: "{% url 'init_appointment' appointment.appointment_id %}",
+                            dataType: 'json',
+                            data	: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                        parent.layer.close(index);
+                                        parent.layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+
+                // 取消待办
+                $('body').delegate('.ted-cancel', 'click', function () {
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/appointment/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    layer.confirm('您确定要执行【取消预约】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: "{% url 'cancel_appointment' appointment.appointment_id %}",
+                            dataType: 'json',
+                            data	: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                        parent.layer.close(index);
+                                        parent.layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+                form.on('submit(submit)', function (data) {
+                    // 预约项目
+                    var items_str = ''
+                    $.each($('input[name=items]:checked'),function(){
+                        items_str += $(this).val() + ',';
+                    });
+                    if (items_str.substr(items_str.length-1,1) == ',') {
+                        items_str = items_str.substr(0, items_str.length-1);
+                    }
+                    //console.log(items_str);
+                    if (items_str == '') {
+                        //layer.msg(jsonobj.message, { icon: 2, shade: 0.5, time: 1000, shadeClose: true});
+                        layer.msg('请选择预约项目！', { icon: 5, anim: 6 });
+                        return false;
+                    }
+                    data.field['items'] = items_str
+                    //console.log(items_str);
+                    //console.log(data.field);return false;
+                    layer.load({ time: 0 });
+                    $.ajax({
+                        url: data.form.action,
+                        // dataType: 'JSON',
+                        type: 'POST',
+                        async: true,
+                        cache: false,
+                        data: data.field,//JSON.stringify(data.field),
+                        // contentType : "application/json",
+                        // headers : {"Content-Type" : "application/json;charset=utf-8"},
+                        error: function(request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success :function (e) {
+                            layer.closeAll('loading');
+                            var jsonobj = eval('(' + e + ')');
+                            //console.log(jsonobj);return false;
+                            if (jsonobj.code == 0) {
+                                layer.msg(jsonobj.message, {
+                                    icon: 1,
+                                    shade: 0.5,
+                                    time: 500,
+                                }, function(){
+                                    parent.layer.close(index);
+                                    parent.layui.table.reload('ted-list');
+                                });
+                            } else {
+                                layer.msg(jsonobj.message, { icon: 2, shade: 0.5, time: 1000, shadeClose: true});
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+
+                $('body').delegate('.ted-close-iframe', 'click', function () {
+                    parent.layer.close(index);
+                });
+            });
+        </script>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}
