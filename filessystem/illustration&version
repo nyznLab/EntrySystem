@@ -7,7 +7,6 @@ files：
 文件系统目录结构对应的字典
 2）configclass.py
 预处理数据中各个文件类型对应字典
-3）dconf.py
 
 2，工具类文件
 1）njftools.py

@@ -3,7 +3,6 @@ from Utils import getMetaDataFromJSON,writeMetaDataToJSON,getIdAndSession,packin
 import fconfig as conf
 import os    #处理文件和目录的模块：对目录或文件的新建，删除，查看文件属性，对文件以及目录的路径操作。
 import shutil    #对os模块的补充，对文件进行移动、复制、打包、压缩、解压。
-import re
 from exception import BussinessException,handle_exception
 import configclass
 
@@ -143,7 +142,7 @@ def copyToFileSystemIntermediate(sourcePath,cityPath,fifthPathType):
                 shutil.copy(ele, destPath)
     writeMetaDataToJSON(dataDict,metaDataFileName)
 
-def copyToFileSystemPreprocess(sourcePath,cityPath,patientList=None):
+def copyToFileSystemPreprocess(sourcePath,cityPath,patient_list=None):
     '''
     进行预处理之后的文件分发，包括alff，reho，fc等,
     支持通过patient_list传递病人编号将文件夹中指定的病人数据拷贝过去
@@ -158,8 +157,8 @@ def copyToFileSystemPreprocess(sourcePath,cityPath,patientList=None):
     3.支持根据病人列表进行目录拷贝
     '''
     # 进行patient_list的数据校验
-    if patientList:
-        patientList = check_patient_list(patientList)#返回的是一个标准的经过校验判断的病人编号。
+    if patient_list:
+        patient_list = check_patient_list(patient_list)#返回的是一个标准的经过校验判断的病人编号。
 
     # 创建基础目录
     baseType = 'preprocess'
@@ -186,7 +185,7 @@ def copyToFileSystemPreprocess(sourcePath,cityPath,patientList=None):
             handle_exception(BussinessException(f'===目录：{firstPathName}，需要为文件夹，请进行校验==='))
             continue
         # 进行文件拷贝
-        if patientList is None:
+        if patient_list is None:
             for file in files:
                 try:
                     id, session, data_dict = get_id_session_by_filename(file,dataDict)
@@ -197,14 +196,14 @@ def copyToFileSystemPreprocess(sourcePath,cityPath,patientList=None):
                     handle_exception(e)
         else:
             for file in files:
-                if getIdNameFromString(file) in patientList:
+                if getIdNameFromString(file) in patient_list:
                     id, session, dataDict = get_id_session_by_filename(file, dataDict)
                     destPath = f'{basePath}/{id}/{session}/{firstPath}'
                     createPath(destPath)
                     shutil.copy(firstPathName + '/' + file, destPath)
     writeMetaDataToJSON(dataDict,metaDataFileName)
 
-def copyToFileSystemRawData(sourcePath,cityPath,data_type,patientList = None):
+def copyToFileSystemRawData(sourcePath,cityPath,data_type,patient_list = None):
     """
     分发匿名化之后的数据，即各种dicom文件
     :param sourcePath: 拷贝过来的原路径
@@ -218,8 +217,8 @@ def copyToFileSystemRawData(sourcePath,cityPath,data_type,patientList = None):
     3.目录生成
     4.进入到六级目录下进行数据拷贝
     """
-    if patientList:
-        patientList = check_patient_list(patientList)
+    if patient_list:
+        patient_list = check_patient_list(patient_list)
     # 生成目录
     baseType = 'raw_data'
     basePath = f'{cityPath}/{baseType}'
@@ -242,7 +241,7 @@ def copyToFileSystemRawData(sourcePath,cityPath,data_type,patientList = None):
     # 遍历所有病人
     for patientId in patientsIds:
         # 有list列表，而且ptientid不list列表中，那么直接跳过不执行
-        if patientList and getIdNameFromString(patientId) not in patientList:
+        if patient_list and getIdNameFromString(patientId) not in patient_list:
             continue
         # 正常进行病人文件拷贝
         standard_id = getIdNameFromString(patientId) #函数判断病人的编号是否合法
@@ -261,9 +260,7 @@ def copyToFileSystemRawData(sourcePath,cityPath,data_type,patientList = None):
             path_list=[]
             for dir in patientdirs:
                 subraw_data_path = patientdir + '/' + dir
-
                 subraw_data_path_list.append(subraw_data_path)
-            #print(subraw_data_path_list)
             for i in range(len(subraw_data_path_list) - 1, -1, -1):
                 if (subraw_data_path_list[i].split(' ')[1] == 'gre_field_mapping_rest64'):
                     continue
@@ -272,7 +269,6 @@ def copyToFileSystemRawData(sourcePath,cityPath,data_type,patientList = None):
                 # else:
                 #     continue
             for subraw_data_path in subraw_data_path_list:
-
                 if (os.path.isfile(subraw_data_path)):
                     destPath = '{}/{}/{}/{}/{}'.format(cityPath, baseType, str(id), str(session), data_type)
                     createPath(destPath)

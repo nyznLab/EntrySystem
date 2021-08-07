@@ -45,6 +45,7 @@ def base_getData(patient_list,base_path,data_type,prefix,suffix):
                  continue
             # 进行数据文件是否存在校验，并进行文件路径获取
             file_path = f'{patient_path}/{data_type}/{prefix}_{standard_id}.{suffix}'
+          
             if not os.path.exists(file_path):
                 handle_exception(BussinessException(f'病人{patient},{data_type} 数据不存在'))
             else:

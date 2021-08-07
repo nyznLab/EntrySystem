@@ -1,5 +1,5 @@
 # 一级目录
-basePath = r'E:/test4/'
+basePath = r'/root/Desktop/Distribution_Test/Test_Results/'
 shenyangPath = basePath+'shenyang'
 nanjingPath = basePath+'nanjing'
 
@@ -8,7 +8,7 @@ secondDirectory = ['raw_data','intermediate','preprocess']
 
 # 五级目录
 fifthDirectory = {'raw_data':['snp','audio','video','dicom'],
-                   #后期操作：'intermediate':['T1/3D','DTI','resting'],
+                   'intermediate':['T1/3D','DTI','resting'],
                    'preprocess':['reho','alff','fc','falff','vbm','gca','fa','ft','cth']}
 
 # 六级目录
