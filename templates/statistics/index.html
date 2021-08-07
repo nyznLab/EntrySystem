@@ -158,6 +158,7 @@
 {#              <input type="text" lay-verify="required" name="age" autocomplete="off" class="layui-input" id="age" >#}
               <div class="" id="age_slider_container" style="margin-top: 16px"></div>
           </div>
+
 {#          <div class="layui-form-mid">-</div>#}
 {#          <div class="layui-input-inline">#}
 {#              <select name="age_compare" id="age_compare_select">#}
@@ -1073,6 +1074,9 @@
         let isAll = true
         let condition
         let age_min = 0, age_max = 0
+
+        let reg_num = /\d{1,2}/
+
         let age_slider = slider.render({
             elem: '#age_slider_container'
             ,value: [0,0]
