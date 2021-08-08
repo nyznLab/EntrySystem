@@ -16,4 +16,4 @@ class BussinessException(Exception):
 
 # 处理异常
 def handle_exception(e):
-    print(e.message)
+    raise Exception(e)

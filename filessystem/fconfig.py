@@ -1,5 +1,5 @@
 # 一级目录
-basePath = r'/root/Desktop/Distribution_Test/Test_Results/'
+basePath = r'/root/dataset/'
 shenyangPath = basePath+'shenyang'
 nanjingPath = basePath+'nanjing'
 
