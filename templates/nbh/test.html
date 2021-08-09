@@ -1,11 +1,68 @@
 {% extends 'templates/index.html' %}
 {% load static %}
 {% block content %}
-    <div class="right_col" role="main">
-        <div class="result">
-
+<div class="modal fade" id="exit_confirm" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <h4 align="center"> 您确认要退出当前自评量表测评吗？</h4>
+            <div align="center">
+                <button type="button" onclick="location='/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&session_id={{ session_id }}'" class="btn btn-danger" style="width:68px;height:34px">退出</button>
+                <button type="button" class="btn btn-success" style="width:68px;height:34px" data-dismiss="modal">关闭
+                </button>
+            </div>
         </div>
     </div>
+</div>
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li>量表评估</li>
+                    <li>自评量表</li>
+                    <li class="active"></li>
+                    <div style="float: right;margin-bottom: 0;"></div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel" style="margin-top: 0;height:80%;">
+        <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+            <div align="center" style="padding-left: 18%; padding-right: 20%">
+                <h5>
+                    <strong>
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <div class="warn">
+                        </div>
+                    </strong>
+                </h5>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="question_area" name="question_area" style="text-align: center">
+            {% csrf_token %}
+            <form id="question_form" name="question_form" action="#">
+                <h3>
+                    <div class="row question"></div>
+                </h3>
+                <div class="options"></div>
+                <div>
+                    <input id="question_submit" type="button" class="btn btn-success text-center"
+                           style="width:68px;height:34px" value="下一题">
+                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
+                           value="退&nbsp;&nbsp;出">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -13,11 +70,57 @@
     <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function () {
-            cookie_val = getCookie('enter_page')
-            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+            $.post("/scales/get_scale_metadata",
+                {patient_session_id: "1", scale_id: "12"},
+                function (result, statue) {
+                    if(statue === "success"){
+                        $(".active").text(result.title);
+                        $(".warn").text(result.warn);
+                    }
+                });
+            $.post("/scales/get_next_question",
+                {patient_session_id: "1", scale_id: "12"},
+                function (result, statue) {
+                    if(statue === "success"){
+                        updateQuestion(result);
+                    }
+                });
         });
-        var ttttest = $.post("/scales/get_next_question", { patient_session_id: "1", scale_id: "12" }, function(result,statue){
-            $(".result").text(result.title);
-        });
+
+        function updateQuestion(questionInfo) {
+            let input;
+            $(".question").text(questionInfo.title);
+            let j = 0, len = questionInfo.options.length;
+            for(; j< len; j ++){
+                if(questionInfo.options[j].type === "radio"){
+                    input = document.createElement("input");
+                    input.setAttribute("type", "radio");
+                    input.setAttribute("name",questionInfo.options[j].name);
+                    input.setAttribute("value", questionInfo.options[j].value);
+                    input.setAttribute("data-labelauty", questionInfo.options[j].content);
+                    let div = document.createElement("div");
+                    div.setAttribute("class", "row show-grid");
+                    div.setAttribute("style", "margin:10px");
+                    let label = document.createElement("label");
+                    let options = $(".options");
+                    label.append(input);
+                    div.append(label);
+                    options.append(div);
+                    continue;
+                }
+                if(questionInfo.options[j].type === "text"){
+                    const div = document.createElement("div");
+                    div.setAttribute("class", "");
+                    div.setAttribute("style", "margin:10px auto;");
+                    let options = $(".options");
+                    input = document.createElement("input");
+                    input.setAttribute("type","text");
+                    input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
+                    div.append(input);
+                    options.append(div);
+                    continue;
+                }
+            }
+        }
     </script>
 {% endblock %}

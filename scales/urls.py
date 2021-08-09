@@ -111,5 +111,7 @@ urlpatterns = [
     url('update_scales_content', views.update_scales_content),
     url('redo_scale', views.redo_scale),
     url('delete_scale_content', views.delete_scale_content),
+    url('get_question_by_index', views.get_question_by_index),
+    url('get_scale_metadata', views.get_scale_metadata),
 ]
 

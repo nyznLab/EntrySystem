@@ -2188,6 +2188,31 @@ def get_next_question(request):
     return HttpResponse(False)
 
 
+def get_question_by_index(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    question_index = str(request.POST.get("question_index"))
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    if "rule" not in scale_content[question_index]:
+        return JsonResponse(scale_content[question_index])
+    elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
+        return JsonResponse(scale_content[question_index])
+    return HttpResponse(False)
+
+
+def get_scale_metadata(request):
+    scale_id = request.POST.get("scale_id")
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    metadata = {}
+    if "title" in scale_content.keys():
+        metadata["title"] = scale_content["title"]
+    if "warn" in scale_content.keys():
+        metadata["warn"] = scale_content["warn"]
+    print(metadata)
+    return JsonResponse(metadata)
+
+
 def submit_scale(request):
     err = Do.submit_scales_input_validate(request)
     if err is not None:
@@ -2212,4 +2237,4 @@ def redo_scale(request):
 
 
 def delete_scale_content(scale_id, version):
-    return Do.delete_scale_content(scale_id, version)
+    return JsonResponse(json.dumps(Do.delete_scale_content(scale_id, version)))
