@@ -23,6 +23,7 @@ def get_one_patient_scales(patient_session_id):
                 done_list.append(i.scale_id)
             else:
                 not_done_list.append(i.scale_id)
+
         # 检出哪些量表该患者不需要做
         for n in range(1, scale_count + 1):
             if n not in done_list + not_done_list:

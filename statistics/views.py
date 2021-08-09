@@ -14,24 +14,14 @@ def get_patient_data(request):
             data = request.GET
 
             # 以下为基本筛选条件的组合
-            # if data.get('patient_id'):
-            #     search_dict['patient_id'] = data['patient_id']
             if data.getlist('name[]') or data.getlist('patient_id[]'):
                 search_dict['patient__name__in'] = data.getlist('name[]', [])
                 search_dict['patient_id__in'] = data.getlist('patient_id[]', [])
             if data.getlist('session_id[]'):
                 search_dict['session_id__in'] = data.getlist('session_id[]')
-            # if data.get('age'):
-            #     if int(data.get('age_compare')) == 0:
-            #         search_dict['age'] = data['age']
-            #     elif int(data.get('age_compare')) == 1:
-            #         search_dict['age__gte'] = data['age']
-            #     else:
-            #         search_dict['age__lte'] = data['age']
             if data.get('age_min') and data.get('age_max'):
                 if data.get('age_min') != '0' and data.get('age_max') != '0':
                     search_dict['age__range'] = (data.get('age_min'), data.get('age_max'))
-
             if data.get('sex'):
                 search_dict['patient__sex__contains'] = data['sex']
             if data.get('source'):
@@ -60,18 +50,6 @@ def get_patient_data(request):
             patients = ''
             count = 0
             fact_data_list = []
-
-            # 导出所有数据
-            # if data.get('operation') == 'export_all':
-            #     patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
-            #     # 把每条复扫记录基本信息与量表完成情况与得分情况组合
-            #     for patient_detail in patients:
-            #         scales_do = statistics_dao.get_one_patient_scales(patient_detail['id'])
-            #         scales_scores = statistics_dao.get_scales_score(patient_detail['id'])
-            #         patient_detail.update(scales_do)
-            #         patient_detail.update(scales_scores)
-            #         fact_data_list.append(patient_detail)
-            #     return JsonResponse({'code': 200, 'msg': 'ok', 'count': count, 'data': fact_data_list})
 
             # table的page设置为true后渲染会自动传给后台page和limit值
             page_num = int(data.get('page', 1))
