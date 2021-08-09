@@ -80,19 +80,6 @@
                 <div class="layui-tab-content" style="position:relative">
                     <div class="layui-tab-item layui-show">
                         <div class="x_content" id="content_box">
-{#                <div class="row">#}
-{#                    <div class="col-md-12 col-sm-12 col-xs-12">#}
-{#                        <a href="#modal_container_subjectBaseInfo_build" data-toggle="modal">#}
-{#                            <button class="btn btn-success btn-sm"><span class="fa fa-plus"></span><span>&nbsp;&nbsp;新建被试</span>#}
-{#                            </button>#}
-{#                        </a>#}
-{#                        <a href="#modal_container_search" data-toggle="modal">#}
-{#                            <button class="btn btn-warning btn-sm"><span class="fa fa-search"></span><span>&nbsp;&nbsp;查找</span>#}
-{#                            </button>#}
-{#                        </a>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="row" style="border-top: solid #ACC0D8 1px;margin:5px 0px"></div>#}
                 <div class="row clearfix">
                     <div class="col-md-12 column">
                         <div class="layui-progress" style="position:absolute;top:4px;left: 10px;right:10px;width: auto;border-radius:unset;" lay-filter="global_progress">
@@ -106,10 +93,6 @@
                             </div>
                             <button class="layui-btn-sm layui-btn layui-btn-primary layui-border-green" lay-event="guide" id="guide_btn">使用引导</button>
                         </script>
-{#                        <blockquote class="layui-elem-quote layui-quote-nm" id="filter_compare_content">#}
-{#                            提示：由于数据较多，加载比较慢，请耐心等待。#}
-{#                            <input id="click" type="button" class="layui-btn-sm layui-btn layui-btn-primary" value="测试数据">#}
-{#                        </blockquote>#}
                     </div>
                 </div>
             </div>
@@ -132,9 +115,6 @@
             <div class="layui-tab-item layui-show">
                 <div class="layui-form-item" id="id_and_name_item">
           <label class="layui-form-label">编号 / 姓名</label>
-{#          <div class="layui-input-inline">#}
-{#              <input type="text" lay-verify="username" autocomplete="on" class="layui-input" id="name" >#}
-{#          </div>#}
             <div class="layui-input-inline" style="width:400px">
                 <div class="" id="name_select"></div>
             </div>
@@ -143,9 +123,6 @@
 
           <label class="layui-form-label">扫描编号</label>
           <div class="layui-input-inline" style="width:300px">
-{#              {% for s in session_all_list %}#}
-{#                  <input type="checkbox" title="{{ s.session_id|processSession }}" lay-skin="primary" value="{{ forloop.counter }}" name="session_id">#}
-{#              {% endfor %}#}
               <div class="" id="session_select"></div>
           </div>
 
@@ -155,18 +132,9 @@
       <div class="layui-inline">
           <label class="layui-form-label">年龄</label>
           <div class="layui-input-inline" style="width:300px">
-{#              <input type="text" lay-verify="required" name="age" autocomplete="off" class="layui-input" id="age" >#}
               <div class="" id="age_slider_container" style="margin-top: 16px"></div>
           </div>
 
-{#          <div class="layui-form-mid">-</div>#}
-{#          <div class="layui-input-inline">#}
-{#              <select name="age_compare" id="age_compare_select">#}
-{#                  <option value="0" selected>等于</option>#}
-{#                  <option value="1">大于（包含）</option>#}
-{#                  <option value="2">小于（包含）</option>#}
-{#              </select>#}
-{#          </div>#}
       </div>
 
   </div>
@@ -174,20 +142,8 @@
 
             <label class="layui-form-label">诊断</label>
                 <div class="layui-input-inline" style="width:300px">
-{#                    <input type="checkbox" name="diagnosis" title="未诊断" lay-skin="primary" value="0">#}
-{#                    <input type="checkbox" name="diagnosis" title="健康者" lay-skin="primary" value="1">#}
-{#                    <input type="checkbox" name="diagnosis" title="重性抑郁障碍" lay-skin="primary" value="2">#}
-{#                    <input type="checkbox" name="diagnosis" title="焦虑障碍" lay-skin="primary" value="3">#}
-{#                    <input type="checkbox" name="diagnosis" title="双相障碍" lay-skin="primary" value="4">#}
-{#                    <input type="checkbox" name="diagnosis" title="精神分裂症" lay-skin="primary" value="5">#}
-{#                    <input type="checkbox" name="diagnosis" title="强迫症" lay-skin="primary" value="6">#}
-{#                    <input type="checkbox" name="diagnosis" title="高危遗传" lay-skin="primary" value="7">#}
-{#                    <input type="checkbox" name="diagnosis" title="临床高危" lay-skin="primary" value="8">#}
-{#                    <input type="checkbox" name="diagnosis" title="抑郁症状" lay-skin="primary" value="9">#}
-{#                    <input type="checkbox" name="diagnosis" title="其他诊断" lay-skin="primary" value="99">#}
                     <div class="" id="diagnosis_select"></div>
                 </div>
-
 
   </div>
 
@@ -1139,8 +1095,6 @@
                                 name:name_select.getValue('name'),
                                 age_min:age_min,
                                 age_max:age_max,
-                                {#age:$("#age").val().trim(),#}
-                                {#age_compare:$("#age_compare_select option:selected").val(),#}
                                 sex:$("input[name='sex']:checked").val(),
                                 source: $("#source_select option:selected").val(),
                                 blood: $("input[name='blood']:checked").val(),
@@ -1291,7 +1245,6 @@
                     }else{
                         arr += "<button class='layui-btn layui-btn-primary layui-btn-xs'>"+item.scale_name+"</button>"
                     }
-                    // done_arr += "<button class='layui-btn layui-btn-primary layui-btn-xs'>"+item.scale_name+"</button>"
                     if((index + 1) % 4 === 0){
                         arr += "<br/>"
                     }
@@ -1332,24 +1285,14 @@
                 text += no_need_arr;
                 text += "</div>"
                 text += "</blockquote>";
-
-                //text += "<fieldset class=\"layui-elem-field\">";
-
-                //text += "  <div class=\"layui-field-box\">";
                 text += "<blockquote class=\"layui-elem-quote layui-quote-nm\" style=\"border-left: 5px solid red;font-size: 13px\">";
-                //text += "<div class='layui-btn-container'>"
                 text += "提示："
                 text += "<button class=\"layui-btn layui-btn-primary layui-btn-xs\">一般信息表</button><button class=\"layui-btn layui-btn-xs\">他评量表</button>"
                      + "<button class=\"layui-btn layui-btn-normal layui-btn-xs\">自评量表</button><button class=\"layui-btn layui-btn-warm layui-btn-xs\">认知量表</button><button class=\"layui-btn layui-btn-danger layui-btn-xs\">其他信息表</button>"
-                //text += "</div>"
                 text += "</blockquote>";
-                //text += "  </div>";
-                //text += "</fieldset>";
-
                 text += "        </div>";
                 text += "    </div>";
-                
-                
+
                 layer.open({
                     type:1,
                     title:false,
@@ -1362,15 +1305,6 @@
             }
 
             else if(layEvent === 'addToCompare'){
-                //
-                //var compare_data = layui.data('compare').data
-                //console.log(compare_data)
-                //storage_list.push(data)
-                //var f_content = $('#filter_compare_content')
-                //layui.data('compare',{
-                    //key: 'data'
-                    //,value: storage_list
-                //})
 
             }
         })
