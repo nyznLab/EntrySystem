@@ -1631,6 +1631,7 @@ def get_next_self_scale_url(request):
     patient_session_id = request.GET.get('patient_session_id')  # 暂定下一个，需要调到最近的未完成量表
     scale_id = get_next_self_scale_id(patient_session_id=patient_session_id, cur_scale_id=current_scale_id)
     patient_id = request.GET.get('patient_id')
+    #  改next_test_url完成跳转
     if scale_id is None:
         next_test_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),
                                                                                            str(patient_id))
@@ -2080,15 +2081,6 @@ def redo_self_tests(request):
                                                                                                     scale_id))
 
 
-def testNewAjax(request):
-    # ans1 = scales_dao.get_version_of_history_scale(config.scaleId_Models_Map["12"], 1)
-    # ans2 = scales_dao.get_version_of_history_scale(config.scaleId_Models_Map["12"], 2)
-    # print(ans1, type(ans1))
-    # print(ans2, type(ans2))
-    # return HttpResponse(ans1)
-    return render(request, r"nbh/test.html")
-
-
 # 自杀行为表
 def add_suibe(request):
     patient_session_id = request.GET.get('patient_session_id')
@@ -2147,6 +2139,7 @@ def get_check_suibe_form(request):
                                                    })
 
 
+# 上传量表内容
 def update_scales_content(request):
     err, handler = Do.update_scales_content_validate(request)
     if err is not None:
@@ -2172,6 +2165,7 @@ def update_scales_content(request):
     return HttpResponse(rsp)
 
 
+# 返回下一个未完成的题目
 def get_next_question(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
@@ -2179,15 +2173,19 @@ def get_next_question(request):
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
     while str(last_answered_question_index + 1) in scale_content.keys():
         key_str = str(last_answered_question_index + 1)
-        if "rule" not in scale_content[key_str]:
-            return JsonResponse(scale_content[key_str])
-        elif Do.match_rules(scale_content[key_str]["rule"], scale_id, patient_session_id):
-            return JsonResponse(scale_content[key_str])
+        if "rule" not in scale_content[key_str] or Do.match_rules(scale_content[key_str]["rule"], scale_id,
+                                                                  patient_session_id):
+            rsp = {
+                "index": last_answered_question_index + 1,
+                "content": scale_content[key_str],
+            }
+            return JsonResponse(rsp)
         last_answered_question_index += 1
     Do.complete_scale(patient_session_id, scale_id)
     return HttpResponse(False)
 
 
+# 根据题号取题目内容
 def get_question_by_index(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
@@ -2200,6 +2198,7 @@ def get_question_by_index(request):
     return HttpResponse(False)
 
 
+#  获取量表标题和警示
 def get_scale_metadata(request):
     scale_id = request.POST.get("scale_id")
     patient_session_id = request.POST.get("patient_session_id")
@@ -2213,13 +2212,14 @@ def get_scale_metadata(request):
     return JsonResponse(metadata)
 
 
+# 提交题目答案
 def submit_scale(request):
     err = Do.submit_scales_input_validate(request)
     if err is not None:
         return HttpResponse(err)
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
-    doctor_id = request.POST.get('doctor_id')
+    doctor_id = request.session.get('doctor_id')
     form_data = json.loads(request.POST.get('data'))
     duration = request.POST.get('duration')
     try:
@@ -2230,11 +2230,22 @@ def submit_scale(request):
     return HttpResponse(True)
 
 
+# 重做
 def redo_scale(request):
     patient_session_id = request.POST.get('patient_session_is')
     scale_id = request.POST.get('scale_id')
     return HttpResponse(Do.redo_scale(scale_id, patient_session_id))
 
 
+# 删除量表内容
 def delete_scale_content(scale_id, version):
     return JsonResponse(json.dumps(Do.delete_scale_content(scale_id, version)))
+
+
+def testNewAjax(request):
+    patient_session_id = request.GET.get()
+    scale_id = request.GET.get()
+    return render(request, r"nbh/test.html", {
+        "patientSessionId": patient_session_id,
+        "scaleId": scale_id,
+    })

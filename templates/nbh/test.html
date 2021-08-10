@@ -6,7 +6,10 @@
         <div class="modal-content">
             <h4 align="center"> 您确认要退出当前自评量表测评吗？</h4>
             <div align="center">
-                <button type="button" onclick="location='/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&session_id={{ session_id }}'" class="btn btn-danger" style="width:68px;height:34px">退出</button>
+                <button type="button"
+                        onclick="location='/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&session_id={{ session_id }}'"
+                        class="btn btn-danger" style="width:68px;height:34px">退出
+                </button>
                 <button type="button" class="btn btn-success" style="width:68px;height:34px" data-dismiss="modal">关闭
                 </button>
             </div>
@@ -54,8 +57,10 @@
                 </h3>
                 <div class="options"></div>
                 <div>
-                    <input id="question_submit" type="button" class="btn btn-success text-center"
+                    <input id="submit" type="button" class="btn btn-success text-center"
                            style="width:68px;height:34px" value="下一题">
+                    <input id="previous" type="button" class="btn btn-info text-center"
+                           style="width:68px;height:34px" value="上一题">
                     <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
                            value="退&nbsp;&nbsp;出">
                 </div>
@@ -66,61 +71,149 @@
 {% endblock %}
 
 {% block js %}
-    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
-    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
-    <script type="text/javascript" language="JavaScript">
-        $(document).ready(function () {
-            $.post("/scales/get_scale_metadata",
-                {patient_session_id: "1", scale_id: "12"},
-                function (result, statue) {
-                    if(statue === "success"){
-                        $(".active").text(result.title);
-                        $(".warn").text(result.warn);
-                    }
-                });
-            $.post("/scales/get_next_question",
-                {patient_session_id: "1", scale_id: "12"},
-                function (result, statue) {
-                    if(statue === "success"){
-                        updateQuestion(result);
-                    }
-                });
-        });
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script type="text/javascript" language="JavaScript">
+    let date;
+    let index;
+    let patientSessionId = 2;
+    let scaleId = 12;
+    $(document).ready(function () {
+        $.post("/scales/get_scale_metadata",
+            {patient_session_id: patientSessionId, scale_id: scaleId},
+            function (result, statue) {
+                if (statue === "success") {
+                    $(".active").text(result.title);
+                    $(".warn").text(result.warn);
+                }
+            });
+        $.post("/scales/get_next_question",
+            {patient_session_id: patientSessionId, scale_id: scaleId},
+            function (result, statue) {
+                if (statue === "success") {
+                    updateQuestion(result.content);
+                    index = result.index;
+                }
+            });
+        date = new Date();
+    });
 
-        function updateQuestion(questionInfo) {
-            let input;
-            $(".question").text(questionInfo.title);
-            let j = 0, len = questionInfo.options.length;
-            for(; j< len; j ++){
-                if(questionInfo.options[j].type === "radio"){
-                    input = document.createElement("input");
-                    input.setAttribute("type", "radio");
-                    input.setAttribute("name",questionInfo.options[j].name);
-                    input.setAttribute("value", questionInfo.options[j].value);
-                    input.setAttribute("data-labelauty", questionInfo.options[j].content);
-                    let div = document.createElement("div");
-                    div.setAttribute("class", "row show-grid");
-                    div.setAttribute("style", "margin:10px");
-                    let label = document.createElement("label");
-                    let options = $(".options");
-                    label.append(input);
-                    div.append(label);
-                    options.append(div);
-                    continue;
+    $("#submit").click(function () {
+        const loginData = $.serializeJSON($('#question_form'));
+        // console.log($('#question_form').serializeJson());
+        $.post("/scales/submit_scale",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                data: JSON.stringify(loginData),
+                duration: new Date() - date,
+            },
+            function (result, statue) {
+                if (statue === "success") {
+                    //  渲染下一个题目
+                    $.post("/scales/get_question_by_index",
+                        {patient_session_id: patientSessionId, scale_id: scaleId, question_index: ++index},
+                        function (result, statue) {
+                            if (statue === "success") {
+                                if (result === false) {
+                                    // 跳转到下一量表
+                                    window.location.replace("/scales/self_test?patient_session_id={{ patient_session_id }}&scale_id={{ scale_id }}");
+                                } else {
+                                    updateQuestion(result);
+                                }
+                            }
+                        });
                 }
-                if(questionInfo.options[j].type === "text"){
-                    const div = document.createElement("div");
-                    div.setAttribute("class", "");
-                    div.setAttribute("style", "margin:10px auto;");
-                    let options = $(".options");
-                    input = document.createElement("input");
-                    input.setAttribute("type","text");
-                    input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
-                    div.append(input);
-                    options.append(div);
-                    continue;
+            },
+            "json"
+        );
+    });
+
+    $("#previous").click(function () {
+        let rsp = findPreviousQuestion({
+            patient_session_id: patientSessionId,
+            scale_id: scaleId,
+            question_index: --index
+        });
+        while (rsp === false) {
+            rsp = findPreviousQuestion({
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                question_index: --index
+            });
+        }
+        updateQuestion(rsp.content);
+    });
+
+    function findPreviousQuestion(req) {
+        let rsp;
+        $.post("/scales/get_question_by_index",
+            req,
+            function (result, statue) {
+                if (statue === "success") {
+                    rsp = result;
                 }
+            },
+            "json"
+        );
+        return rsp;
+    }
+
+    function updateQuestion(questionInfo) {
+        let input;
+        $(".question").text(questionInfo.title);
+        let j = 0, len = questionInfo.options.length;
+        for (; j < len; j++) {
+            if (questionInfo.options[j].type === "radio") {
+                input = document.createElement("input");
+                input.setAttribute("type", "radio");
+                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("value", questionInfo.options[j].value);
+                input.setAttribute("data-labelauty", questionInfo.options[j].content);
+                let div = document.createElement("div");
+                div.setAttribute("class", "row show-grid");
+                div.setAttribute("style", "margin:10px");
+                let label = document.createElement("label");
+                let options = $(".options");
+                label.append(input);
+                div.append(input);
+                div.append(questionInfo.options[j].content)
+                options.append(div);
+                continue;
+            }
+            if (questionInfo.options[j].type === "text") {
+                const div = document.createElement("div");
+                div.setAttribute("class", "");
+                div.setAttribute("style", "margin:10px auto;");
+                let options = $(".options");
+                input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
+                div.append(input);
+                options.append(div);
+                continue;
             }
         }
-    </script>
+        // $("input[type='radio']").labelauty({ icon: true, label: true });
+    }
+
+    ;$.extend({
+        serializeJSON: function (obj) {
+            const formArr = obj.serializeArray();
+            const formObj = new Object();
+            $.each(formArr, function () {
+                if (formObj[this.name]) {
+                    if (!formObj[this.name].push) {
+                        formObj[this.name] = [formObj[this.name]];
+                    }
+                    formObj[this.name].push(this.value || '');
+                } else {
+                    formObj[this.name] = this.value || '';
+                }
+            });
+            return formObj;
+        }
+    });
+</script>
 {% endblock %}

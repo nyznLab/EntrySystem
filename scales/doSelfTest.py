@@ -1,3 +1,4 @@
+import ast
 import json
 import time
 
@@ -97,11 +98,11 @@ def match_rules(rule, scale_id, patient_session_id):
 def call_match_rules(rule, answer):
     rule_parser = ruleParser.RuleParser()
     # try:
-    rule_parser.validate(json.loads(rule))
+    rule_parser.validate(ast.literal_eval(rule))
     # TODO 这里return false不方便定位错误，后面return false的同时把错误打印到日志文件里，目前先直接抛ERROR处理
     # except ValueError:
     #     return False
-    return rule_parser.evaluate(answer, json.loads(rule))
+    return rule_parser.evaluate(answer, ast.literal_eval(rule))
 
 
 def submit_scales_input_validate(request):
