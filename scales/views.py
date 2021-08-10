@@ -1626,12 +1626,13 @@ def get_next_self_scale_id(patient_session_id, cur_scale_id):
     return min_unfinished_scale
 
 
+# TODO 量表间的跳转逻辑需要调整
 def get_next_self_scale_url(request):
     current_scale_id = request.GET.get('scale_id')
     patient_session_id = request.GET.get('patient_session_id')  # 暂定下一个，需要调到最近的未完成量表
     scale_id = get_next_self_scale_id(patient_session_id=patient_session_id, cur_scale_id=current_scale_id)
     patient_id = request.GET.get('patient_id')
-    #  改next_test_url完成跳转
+    #  TODO 改next_test_url完成跳转
     if scale_id is None:
         next_test_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),
                                                                                            str(patient_id))
@@ -2231,6 +2232,7 @@ def submit_scale(request):
 
 
 # 重做
+# TODO 重做逻辑没有验证 可能有问题 还要自测一下
 def redo_scale(request):
     patient_session_id = request.POST.get('patient_session_is')
     scale_id = request.POST.get('scale_id')

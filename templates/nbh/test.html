@@ -116,7 +116,7 @@
                         function (result, statue) {
                             if (statue === "success") {
                                 if (result === false) {
-                                    // 跳转到下一量表
+                                    // TODO 跳转到下一量表 逻辑待完善
                                     window.location.replace("/scales/self_test?patient_session_id={{ patient_session_id }}&scale_id={{ scale_id }}");
                                 } else {
                                     updateQuestion(result);
@@ -129,6 +129,7 @@
         );
     });
 
+    // TODO 上一题功能 开发返回题目历史答案 并将历史答案显示出来
     $("#previous").click(function () {
         let rsp = findPreviousQuestion({
             patient_session_id: patientSessionId,
@@ -145,6 +146,7 @@
         updateQuestion(rsp.content);
     });
 
+    // TODO 上一题
     function findPreviousQuestion(req) {
         let rsp;
         $.post("/scales/get_question_by_index",
@@ -169,6 +171,7 @@
                 input.setAttribute("type", "radio");
                 input.setAttribute("name", questionInfo.options[j].name);
                 input.setAttribute("value", questionInfo.options[j].value);
+                // TODO labelauty 没生效 需要调试一下
                 input.setAttribute("data-labelauty", questionInfo.options[j].content);
                 let div = document.createElement("div");
                 div.setAttribute("class", "row show-grid");
@@ -195,6 +198,7 @@
                 continue;
             }
         }
+        // TODO 样式没生效 后期要调整一下
         // $("input[type='radio']").labelauty({ icon: true, label: true });
     }
 
