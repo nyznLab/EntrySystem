@@ -28,7 +28,7 @@ def base_getData(patient_list,base_path,data_type,prefix,suffix):
 
     '''
     path = base_path
-    file_list = []
+    dic={}
     # 遍历病人列表
     for patient in patient_list:
         # 进行病人id校验
@@ -41,16 +41,17 @@ def base_getData(patient_list,base_path,data_type,prefix,suffix):
             patient_path = f'{path}/{sub_id}/{sub_session}'
             # 进行文件夹是否存在校验
             if not os.path.exists(patient_path):
-                 handle_exception(BussinessException(f'病人{patient} 数据不存在'))
-                 continue
+                dic[patient] = []
+                continue
             # 进行数据文件是否存在校验，并进行文件路径获取
             file_path = f'{patient_path}/{data_type}/{prefix}_{standard_id}.{suffix}'
           
             if not os.path.exists(file_path):
-                handle_exception(BussinessException(f'病人{patient},{data_type} 数据不存在'))
+                dic[patient] = []
+                continue
             else:
-                file_list.append(file_path)
-    return file_list
+                dic[patient] = file_path
+    return dic
 
 def get_dicom(patient_list,city_type,list_type='sms5_bold_500ms_rest64'):
     if city_type == 'shenyang':
@@ -59,28 +60,29 @@ def get_dicom(patient_list,city_type,list_type='sms5_bold_500ms_rest64'):
         city_path = conf.nanjingPath
     path = city_path+'/raw_data'
     data_type='dicom'
-    file_list = []
+    dic={}
     # 遍历病人列表
     for patient in patient_list:
         # 进行病人id校验
         standard_id = getIdNameFromString(patient)
         if standard_id is None:
-            handle_exception(BussinessException(f'===病人id：{patient}不合法，请确认修改后重新执行=='))
+            dic[patient] = []
+            continue
         else:
             id, session = getIdAndSession(standard_id)
             sub_id, sub_session = packingIdAndSession(id, session)
             patient_path = f'{path}/{sub_id}/{sub_session}'
             # 进行文件夹是否存在校验
             if not os.path.exists(patient_path):
-                handle_exception(BussinessException(f'病人{patient} 数据不存在'))
+                dic[patient]=[]
                 continue
             # 进行数据文件是否存校在验，并进行文件路径获取
             file_path = f'{patient_path}/{data_type}/{list_type}'
             if (not os.path.exists(file_path)) or (len(os.listdir(file_path)) == 0) :
-                handle_exception(BussinessException(f'病人{patient},{list_type} 数据不存在'))
+                dic[patient]=[]
             else:
-                file_list.append(file_path)
-    return file_list
+                dic[patient]=file_path
+    return dic
 
 
 def get_reho(patient_list,city_type,reho_type='smReHo'):
@@ -99,8 +101,8 @@ def get_reho(patient_list,city_type,reho_type='smReHo'):
     path = city_path+'/preprocess'
     if reho_type not in confclass.preprocessDict.ReHo_Types:
         raise BussinessException(f'数据类型:{reho_type} 输入错误')
-    file_list=base_getData(patient_list, path, confclass.preprocessDict.REHO, reho_type+'Map', 'nii')
-    return file_list
+    dic=base_getData(patient_list, path, confclass.preprocessDict.REHO, reho_type+'Map', 'nii')
+    return dic
 
 def get_falff(patient_list,city_type,falff_type='fALFF'):
 
@@ -118,8 +120,8 @@ def get_falff(patient_list,city_type,falff_type='fALFF'):
     path = city_path+'/preprocess'
     if falff_type not in confclass.preprocessDict.fALFF_Types:
         raise BussinessException(f'数据类型:{falff_type} 输入错误')
-    file_list = base_getData(patient_list, path, confclass.preprocessDict.fALFF, falff_type+'Map', 'nii')
-    return file_list
+    dic = base_getData(patient_list, path, confclass.preprocessDict.fALFF, falff_type+'Map', 'nii')
+    return dic
 
 def get_alff(patient_list,city_type,alff_type='mALFF'):
 
@@ -137,8 +139,8 @@ def get_alff(patient_list,city_type,alff_type='mALFF'):
     path = city_path+'/preprocess'
     if alff_type not in confclass.preprocessDict.ALFF_Types:
         raise BussinessException(f'数据类型:{alff_type} 输入错误')
-    file_list = base_getData(patient_list, path, confclass.preprocessDict.ALFF, alff_type+'Map', 'nii')
-    return file_list
+    dic = base_getData(patient_list, path, confclass.preprocessDict.ALFF, alff_type+'Map', 'nii')
+    return dic
 
 def get_roi_fc(patient_list,city_type,roi_fc_prefix_type='ROICorrelation_FisherZ',roi_fc_suffix_type='mat'):
     '''
@@ -162,8 +164,8 @@ def get_roi_fc(patient_list,city_type,roi_fc_prefix_type='ROICorrelation_FisherZ
     elif roi_fc_prefix_type in confclass.preprocessDict.ROI_FC_Types[1:] and roi_fc_suffix_type == suffix_types[0]:
         raise BussinessException(f'数据类型{confclass.preprocessDict.ROI_FC_Types[0]},后缀输入错误')
     else:
-        file_list = base_getData(patient_list, path, confclass.preprocessDict.ROI_FC, roi_fc_prefix_type , roi_fc_suffix_type)
-    return file_list
+        dic = base_getData(patient_list, path, confclass.preprocessDict.ROI_FC, roi_fc_prefix_type , roi_fc_suffix_type)
+    return dic
 
 def get_fc(patient_list,city_type,fc_prefix_type='FC',fc_suffix_type='nii'):
 
@@ -189,8 +191,8 @@ def get_fc(patient_list,city_type,fc_prefix_type='FC',fc_suffix_type='nii'):
     elif fc_prefix_type == confclass.preprocessDict.FC_Types[3] and fc_suffix_type != suffix_types[2:]:
         raise BussinessException(f'数据类型:{fc_prefix_type} .后缀输入错误')
     else:
-        file_list = base_getData(patient_list, path, confclass.preprocessDict.FC, fc_prefix_type + 'Map', fc_suffix_type)
-    return file_list
+        dic = base_getData(patient_list, path, confclass.preprocessDict.FC, fc_prefix_type + 'Map', fc_suffix_type)
+    return dic
 
 
 # try:
