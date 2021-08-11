@@ -165,3 +165,13 @@ def redo_scale(scale_id, patient_session_id):
         return False
     not_complete_scale(scale_id, patient_session_id)
     return True
+
+
+def get_answer_by_index(scale_id, patient_session_id, question_index):
+    res = scales_dao.get_answer_by_index(config.scaleId_Models_Map[str(scale_id)], patient_session_id,
+                                         "question{}".format(question_index))
+    return res
+
+
+def get_patient_id(patient_session_id):
+    return scales_dao.get_patient_id(patient_session_id)

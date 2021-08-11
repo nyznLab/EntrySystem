@@ -1631,16 +1631,16 @@ def get_next_self_scale_url(request):
     current_scale_id = request.GET.get('scale_id')
     patient_session_id = request.GET.get('patient_session_id')  # 暂定下一个，需要调到最近的未完成量表
     scale_id = get_next_self_scale_id(patient_session_id=patient_session_id, cur_scale_id=current_scale_id)
-    patient_id = request.GET.get('patient_id')
-    #  TODO 改next_test_url完成跳转
+    patient_id = Do.get_patient_id(patient_session_id)
+    #  TODO 这个方法不传patient_id 这里改成用patient_session_id查patient_id
     if scale_id is None:
         next_test_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),
-                                                                                           str(patient_id))
+                                                                                           patient_id)
     else:
-        next_test_url = '/scales/get_self_tests?scale_id={}&patient_session_id={}&patient_id={}'.format(str(scale_id),
-                                                                                                        str(
-                                                                                                            patient_session_id),
-                                                                                                        str(patient_id))
+        # next_test_url = '/scales/get_self_tests?scale_id={}&patient_session_id={}&patient_id={}'.format(str(scale_id),
+        #                                                                                                 str(patient_session_id),
+        #                                                                                                 str(patient_id))
+        next_test_url = '/scales/self_test?patient_session_id={}&scale_id={}'.format(patient_session_id, scale_id)
     print(next_test_url)
     return render(request, 'warning.html', {
         "content": "当前量表已经完成",
@@ -2199,6 +2199,17 @@ def get_question_by_index(request):
     return HttpResponse(False)
 
 
+# 根据题号取答案
+def get_answer_by_index(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    question_index = str(request.POST.get("question_index"))
+    res = Do.get_answer_by_index(scale_id, patient_session_id, question_index)
+    return JsonResponse({
+        "answer": res,
+    })
+
+
 #  获取量表标题和警示
 def get_scale_metadata(request):
     scale_id = request.POST.get("scale_id")
@@ -2245,8 +2256,17 @@ def delete_scale_content(scale_id, version):
 
 
 def testNewAjax(request):
-    patient_session_id = request.GET.get()
-    scale_id = request.GET.get()
+    patient_session_id = request.GET.get("patient_session_id")
+    scale_id = request.GET.get("scale_id")
+    return render(request, r"nbh/test.html", {
+        "patientSessionId": patient_session_id,
+        "scaleId": scale_id,
+    })
+
+
+def selfTest(request):
+    patient_session_id = request.GET.get("patient_session_id")
+    scale_id = request.GET.get("scale_id")
     return render(request, r"nbh/test.html", {
         "patientSessionId": patient_session_id,
         "scaleId": scale_id,

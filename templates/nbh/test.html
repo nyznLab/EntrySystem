@@ -116,8 +116,8 @@
                         function (result, statue) {
                             if (statue === "success") {
                                 if (result === false) {
-                                    // TODO 跳转到下一量表 逻辑待完善
-                                    window.location.replace("/scales/self_test?patient_session_id={{ patient_session_id }}&scale_id={{ scale_id }}");
+                                    scaleId++;
+                                    window.location.replace("/scales/get_next_self_scale_url?patient_session_id=${patientSessionId}&scale_id=${scaleId}");
                                 } else {
                                     updateQuestion(result);
                                 }
@@ -136,17 +136,48 @@
             scale_id: scaleId,
             question_index: --index
         });
-        while (rsp === false) {
+        while (rsp === false && index > 0) {
             rsp = findPreviousQuestion({
                 patient_session_id: patientSessionId,
                 scale_id: scaleId,
                 question_index: --index
             });
         }
-        updateQuestion(rsp.content);
+        if (index > 0) {
+            updateQuestion(rsp.content);
+            // todo 取对应题目的答案
+            $.post("/scales/get_answer_by_index",
+                {
+                    patient_session_id: patientSessionId,
+                    scale_id: scaleId,
+                    question_index: index
+                },
+                function (result, statue) {
+                    if (statue === "success") {
+                        let inputs = document.getElementsByTagName("input");
+                        if (inputs[0].type === 'radio') {
+                            for (let i = 0; i < inputs.length; i++) {
+                                if (inputs[i].value === result.answer) {
+                                    inputs[i].checked = true;
+                                }
+                            }
+                            return;
+                        }
+                        if (inputs[0].type === 'text') {
+                            inputs[0].value = result.answer;
+                            return;
+                        }
+                        alert("无法获取到上一题的答案");
+                    }
+                },
+                "json"
+            );
+            return;
+        }
+        alert("取不到上一题");
     });
 
-    // TODO 上一题
+    // 获取上一题题目
     function findPreviousQuestion(req) {
         let rsp;
         $.post("/scales/get_question_by_index",
@@ -197,15 +228,18 @@
                 options.append(div);
                 continue;
             }
+            if(1 === 1){
+                return;
+            }
         }
         // TODO 样式没生效 后期要调整一下
         // $("input[type='radio']").labelauty({ icon: true, label: true });
     }
 
-    ;$.extend({
+    $.extend({
         serializeJSON: function (obj) {
             const formArr = obj.serializeArray();
-            const formObj = new Object();
+            const formObj = {};
             $.each(formArr, function () {
                 if (formObj[this.name]) {
                     if (!formObj[this.name].push) {
