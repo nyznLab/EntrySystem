@@ -283,13 +283,6 @@
                                             {% for option in options_list %}
                                                 <option value="{{ forloop.counter0 }}" {% if patient_detail.scan_note_option == forloop.counter0 %}selected{% endif %}>{{ option }}</option>
                                             {% endfor %}
-{#                                            <option value="0">无</option>#}
-{#                                            <option value="1">初扫</option>#}
-{#                                            <option value="2">只采血</option>#}
-{#                                            <option value="3">复扫</option>#}
-{#                                            <option value="4">出院前</option>#}
-{#                                            <option value="5">随访</option>#}
-{#                                            <option value="6">再次入院</option>#}
                                             </select>
 
                                             <div id="scan_note_num_container" style="{% if patient_detail.scan_note_option < 3 or patient_detail.scan_note_option == null  %}display: none{% endif %}">
