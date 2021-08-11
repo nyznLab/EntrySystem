@@ -2243,7 +2243,6 @@ def submit_scale(request):
 
 
 # 重做
-# TODO 重做逻辑没有验证 可能有问题 还要自测一下
 def redo_scale(request):
     patient_session_id = request.POST.get('patient_session_is')
     scale_id = request.POST.get('scale_id')
