@@ -17,9 +17,6 @@ class BussinessException(Exception):
 
 # 处理异常
 def handle_exception(e):
-    # textfile=open('error.txt', 'a')
-    # print(e,file=textfile)
-    # textfile.close()
     logging.basicConfig(level=logging.ERROR,
                         filename='error.log',
                         filemode='a',
