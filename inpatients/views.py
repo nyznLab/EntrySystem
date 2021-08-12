@@ -316,7 +316,6 @@ def upload_out_record(request):
 #项目日志
 def program_log(request):
     return render(request, 'program_log.html')
-
 # def upload_out_record(request):
 #     if request.method == 'POST':
 #         inpatient_id = 1
