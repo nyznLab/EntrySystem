@@ -92,7 +92,7 @@ def get_reho(patient_list,city_type,reho_type='smReHo'):
     :param patient_list:
     :param city_type: 南京还是沈阳
     :param reho_type: reho数据类型(ReHo,smReHo,sReHo,mReHo,szReHo,zReHo)
-    :return:文件路径列表
+    :return:文件路径字典
     '''
     if city_type == 'shenyang':
         city_path = conf.shenyangPath
@@ -111,7 +111,7 @@ def get_falff(patient_list,city_type,falff_type='fALFF'):
     :param patient_list:
     :param city_type: 南京还是沈阳
     :param falff_type: falff数据类型(fALFF,mfALFF,zfALFF)
-    :return:文件路径列表
+    :return:文件路径字典
     '''
     if city_type == 'shenyang':
         city_path = conf.shenyangPath
@@ -130,7 +130,7 @@ def get_alff(patient_list,city_type,alff_type='mALFF'):
     :param patient_list:
     :param city_type: 南京还是沈阳
     :param alff_type: alff数据类型(ALFF,mALFF,zALFF)
-    :return:文件路径列表
+    :return:文件路径字典
     '''
     if city_type == 'shenyang':
         city_path = conf.shenyangPath
@@ -142,6 +142,44 @@ def get_alff(patient_list,city_type,alff_type='mALFF'):
     dic = base_getData(patient_list, path, confclass.preprocessDict.ALFF, alff_type+'Map', 'nii')
     return dic
 
+def get_voxel(patient_list,city_type):
+
+    '''
+    获取病人voxel_wise_FC文件路径
+    :param patient_list:
+    :param city_type: 南京还是沈阳
+    :return:文件路径字典
+    '''
+    if city_type == 'shenyang':
+        city_path = conf.shenyangPath
+    if city_type == 'nanjing':
+        city_path = conf.nanjingPath
+    path = city_path+'/preprocess'
+    dic={}
+    data_type=confclass.preprocessDict.voxel_FC
+    suffix='npy'
+    for patient in patient_list:
+        # 进行病人id校验
+        standard_id = getIdNameFromString(patient)
+        if standard_id is None:
+            dic[patient]=[]
+        else:
+            id, session = getIdAndSession(standard_id)
+            sub_id, sub_session = packingIdAndSession(id, session)
+            patient_path = f'{path}/{sub_id}/{sub_session}'
+            # 进行文件夹是否存在校验
+            if not os.path.exists(patient_path):
+                dic[patient] = []
+                continue
+            # 进行数据文件是否存在校验，并进行文件路径获取
+            file_path = f'{patient_path}/{data_type}/{standard_id}.{suffix}'
+            if not os.path.exists(file_path):
+                dic[patient] = []
+                continue
+            else:
+                dic[patient] = file_path
+    return dic
+
 def get_roi_fc(patient_list,city_type,roi_fc_prefix_type='ROICorrelation_FisherZ',roi_fc_suffix_type='mat'):
     '''
         获取病人fc文件路径(这里的fc指的是ROISignals_FunImgARWSDCF文件夹）
@@ -149,7 +187,7 @@ def get_roi_fc(patient_list,city_type,roi_fc_prefix_type='ROICorrelation_FisherZ
         :param city_type: 南京还是沈阳
         :param roi_fc_prefix_type: ROISignals_FunImgARWSDCF数据类型(ROI_OrderKey,ROICorrelation_FisherZ,ROICorrelation，ROISignals)
         :param fc_suffix_type:文件格式类型（mat,tsv,txt)
-        :return:文件路径列表
+        :return:文件路径字典
         '''
     if city_type == 'shenyang':
         city_path = conf.shenyangPath
@@ -174,7 +212,7 @@ def get_fc(patient_list,city_type,fc_prefix_type='FC',fc_suffix_type='nii'):
     :param patient_list:
     :param city_type: 南京还是沈阳
     :param fc_type: fc数据类型['FC','ROI_FC','ROI_Orderkey_FC','zFC']
-    :return:文件路径列表
+    :return:文件路径字典
     '''
     if city_type == 'shenyang':
         city_path = conf.shenyangPath
@@ -195,11 +233,7 @@ def get_fc(patient_list,city_type,fc_prefix_type='FC',fc_suffix_type='nii'):
     return dic
 
 
-# try:
-#     patient_list = get_fc(['NN_00000001_S001'],'nanjing','ROI_Orderkey_FC','tsv')
-#     print(patient_list)
-# except Exception as e:
-#     print(e.message)
+
 
 
 
