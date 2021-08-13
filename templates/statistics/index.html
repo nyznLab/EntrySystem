@@ -5,8 +5,9 @@
 {#    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">#}
     <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
 {#    <link rel="stylesheet" href={% static '/css/tinyselect.css' %}>#}
-    <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />
+{#    <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />#}
     <link rel="stylesheet" href="{% static '/layui/css/layui.css' %}">
+    <link rel="stylesheet" href="{% static '/layui/layui-base-plugin/layui-soul-table/soulTable.css' %}">
     <link rel="stylesheet" href="{% static '/guide/driver.css' %}">
     <style>
         .sel_beauty {
@@ -58,6 +59,46 @@
         }
         .layui-table-tool-panel{
 
+        }
+        .soul-edit-out .layui-form-switch {
+            width: 41px !important;
+        }
+        .layui-form-switch i{
+            left:4px;
+            top:2px;
+        }
+        .layui-form-onswitch i {
+            left: 100%;
+            margin-left: -19px !important;
+        }
+        .layui-form-onswitch em{
+            margin-left:1px !important;
+        }
+        .layui-form-switch em{
+            margin-left:19px;
+        }
+        .layui-firebrick {
+            color: #5FB878 !important;
+        }
+        .layui-deeppink {
+            color: #393D49 !important;
+        }
+        .layui-blueviolet {
+            color: #5FB878 !important;
+        }
+        .layui-form-checkbox i{
+            height:30px
+        }
+        [id^=soul-condition] .layui-form-switch{
+            width: 41px;
+        }
+        [id^=soul-filter-list] ul li:hover{
+            background-color:#393D49;
+            color:white
+        }
+        [id^=soul-bf] li:hover,[id^=soul-bf] li.soul-bf-selected {
+            background-color: #393D49;
+            color:white
         }
     </style>
 {% endblock %}
@@ -423,14 +464,25 @@
         ]
     })
 
+    layui.config({
+        base:"{% static '/layui/layui-base-plugin/layui-soul-table/ext/' %}"
+    }).extend({
+        soulTable: 'soulTable',
+        tableChild: 'tableChild',
+        tableMerge: 'tableMerge',
+        tableFilter: 'tableFilter',
+        excel: 'excel',
+    })
 
-    layui.use(['table', 'layer', 'laydate','element','form','slider'],function () {
+    layui.use(['table', 'layer', 'laydate','element','form','slider','soulTable','tableChild'],function () {
         let table = layui.table
+        ,soulTable = layui.soulTable
         ,layer = layui.layer
         ,laydate = layui.laydate
         ,element = layui.element
         ,form = layui.form
         ,slider = layui.slider
+        ,tableChild = layui.tableChild
 
         // 筛选弹出层暴露给全局
         let filter_layer;
@@ -481,7 +533,8 @@
             ,page: true
             ,url: '{% url 'statistics' %}'
             ,height:'full-270'
-            ,skin: 'row'
+            ,soulSort: false
+            ,overflow: 'tips'
             ,even: true
             ,limit: 30
             ,limits:[10,20,30,40,50,60,70,80,90,100]
@@ -489,13 +542,14 @@
                 none:'没有记录哦'
             }
             ,cols: [[
+
                 {type:'checkbox',rowspan:3, fixed: true},
                 {type:'numbers',rowspan:3, fixed: true, title:'序号',width: 50}
                 ,{field:'id',rowspan:3,fixed: true, title:'复扫序号',width: 90}
                 ,{title:'量表完成详情',rowspan:3,align:'center', width: 90, toolbar:'#scalesTpl', fixed:true}
                 ,{field:'standard_id',rowspan:3, title: '标准编号',width: 170, sort:true, fixed: true}
                 ,{field:'patient_id',rowspan:3, title:'编号', hide:true, fixed:true}
-                ,{field:'name',rowspan:3, title:'姓名',width: 90, fixed:true}
+                ,{field:'name',rowspan:3, title:'姓名',width: 90, fixed:true,filter:true}
                 ,{field:'sex',rowspan:3, title:'性别', sort:true, width: 80, templet:function (d) {
                     return d.sex? '女':'男'
                 }}
@@ -626,7 +680,7 @@
                             return '出院'
                     }
                 }}
-                ,{field:'scan_date',rowspan:3, title:'扫描时间', width: 140, templet: function (d) {
+                ,{field:'scan_date',rowspan:3, title:'扫描时间', width: 140, filter: {type: 'date[yyyy-MM-dd HH:mm:ss]'}, templet: function (d) {
                     arr = d.scan_date.split('-')
                     return arr[0]+'年'+arr[1]+'月'+arr[2]+'日'
                 }}
@@ -664,6 +718,49 @@
 
                 }}
                 ,{field:'doctor',rowspan:3, title:'医生', width:90}
+                ,{title:'他评量表'
+                    ,hide:true
+                    ,rowspan:3
+                    ,width:60
+                    ,collapse:true
+                    ,icon: ['layui-icon layui-icon-triangle-r', 'layui-icon layui-icon-triangle-d']
+                    ,align:'center'
+                    ,childWidth: 'full'
+                    ,isChild: function(d){return d.HAMA.total_score !== undefined}
+                    ,children: function(d){
+                    var col_hama  = []
+                        ,col_hamd17 = []
+                    for(let i in d.HAMA){
+                        let field_obj = {title:i, field:i, sort:true}
+                        col_hama.push(field_obj)
+                    }
+                    for(let i in d.HAMD17){
+                        let field_obj = {title:i, field:i, sort:true}
+                        col_hamd17.push(field_obj)
+                    }
+                    return [{
+                        title:'汉密尔顿焦虑量表（HAMA）'
+
+                        ,page:false
+                        ,cols:[col_hama]
+                        ,data:[d.HAMA]
+                        ,done: function () {
+                            soulTable.render(this);
+                        }
+                    },{
+                        title:'汉密尔顿抑郁量表（HAMD-17）'
+
+                        ,page:false,
+                        cols:[col_hamd17]
+                        ,data:[d.HAMD17]
+                        ,done: function () {
+                            soulTable.render(this);
+                        }
+                    }]
+                    },childClose:function (obj) {
+                        table.resize('patient_table')
+                    }
+                }
                 ,{title:'他评（others-rating）',colspan:4,align:'center', style:'background-color:#000;color:#fff'}
                 ,{title:'自评（self-rating）',colspan:19,align:'center'}
 
@@ -873,8 +970,12 @@
                     return d.growth.body_ignore_score
                 }}
             ]]
+            ,excel: {
+                on: false
+            }
             ,done:function (res, curr, count){
 
+                soulTable.render(this)
                 // 这里添加id是为了driver能够通过id找到这些按钮
                 $('[lay-event="LAYTABLE_COLS"]').attr('id','cols_btn')
                 $('[lay-event="LAYTABLE_PRINT"]').attr('id','print_btn')
@@ -1174,6 +1275,8 @@
                     break
                 case 'checkbox_export':
                     let selected_data = checkStatus.data
+                    // 如果使用前台分页可用下列来获取选中内容
+                    let checkedRow = soulTable.cache['patient_table'].filter(item=>item.LAY_CHECKED)
                     if (selected_data.length !== 0){
                         layer.confirm('已选中了'+selected_data.length+'条记录要导出', {
                             btn: ['确定','取消']
