@@ -20,7 +20,7 @@ def get_patient_data(request):
             if data.getlist('session_id[]'):
                 search_dict['session_id__in'] = data.getlist('session_id[]')
             if data.get('age_min') and data.get('age_max'):
-                if data.get('age_min') != '0' and data.get('age_max') != '0':
+                if not (data.get('age_min') == '0' and data.get('age_max') == '0'):
                     search_dict['age__range'] = (data.get('age_min'), data.get('age_max'))
             if data.get('sex'):
                 search_dict['patient__sex__contains'] = data['sex']
@@ -54,7 +54,7 @@ def get_patient_data(request):
             # table的page设置为true后渲染会自动传给后台page和limit值
             page_num = int(data.get('page', 1))
             page_limit = int(data.get('limit', 30))
-
+            print(search_dict)
             scales_scores = []
             patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
             if not data.get('all'):

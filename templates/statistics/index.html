@@ -132,7 +132,7 @@
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="filter_choice" id="filter_btn"><i class="layui-icon layui-icon-search"></i> 过滤器</button>
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export" id="multiselect_export_btn"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
-                            <button class="layui-btn-sm layui-btn layui-btn-primary layui-border-green" lay-event="guide" id="guide_btn">使用引导</button>
+                            <button class="layui-btn-sm layui-btn layui-btn-primary layui-border-green" lay-event="guide" id="guide_btn"><i class="layui-icon layui-icon-service"></i> 使用引导</button>
                         </script>
                     </div>
                 </div>
@@ -549,7 +549,7 @@
                 ,{title:'量表完成详情',rowspan:3,align:'center', width: 90, toolbar:'#scalesTpl', fixed:true}
                 ,{field:'standard_id',rowspan:3, title: '标准编号',width: 170, sort:true, fixed: true}
                 ,{field:'patient_id',rowspan:3, title:'编号', hide:true, fixed:true}
-                ,{field:'name',rowspan:3, title:'姓名',width: 90, fixed:true,filter:true}
+                ,{field:'name',rowspan:3, title:'姓名',width: 90, fixed:true,filter:true,sort:true}
                 ,{field:'sex',rowspan:3, title:'性别', sort:true, width: 80, templet:function (d) {
                     return d.sex? '女':'男'
                 }}
