@@ -65,6 +65,7 @@ def get_dicom(patient_list,city_type,list_type='sms5_bold_500ms_rest64'):
     for patient in patient_list:
         # 进行病人id校验
         standard_id = getIdNameFromString(patient)
+
         if standard_id is None:
             dic[patient] = []
             continue
@@ -72,12 +73,14 @@ def get_dicom(patient_list,city_type,list_type='sms5_bold_500ms_rest64'):
             id, session = getIdAndSession(standard_id)
             sub_id, sub_session = packingIdAndSession(id, session)
             patient_path = f'{path}/{sub_id}/{sub_session}'
+
             # 进行文件夹是否存在校验
             if not os.path.exists(patient_path):
                 dic[patient]=[]
                 continue
             # 进行数据文件是否存校在验，并进行文件路径获取
             file_path = f'{patient_path}/{data_type}/{list_type}'
+            print(file_path)
             if (not os.path.exists(file_path)) or (len(os.listdir(file_path)) == 0) :
                 dic[patient]=[]
             else:
