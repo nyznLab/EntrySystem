@@ -41,6 +41,8 @@ class BPatientBaseInfo(models.Model):
     diagnosis = models.IntegerField(blank=True, null=True, choices=DIAGNOSIS_TYPE)
     other_diagnosis = models.CharField(max_length=45)
     inpatient_state = models.IntegerField(choices=HOSPITALIZED_TYPE,default=HospitalizedState.NOT_HOSPITALIZED)
+    is_ghr = models.IntegerField(blank=True, null=True)
+    comment_note = models.CharField(max_length=45, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'b_patient_base_info'
@@ -132,6 +134,7 @@ class RPatientGhr(models.Model):
     doctor_id = models.IntegerField()
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
+    is_delete = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

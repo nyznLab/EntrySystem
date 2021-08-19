@@ -56,8 +56,15 @@ def get_patient_by_search(request):
 
 # 被试基本信息录入，需要生成id的信息，需要向patient_detail进行信息插入(session==1的信息)
 # todo 在进行病人或者复扫创建的时候，需要创建ｒ_patients_scales创建量表完成信息，默认应该是未完成的，需要根据青少年这些去做
-# 被试基本信息录入，需要生成id的信息，需要向patient_detail进行信息插入(session==1的信息)
-# todo 在进行病人或者复扫创建的时候，需要创建ｒ_patients_scales创建量表完成信息，默认应该是未完成的，需要根据青少年这些去做
+#添加高危表
+def add_patient_ghr(patient_id,doctor_id,ghr_list):
+    ghr_define = ["kin_patient_id","diagnosis", "kinship"]
+    for ghr_record in ghr_list:
+        rPatientGhr = patients_models.RPatientGhr(ghr_id=patient_id, doctor_id=doctor_id, is_delete=0)
+        for i in range(3):
+            setattr(rPatientGhr, ghr_define[i], ghr_record[i])
+        patients_dao.add_patient_ghr(rPatientGhr)
+
 def add_patient_baseinfo(request):
     name = request.POST.get("name")
     birth_date = request.POST.get("birth_date")
@@ -68,6 +75,8 @@ def add_patient_baseinfo(request):
     other_diagnosis = request.POST.get("other_diagnosis")
     scan_date = request.POST.get('scan_date')
     age = tools_utils.calculate_age_by_scandate(str(birth_date), str(scan_date))
+    # 得到高危标识以及高危列表（亲属患者编号、高危与患者亲属关系）
+    is_ghr = request.POST.get("is_ghr")
     ########################
     # 手动输入id
     patient_id = request.POST.get('patient_id')
@@ -79,30 +88,38 @@ def add_patient_baseinfo(request):
     #rtms:  state:0
 
     # 插入高危信息表:需要在b_patient_base_info之前创建
-    rPatientGhr = patients_models.RPatientGhr(ghr_id=patient_id, doctor_id=doctor_id)
-
-    for key in request.POST.keys():
-        pos = key.rfind('_')
-        st = key[:pos]
-        print("st:   " + st)
-        if hasattr(rPatientGhr, st) and key != 'diagnosis':
-            val = request.POST.get(key)
-            if val == '':
-                val = None
-            setattr(rPatientGhr, st, val)
-            if st == 'kinship':
-                patients_dao.add_patient_ghr(rPatientGhr)
-                rPatientGhr = patients_models.RPatientGhr(ghr_id=patient_id, doctor_id=doctor_id)
-        if st=='kin_patient_id':
-            kin_patient_id=request.POST.get(key)
-            if kin_patient_id != '0':
-                # rPatientGhr.diagnosis = patients_models.BPatientBaseInfo.objects.filter(
+    if(not(is_ghr)==1):
+        # ghr_list = request.POST.get("ghr_list")
+        ghr_list=[[1440,2,3],[1446,4,2],[1258,3,6]]
+        add_patient_ghr(patient_id,doctor_id,ghr_list)
+    # rPatientGhr = patients_models.RPatientGhr(ghr_id=patient_id, doctor_id=doctor_id)
+    # print("**********************************")
+    # print(rPatientGhr)
+    # for key in request.POST.keys():
+    #     print("AAA")
+    #     print(key)
+    # for key in request.POST.keys():
+    #     pos = key.rfind('_')
+    #     st = key[:pos]
+    #
+    #     print("st:   " + st)
+    #     if hasattr(rPatientGhr, st) and key != 'diagnosis':
+    #         val = request.POST.get(key)
+    #         if val == '':
+    #             val = None
+    #         setattr(rPatientGhr, st, val)
+    #         if st == 'kinship':
+    #             patients_dao.add_patient_ghr(rPatientGhr)
+    #             rPatientGhr = patients_models.RPatientGhr(ghr_id=patient_id, doctor_id=doctor_id)
+    #     if st=='kin_patient_id':
+    #         kin_patient_id=request.POST.get(key)
+    #         if kin_patient_id != '0':
+    #             rPatientGhr.diagnosis = patients_models.BPatientBaseInfo.objects.filter(
+    #                 pk=kin_patient_id).first().diagnosis
+                # diagnosis_val=patients_models.BPatientBaseInfo.objects.filter(
                 #     pk=kin_patient_id).first().diagnosis
-                diagnosis_val=patients_models.BPatientBaseInfo.objects.filter(
-                    pk=kin_patient_id).first().diagnosis
-                setattr(rPatientGhr, 'diagnosis', diagnosis_val)
-                print(diagnosis_val)
-
+                # setattr(rPatientGhr, 'diagnosis', diagnosis_val)
+                # print(diagnosis_val)
 
 
     # 基本信息创建
@@ -110,7 +127,8 @@ def add_patient_baseinfo(request):
                                                          nation=nation,
                                                          doctor_id=doctor_id,
                                                          diagnosis=diagnosis,
-                                                         other_diagnosis=other_diagnosis)
+                                                         other_diagnosis=other_diagnosis,
+                                                         is_ghr=is_ghr)
     patients_dao.add_base_info(patient_base_info)
 
 
@@ -226,7 +244,7 @@ def get_patient_detail(request):
             else:
                 ordered_dic[test_state['patient_session_id__session_id']][test_state['scale_id']] = test_state
         nation_list = patients_dao.get_DEthnicity_all()
-        ghr_list = patients_models.RPatientGhr.objects.filter(ghr_id=patient_id)
+        ghr_list = patients_models.RPatientGhr.objects.filter(ghr_id=patient_id,is_delete=0)
         ghr_diagnosis = []
         ghr_kinship = []
         for i in ghr_list:
@@ -317,6 +335,7 @@ def update_patient_detail(request):
 # 更新base_info,同时更新高危
 def update_base_info(request):
     patient_id = request.GET.get("patient_id")
+    doctor_id = request.session.get('doctor_id')
     print("#################" + str(request.POST.get('nation')))
     patient_base_info = patients_dao.get_base_info_byPK(patient_id)
     print("################" + str(patient_base_info.nation))
@@ -328,16 +347,26 @@ def update_base_info(request):
     patients_dao.add_base_info(patient_base_info)
 
     #更新高危信息
-    set_ghr_by_post(request, patient_id)  #如果高危信息页面没有变化，函数不会保存新的内容
-    if ori_diagnosis==7 and new_diagnosis!='7': #从高危改成其他患病类型，要把原先的高危信息删除
-        #print("del_ghr------------------------------------")
-        all_list_ghr = patients_models.RPatientGhr.objects.filter(ghr_id=patient_id)
+    # set_ghr_by_post(request, patient_id)  #如果高危信息页面没有变化，函数不会保存新的内容
+    if ori_diagnosis==7 and new_diagnosis!='7': #从高危改成其他患病类型，要把原先的高危信息删除（假删除）
+        # print("del_ghr------------------------------------")
+        patient=patients_models.BPatientBaseInfo.objects.filter(patient_id=patient_id)
+        setattr(patient,'is_ghr',0)
+        patient.save()
+        all_list_ghr = patients_models.RPatientGhr.objects.filter(ghr_id=patient_id,is_delete=0)
+        print(all_list_ghr)
         for list in all_list_ghr:
-            list.delete()
+            setattr(list,'is_delete',1)
+            patients_dao.add_patient_ghr(list)
     #添加高危信息
     if  new_diagnosis=='7' and ori_diagnosis!=7:
         #print('add_ghr----------------------------')
-        add_ghr_by_post(request,patient_id)
+        patient = patients_models.BPatientBaseInfo.objects.filter(patient_id=patient_id)
+        setattr(patient, 'is_ghr', 1)
+        patient.save()
+        ghr_list = request.POST.get("ghr_list")
+        add_patient_ghr(patient_id, doctor_id, ghr_list)
+        # add_ghr_by_post(request,patient_id)
 
     return redirect('/patients/get_patient_detail?patient_id=' + patient_id)
 
@@ -551,52 +580,53 @@ def set_attr_by_post(request, _object):
     return _object
 
 # 根据request post信息更新高危信息
-def set_ghr_by_post(request,id):
-    #print('modify_ghr--------------------------')
-    #doctor_id=request.session.get('doctor_id')
-    rPatientGhr = patients_models.RPatientGhr()
-    ghr_kinship_list = []
-    ghr_diagnosis_list = []
-    for key in request.POST.keys():
-        pos = key.rfind('_')
-        st = key[:pos]
-        print("st:   " + st)
-        if hasattr(rPatientGhr, st) and key!='diagnosis':
-            val = request.POST.get(key)
-            if val == '':
-                val = None
-            if st == 'kinship':
-                ghr_kinship_list.append(val)
-            if st=='diagnosis':
-                ghr_diagnosis_list.append(val)
+# def set_ghr_by_post(request,id):
+#     print('modify_ghr--------------------------')
+#     doctor_id=request.session.get('doctor_id')
+    # rPatientGhr = patients_models.RPatientGhr()
+    # ghr_kinship_list = []
+    # ghr_diagnosis_list = []
+    # for key in request.POST.keys():
+    #     pos = key.rfind('_')
+    #     st = key[:pos]
+    #     print("st:   " + st)
+    #     if hasattr(rPatientGhr, st) and key!='diagnosis':
+    #         val = request.POST.get(key)
+    #         if val == '':
+    #             val = None
+    #         if st == 'kinship':
+    #             ghr_kinship_list.append(val)
+    #         if st=='diagnosis':
+    #             ghr_diagnosis_list.append(val)
+    #
+    # for i in range(len(ghr_diagnosis_list)):
+    #     diagnosis = ghr_diagnosis_list[i]
+    #     kinship = ghr_kinship_list[i]
+    #     patient_ghr=patients_models.RPatientGhr.objects.filter(ghr_id=id, kinship=kinship)[0]
+    #     patient_ghr.diagnosis=diagnosis
+    #     patients_dao.add_patient_ghr(patient_ghr)
 
-    for i in range(len(ghr_diagnosis_list)):
-        diagnosis = ghr_diagnosis_list[i]
-        kinship = ghr_kinship_list[i]
-        patient_ghr=patients_models.RPatientGhr.objects.filter(ghr_id=id, kinship=kinship)[0]
-        patient_ghr.diagnosis=diagnosis
-        patients_dao.add_patient_ghr(patient_ghr)
 
 
+# def add_ghr_by_post(request,id):
+#     doctor_id=request.session.get('doctor_id')
+#     rPatientGhr = patients_models.RPatientGhr(ghr_id=id, doctor_id=doctor_id)
+#     add_patient_ghr(rPatientGhr,ghr_list)
+    #for key in request.POST.keys():
+     #   #pos = key.rfind('_')-4
+      #  #st = key[:pos]
+       # end_pos = key.rfind('_') - 1  # 倒数第一个"_"的位置再左移一位
+        #start_pos = key.rfind('_', 0, end_pos)  # 从开始截至到end_pos的位置，从右往左出现的第一个"_"也就是我们要找的倒数第二个"_"
+        #st = key[:start_pos]
 
-def add_ghr_by_post(request,id):
-    doctor_id=request.session.get('doctor_id')
-    rPatientGhr = patients_models.RPatientGhr(ghr_id=id, doctor_id=doctor_id)
-    for key in request.POST.keys():
-        #pos = key.rfind('_')-4
-        #st = key[:pos]
-        end_pos = key.rfind('_') - 1  # 倒数第一个"_"的位置再左移一位
-        start_pos = key.rfind('_', 0, end_pos)  # 从开始截至到end_pos的位置，从右往左出现的第一个"_"也就是我们要找的倒数第二个"_"
-        st = key[:start_pos]
-
-        if hasattr(rPatientGhr, st) and key != 'diagnosis':
-            val = request.POST.get(key)
-            if val == '':
-                val = None
-            setattr(rPatientGhr, st, val)
-            if st == 'kinship':
-                patients_dao.add_patient_ghr(rPatientGhr)
-                rPatientGhr = patients_models.RPatientGhr(ghr_id=id, doctor_id=doctor_id)
+        #if hasattr(rPatientGhr, st) and key != 'diagnosis':
+         #   val = request.POST.get(key)
+          #  if val == '':
+           #     val = None
+            #setattr(rPatientGhr, st, val)
+            #if st == 'kinship':
+             #   patients_dao.add_patient_ghr(rPatientGhr)
+              #  rPatientGhr = patients_models.RPatientGhr(ghr_id=id, doctor_id=doctor_id)
 
 
 def del_blood(request):
