@@ -1,6 +1,6 @@
 # 一级目录
-basePath = r'/root/dataset/'
-#basePath = r'E:/test01/'
+#basePath = r'/root/dataset/'
+basePath = r'E:/test01/'
 shenyangPath = basePath+'shenyang'
 nanjingPath = basePath+'nanjing'
 

@@ -80,7 +80,6 @@ def get_dicom(patient_list,city_type,list_type='sms5_bold_500ms_rest64'):
                 continue
             # 进行数据文件是否存校在验，并进行文件路径获取
             file_path = f'{patient_path}/{data_type}/{list_type}'
-            print(file_path)
             if (not os.path.exists(file_path)) or (len(os.listdir(file_path)) == 0) :
                 dic[patient]=[]
             else:
