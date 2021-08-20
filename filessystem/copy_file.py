@@ -19,6 +19,7 @@ def copyFile(sourcePath, destinationPath):
                     copy(sourcePath_list+'/'+list, destPath)
             elif os.path.isfile(sourcePath_list):
                 copy(sourcePath_list, destinationPath)
+
             else:
                 raise BussinessException(f'===目录：{sourcePath_list}不存在===')
 
