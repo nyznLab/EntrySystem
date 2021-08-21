@@ -25,5 +25,4 @@ urlpatterns = [
     # =============deprecated==================
     url(r'^insert_medical_dict', views.insert_medical_dict),
 
-
 ]

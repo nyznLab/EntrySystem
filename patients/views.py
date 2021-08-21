@@ -309,7 +309,7 @@ def update_patient_detail(request):
     # patient_base_info.diagnosis = request.POST.get('diagnosis')
     # patient_base_info.other_diagnosis = request.POST.get('other_diagnosis')
     # patients_dao.add_base_info(patient_base_info)
-    redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
+    redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id), str(patient_id))
 
     return redirect(redirect_url)
 
@@ -625,3 +625,6 @@ def add_blood(request):
     patient_detail_res.save()
     redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
     return redirect(redirect_url)
+
+def get_program_log(request):
+    return render(request, 'templates/program_log.html')
