@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^del_inpatient', views.del_inpatient),
     # =============deprecated==================
     url(r'^insert_medical_dict', views.insert_medical_dict),
-
+    url(r'^program_log', views.program_log),
 ]
