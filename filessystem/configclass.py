@@ -5,6 +5,7 @@ class preprocessDict(object):
     fALFF = 'fALFF_FunImgARWSD'
     FC = 'FC_FunImgARWSDCF'
     ROI_FC = 'ROISignals_FunImgARWSDCF'
+    voxel_FC = 'voxel_wise_FC'
 
     ReHo_Types = ['ReHo','smReHo','sReHo','mReHo','szReHo','zReHo']
     ALFF_Types = ['ALFF','mALFF','zALFF']
