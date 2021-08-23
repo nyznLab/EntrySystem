@@ -1,0 +1,39 @@
+<scale title="简式父母养育方式问卷（S-Embu）" warn="指导语：请您分别选择最适合您父亲和您母亲的等级。每题只准选一个答案。您父亲和母亲对您的教养方式可能是相同的，也可能是不同的。请您实事求是地分别回答。如果您幼小时候父母不全，可以只回答父亲或母亲一栏。">
+    <question index="1" title="入学年份">
+        <option type="text" name="question1"/>
+    </question>
+    <question index="2" title="年级">
+        <option type="text" name="question2"/>
+    </question>
+    <question index="3" title="地区">
+        <option type="radio" name="question3" value="0">城市</option>
+        <option type="radio" name="question3" value="1">乡村</option>
+    </question>
+    <question index="4" title="父母情况">
+        <option type="radio" name="question1" value="0">双亲家庭</option>
+        <option type="radio" name="question1" value="1">单亲（母亲死亡）</option>
+        <option type="radio" name="question1" value="2">单亲（父亲死亡）</option>
+        <option type="radio" name="question1" value="3">单亲（父母离异，跟母亲）</option>
+        <option type="radio" name="question1" value="4">单亲（父母离异，跟父亲）</option>
+        <option type="radio" name="question1" value="5">父母死亡</option>
+    </question>
+    <question index="5" title="你认为你的成绩在班级中为：">
+        <option type="radio" name="question1" value="0">上</option>
+        <option type="radio" name="question1" value="1">中上</option>
+        <option type="radio" name="question1" value="2">中</option>
+        <option type="radio" name="question1" value="3">中下</option>
+        <option type="radio" name="question1" value="4">下</option>
+    </question>
+    <question index="6" title="父亲常常在我不知道原因的情况下对我大发脾气">
+        <option type="radio" name="question2" value="1">从不</option>
+        <option type="radio" name="question2" value="2">偶尔</option>
+        <option type="radio" name="question2" value="3">经常</option>
+        <option type="radio" name="question2" value="4">总是</option>
+    </question>
+    <question index="7" title="母亲常常在我不知道原因的情况下对我大发脾气">
+        <option type="radio" name="question2" value="1">从不</option>
+        <option type="radio" name="question2" value="2">偶尔</option>
+        <option type="radio" name="question2" value="3">经常</option>
+        <option type="radio" name="question2" value="4">总是</option>
+    </question>
+</scale>

@@ -1,0 +1,146 @@
+<scale title="快感体验能力量表" warn="指导语：该量表用于测试您在最近数日能体会快乐的能力过的项目时，请仔细阅读每个项目，然后根据您的情况选择最适合的答案。">
+    <question index="1" title="当我得知我最喜欢演员的新片上映时，我非常渴望立刻看到。">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="2" title="当我外出散步时，我很享受深呼吸新鲜空气的感觉">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="3" title="新割过草坪的气息让我感到享受">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="4" title="在我的生活中，我渴求很多东西">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="5" title="我很喜欢长辈抚摸我的头发">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="6" title="追求许多愉快事情本身对我来说也是一种快乐">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="7" title="寒冷早上一杯热咖啡或茶对我是大大的满足">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="8" title="当我想到美味的东西，比如巧克力饼干时，我非得给自己来上一块">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="9" title="我喜欢欣赏初雪的美景">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="10" title="重大节日前的夜晚，我常常兴奋得无法入眠">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="11" title="在去游乐园的路上，我就迫不及待的想去乘坐过山车">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="12" title="一个大哈欠会让我浑身舒坦">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="13" title="我对在外面餐馆吃饭之类的事情并没什么期待的">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="14" title="躺在温暖的床上，我喜欢倾听外面的雨声">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="15" title="品尝美食的场景进入脑海时，我几乎都能尝到它的美味">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="16" title="点完菜后，我就会想象接下来的美味">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="17" title="炉子上烹饪食物的声音让我感觉舒坦">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+    <question index="18" title="当一些令人兴奋的事情即将出现在生活中时，我由衷的期待">
+        <option type="radio" name="question1" value="1">完全不符合</option>
+        <option type="radio" name="question1" value="2">不符合</option>
+        <option type="radio" name="question1" value="3">基本不符合</option>
+        <option type="radio" name="question1" value="4">基本符合</option>
+        <option type="radio" name="question1" value="5">符合</option>
+        <option type="radio" name="question1" value="6">完全符合</option>
+    </question>
+</scale>

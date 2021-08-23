@@ -1,0 +1,101 @@
+<scale title="压力知觉量表" warn="指导语：这份量表是在询问在最近一个月来，您个人的感受和想法，请您于每一个题项上作答时，去指出您感受或想到某一特定想法的频率。虽然有些问题看是相似，实则是有所差异，所以每一题均需作答。而作答方式尽量以快速、不假思索方式填答，亦即不要去思虑计算每一题分数背后之意涵，以期确实反映您真实的压力知觉状况。而每一题项皆有下列五种选择：<br>
+                        0：从不　1：偶尔　2:有时　3: 时常　4：总是<br><br><br>请回想最近一个月来，发生下列各状况的频率。">
+    <question index="1" title="一些无法预期的事情发生而感到心烦意乱">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="2" title="感觉无法控制自己生活中重要的事情">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="3" title="感到紧张不安和压力">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="4" title="成功地处理恼人的生活麻烦">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="5" title="感到自己是有效地处理生活中所发生的重要改变">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="6" title="对于有能力处理自己私人的问题感到很有信心">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="7" title="感到事情顺心如意">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="8" title="发现自己无法处理所有自己必须做的事情">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="9" title="有办法控制生活中恼人的事情">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="10" title="常觉得自己是驾驭事情的主人">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="11" title="常生气，因为很多事情的发生是超出自己所能控制的">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="12" title="经常想到有些事情是自己必须完成的">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="13" title="常能掌握时间安排方式">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+    <question index="14" title="常感到困难的事情堆积如山，而自己无法克服它们">
+        <option type="radio" name="question1" value="1">从不</option>
+        <option type="radio" name="question1" value="2">偶尔</option>
+        <option type="radio" name="question1" value="3">有时</option>
+        <option type="radio" name="question1" value="4">时常</option>
+        <option type="radio" name="question1" value="5">总是</option>
+    </question>
+</scale>
