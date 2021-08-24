@@ -1,4 +1,4 @@
-<scale title="34项轻躁狂症状清单"
+<scale title="33项轻躁狂症状清单"
        warn="指导语：每个人在一生中的不同时期都会体验到精力、活力和情绪上的变化或波动（“高涨”与“低落”或“向上”与“向下”）。<br><br>此问卷的目的旨在评估您在“高涨”时期的特点。">
     <question index="1" title=" 首先，和平常的状态比起来，您今天感觉怎么样？">
         <option type="radio" name="question1" value="0">比平常差多了</option>

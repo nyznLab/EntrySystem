@@ -44,31 +44,43 @@ def update_scales_content_validate(request):
 
 
 def get_right_scale_content(scale_id, patient_session_id):
+    print("scale_id, patient_session_id")
     print(scale_id, patient_session_id)
     version = scales_dao.get_version_of_history_scale(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
     print(version)
-    if scale_id not in cash.scales_content_handler_dic.keys():
+    if version is None:
+        # version 是空的用最新版本的量表
         scale_content_model = scales_dao.get_scale_content_by_id(scale_id)
         if scale_content_model is None:
             raise ValueError
         handler = xmlHandler.loadScaleXML(scale_content_model.scale_content)
-        cash.scales_content_handler_dic[scale_id] = {
-            "scaleHandler": handler,
-            "version": scale_content_model.scale_version,
-        }
-    if cash.scales_content_handler_dic[scale_id]["version"] == version:
-        return cash.scales_content_handler_dic[scale_id]["scaleHandler"].scaleContent
-    scale_content_model = scales_dao.get_scale_content_by_id_and_version(scale_id, version)
-    if scale_content_model is None:
-        raise ValueError
-    handler = xmlHandler.loadScaleXML(scale_content_model.scale_content)
+        if scale_id not in cash.scales_content_handler_dic.keys():
+            #  cash 中没有最新版本的则缓存到 cash 中
+            cash.scales_content_handler_dic[scale_id] = {
+                "scaleHandler": handler,
+                "version": scale_content_model.scale_version,
+            }
+    else:
+        # version 不是空的 先查缓存是否是对应版本
+        if scale_id in cash.scales_content_handler_dic.keys() and \
+                cash.scales_content_handler_dic[scale_id]["version"] == version:
+            # 缓存中有对应版本
+            return cash.scales_content_handler_dic[scale_id]["scaleHandler"].scaleContent
+        else:
+            # 缓存中没有对应版本
+            scale_content_model = scales_dao.get_scale_content_by_id_and_version(scale_id, version)
+            if scale_content_model is None:
+                raise ValueError
+            handler = xmlHandler.loadScaleXML(scale_content_model.scale_content)
     return handler.scaleContent
 
 
 def get_last_question_index_from_db(patient_session_id, scale_id):
     answer = scales_dao.get_scale_answers(config.scaleId_Models_Map[scale_id], patient_session_id)
     if answer is None:
-        cash.scales_answer_schedule[patient_session_id][scale_id] = 0
+        cash.scales_answer_schedule[patient_session_id] = {
+            scale_id: 0,
+        }
         return 0
     question_index = 1
     while hasattr(answer, "question{}".format(question_index)):
@@ -91,6 +103,7 @@ def get_last_question_index(patient_session_id, scale_id):
 def match_rules(rule, scale_id, patient_session_id):
     answer = scales_dao.get_scale_answers(config.scaleId_Models_Map[scale_id], patient_session_id)
     if answer is None:
+        print("")
         return False
     return call_match_rules(rule, answer)
 
@@ -112,7 +125,7 @@ def submit_scales_input_validate(request):
     scale_id = request.POST.get("scale_id")
     if scale_id is None:
         return "scale_id is None"
-    doctor_id = request.POST.get('doctor_id')
+    doctor_id = request.session.get('doctor_id')
     if doctor_id is None:
         return "doctor_id is None"
     form_data = request.POST.get('data')
@@ -139,12 +152,12 @@ def write_scale_duration(patient_session_id, scale_id, duration):
     else:
         cash.scales_answer_schedule[patient_session_id] = {scale_id: get_last_question_index_from_db(
             patient_session_id, scale_id)}
+    cash.scales_answer_schedule[patient_session_id][scale_id] += 1
     scales_dao.insert_scale_duration(patient_session_id, scale_id,
                                      cash.scales_answer_schedule[patient_session_id][scale_id], duration)
-    cash.scales_answer_schedule[patient_session_id][scale_id] += 1
 
 
-def complete_scale(scale_id, patient_session_id):
+def complete_scale(patient_session_id, scale_id):
     scales_dao.update_rscales_state(patient_session_id, scale_id, config.Scale_Completed)
 
 

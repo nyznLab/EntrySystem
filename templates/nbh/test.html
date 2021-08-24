@@ -76,8 +76,8 @@
 <script type="text/javascript" language="JavaScript">
     let date;
     let index;
-    let patientSessionId = 2;
-    let scaleId = 12;
+    let patientSessionId = {{ patientSessionId }};
+    let scaleId = {{ scaleId }};
     $(document).ready(function () {
         $.post("/scales/get_scale_metadata",
             {patient_session_id: patientSessionId, scale_id: scaleId},
@@ -109,24 +109,24 @@
                 duration: new Date() - date,
             },
             function (result, statue) {
-                if (statue === "success") {
-                    //  渲染下一个题目
-                    $.post("/scales/get_question_by_index",
-                        {patient_session_id: patientSessionId, scale_id: scaleId, question_index: ++index},
-                        function (result, statue) {
-                            if (statue === "success") {
-                                if (result === false) {
-                                    scaleId++;
-                                    window.location.replace("/scales/get_next_self_scale_url?patient_session_id=${patientSessionId}&scale_id=${scaleId}");
-                                } else {
-                                    updateQuestion(result);
-                                }
-                            }
-                        });
-                }
+
             },
             "json"
         );
+        //  渲染下一个题目
+        $.post("/scales/get_question_by_index",
+            {patient_session_id: patientSessionId, scale_id: scaleId, question_index: ++index},
+            function (result, statue) {
+                if (statue === "success") {
+                    if (result === "False") {
+                        // $(window).attr('location',"/scales/get_next_self_scale_url?patient_session_id={0}&scale_id={1}".format(patientSessionId, scaleId + 1));
+                        window.location.replace("/scales/get_next_self_scale_url?patient_session_id={{ patientSessionId }}&scale_id={{ scaleId|add:"1" }}");
+                    } else {
+                        cleanOptions();
+                        updateQuestion(result);
+                    }
+                }
+            });
     });
 
     // TODO 上一题功能 开发返回题目历史答案 并将历史答案显示出来
@@ -144,6 +144,7 @@
             });
         }
         if (index > 0) {
+            cleanOptions();
             updateQuestion(rsp.content);
             // todo 取对应题目的答案
             $.post("/scales/get_answer_by_index",
@@ -228,12 +229,17 @@
                 options.append(div);
                 continue;
             }
-            if(1 === 1){
+            if (1 === 1) {
                 return;
             }
         }
         // TODO 样式没生效 后期要调整一下
         // $("input[type='radio']").labelauty({ icon: true, label: true });
+    }
+
+    function cleanOptions(){
+        let options = $(".options");
+        options.empty();
     }
 
     $.extend({

@@ -1182,12 +1182,17 @@ def delete_scale_answers(scale_model, patient_session_id):
 
 
 def update_scales(scale_model, patient_session_id, form_content, doctor_id, scale_id):
+    print("update_scales entry: ", scale_model, patient_session_id, form_content, doctor_id, scale_id)
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
+    print(res)
     if res is None:
         res = scale_model.objects.create(patient_session_id=patient_session_id,
                                          doctor_id=doctor_id,
                                          create_time=int(time.time()),
-                                         version=get_scale_content_version_by_id(scale_id))
+                                         version=get_scale_content_version_by_id(scale_id),
+                                         update_time=int(time.time()),
+                                         )
+        res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
     for key in form_content.keys():
         setattr(res, key, str(form_content[key]))
     res.update_time = int(time.time())
@@ -1202,8 +1207,10 @@ def insert_scale_duration(patient_session_id, scale_id, question_index, duration
 
 def get_version_of_history_scale(scale_model, patient_session_id):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No). \
-        values("version").first()["version"]
-    return res
+        values("version").first()
+    if res is None:
+        return None
+    return res["version"]
 
 
 def get_answer_by_index(scale_model, patient_session_id, question_index):
@@ -1213,6 +1220,6 @@ def get_answer_by_index(scale_model, patient_session_id, question_index):
 
 
 def get_patient_id(patient_session_id):
-    res = patient_models.DPatientDetail.objects.filter(session_id=patient_session_id).values("patient").first()[
+    res = patient_models.DPatientDetail.objects.filter(pk=patient_session_id).values("patient").first()[
         "patient"]
     return res

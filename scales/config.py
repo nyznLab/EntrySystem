@@ -1,20 +1,20 @@
 import scales.models as models
 
 scaleId_Models_Map = {
-    '11': models.RPatientYbobsessiontable,
+    '11': models.TScaleYbo,
     '12': models.TScaleBss,
-    '13': models.RPatientManicsymptom,
-    '14': models.RPatientHappiness,
-    '15': models.RPatientPleasure,
-    '16': models.RPatientGrowth,
-    '17': models.RPatientCognitiveEmotion,
-    '18': models.RPatientAdolescentEvents,
-    '19': models.RPatientSembu,
-    '20': models.RPatientAtq,
-    '29': models.RPatientPhq,
-    '30': models.RPatientGad,
-    '31': models.RPatientInsomnia,
-    '32': models.RPatientPss,
+    '13': models.TScaleHcl,
+    '14': models.TScaleShapes,
+    '15': models.TScaleTeps,
+    '16': models.TScaleCtqsf,
+    '17': models.TScaleCerqc,
+    '18': models.TScaleAslec,
+    '19': models.TScaleSembu,
+    '20': models.TScaleAtq,
+    '29': models.TScalePhq,
+    '30': models.TScaleGad,
+    '31': models.TScaleInsomnia,
+    '32': models.TScalePss,
 }
 
 Scale_Completed = 1

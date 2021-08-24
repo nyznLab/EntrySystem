@@ -2192,10 +2192,19 @@ def get_question_by_index(request):
     scale_id = request.POST.get("scale_id")
     question_index = str(request.POST.get("question_index"))
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
-    if "rule" not in scale_content[question_index]:
-        return JsonResponse(scale_content[question_index])
-    elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
-        return JsonResponse(scale_content[question_index])
+    print("get_question_by_index :", patient_session_id, scale_id, question_index, question_index in scale_content.keys())
+    if question_index in scale_content.keys():
+        print("in if")
+        print(scale_content[question_index])
+        if "rule" not in scale_content[question_index]:
+            print("no rules")
+            return JsonResponse(scale_content[question_index])
+        elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
+            print("match rules")
+            return JsonResponse(scale_content[question_index])
+        print("no match rules")
+    print("out if")
+    Do.complete_scale(patient_session_id, scale_id)
     return HttpResponse(False)
 
 
@@ -2228,6 +2237,7 @@ def get_scale_metadata(request):
 def submit_scale(request):
     err = Do.submit_scales_input_validate(request)
     if err is not None:
+        print("submit_scale :" + err)
         return HttpResponse(err)
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
