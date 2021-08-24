@@ -7,18 +7,18 @@
         <option type="radio" name="question1" value="4">非常严重</option>
     </question>
     <question index="2" title="难以维持睡眠">
-        <option type="radio" name="question1" value="0">没有</option>
-        <option type="radio" name="question1" value="1">轻微</option>
-        <option type="radio" name="question1" value="2">普通</option>
-        <option type="radio" name="question1" value="3">严重</option>
-        <option type="radio" name="question1" value="4">非常严重</option>
+        <option type="radio" name="question2" value="0">没有</option>
+        <option type="radio" name="question2" value="1">轻微</option>
+        <option type="radio" name="question2" value="2">普通</option>
+        <option type="radio" name="question2" value="3">严重</option>
+        <option type="radio" name="question2" value="4">非常严重</option>
     </question>
     <question index="3" title="太早就醒了的问题">
-        <option type="radio" name="question1" value="0">没有</option>
-        <option type="radio" name="question1" value="1">轻微</option>
-        <option type="radio" name="question1" value="2">普通</option>
-        <option type="radio" name="question1" value="3">严重</option>
-        <option type="radio" name="question1" value="4">非常严重</option>
+        <option type="radio" name="question3" value="0">没有</option>
+        <option type="radio" name="question3" value="1">轻微</option>
+        <option type="radio" name="question3" value="2">普通</option>
+        <option type="radio" name="question3" value="3">严重</option>
+        <option type="radio" name="question3" value="4">非常严重</option>
     </question>
     <question index="4" title="你对过去两个星期的睡眠状况满意度如何">
         <option type="radio" name="question4" value="0">非常满意</option>
@@ -42,10 +42,10 @@
         <option type="radio" name="question6" value="4">机之明显</option>
     </question>
     <question index="7" title="你对你现时的睡眠问题有多忧虑/苦恼？">
-        <option type="radio" name="question6" value="0">完全没有</option>
-        <option type="radio" name="question6" value="1">少许</option>
-        <option type="radio" name="question6" value="2">颇为</option>
-        <option type="radio" name="question6" value="3">非常</option>
-        <option type="radio" name="question6" value="4">非常大</option>
+        <option type="radio" name="question7" value="0">完全没有</option>
+        <option type="radio" name="question7" value="1">少许</option>
+        <option type="radio" name="question7" value="2">颇为</option>
+        <option type="radio" name="question7" value="3">非常</option>
+        <option type="radio" name="question7" value="4">非常大</option>
     </question>
 </scale>

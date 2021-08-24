@@ -10,30 +10,30 @@
         <option type="radio" name="question3" value="1">乡村</option>
     </question>
     <question index="4" title="父母情况">
-        <option type="radio" name="question1" value="0">双亲家庭</option>
-        <option type="radio" name="question1" value="1">单亲（母亲死亡）</option>
-        <option type="radio" name="question1" value="2">单亲（父亲死亡）</option>
-        <option type="radio" name="question1" value="3">单亲（父母离异，跟母亲）</option>
-        <option type="radio" name="question1" value="4">单亲（父母离异，跟父亲）</option>
-        <option type="radio" name="question1" value="5">父母死亡</option>
+        <option type="radio" name="question4" value="0">双亲家庭</option>
+        <option type="radio" name="question4" value="1">单亲（母亲死亡）</option>
+        <option type="radio" name="question4" value="2">单亲（父亲死亡）</option>
+        <option type="radio" name="question4" value="3">单亲（父母离异，跟母亲）</option>
+        <option type="radio" name="question4" value="4">单亲（父母离异，跟父亲）</option>
+        <option type="radio" name="question4" value="5">父母死亡</option>
     </question>
     <question index="5" title="你认为你的成绩在班级中为：">
-        <option type="radio" name="question1" value="0">上</option>
-        <option type="radio" name="question1" value="1">中上</option>
-        <option type="radio" name="question1" value="2">中</option>
-        <option type="radio" name="question1" value="3">中下</option>
-        <option type="radio" name="question1" value="4">下</option>
+        <option type="radio" name="question5" value="0">上</option>
+        <option type="radio" name="question5" value="1">中上</option>
+        <option type="radio" name="question5" value="2">中</option>
+        <option type="radio" name="question5" value="3">中下</option>
+        <option type="radio" name="question5" value="4">下</option>
     </question>
     <question index="6" title="父亲常常在我不知道原因的情况下对我大发脾气">
-        <option type="radio" name="question2" value="1">从不</option>
-        <option type="radio" name="question2" value="2">偶尔</option>
-        <option type="radio" name="question2" value="3">经常</option>
-        <option type="radio" name="question2" value="4">总是</option>
+        <option type="radio" name="question6" value="1">从不</option>
+        <option type="radio" name="question6" value="2">偶尔</option>
+        <option type="radio" name="question6" value="3">经常</option>
+        <option type="radio" name="question6" value="4">总是</option>
     </question>
     <question index="7" title="母亲常常在我不知道原因的情况下对我大发脾气">
-        <option type="radio" name="question2" value="1">从不</option>
-        <option type="radio" name="question2" value="2">偶尔</option>
-        <option type="radio" name="question2" value="3">经常</option>
-        <option type="radio" name="question2" value="4">总是</option>
+        <option type="radio" name="question7" value="1">从不</option>
+        <option type="radio" name="question7" value="2">偶尔</option>
+        <option type="radio" name="question7" value="3">经常</option>
+        <option type="radio" name="question7" value="4">总是</option>
     </question>
 </scale>
