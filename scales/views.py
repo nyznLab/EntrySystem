@@ -1632,14 +1632,10 @@ def get_next_self_scale_url(request):
     patient_session_id = request.GET.get('patient_session_id')  # 暂定下一个，需要调到最近的未完成量表
     scale_id = get_next_self_scale_id(patient_session_id=patient_session_id, cur_scale_id=current_scale_id)
     patient_id = Do.get_patient_id(patient_session_id)
-    #  TODO 这个方法不传patient_id 这里改成用patient_session_id查patient_id
     if scale_id is None:
         next_test_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),
                                                                                            patient_id)
     else:
-        # next_test_url = '/scales/get_self_tests?scale_id={}&patient_session_id={}&patient_id={}'.format(str(scale_id),
-        #                                                                                                 str(patient_session_id),
-        #                                                                                                 str(patient_id))
         next_test_url = '/scales/self_test?patient_session_id={}&scale_id={}'.format(patient_session_id, scale_id)
     print(next_test_url)
     return render(request, 'warning.html', {
@@ -2192,20 +2188,27 @@ def get_question_by_index(request):
     scale_id = request.POST.get("scale_id")
     question_index = str(request.POST.get("question_index"))
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
-    print("get_question_by_index :", patient_session_id, scale_id, question_index, question_index in scale_content.keys())
+    print("get_question_by_index :", patient_session_id, scale_id, question_index,
+          question_index in scale_content.keys())
     if question_index in scale_content.keys():
-        print("in if")
-        print(scale_content[question_index])
+        # 题目存在
         if "rule" not in scale_content[question_index]:
-            print("no rules")
+            # 没有规则
+            print("get_question_by_index return" + str(scale_content[question_index]))
             return JsonResponse(scale_content[question_index])
         elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
-            print("match rules")
+            # 有规则且规则成立
+            print("get_question_by_index return" + str(scale_content[question_index]))
             return JsonResponse(scale_content[question_index])
-        print("no match rules")
-    print("out if")
-    Do.complete_scale(patient_session_id, scale_id)
-    return HttpResponse(False)
+        else:
+            # 有规则且规则不成立
+            print("get_question_by_index return false")
+            return JsonResponse(False, safe=False)
+    else:
+        # 已经没有题目了
+        Do.complete_scale(patient_session_id, scale_id)
+        print("get_question_by_index return true")
+        return JsonResponse(True, safe=False)
 
 
 # 根据题号取答案

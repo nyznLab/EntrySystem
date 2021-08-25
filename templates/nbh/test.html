@@ -83,6 +83,7 @@
             {patient_session_id: patientSessionId, scale_id: scaleId},
             function (result, statue) {
                 if (statue === "success") {
+                    console.log(result);
                     $(".active").text(result.title);
                     $(".warn").text(result.warn);
                 }
@@ -91,6 +92,11 @@
             {patient_session_id: patientSessionId, scale_id: scaleId},
             function (result, statue) {
                 if (statue === "success") {
+                    console.log(result);
+                    if(result === "False"){
+                        $(".question").text("量表已完成");
+                        return;
+                    }
                     updateQuestion(result.content);
                     index = result.index;
                 }
@@ -99,8 +105,10 @@
     });
 
     $("#submit").click(function () {
+        $.ajaxSettings.async = false;
         const loginData = $.serializeJSON($('#question_form'));
         // console.log($('#question_form').serializeJson());
+        // 提交题目
         $.post("/scales/submit_scale",
             {
                 patient_session_id: patientSessionId,
@@ -113,73 +121,99 @@
             },
             "json"
         );
-        //  渲染下一个题目
-        $.post("/scales/get_question_by_index",
-            {patient_session_id: patientSessionId, scale_id: scaleId, question_index: ++index},
-            function (result, statue) {
-                if (statue === "success") {
-                    if (result === "False") {
-                        // $(window).attr('location',"/scales/get_next_self_scale_url?patient_session_id={0}&scale_id={1}".format(patientSessionId, scaleId + 1));
-                        window.location.replace("/scales/get_next_self_scale_url?patient_session_id={{ patientSessionId }}&scale_id={{ scaleId|add:"1" }}");
-                    } else {
-                        cleanOptions();
-                        updateQuestion(result);
-                    }
-                }
-            });
-    });
-
-    // TODO 上一题功能 开发返回题目历史答案 并将历史答案显示出来
-    $("#previous").click(function () {
-        let rsp = findPreviousQuestion({
-            patient_session_id: patientSessionId,
-            scale_id: scaleId,
-            question_index: --index
-        });
-        while (rsp === false && index > 0) {
-            rsp = findPreviousQuestion({
-                patient_session_id: patientSessionId,
-                scale_id: scaleId,
-                question_index: --index
-            });
-        }
-        if (index > 0) {
-            cleanOptions();
-            updateQuestion(rsp.content);
-            // todo 取对应题目的答案
-            $.post("/scales/get_answer_by_index",
+        // 取下一题
+        let rsp;
+        while (true) {
+            $.post("/scales/get_question_by_index",
                 {
                     patient_session_id: patientSessionId,
                     scale_id: scaleId,
-                    question_index: index
+                    question_index: ++index,
                 },
                 function (result, statue) {
                     if (statue === "success") {
-                        let inputs = document.getElementsByTagName("input");
-                        if (inputs[0].type === 'radio') {
-                            for (let i = 0; i < inputs.length; i++) {
-                                if (inputs[i].value === result.answer) {
-                                    inputs[i].checked = true;
-                                }
-                            }
-                            return;
-                        }
-                        if (inputs[0].type === 'text') {
-                            inputs[0].value = result.answer;
-                            return;
-                        }
-                        alert("无法获取到上一题的答案");
+                        rsp = result;
                     }
                 },
-                "json"
+                "Json"
             );
+            console.log(JSON.stringify(rsp));
+            if (rsp === false) {
+                // 规则 不成立 继续找下一题
+                console.log("False in");
+                continue;
+            }
+            break;
+        }
+        if (rsp === true) {
+            // 没有题目了
+            console.log("True in");
+            window.location.replace("/scales/get_next_self_scale_url?patient_session_id={{ patientSessionId }}&scale_id={{ scaleId|add:"1" }}");
+            $.ajaxSettings.async = true;
             return;
         }
-        alert("取不到上一题");
+        // 渲染下一题
+        console.log(rsp);
+        cleanOptions();
+        updateQuestion(rsp);
+        $.ajaxSettings.async = true;
     });
 
-    // 获取上一题题目
-    function findPreviousQuestion(req) {
+    // // TODO 上一题功能 开发返回题目历史答案 并将历史答案显示出来
+    // $("#previous").click(function () {
+    //     let rsp;
+    //     while (index > 0) {
+    //         rsp = getQuestionContent({
+    //             patient_session_id: patientSessionId,
+    //             scale_id: scaleId,
+    //             question_index: --index
+    //         });
+    //
+    //         if(rsp === "False"){
+    //             // 有规则且不成立
+    //             continue;
+    //         }
+    //         if(rsp === "True"){
+    //             // 没有题目
+    //             alert("不能再向上了");
+    //             return;
+    //         }
+    //
+    //         console.log(rsp);
+    //         cleanOptions();
+    //         updateQuestion(rsp.content);
+    //         // 取题目
+    //         $.post("/scales/get_answer_by_index",
+    //             {
+    //                 patient_session_id: patientSessionId,
+    //                 scale_id: scaleId,
+    //                 question_index: index
+    //             },
+    //             function (result, statue) {
+    //                 if (statue === "success") {
+    //                     let inputs = document.getElementsByTagName("input");
+    //                     if (inputs[0].type === 'radio') {
+    //                         for (let i = 0; i < inputs.length; i++) {
+    //                             if (inputs[i].value === result.answer) {
+    //                                 inputs[i].checked = true;
+    //                             }
+    //                         }
+    //                         return;
+    //                     }
+    //                     if (inputs[0].type === 'text') {
+    //                         inputs[0].value = result.answer;
+    //                         return;
+    //                     }
+    //                     alert("无法获取到上一题的答案");
+    //                 }
+    //             },
+    //             "json"
+    //         );
+    //     }
+    // });
+
+    // 题号获取题目
+    function getQuestionContent(req) {
         let rsp;
         $.post("/scales/get_question_by_index",
             req,
@@ -237,7 +271,7 @@
         // $("input[type='radio']").labelauty({ icon: true, label: true });
     }
 
-    function cleanOptions(){
+    function cleanOptions() {
         let options = $(".options");
         options.empty();
     }

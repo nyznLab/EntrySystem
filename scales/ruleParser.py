@@ -1,5 +1,4 @@
 class RuleParser(object):
-
     ALIAS = {
         '==': 'equals',
         '!=': 'not_equals',
@@ -16,21 +15,33 @@ class RuleParser(object):
     }
 
     def equals(self, answer, *args):
+        print("RuleParser")
+        print(getattr(answer, args[0]))
         return float(getattr(answer, args[0])) == float(args[1])
 
     def not_equals(self, answer, *args):
+        print("RuleParser")
+        print(getattr(answer, args[0]))
         return float(getattr(answer, args[0])) != float(args[1])
 
     def grater(self, answer, *args):
+        print("RuleParser")
+        print(getattr(answer, args[0]))
         return float(getattr(answer, args[0])) > float(args[1])
 
     def grater_equals(self, answer, *args):
+        print("RuleParser")
+        print(getattr(answer, args[0]))
         return float(getattr(answer, args[0])) >= float(args[1])
 
     def lower(self, answer, *args):
+        print("RuleParser")
+        print(getattr(answer, args[0]))
         return float(getattr(answer, args[0])) < float(args[1])
 
     def lower_equals(self, answer, *args):
+        print("RuleParser")
+        print(getattr(answer, args[0]))
         return float(getattr(answer, args[0])) <= float(args[1])
 
     @staticmethod
