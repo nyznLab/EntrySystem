@@ -78,6 +78,7 @@
     let index;
     let patientSessionId = {{ patientSessionId }};
     let scaleId = {{ scaleId }};
+    let Clicked = false;
     $(document).ready(function () {
         $.post("/scales/get_scale_metadata",
             {patient_session_id: patientSessionId, scale_id: scaleId},
@@ -105,10 +106,35 @@
     });
 
     $("#submit").click(function () {
+        // 限制点击频率
+        if(!Clicked){
+            // 如果没点过 更新为点过， 设置2秒后过期
+            Clicked = true;
+            setTimeout(function () {
+                Clicked = false;
+            }, 2000);
+        }else {
+            // 最近点击过 直接返回
+            return;
+        }
+        // ajax post 置为同步提交
         $.ajaxSettings.async = false;
+        // 没有选择不能提交下一题
+        let inputs = document.getElementsByClassName("scale_form");
+        let isSelected = false;
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].checked === true) {
+                isSelected = true;
+                break;
+            }
+        }
+        if(!isSelected){
+            alert("请选择答案");
+            return;
+        }
+        // 表单序列化为Json
         const loginData = $.serializeJSON($('#question_form'));
-        // console.log($('#question_form').serializeJson());
-        // 提交题目
+        // 提交表单
         $.post("/scales/submit_scale",
             {
                 patient_session_id: patientSessionId,
@@ -156,61 +182,126 @@
         console.log(rsp);
         cleanOptions();
         updateQuestion(rsp);
+
+        // 取答案
+        $.post("/scales/get_answer_by_index",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                question_index: index
+            },
+            function (result, statue) {
+                if (statue === "success") {
+                    if(result === "None"){
+                        return;
+                    }
+                    console.log(result);
+                    let inputs = document.getElementsByClassName("scale_form");
+                    console.log(inputs[0].type);
+                    if (inputs[0].type === 'radio') {
+                        for (let i = 0; i < inputs.length; i++) {
+                            console.log(inputs[i].value);
+                            if (inputs[i].value === result.answer) {
+                                inputs[i].checked = true;
+                                console.log(inputs[i].checked);
+                            }
+                        }
+                    }
+                    if (inputs[0].type === 'text') {
+                        inputs[0].value = result.answer;
+                    }
+                }
+            },
+            "json"
+        );
+
         $.ajaxSettings.async = true;
     });
 
-    // // TODO 上一题功能 开发返回题目历史答案 并将历史答案显示出来
-    // $("#previous").click(function () {
-    //     let rsp;
-    //     while (index > 0) {
-    //         rsp = getQuestionContent({
-    //             patient_session_id: patientSessionId,
-    //             scale_id: scaleId,
-    //             question_index: --index
-    //         });
-    //
-    //         if(rsp === "False"){
-    //             // 有规则且不成立
-    //             continue;
-    //         }
-    //         if(rsp === "True"){
-    //             // 没有题目
-    //             alert("不能再向上了");
-    //             return;
-    //         }
-    //
-    //         console.log(rsp);
-    //         cleanOptions();
-    //         updateQuestion(rsp.content);
-    //         // 取题目
-    //         $.post("/scales/get_answer_by_index",
-    //             {
-    //                 patient_session_id: patientSessionId,
-    //                 scale_id: scaleId,
-    //                 question_index: index
-    //             },
-    //             function (result, statue) {
-    //                 if (statue === "success") {
-    //                     let inputs = document.getElementsByTagName("input");
-    //                     if (inputs[0].type === 'radio') {
-    //                         for (let i = 0; i < inputs.length; i++) {
-    //                             if (inputs[i].value === result.answer) {
-    //                                 inputs[i].checked = true;
-    //                             }
-    //                         }
-    //                         return;
-    //                     }
-    //                     if (inputs[0].type === 'text') {
-    //                         inputs[0].value = result.answer;
-    //                         return;
-    //                     }
-    //                     alert("无法获取到上一题的答案");
-    //                 }
-    //             },
-    //             "json"
-    //         );
-    //     }
-    // });
+    $("#previous").click(function () {
+        if(index === 0){
+            return;
+        }
+        // 限制点击频率
+        if(!Clicked){
+            // 如果没点过 更新为点过， 设置2秒后过期
+            Clicked = true;
+            setTimeout(function () {
+                Clicked = false;
+            }, 2000);
+        }else {
+            // 最近点击过 直接返回
+            return;
+        }
+        // ajax post 置为同步提交
+        $.ajaxSettings.async = false;
+        let rsp;
+        while (true) {
+            $.post("/scales/get_question_by_index",
+                {
+                    patient_session_id: patientSessionId,
+                    scale_id: scaleId,
+                    question_index: --index,
+                },
+                function (result, statue) {
+                    if (statue === "success") {
+                        rsp = result;
+                    }
+                },
+                "Json"
+            );
+
+            if(rsp === false){
+                // 有规则且不成立
+                continue;
+            }
+
+            if(rsp === true){
+                // 没有题目
+                alert("不能再向上了");
+                $.ajaxSettings.async = true;
+                return;
+            }
+
+            break;
+        }
+
+        // 渲染题目
+        console.log(rsp);
+        cleanOptions();
+        updateQuestion(rsp);
+
+        // 取答案
+        $.post("/scales/get_answer_by_index",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                question_index: index
+            },
+            function (result, statue) {
+                if (statue === "success") {
+                    console.log(result);
+                    let inputs = document.getElementsByClassName("scale_form");
+                    console.log(inputs[0].type);
+                    if (inputs[0].type === 'radio') {
+                        for (let i = 0; i < inputs.length; i++) {
+                            console.log(inputs[i].value);
+                            if (inputs[i].value === result.answer) {
+                                inputs[i].checked = true;
+                                console.log(inputs[i].checked);
+                            }
+                        }
+                        return;
+                    }
+                    if (inputs[0].type === 'text') {
+                        inputs[0].value = result.answer;
+                    }
+                }
+            },
+            "json"
+        );
+        $.ajaxSettings.async = true;
+    });
 
     // 题号获取题目
     function getQuestionContent(req) {
@@ -237,6 +328,7 @@
                 input.setAttribute("type", "radio");
                 input.setAttribute("name", questionInfo.options[j].name);
                 input.setAttribute("value", questionInfo.options[j].value);
+                input.setAttribute("class", "scale_form");
                 // TODO labelauty 没生效 需要调试一下
                 input.setAttribute("data-labelauty", questionInfo.options[j].content);
                 let div = document.createElement("div");
@@ -259,6 +351,7 @@
                 input.setAttribute("type", "text");
                 input.setAttribute("name", questionInfo.options[j].name);
                 input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
+                input.setAttribute("class", "scale_form");
                 div.append(input);
                 options.append(div);
                 continue;

@@ -2216,6 +2216,7 @@ def get_answer_by_index(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
     question_index = str(request.POST.get("question_index"))
+    print("get_answer_by_index", patient_session_id, scale_id, question_index)
     res = Do.get_answer_by_index(scale_id, patient_session_id, question_index)
     return JsonResponse({
         "answer": res,
