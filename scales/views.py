@@ -2271,7 +2271,7 @@ def delete_scale_content(scale_id, version):
 def testNewAjax(request):
     patient_session_id = request.GET.get("patient_session_id")
     scale_id = request.GET.get("scale_id")
-    return render(request, r"nbh/test.html", {
+    return render(request, r"nbh/self_test.html", {
         "patientSessionId": patient_session_id,
         "scaleId": scale_id,
     })
@@ -2280,7 +2280,7 @@ def testNewAjax(request):
 def selfTest(request):
     patient_session_id = request.GET.get("patient_session_id")
     scale_id = request.GET.get("scale_id")
-    return render(request, r"nbh/test.html", {
+    return render(request, r"nbh/self_test.html", {
         "patientSessionId": patient_session_id,
         "scaleId": scale_id,
     })
