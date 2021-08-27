@@ -2138,6 +2138,7 @@ def get_check_suibe_form(request):
 
 # 上传量表内容
 def update_scales_content(request):
+    # 输入参数校验
     err, handler = Do.update_scales_content_validate(request)
     if err is not None:
         return HttpResponse(err)
@@ -2150,11 +2151,13 @@ def update_scales_content(request):
     scale_content = request.POST.get('scale_content')
     comment = request.POST.get('comment')
     create_user = request.POST.get('create_user')
-
+    # 构造scale_content对象
     scale_content_model = scales_models.TScalesContent(scale_name=scale_name, scale_definition_id=scale_definition_id,
                                                        scale_group=scale_group, scale_content=scale_content,
                                                        comment=comment, create_user=create_user)
+    # 写入数据库
     rsp = Do.update_scale_content(scale_content_model)
+    # 刷新缓存中的scale_content对象
     cash.scales_content_handler_dic[scale_definition_id] = {
         "scaleHandler": handler,
         "version": scale_content_model.version,
@@ -2166,18 +2169,26 @@ def update_scales_content(request):
 def get_next_question(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
+    # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    # 取最后一个已完成题目的索引
     last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
+    # 遍历scale_content中的题目，从最后一个已完成题目的下一题（所以索引要+1）开始找满足条件的题目
     while str(last_answered_question_index + 1) in scale_content.keys():
+        # 将题目索引转换成str类型
         key_str = str(last_answered_question_index + 1)
+        # 当前题号的题目没有规则或者满足规则就返回结果
         if "rule" not in scale_content[key_str] or Do.match_rules(scale_content[key_str]["rule"], scale_id,
                                                                   patient_session_id):
+            # 前端也需要记录题号，所以需要将index一起传给前端
             rsp = {
                 "index": last_answered_question_index + 1,
                 "content": scale_content[key_str],
             }
             return JsonResponse(rsp)
+        # 当前题目不满足就继续找下一题
         last_answered_question_index += 1
+    # 遍历结束也没有找到满足条件的题目则表示当前量表已经完成，将量表完成状态置为已完成，返回给前端　Ｆａｌｓｅ
     Do.complete_scale(patient_session_id, scale_id)
     return HttpResponse(False)
 
@@ -2187,25 +2198,27 @@ def get_question_by_index(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
     question_index = str(request.POST.get("question_index"))
+    # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
     print("get_question_by_index :", patient_session_id, scale_id, question_index,
           question_index in scale_content.keys())
+    # 在scale_content中找对应题目
     if question_index in scale_content.keys():
         # 题目存在
         if "rule" not in scale_content[question_index]:
-            # 没有规则
+            # 没有规则　直接返回题目
             print("get_question_by_index return" + str(scale_content[question_index]))
             return JsonResponse(scale_content[question_index])
         elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
-            # 有规则且规则成立
+            # 有规则且规则成立　直接返回题目
             print("get_question_by_index return" + str(scale_content[question_index]))
             return JsonResponse(scale_content[question_index])
         else:
-            # 有规则且规则不成立
+            # 有规则且规则不成立　返回False给前端
             print("get_question_by_index return false")
             return JsonResponse(False, safe=False)
     else:
-        # 已经没有题目了
+        # 已经没有题目了　更改量表完成状态为已完成
         Do.complete_scale(patient_session_id, scale_id)
         print("get_question_by_index return true")
         return JsonResponse(True, safe=False)
@@ -2217,6 +2230,7 @@ def get_answer_by_index(request):
     scale_id = request.POST.get("scale_id")
     question_index = str(request.POST.get("question_index"))
     print("get_answer_by_index", patient_session_id, scale_id, question_index)
+    # 从数据库中将对应题目的答案返回给前端
     res = Do.get_answer_by_index(scale_id, patient_session_id, question_index)
     return JsonResponse({
         "answer": res,
@@ -2227,11 +2241,14 @@ def get_answer_by_index(request):
 def get_scale_metadata(request):
     scale_id = request.POST.get("scale_id")
     patient_session_id = request.POST.get("patient_session_id")
+    # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
     metadata = {}
     if "title" in scale_content.keys():
+        # 如果有title就取出来
         metadata["title"] = scale_content["title"]
     if "warn" in scale_content.keys():
+        # 如果有warn就取出来
         metadata["warn"] = scale_content["warn"]
     print(metadata)
     return JsonResponse(metadata)
@@ -2239,6 +2256,7 @@ def get_scale_metadata(request):
 
 # 提交题目答案
 def submit_scale(request):
+    # 输入参数校验
     err = Do.submit_scales_input_validate(request)
     if err is not None:
         print("submit_scale :" + err)
@@ -2249,25 +2267,32 @@ def submit_scale(request):
     form_data = json.loads(request.POST.get('data'))
     duration = request.POST.get('duration')
     try:
+        # 写入答案
         Do.write_scale_answer(scale_id, patient_session_id, form_data, doctor_id)
+        # 写入响应时间
         Do.write_scale_duration(patient_session_id, scale_id, duration)
     except ValueError:
-        return HttpResponse(False)
-    return HttpResponse(True)
+        # 写入出错　返回False给前端
+        return JsonResponse(False, safe=False)
+    # 写入成功　返回True
+    return JsonResponse(True, safe=False)
 
 
 # 重做
 def redo_scale(request):
     patient_session_id = request.POST.get('patient_session_is')
     scale_id = request.POST.get('scale_id')
+    # 重做量表
     return HttpResponse(Do.redo_scale(scale_id, patient_session_id))
 
 
 # 删除量表内容
 def delete_scale_content(scale_id, version):
+    # 删除量表
     return JsonResponse(json.dumps(Do.delete_scale_content(scale_id, version)))
 
 
+# 测试
 def testNewAjax(request):
     patient_session_id = request.GET.get("patient_session_id")
     scale_id = request.GET.get("scale_id")
@@ -2277,9 +2302,11 @@ def testNewAjax(request):
     })
 
 
+# 自评入口
 def selfTest(request):
     patient_session_id = request.GET.get("patient_session_id")
     scale_id = request.GET.get("scale_id")
+    # 自评入口 渲染self_test.html
     return render(request, r"nbh/self_test.html", {
         "patientSessionId": patient_session_id,
         "scaleId": scale_id,

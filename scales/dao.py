@@ -1138,18 +1138,21 @@ def del_suibe(patient_session_id, scale_id):
         res[0].delete()
 
 
+# 根据scale_definition_id取scale_content,默认取最新版本
 def get_scale_content_by_id(scale_id):
     res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, delete=config.Del_No
                                                       ).order_by("-scale_version").first()
     return res
 
 
+# 根据根据scale_definition_id取对应版本的scale_content
 def get_scale_content_by_id_and_version(scale_id, scale_version):
     res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, scale_version=scale_version,
                                                       delete=config.Del_No).order_by("-scale_version").first()
     return res
 
 
+# 根据scale_definition_id取scale_content的最新版本的版本号
 def get_scale_content_version_by_id(scale_id):
     res = scales_models.TScalesContent.objects.filter(scale_definition_id=scale_id, delete=config.Del_No
                                                       ).order_by("-scale_version").values("scale_version").first()
@@ -1158,6 +1161,7 @@ def get_scale_content_version_by_id(scale_id):
     return res["scale_version"]
 
 
+# 插入一条scale_content
 def insert_scale_content(scale_content_model):
     try:
         scale_content_model.save()
@@ -1166,35 +1170,43 @@ def insert_scale_content(scale_content_model):
         return False
 
 
+# 删除一条scale_content
 def delete_scale_content(scale_id, scale_version):
     res = scales_models.TScalesContent.objects.filter(scale_id=scale_id,
                                                       scale_version=scale_version).update(delete=config.Del_Yse)
     return res
 
 
+# 取某一个量表的答题记录
 def get_scale_answers(scale_model, patient_session_id):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
     return res
 
 
+# 删除某一个量表的答题记录
 def delete_scale_answers(scale_model, patient_session_id):
     res = scale_model.objects.filter(patient_session_id=patient_session_id,
                                      delete=config.Del_No).update(delete=config.Del_Yse)
     return res
 
 
+# 更新量表中某道题的答案
 def update_scales(scale_model, patient_session_id, form_content, doctor_id, scale_id):
     print("update_scales entry: ", scale_model, patient_session_id, form_content, doctor_id, scale_id)
+    # 先去查有没有记录
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
     print(res)
     if res is None:
+        # 没有记录说明是写入第一道题 所以先创建一个
         res = scale_model.objects.create(patient_session_id=patient_session_id,
                                          doctor_id=doctor_id,
                                          create_time=int(time.time()),
                                          version=get_scale_content_version_by_id(scale_id),
                                          update_time=int(time.time()),
                                          )
+        # 创建完成之后再查出来
         res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
+    # 把对应题目的答案更新 同时更新更新时间和医生id
     for key in form_content.keys():
         setattr(res, key, str(form_content[key]))
     res.update_time = int(time.time())
@@ -1202,11 +1214,13 @@ def update_scales(scale_model, patient_session_id, form_content, doctor_id, scal
     res.save()
 
 
+# 插入题目的响应时间
 def insert_scale_duration(patient_session_id, scale_id, question_index, duration):
     scales_models.RSelfTestDuration.objects.create(patient_session_id=patient_session_id, scale_id=scale_id,
                                                    question_index=question_index, duration=duration)
 
 
+# 取之前答题记录对应的量表版本号
 def get_version_of_history_scale(scale_model, patient_session_id):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No). \
         values("version").first()
@@ -1215,12 +1229,14 @@ def get_version_of_history_scale(scale_model, patient_session_id):
     return res["version"]
 
 
+# 根据题目index取答案 考虑到性能这里不返回整条记录，只反映对应字段的值
 def get_answer_by_index(scale_model, patient_session_id, question_index):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).values(
         question_index).first()[question_index]
     return res
 
 
+# 根据 patient_session_id 返回对应的 patient id
 def get_patient_id(patient_session_id):
     res = patient_models.DPatientDetail.objects.filter(pk=patient_session_id).values("patient").first()[
         "patient"]

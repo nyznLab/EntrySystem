@@ -1,5 +1,6 @@
 import scales.models as models
 
+# scale_definition --- models 的映射关系
 scaleId_Models_Map = {
     '11': models.TScaleYbo,
     '12': models.TScaleBss,
@@ -17,8 +18,10 @@ scaleId_Models_Map = {
     '32': models.TScalePss,
 }
 
+# 量表完成状态常量
 Scale_Completed = 1
 Scale_Not_Completed = 0
 
+# 逻辑删除标志常量
 Del_Yse = 1
 Del_No = 0

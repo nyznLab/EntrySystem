@@ -1,4 +1,5 @@
 class RuleParser(object):
+    # 操作字典
     ALIAS = {
         '==': 'equals',
         '!=': 'not_equals',
@@ -11,7 +12,7 @@ class RuleParser(object):
         '+': 'plus',
         '-': 'minus',
         '*': 'multiply',
-        '/': 'divide'
+        '/': 'divide',
     }
 
     def equals(self, answer, *args):
@@ -64,26 +65,34 @@ class RuleParser(object):
     def divide(self, answer, *args):
         return float(getattr(answer, args[0])) / float(getattr(answer, args[1]))
 
+    # 校验规则是否合法
     def validate(self, rules):
+        # 规则表达式必须是列表
         if not isinstance(rules, list):
             raise ValueError('Rule must be a list, got {}'.format(type(rules)))
+        # 规则操作数至少三个
         if len(rules) <= 2:
             raise ValueError('Must have at least one argument.')
-
+        # 操作必须是支持的操作类型
         opt = rules[0]
         if str(opt).lower() not in self.ALIAS.keys():
             raise ValueError("option {} invalid".format(opt))
+        # 递归判断 因为规则操作数也可以是一个表达式
         for rule in rules[1:]:
             if isinstance(rule, list):
                 self.validate(rule)
         return True
 
+    # 计算规则结果
     def evaluate(self, answer, rules):
+        # 通过反射取到对应计算的方法
         func = getattr(self, self.ALIAS[rules[0]])
         if not isinstance(rules[1], list) and not isinstance(rules[2], list):
+            # 如果后两个操作数都不是列表（说明后面的操作数不是新的表达式）则直接计算 把结果返回
             ans = func(answer, rules[1], rules[2])
             print(func, rules[1:], ans)
             return ans
+        # 后面的操作数是表达式 先依次把他们计算出来 再计算
         args = [self.evaluate(answer, x) for x in rules[1:]]
         ans = func(args)
         print(func, args, ans)
