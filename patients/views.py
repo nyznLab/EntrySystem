@@ -218,8 +218,8 @@ def add_patient_followup(request):
 def get_patient_detail(request):
     if request.GET:
         patient_id = request.GET.get("patient_id")
-        patient_baseinfo = patients_dao.get_base_info_byPK(patient_id) #!!!!!!!!!
-        medical_advice = patients_dao.get_medical_advice_info(patient_id) #!!!!!!!!!!!!
+        patient_baseinfo = patients_dao.get_base_info_byPK(patient_id)
+        medical_advice = patients_dao.get_medical_advice_info(patient_id)
         patient_detail_list = DPatientDetail.objects.all().select_related('patient__doctor').filter(
             patient_id=patient_id).values('id', 'patient_id', 'session_id', 'standard_id', 'create_time','update_time',
                                           'cognitive','sound','blood','hairs','manure','drugs_information',
@@ -268,9 +268,10 @@ def get_patient_detail(request):
                           'ghr_diagnosis': ghr_diagnosis,
                           'ghr_kinship': ghr_kinship,
                           'num_ghr': num_ghr,
-                          'patients': patients,
-                          'medical_advice': medical_advice, #!!!!!!!
-                          'patient_baseinfo': patient_baseinfo,#!!!!!!!
+                          'patients':patients,
+                          'doctor_id':request.session.get('doctor_id'),
+                          'medical_advice': medical_advice,
+                          'patient_baseinfo': patient_baseinfo,
                       })
     else:
         return render(request, 'patient_detail.html', {"username": request.session.get("username")})
@@ -280,7 +281,7 @@ def del_patient(request):
     if request.GET:
         patient_id = request.GET.get("patient_id")
         patients_dao.del_patient_base_info_byPK(patient_id)
-        followup_dao.del_followup_by_patient_id(patient_id)
+        # followup_dao.del_followup_by_patient_id(patient_id)
         # 后续添加删除成功的展示页面，然后自动跳转回subjectmanage页面
         return redirect('/patients/get_all_patients_baseinfo')
     else:
@@ -293,7 +294,7 @@ def del_followup(request):
     patient_session_id = request.GET.get("patient_session_id")
     print('session:   ',patient_session_id,"-----------pid",patient_id)
     patient_detail = DPatientDetail.objects.all().select_related('doctor').filter(pk=patient_session_id)
-    patient_detail_id=patient_detail.id
+    # patient_detail_id=patient_detail.id
 
     all_list_tms = patients_models.BPatientRtms.objects.filter(patient_session_id=patient_session_id)
     for list in all_list_tms:
@@ -303,7 +304,7 @@ def del_followup(request):
         # 只有创建该条记录的用户才能够删除本条记录
         if patient_detail.first().doctor.username == request.session.get('username'):
             patient_detail.first().delete()
-            followup_dao.del_followup_by_patient_detail_id(patient_detail_id)
+            # followup_dao.del_followup_by_patient_detail_id(patient_detail_id)
 
     return redirect('/patients/get_patient_detail?patient_id=' + patient_id)
 
@@ -790,4 +791,17 @@ def add_ma_ps(request):
     redirect_url = '/patients/add_patient_ma_or_pn?patient_id=' + patient_id
     return redirect(redirect_url)
 
-
+def add_blood(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    patient_id = request.GET.get('patient_id')
+    blood_res = patients_models.RPatientBlood.objects.filter(patient_session_id=patient_session_id).first()
+    if blood_res is not None:
+        blood_res.delete()
+    rPatientBlood= patients_models.RPatientBlood(patient_session_id=patient_session_id)
+    rPatientBlood=set_attr_by_post(request, rPatientBlood)
+    rPatientBlood.save()
+    patient_detail_res=patients_models.DPatientDetail.objects.filter(id=patient_session_id).first()
+    patient_detail_res.blood=1
+    patient_detail_res.save()
+    redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
+    return redirect(redirect_url)

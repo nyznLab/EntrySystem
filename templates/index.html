@@ -53,12 +53,13 @@
 					    <ul class="nav child_menu">
                             <li><a href="/patients/get_patient_by_search">信息管理与评估</a></li>
                             <li><a href="/inpatients/get_inpatient_by_search">住院管理</a></li>
-                            <li><a href="/followup/get_followup_by_search">随访</a></li>
 						</ul>
 
                   </li>
+                    <li><a href="{% url 'statistics' %}"><i class="fa fa-hourglass-start"></i>完整信息统计表<span class = "fa fa-angle-right fa-lg"></span></a>
+                    </li>
 <!--                  <li><a href=""><i class="fa fa-desktop"></i> 信息统计与显示 <span class="fa fa-angle-right fa-lg"></span></a>-->
-                  </li>
+{#                  </li>#}
                   <li><a href="#"><i class="fa fa-table"></i> 使用说明及日志 <span class="fa fa-angle-right fa-lg"></span></a>
                   </li>
                 </ul>
@@ -433,7 +434,7 @@
         <!-- /page content -->
         {% endblock %}
         <!-- footer content -->
-<footer style="text-align: center;position: fixed;bottom: 0px;height:30px;vertical-align: middle;line-height: 30px;width:100%;padding-top: 0px;">
+<footer style="text-align: center;position: fixed;bottom: 0px;height:30px;vertical-align: middle;line-height: 30px;width:100%;padding-top: 0px;z-index:102">
 			<i class="fa fa-paw"></i> <span>&nbsp;录&nbsp;入&nbsp;系&nbsp;统</span>
 		</footer>
         <!-- /footer content -->
@@ -460,7 +461,7 @@
     <script src="{% static '/vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static '/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
     <script src="{% static '/vendors/datatables.net-scroller/js/dataTables.scroller.js' %}"></script>
-    <script type="javascript" src="/mystatic/js/layer.js%20"></script>
+{#    <script type="javascript" src="/mystatic/js/layer.js%20"></script>#}
 
     <!-- bootstrap-daterangepicker -->
     <script src="{% static '/vendors/moment/min/moment.min.js' %}"></script>

@@ -26,5 +26,6 @@ urlpatterns = [
     path('scales/', include('scales.urls')),
     path('inpatients/', include('inpatients.urls')),
     path('followup/', include('followup.urls')),
+    path('statistics/', include('statistics.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

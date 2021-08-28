@@ -1351,12 +1351,15 @@
     let suicide = {{ suicide }};
     let end_flag = 0;
     let question_index = 1 + {{ question_index }};
-
+    let isClick1=isClick2=isClick3=isClick4=isClick5=isClick6=isClick7=isClick8=isClick9=isClick10=isClick11=isClick12=isClick13=isClick14=isClick15=true;
+    let isClick16=isClick17=isClick18=isClick19=isClick20=isClick21=isClick22=isClick23=isClick24=isClick25=isClick26=isClick27=isClick28=isClick29=isClick30=true;
+    let isClick31=isClick32=isClick33=isClick34=isClick35=isClick36=isClick37=isClick38=isClick39=isClick40=true;
     $(document).ready(function () {
         $("input[type='radio']").labelauty();
         // $("div[class='bss_0_1']").show();
         if(question_index > 38){
             alert("请不要重复提交！");
+            return;
         }else{
             const class_name = 'bss_' + (Math.floor((question_index + 1) / 2) - 1) + '_' + (((question_index - 1) % 2) + 1);
             $(this.getElementsByClassName(class_name)).show();
@@ -1364,6 +1367,7 @@
         $("#bss_0_1_submit").on('click', function () {
             if (document.bss_0_1.suicide_history.value === "") {
                 alert("问题不能为空！");
+                return;
             } else if (document.bss_0_1.suicide_history.value === "0") {
                 ajax_post($('#bss_0_1'))
                 $("div[class='bss_0_1']").hide();
@@ -1373,81 +1377,145 @@
                 $("div[class='bss_0_1']").hide();
                 $("div[class='bss_0_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick1 = false;
+            }, 1000);
+            if (isClick1) {
+                return;
+            }
         });
 
         $("#bss_0_2_submit").on('click', function () {
             if (document.bss_0_2.suicide_times.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_0_2'))
                 $("div[class='bss_0_2']").hide();
                 $("div[class='bss_1_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick2 = false;
+            }, 1000);
+            if (isClick2) {
+                return;
             }
         });
 
         $("#bss_1_1_submit").on('click', function () {
             if (document.bss_1_1.question1_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_1_1'))
                 $("div[class='bss_1_1']").hide();
                 $("div[class='bss_1_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick3 = false;
+            }, 1000);
+            if (isClick3) {
+                return;
             }
         });
 
         $("#bss_1_2_submit").on('click', function () {
             if (document.bss_1_2.question1_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_1_2'))
                 $("div[class='bss_1_2']").hide();
                 $("div[class='bss_2_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick4 = false;
+            }, 1000);
+            if (isClick4) {
+                return;
             }
         });
 
         $("#bss_2_1_submit").on('click', function () {
             if (document.bss_2_1.question2_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_2_1'))
                 $("div[class='bss_2_1']").hide();
                 $("div[class='bss_2_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick5 = false;
+            }, 1000);
+            if (isClick5) {
+                return;
             }
         });
 
         $("#bss_2_2_submit").on('click', function () {
             if (document.bss_2_2.question2_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_2_2'))
                 $("div[class='bss_2_2']").hide();
                 $("div[class='bss_3_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick6 = false;
+            }, 1000);
+            if (isClick6) {
+                return;
             }
         });
 
         $("#bss_3_1_submit").on('click', function () {
             if (document.bss_3_1.question3_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_3_1'))
                 $("div[class='bss_3_1']").hide();
                 $("div[class='bss_3_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick7 = false;
+            }, 1000);
+            if (isClick7) {
+                return;
             }
         });
 
         $("#bss_3_2_submit").on('click', function () {
             if (document.bss_3_2.question3_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_3_2'))
                 $("div[class='bss_3_2']").hide();
                 $("div[class='bss_4_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick8 = false;
+            }, 1000);
+            if (isClick8) {
+                return;
             }
         });
 
         $("#bss_4_1_submit").on('click', function () {
             if (document.bss_4_1.question4_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 if(document.bss_4_1.question4_lastweek.value !== "1"){
                     suicide = true;
@@ -1456,11 +1524,19 @@
                 $("div[class='bss_4_1']").hide();
                 $("div[class='bss_4_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick9 = false;
+            }, 1000);
+            if (isClick9) {
+                return;
+            }
         });
 
         $("#bss_4_2_submit").on('click', function () {
             if (document.bss_4_2.question4_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 if(document.bss_4_2.question4_mostdepressed.value !== "1"){
                     suicide = true;
@@ -1469,11 +1545,19 @@
                 $("div[class='bss_4_2']").hide();
                 $("div[class='bss_5_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick10 = false;
+            }, 1000);
+            if (isClick10) {
+                return;
+            }
         });
 
         $("#bss_5_1_submit").on('click', function () {
             if (document.bss_5_1.question5_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 if(document.bss_5_1.question5_lastweek.value !== "1"){
                     suicide = true;
@@ -1482,11 +1566,19 @@
                 $("div[class='bss_5_1']").hide();
                 $("div[class='bss_5_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick11 = false;
+            }, 1000);
+            if (isClick11) {
+                return;
+            }
         });
 
         $("#bss_5_2_submit").on('click', function () {
             if (document.bss_5_2.question5_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else if (document.bss_5_2.question5_mostdepressed.value === "1") {
                 if (suicide === true) {
                     ajax_post($('#bss_5_2'));
@@ -1505,286 +1597,517 @@
                 $("div[class='bss_5_2']").hide();
                 $("div[class='bss_6_1']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick12 = false;
+            }, 1000);
+            if (isClick12) {
+                return;
+            }
         });
 
         $("#bss_6_1_submit").on('click', function () {
             if (document.bss_6_1.question6_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_6_1'))
                 $("div[class='bss_6_1']").hide();
                 $("div[class='bss_6_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick13 = false;
+            }, 1000);
+            if (isClick13) {
+                return;
             }
         });
 
         $("#bss_6_2_submit").on('click', function () {
             if (document.bss_6_2.question6_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 -ajax_post($('#bss_6_2'))
                 $("div[class='bss_6_2']").hide();
                 $("div[class='bss_7_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick14 = false;
+            }, 1000);
+            if (isClick14) {
+                return;
             }
         });
 
         $("#bss_7_1_submit").on('click', function () {
             if (document.bss_7_1.question7_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_7_1'))
                 $("div[class='bss_7_1']").hide();
                 $("div[class='bss_7_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick15 = false;
+            }, 1000);
+            if (isClick15) {
+                return;
             }
         });
 
         $("#bss_7_2_submit").on('click', function () {
             if (document.bss_7_2.question7_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_7_2'))
                 $("div[class='bss_7_2']").hide();
                 $("div[class='bss_8_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick16 = false;
+            }, 1000);
+            if (isClick16) {
+                return;
             }
         });
 
         $("#bss_8_1_submit").on('click', function () {
             if (document.bss_8_1.question8_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_8_1'))
                 $("div[class='bss_8_1']").hide();
                 $("div[class='bss_8_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick17 = false;
+            }, 1000);
+            if (isClick17) {
+                return;
             }
         });
 
         $("#bss_8_2_submit").on('click', function () {
             if (document.bss_8_2.question8_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_8_2'))
                 $("div[class='bss_8_2']").hide();
                 $("div[class='bss_9_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick18 = false;
+            }, 1000);
+            if (isClick18) {
+                return;
             }
         });
 
         $("#bss_9_1_submit").on('click', function () {
             if (document.bss_9_1.question9_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_9_1'))
                 $("div[class='bss_9_1']").hide();
                 $("div[class='bss_9_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick19 = false;
+            }, 1000);
+            if (isClick19) {
+                return;
             }
         });
 
         $("#bss_9_2_submit").on('click', function () {
             if (document.bss_9_2.question9_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_9_2'))
                 $("div[class='bss_9_2']").hide();
                 $("div[class='bss_10_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick20 = false;
+            }, 1000);
+            if (isClick20) {
+                return;
             }
         });
 
         $("#bss_10_1_submit").on('click', function () {
             if (document.bss_10_1.question10_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_10_1'))
                 $("div[class='bss_10_1']").hide();
                 $("div[class='bss_10_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick21 = false;
+            }, 1000);
+            if (isClick21) {
+                return;
             }
         });
 
         $("#bss_10_2_submit").on('click', function () {
             if (document.bss_10_2.question10_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_10_2'))
                 $("div[class='bss_10_2']").hide();
                 $("div[class='bss_11_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick22 = false;
+            }, 1000);
+            if (isClick22) {
+                return;
             }
         });
 
         $("#bss_11_1_submit").on('click', function () {
             if (document.bss_11_1.question11_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_11_1'))
                 $("div[class='bss_11_1']").hide();
                 $("div[class='bss_11_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick23 = false;
+            }, 1000);
+            if (isClick23) {
+                return;
             }
         });
 
         $("#bss_11_2_submit").on('click', function () {
             if (document.bss_11_2.question11_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_11_2'))
                 $("div[class='bss_11_2']").hide();
                 $("div[class='bss_12_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick24 = false;
+            }, 1000);
+            if (isClick24) {
+                return;
             }
         });
 
         $("#bss_12_1_submit").on('click', function () {
             if (document.bss_12_1.question12_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_12_1'))
                 $("div[class='bss_12_1']").hide();
                 $("div[class='bss_12_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick25 = false;
+            }, 1000);
+            if (isClick25) {
+                return;
             }
         });
 
         $("#bss_12_2_submit").on('click', function () {
             if (document.bss_12_2.question12_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_12_2'))
                 $("div[class='bss_12_2']").hide();
                 $("div[class='bss_13_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick26 = false;
+            }, 1000);
+            if (isClick26) {
+                return;
             }
         });
 
         $("#bss_13_1_submit").on('click', function () {
             if (document.bss_13_1.question13_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_13_1'))
                 $("div[class='bss_13_1']").hide();
                 $("div[class='bss_13_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick27 = false;
+            }, 1000);
+            if (isClick27) {
+                return;
             }
         });
 
         $("#bss_13_2_submit").on('click', function () {
             if (document.bss_13_2.question13_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_13_2'))
                 $("div[class='bss_13_2']").hide();
                 $("div[class='bss_14_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick28 = false;
+            }, 1000);
+            if (isClick28) {
+                return;
             }
         });
 
         $("#bss_14_1_submit").on('click', function () {
             if (document.bss_14_1.question14_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_14_1'))
                 $("div[class='bss_14_1']").hide();
                 $("div[class='bss_14_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick29 = false;
+            }, 1000);
+            if (isClick29) {
+                return;
             }
         });
 
         $("#bss_14_2_submit").on('click', function () {
             if (document.bss_14_2.question14_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_14_2'))
                 $("div[class='bss_14_2']").hide();
                 $("div[class='bss_15_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick30 = false;
+            }, 1000);
+            if (isClick30) {
+                return;
             }
         });
 
         $("#bss_15_1_submit").on('click', function () {
             if (document.bss_15_1.question15_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_15_1'))
                 $("div[class='bss_15_1']").hide();
                 $("div[class='bss_15_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick31 = false;
+            }, 1000);
+            if (isClick31) {
+                return;
             }
         });
 
         $("#bss_15_2_submit").on('click', function () {
             if (document.bss_15_2.question15_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_15_2'))
                 $("div[class='bss_15_2']").hide();
                 $("div[class='bss_16_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick32 = false;
+            }, 1000);
+            if (isClick32) {
+                return;
             }
         });
 
         $("#bss_16_1_submit").on('click', function () {
             if (document.bss_16_1.question16_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_16_1'))
                 $("div[class='bss_16_1']").hide();
                 $("div[class='bss_16_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick33 = false;
+            }, 1000);
+            if (isClick33) {
+                return;
             }
         });
 
         $("#bss_16_2_submit").on('click', function () {
             if (document.bss_16_2.question16_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_16_2'))
                 $("div[class='bss_16_2']").hide();
                 $("div[class='bss_17_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick34 = false;
+            }, 1000);
+            if (isClick34) {
+                return;
             }
         });
 
         $("#bss_17_1_submit").on('click', function () {
             if (document.bss_17_1.question17_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_17_1'))
                 $("div[class='bss_17_1']").hide();
                 $("div[class='bss_17_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick35 = false;
+            }, 1000);
+            if (isClick35) {
+                return;
             }
         });
 
         $("#bss_17_2_submit").on('click', function () {
             if (document.bss_17_2.question17_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_17_2'))
                 $("div[class='bss_17_2']").hide();
                 $("div[class='bss_18_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick36 = false;
+            }, 1000);
+            if (isClick36) {
+                return;
             }
         });
 
         $("#bss_18_1_submit").on('click', function () {
             if (document.bss_18_1.question18_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_18_1'))
                 $("div[class='bss_18_1']").hide();
                 $("div[class='bss_18_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick37 = false;
+            }, 1000);
+            if (isClick37) {
+                return;
             }
         });
 
         $("#bss_18_2_submit").on('click', function () {
             if (document.bss_18_2.question18_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_18_2'))
                 $("div[class='bss_18_2']").hide();
                 $("div[class='bss_19_1']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick38 = false;
+            }, 1000);
+            if (isClick38) {
+                return;
             }
         });
 
         $("#bss_19_1_submit").on('click', function () {
             if (document.bss_19_1.question19_lastweek.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 ajax_post($('#bss_19_1'))
                 $("div[class='bss_19_1']").hide();
                 $("div[class='bss_19_2']").show();
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick39 = false;
+            }, 1000);
+            if (isClick39) {
+                return;
             }
         });
 
         $("#bss_19_2_submit").on('click', function () {
             if (document.bss_19_2.question19_mostdepressed.value === "") {
                 alert("问题不能为空！");
+                return;
             } else {
                 end_flag = 1;
                 ajax_post($('#bss_19_2'))
                 //跳转
                 location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick40 = false;
+            }, 1000);
+            if (isClick40) {
+                return;
             }
         });
     });
@@ -1797,6 +2120,9 @@
     }
 
     function ajax_post(form) {
+        isClick1=isClick2=isClick3=isClick4=isClick5=isClick6=isClick7=isClick8=isClick9=isClick10=isClick11=isClick12=isClick13=isClick14=isClick15=true;
+        isClick16=isClick17=isClick18=isClick19=isClick20=isClick21=isClick22=isClick23=isClick24=isClick25=isClick26=isClick27=isClick28=isClick29=isClick30=true;
+        isClick31=isClick32=isClick33=isClick34=isClick35=isClick36=isClick37=isClick38=isClick39=isClick40=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +

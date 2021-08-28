@@ -117,43 +117,7 @@
     let suicide = false;
     let end_flag = 0;
     let question_index = 1 + {{ question_index }};
-    if(question_index <= 30){
-        for(let index = 1 ; index < question_index ; index ++){
-            update_question(index);
-        }
-    }
-    $(document).ready(function () {
-        $("input[type='radio']").labelauty();
-        $("#question_submit").on('click', function () {
-            if (question_index > 30) {
-                alert("请不要重复提交！");
-            } else {
-                const answers = document.getElementsByClassName("answer");
-                let flag = 0;
-                for (let i = 0; i < answers.length; i++) {
-                    if (answers[i].checked && question_index <= 30) {
-                        ajax_post($('#question_form'));
-                        update_question(question_index);
-                        question_index++;
-                        flag = 1;
-                        break;
-                    }
-                }
-                if (flag == 0) {
-                    alert("问题不能为空！");
-                }
-            }
-            $("input[type='radio']").removeAttr("checked");
-        });
-    });
-
-    function get_duration() {
-        const current_time = new Date();
-        const duration = time - current_time;
-        time = current_time;
-        return -duration;
-    }
-
+    let isClick=true;
     function alter_option_names(option_class_name, name) {
         const nodes = document.getElementsByClassName(option_class_name);
         for (let i = 0; i < nodes.length; i++) {
@@ -288,8 +252,189 @@
                 break;
         }
     }
+    if(question_index <= 30){
+        for(let index = 1 ; index < question_index ; index ++){
+            update_question(index);
+        }
+    }
+    $(document).ready(function () {
+        $("input[type='radio']").labelauty();
+        $("#question_submit").on('click', function () {
+            if (question_index > 30) {
+                alert("请不要重复提交！");
+                return;
+            } else {
+                const answers = document.getElementsByClassName("answer");
+                let flag = 0;
+                for (let i = 0; i < answers.length; i++) {
+                    if (answers[i].checked && question_index <= 30) {
+                        ajax_post($('#question_form'));
+                        update_question(question_index);
+                        question_index++;
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 0) {
+                    alert("问题不能为空！");
+                    return;
+                }
+            }
+            $("input[type='radio']").removeAttr("checked");
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick = false;
+            }, 1000);
+            if (isClick) {
+                return;
+            }
+        });
+    });
+
+    function get_duration() {
+        const current_time = new Date();
+        const duration = time - current_time;
+        time = current_time;
+        return -duration;
+    }
+
+    {#function alter_option_names(option_class_name, name) {#}
+    {#    const nodes = document.getElementsByClassName(option_class_name);#}
+    {#    for (let i = 0; i < nodes.length; i++) {#}
+    {#        nodes[i].setAttribute("name", name);#}
+    {#    }#}
+
+    {##}
+    {#function update_question(index) {#}
+    {#    switch (index) {#}
+    {#        case 1:#}
+    {#            document.getElementById('question_test').innerHTML = "2.我不好。";#}
+    {#            alter_option_names("answer", "question2_answer");#}
+    {#            break;#}
+    {#        case 2:#}
+    {#            document.getElementById('question_test').innerHTML = "3.为什么我总不能成功？";#}
+    {#            alter_option_names("answer", "question3_answer");#}
+    {#            break;#}
+    {#        case 3:#}
+    {#            document.getElementById('question_test').innerHTML = "4.没有人理解我。";#}
+    {#            alter_option_names("answer", "question4_answer");#}
+    {#            break;#}
+    {#        case 4:#}
+    {#            document.getElementById('question_test').innerHTML = "5.我让人失望。";#}
+    {#            alter_option_names("answer", "question5_answer");#}
+    {#            break;#}
+    {#        case 5:#}
+    {#            document.getElementById('question_test').innerHTML = "6.我觉得过不下去了。";#}
+    {#            alter_option_names("answer", "question6_answer");#}
+    {#            break;#}
+    {#        case 6:#}
+    {#            document.getElementById('question_test').innerHTML = "7.真希望我能好一点。";#}
+    {#            alter_option_names("answer", "question7_answer");#}
+    {#            break;#}
+    {#        case 7:#}
+    {#            document.getElementById('question_test').innerHTML = "8.我很虚弱。";#}
+    {#            alter_option_names("answer", "question8_answer");#}
+    {#            break;#}
+    {#        case 8:#}
+    {#            document.getElementById('question_test').innerHTML = "9.我的生活不按我的愿望发展。";#}
+    {#            alter_option_names("answer", "question9_answer");#}
+    {#            break;#}
+    {#        case 9:#}
+    {#            document.getElementById('question_test').innerHTML = "10.我对自己很不满意。";#}
+    {#            alter_option_names("answer", "question10_answer");#}
+    {#            break;#}
+    {#        case 10:#}
+    {#            document.getElementById('question_test').innerHTML = "11.我觉得一切都不好了。";#}
+    {#            alter_option_names("answer", "question11_answer");#}
+    {#            break;#}
+    {#        case 11:#}
+    {#            document.getElementById('question_test').innerHTML = "12.我无法坚持下去。";#}
+    {#            alter_option_names("answer", "question12_answer");#}
+    {#            break;#}
+    {#        case 12:#}
+    {#            document.getElementById('question_test').innerHTML = "13.我无法重新开始。";#}
+    {#            alter_option_names("answer", "question13_answer");#}
+    {#            break;#}
+    {#        case 13:#}
+    {#            document.getElementById('question_test').innerHTML = "14.我究竟犯了什么毛病？";#}
+    {#            alter_option_names("answer", "question14_answer");#}
+    {#            break;#}
+    {#        case 14:#}
+    {#            document.getElementById('question_test').innerHTML = "15.真希望我是在另外一个地方。";#}
+    {#            alter_option_names("answer", "question15_answer");#}
+    {#            break;#}
+    {#        case 15:#}
+    {#            document.getElementById('question_test').innerHTML = "16.我无法同时对付这些事情。";#}
+    {#            alter_option_names("answer", "question16_answer");#}
+    {#            break;#}
+    {#        case 16:#}
+    {#            document.getElementById('question_test').innerHTML = "17.我恨我自己";#}
+    {#            alter_option_names("answer", "question17_answer");#}
+    {#            break;#}
+    {#        case 17:#}
+    {#            document.getElementById('question_test').innerHTML = "18.我毫无价值。";#}
+    {#            alter_option_names("answer", "question18_answer");#}
+    {#            break;#}
+    {#        case 18:#}
+    {#            document.getElementById('question_test').innerHTML = "19.真希望我一下子就消失了。";#}
+    {#            alter_option_names("answer", "question19_answer");#}
+    {#            break;#}
+    {#        case 19:#}
+    {#            document.getElementById('question_test').innerHTML = "20.我这是怎么了？";#}
+    {#            alter_option_names("answer", "question20_answer");#}
+    {#            break;#}
+    {#        case 20:#}
+    {#            document.getElementById('question_test').innerHTML = "21.我是个失败者。";#}
+    {#            alter_option_names("answer", "question21_answer");#}
+    {#            break;#}
+    {#        case 21:#}
+    {#            document.getElementById('question_test').innerHTML = "22.我的生活一团糟。";#}
+    {#            alter_option_names("answer", "question22_answer");#}
+    {#            break;#}
+    {#        case 22:#}
+    {#            document.getElementById('question_test').innerHTML = "23.我一事无成。";#}
+    {#            alter_option_names("answer", "question23_answer");#}
+    {#            break;#}
+    {#        case 23:#}
+    {#            document.getElementById('question_test').innerHTML = "24.我不可能干好。";#}
+    {#            alter_option_names("answer", "question24_answer");#}
+    {#            break;#}
+    {#        case 24:#}
+    {#            document.getElementById('question_test').innerHTML = "25.我觉得孤立无援。";#}
+    {#            alter_option_names("answer", "question25_answer");#}
+    {#            break;#}
+    {#        case 25:#}
+    {#            document.getElementById('question_test').innerHTML = "26.有些东西必须改变。";#}
+    {#            alter_option_names("answer", "question26_answer");#}
+    {#            break;#}
+    {#        case 26:#}
+    {#            document.getElementById('question_test').innerHTML = "27.我肯定有问题。";#}
+    {#            alter_option_names("answer", "question27_answer");#}
+    {#            break;#}
+    {#        case 27:#}
+    {#            document.getElementById('question_test').innerHTML = "28.我的将来毫无希望。";#}
+    {#            alter_option_names("answer", "question28_answer");#}
+    {#            break;#}
+    {#        case 28:#}
+    {#            document.getElementById('question_test').innerHTML = "29.这根本毫无价值。";#}
+    {#            alter_option_names("answer", "question29_answer");#}
+    {#            break;#}
+    {#        case 29:#}
+    {#            document.getElementById('question_test').innerHTML = "30.我干什么事都有头无尾。";#}
+    {#            alter_option_names("answer", "question30_answer");#}
+    {#            end_flag = 1;#}
+    {#            // 跳转#}
+    {#            document.getElementById('question_submit').setAttribute('onclick', "location=\'" +#}
+    {##}
+    {#                "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}" +#}
+    {#                "\'"#}
+    {#            );#}
+    {#            break;#}
+    {#    }#}
+
 
     function ajax_post(form) {
+        isClick=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +
@@ -305,8 +450,7 @@
                 'test_name': "atq",
                 'csrfmiddlewaretoken': csrf
             }
-        });
+        })
     }
-
 </script>
 {% endblock %}

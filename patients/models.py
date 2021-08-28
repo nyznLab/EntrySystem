@@ -42,12 +42,23 @@ class BPatientBaseInfo(models.Model):
     diagnosis = models.IntegerField(blank=True, null=True, choices=DIAGNOSIS_TYPE)
     other_diagnosis = models.CharField(max_length=45)
     inpatient_state = models.IntegerField(choices=HOSPITALIZED_TYPE,default=HospitalizedState.NOT_HOSPITALIZED)
-
     class Meta:
         managed = False
         db_table = 'b_patient_base_info'
 
 class DPatientDetail(models.Model):
+
+    SCAN_OPTIONS = [
+        (1, '初扫'),
+        (2, '只采血'),
+        (3, '复扫'),
+        (4, '出院前'),
+        (5, '随访'),
+        (6, '再次入院')
+    ]
+
+
+
     patient = models.ForeignKey(BPatientBaseInfo, models.DO_NOTHING, blank=True, null=True)
     session_id = models.IntegerField(blank=True, null=True)
     standard_id = models.CharField(max_length=20, blank=True, null=True)
@@ -75,7 +86,7 @@ class DPatientDetail(models.Model):
     doctor = models.ForeignKey('users.SUser', models.DO_NOTHING)
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
-    disease_state = models.CharField(max_length=30, blank=True, null=True)
+    disease_state =  models.CharField(max_length=30, blank=True, null=True)
     first = models.IntegerField(blank=True, null=True)
     contact_way = models.IntegerField(blank=True, null=True)
     contact_info = models.CharField(max_length=45, blank=True, null=True)
@@ -83,6 +94,8 @@ class DPatientDetail(models.Model):
     head_motion_parameters = models.FloatField(blank=True, null=True)
     blood_sampling_date = models.DateField()
     ua = models.FloatField(blank=True, null=True)
+    scan_note_option = models.IntegerField(blank=True, null=True, choices=SCAN_OPTIONS)
+    scan_note_num = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -126,7 +139,7 @@ class RPatientGhr(models.Model):
         db_table = 'r_patient_ghr'
 
 
-# rtms
+#rtms
 class BPatientRtms(models.Model):
     id = models.IntegerField(primary_key=True)
     patient_session = models.OneToOneField('DPatientDetail', models.DO_NOTHING)
@@ -154,7 +167,7 @@ class BPatientRtms(models.Model):
         managed = False
         db_table = 'b_patient_rtms'
 
-# blood
+#blood
 class RPatientBlood(models.Model):
     patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
     blood_sample_id = models.CharField(max_length=45, blank=True, null=True)

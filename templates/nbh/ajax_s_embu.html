@@ -187,6 +187,7 @@
     let suicide = false;
     let question_index = 1 + {{ question_index }};
     let end_flag = 0;
+    let isClick=true;
     if(question_index > 1){
         $('#pre_questions').hide();
         $('#question_form').show();
@@ -204,6 +205,7 @@
                 document.pre_questions.mark_level.value === ""
             ) {
                 alert("问题不能为空！");
+                return;
             } else {{% endcomment %}
             ajax_post($('#pre_questions'));
             $('#pre_questions').hide();
@@ -216,6 +218,7 @@
         $("#question_submit").on('click', function () {
             if (question_index > 22) {
                 alert("请不要重复提交！");
+                return;
             } else {
                 const answers_1 = document.getElementsByClassName("answer_1");
                 const answers_2 = document.getElementsByClassName("answer_2");
@@ -239,9 +242,17 @@
                     question_index++;
                 } else {
                     alert("问题不能为空！");
+                    return;
                 }
             }
             $("input[type='radio']").removeAttr("checked");
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick = false;
+            }, 1000);
+            if (isClick) {
+                return;
+            }
         });
     });
 
@@ -383,6 +394,7 @@
     }
 
     function ajax_post(form) {
+        isClick=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +

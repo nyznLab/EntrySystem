@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR =os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 医嘱记录，病程记录存放目录
 MEDIA_URL = "/media/"
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'patients',
     'users',
     'inpatients',
-    'followup'
+    'followup',
+    'statistics'
 ]
 
 MIDDLEWARE = [
@@ -91,10 +92,10 @@ WSGI_APPLICATION = 'EntrySystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
-        'NAME': 'entry_system',         # 你要存储数据的库名，事先要创建之
+        'NAME': 'entrySystem',         # 你要存储数据的库名，事先要创建之
         'USER': 'root',         # 数据库用户名
-        'PASSWORD': 'caijian123',     # 密码
-        'HOST': 'localhost',    # 主机
+        'PASSWORD': 'EntrySystem123456:',     # 密码
+        'HOST': '192.168.0.201',    # 主机
         'PORT': '3306',         # 数据库使用的端口
     }
 }
