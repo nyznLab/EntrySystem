@@ -1,2 +1,5 @@
-# EntrySystem
-南京脑科医院实验室录入系统
+required:
+xlrd 2.0.1
+django 2.2
+mysql 5.6
+

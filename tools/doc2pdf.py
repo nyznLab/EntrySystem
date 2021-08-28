@@ -32,15 +32,16 @@ class StreamingConvertedPdf:
         self.validate_document()
         self.check_tmp_folder()
 
-        with tempfile.NamedTemporaryFile(prefix=self.tmp_path) as tmp:
+        with tempfile.NamedTemporaryFile(prefix=self.tmp_path, delete=False) as tmp:
             tmp.write(self.doc.read())
-            cmd = 'soffice --headless --convert-to pdf'.split() + [tmp.name] + ['--outdir'] + [self.tmp_path]
+            tmp.close()
+            cmd = 'soffice --headless'.split() + ['--convert-to pdf'] + [tmp.name] + ['--outdir'] + [self.tmp_path]
             print(cmd)
             p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             p.wait()
             stdout, stderr = p.communicate()
             if stderr:
-                raise subprocess.SubprocessError(stderr)
+                raise subprocess.SubprocessError(stderr.decode("gbk"))
             self.tmp_path = tmp.name + '.pdf'
 
     def get_file_name(self):

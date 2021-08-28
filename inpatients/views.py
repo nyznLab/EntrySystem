@@ -6,6 +6,7 @@ import patients.dao as patient_dao
 import tools.excelUtils as utils
 import inpatients.dao as inpatients_dao
 import inpatients.models as inpatients_model
+import patients.models as patient_model
 import tools.config as tools_config
 from tools.responseMessage import ErrorMessage,SuccessMessage
 from tools.ConfigClass import HospitalizedState,MedicalType
@@ -15,6 +16,9 @@ from django.core.files import File
 from tools.doc2pdf import ConvertFileModelField
 from tools.Utils import get_progress_note_direct
 from tools.Utils import Paginator
+
+
+
 
 from django.conf import settings
 from django.core import serializers
@@ -239,10 +243,6 @@ def upload_progress_note(request):
     return HttpResponse(json.dumps(res_message.__dict__))
 
 
-
-
-
-
 # 读取用药信息
 def read_medical_advice(request):
     inpatient_id = request.GET.get('inpatient_id')
@@ -250,6 +250,7 @@ def read_medical_advice(request):
     print(a)
     return render(request,'medical_advice_detail.html',{'medical_advices':medical_advices,
                                                         'inpatient_id':inpatient_id})
+
 
 # 获取医嘱属于哪一个大类,需要从数据库中预先读取,缓存到dict中,假如不存在于dict中,直接将其设置other类型存储
 def get_type(object,medical_dict):

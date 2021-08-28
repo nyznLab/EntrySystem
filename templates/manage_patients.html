@@ -198,7 +198,6 @@
                             </div>
 
                             <p id="ghr_add"></p>
-
                         </div>
 
                     </div>
@@ -301,84 +300,6 @@
     <!-- 模态框结束 -->
 
     <div id="patients_data">
-     <!-- 病人删除确认模态框 开始 -->
-        <div class="modal fade" id="delete_a_patient_modal" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="row">
-                        <div class="form-group" align="center">
-                            <p id="del_a_patient_alert_message"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-md-12">
-                            <label class="control-label col-md-4 col-sm-6 col-xs-6 text-right" for="sex">图形验证码：<span
-                                                class="required"></span></label>
-                            <div class="col-md-6">
-                                <form id="form1" runat="server">
-                                    <div class="input-group" id="box2">
-                                        <input type="tel" class="form-control" id="verification_input" oninput="verification()" placeholder="请输入图形验证码"/>
-                                        <span><canvas id="canvas" width="120" height="45"></canvas></span>
-                                        <a href="" id="changeImg">看不清，换一张</a></span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-center">
-                            <div class="col-md-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                                <p id="verification_result"></p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="text-center">
-                            <a id="delete_a_patient_href" onclick='delete_a_patient()'>
-                                <button class="btn btn-success" id="confirm_del_a_patient_button">确定</button>
-                            </a>
-                            <a href="">
-                                <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--  一个病人删除确认模态框 结束 -->
-
-    <!-- 提示没有权限删除模态框 开始 -->
-        <div class="modal fade" id="del_a_patient_permission_alert_modal" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group" align="center">
-                            <p id="del_a_patient_permission_alert_message"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="text-center">
-                            <a href="">
-                                <button class="btn btn-danger" disabled="disabled" data-dismiss="modal">确定</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 提示没有权限删除模态框 结束 -->
-
     <!-- 删除确认开始 -->
         <div class="modal fade" id="delete_patient_modal" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
@@ -649,12 +570,10 @@
                                         </button>
                                     </a>
                                 {% endif %}
-                                <a href="javascript:void(0);"  onclick="del_patient_before('{{ patient.id}}','{{ patient.name }}'
-                                        ,'{{ doctor_id }}'
-                                        {#,'{{ patient|get_item:'doctor__id' }}'#}
-                                        )" style="color:white">
+                                <a href="javascript:void(0);"  onclick="del_patient_before('{{ patient.id}}','{{ patient.name }}')" style="color:white">
                                     <button class="btn btn-warning btn-xs" style="margin:0px;color:white">删除</button>
                                 </a>
+
                             </td>
                             </tr>
                             {% endfor %}
@@ -752,18 +671,19 @@
                 document.getElementById("ghr_kinship").disabled = "true";
             }
         }
+
         {#查找病人#}
 
         function search_patients(page_num) {
             {#    需要缓存查询条件,用于分页#}
-            var patient_id = $("#patient_id_search").val();
-            var name = $("#name_search").val();
-            var diagnosis = $("#diagnosis_search").val();
-            var sex = $("input[id='sex_search']:checked").val();
-            $("input[name='patient_id_cache']").val(patient_id);
-            $("input[name='name_cache']").val(name);
-            $("input[name='diagnosis_cache']").val(diagnosis);
-            $("input[name='sex_cache']").val(sex);
+            var patient_id = $("#patient_id_search").val()
+            var name = $("#name_search").val()
+            var diagnosis = $("#diagnosis_search").val()
+            var sex = $("input[id='sex_search']:checked").val()
+            $("input[name='patient_id_cache']").val(patient_id)
+            $("input[name='name_cache']").val(name)
+            $("input[name='diagnosis_cache']").val(diagnosis)
+            $("input[name='sex_cache']").val(sex)
 
             $("#patients_data").load("/patients/get_patient_by_search #patients_data", {
                 "patient_id": patient_id,
@@ -787,13 +707,20 @@
         }
 
         function reset() {
-            $("#patient_id_search").val('');
-            $("#name_search").val('');
-            $("#diagnosis_search").val('');
-            $("input[type='radio']").attr("checked", false);
+            $("#patient_id_search").val('')
+            $("#name_search").val('')
+            $("#diagnosis_search").val('')
+            $("input[type='radio']").attr("checked", false)
         }
 
 
+
+
+        function del_patient_before(patient_id,patient_name){
+            $('#delete_patient_modal').modal("show");
+            document.getElementById("del_alert_message").innerHTML = "确定删除"+patient_id+"号患者"+patient_name+"吗？";
+            $("#delete_patient_href").attr("href","/patients/del_patient?patient_id="+patient_id);
+        }
 
         function add_inpatient_before(patient_id){
             $('#add_inpatient_modal').modal("show");
@@ -813,7 +740,7 @@
             document.getElementById("followup_name_message").innerHTML = name;
             document.getElementById("followup_nation_message").innerHTML = nation;
             document.getElementById("followup_birth_date_message").innerHTML = birth_date;
-            document.getElementById("followup_diagnosis_message").innerHTML = diagnosis;
+            document.getElementById("followup_diagnosis_message").innerHTML = diagnosis
             document.add_followup_form.action="/patients/add_patient_followup?patient_id="+patient_id;
         }
 
@@ -848,27 +775,8 @@
     {% comment %}填充0{% endcomment %}
 
     <script>
-        var patientid = null;
-        function del_patient_before(patient_id,patient_name
-            ,doctorid
-            {#,p_doctorid#}
-        ){
-            patientid=patient_id;
-            {#if (doctorid == p_doctorid) {#}
-                 $('#delete_a_patient_modal').modal("show");
-                 document.getElementById("del_alert_message").innerHTML = "确定删除"+patient_id+"号患者"+patient_name+"吗？";
-            {# } #}
-            {#else {#}
-            {#    $('#del_a_patient_permission_alert_modal').modal("show");#}
-            {# } #}
-         }
-        function delete_a_patient(){
-            $("#delete_a_patient_href").attr("href","/patients/del_patient?patient_id="+patientid);
-         }
-    </script>
-
-    <script>
         var i = 1;
+
         function addLine() {
 
             var txt1 = document.createElement("p");
@@ -927,92 +835,6 @@
             $('#ghr_diagnosis').select2();
             $('#ghr_kinship').select2();
         });
-    </script>
-
-    <script>
-        {#验证码图片的生成#}
-        {#生成一个随机数#}
-        var verification_code = "";
-
-        function randomNum(min, max) {
-            return Math.floor(Math.random() * (max - min) + min);
-        }
-
-        {#生成一个随机色#}
-        function randomColor(min, max) {
-            var r = randomNum(min, max);
-            var g = randomNum(min, max);
-            var b = randomNum(min, max);
-            return "rgb(" + r + "," + g + "," + b + ")";
-        }
-
-        drawPic();
-        {#切换验证码图片#}
-        document.getElementById("changeImg").onclick = function (e) {
-            e.preventDefault();
-            drawPic();
-        }
-
-        {#绘制验证码图片#}
-        function drawPic() {
-            var canvas = document.getElementById("canvas");
-            var width = canvas.width;
-            var height = canvas.height;
-            var ctx = canvas.getContext('2d');
-            ctx.textBaseline = 'bottom';
-
-            {#绘制背景色#}
-            ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
-            ctx.fillRect(0, 0, width, height);
-            {#绘制文字#}
-            var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
-            for (var i = 0; i < 4; i++) {
-                var txt = str[randomNum(0, str.length)];
-                verification_code=verification_code+txt;
-                ctx.fillStyle = randomColor(50, 160);  //随机生成字体颜色
-                ctx.font = randomNum(30, 40) + 'px SimHei'; //随机生成字体大小
-                var x = 10 + i * 25;
-                var y = randomNum(25, 45);
-                var deg = randomNum(-20, 20);
-                //修改坐标原点和旋转角度
-                ctx.translate(x, y);
-                ctx.rotate(deg * Math.PI / 180);
-                ctx.fillText(txt, 0, 0);
-                //恢复坐标原点和旋转角度
-                ctx.rotate(-deg * Math.PI / 180);
-                ctx.translate(-x, -y);
-            }
-            {#绘制干扰线#}
-            for (var i = 0; i < 5; i++) {
-                ctx.strokeStyle = randomColor(40, 180);
-                ctx.beginPath();
-                ctx.moveTo(randomNum(0, width), randomNum(0, height));
-                ctx.lineTo(randomNum(0, width), randomNum(0, height));
-                ctx.stroke();
-            }
-            {#绘制干扰点#}
-            for (var i = 0; i < 50; i++) {
-                ctx.fillStyle = randomColor(0, 255);
-                ctx.beginPath();
-                ctx.arc(randomNum(0, width), randomNum(0, height), 1, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-        }
-    </script>
-    <script>
-            function verification(){
-            var value_verification_input=document.getElementById("verification_input").value;
-            {#var value_verification_input=document.querySelector("#verification_input");#}
-            {#value_verification_input.addEventListener("keyup", function(e) {#}
-                if (verification_code == value_verification_input) {
-                    document.getElementById("verification_result").innerHTML = "验证码输入正确";
-                    $('#confirm_del_a_patient_button').prop('disabled', false);
-                } else {
-                    document.getElementById("verification_result").innerHTML = "验证码输入错误";
-                    $('#confirm_del_a_patient_button').prop('disabled', true);
-                }
-            {# }) #}
-             }
     </script>
 
 

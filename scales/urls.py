@@ -101,9 +101,6 @@ urlpatterns = [
     url(r'^self_tests_submit', views.self_tests_submit),
     url(r'^get_next_self_scale_url', views.get_next_self_scale_url),
     url(r'^get_previous_self_tests', views.get_self_tests),
-    url(r'^testtesttest', views.testNewAjax),
-    url(r'^get_suibe_form', views.get_suibe_form),
-    url(r'^add_suibe', views.add_suibe),
-    url(r'^get_check_suibe_form', views.get_check_suibe_form)
+    url(r'^testtesttest', views.testNewAjax)
 ]
 

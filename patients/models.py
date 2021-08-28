@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from tools.ConfigClass import HospitalizedState
+from tools.Utils import get_patient_progress_note_direct, get_patient_medical_advice_direct
 class BPatientBaseInfo(models.Model):
     SEX_TYPE = (
         (0, '男'),
@@ -41,6 +42,7 @@ class BPatientBaseInfo(models.Model):
     diagnosis = models.IntegerField(blank=True, null=True, choices=DIAGNOSIS_TYPE)
     other_diagnosis = models.CharField(max_length=45)
     inpatient_state = models.IntegerField(choices=HOSPITALIZED_TYPE,default=HospitalizedState.NOT_HOSPITALIZED)
+
     class Meta:
         managed = False
         db_table = 'b_patient_base_info'
@@ -73,14 +75,15 @@ class DPatientDetail(models.Model):
     doctor = models.ForeignKey('users.SUser', models.DO_NOTHING)
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
-    disease_state =  models.CharField(max_length=30, blank=True, null=True)
+    disease_state = models.CharField(max_length=30, blank=True, null=True)
     first = models.IntegerField(blank=True, null=True)
     contact_way = models.IntegerField(blank=True, null=True)
     contact_info = models.CharField(max_length=45, blank=True, null=True)
     scan_date = models.DateField()
     head_motion_parameters = models.FloatField(blank=True, null=True)
     blood_sampling_date = models.DateField()
-    ua=models.FloatField(blank=True, null=True)
+    ua = models.FloatField(blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'd_patient_detail'
@@ -123,7 +126,7 @@ class RPatientGhr(models.Model):
         db_table = 'r_patient_ghr'
 
 
-#rtms
+# rtms
 class BPatientRtms(models.Model):
     id = models.IntegerField(primary_key=True)
     patient_session = models.OneToOneField('DPatientDetail', models.DO_NOTHING)
@@ -151,7 +154,7 @@ class BPatientRtms(models.Model):
         managed = False
         db_table = 'b_patient_rtms'
 
-#blood
+# blood
 class RPatientBlood(models.Model):
     patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
     blood_sample_id = models.CharField(max_length=45, blank=True, null=True)
@@ -168,3 +171,42 @@ class RPatientBlood(models.Model):
     class Meta:
         managed = False
         db_table = 'r_patient_blood'
+
+class DPatientIsMedicalAdvice(models.Model):
+    patient_id = models.IntegerField(blank=True, null=True)
+    is_medical_advice = models.IntegerField(blank=True, null=True)
+    medical_advice_path = models.FileField(upload_to=get_patient_medical_advice_direct)
+    ma_create_time = models.DateTimeField(blank=True, null=True)
+    ma_update_time = models.DateTimeField(blank=True, null=True)
+    is_progress_note = models.IntegerField(blank=True, null=True)
+    progress_note_path = models.FileField(upload_to=get_patient_progress_note_direct)
+    pn_create_time = models.DateTimeField(blank=True, null=True)
+    pn_update_time = models.DateTimeField(blank=True, null=True)
+    postscript = models.CharField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'd_patient_is_medical_advice'
+
+
+class BPatientMedicalAdviceDetail(models.Model):
+    patient_id = models.IntegerField()
+    start_time = models.DateTimeField(blank=True, null=True)
+    medical_name = models.CharField(max_length=40, blank=True, null=True)
+    dose_num = models.FloatField(blank=True, null=True)
+    dose_unit = models.CharField(max_length=10, blank=True, null=True)
+    group = models.CharField(max_length=10, blank=True, null=True)
+    drug_type = models.CharField(max_length=20, blank=True, null=True)
+    type = models.IntegerField(blank=True, null=True)
+    usage_way = models.CharField(max_length=20, blank=True, null=True)
+    start_doctor = models.CharField(max_length=20, blank=True, null=True)
+    start_nurse = models.CharField(max_length=20, blank=True, null=True)
+    end_doctor = models.CharField(max_length=20, blank=True, null=True)
+    end_nurse = models.CharField(max_length=20, blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'b_patient_medical_advice_detail'

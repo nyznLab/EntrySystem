@@ -148,6 +148,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+
                                         {% for scale_id, scale_detail in session_details.items %}
                                             {% if scale_detail|get_item:'scale__do_scale_type' == 2 %}
                                                 <tr>
@@ -156,8 +157,7 @@
                                                         <td>{{ scale_detail|get_item:'end_time' }}</td>
                                                         <td>已完成</td>
                                                         <td>
-                                                            <a href='/scales/redo_self_tests?patient_session_id=
-                                                                    {{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
+                                                            <a href='/scales/redo_self_tests?patient_session_id={{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
                                                         </td>
                                                         <td><a href={{ scale_detail|get_self_check_scale_url }}>查看</a>
                                                         </td>
@@ -166,9 +166,8 @@
                                                         <td>-</td>
                                                         <td>未完成</td>
                                                         <td><a href={{ scale_detail|get_self_scale_url }}>续做</a></td>
-                                                        {% comment %}
-                                                            <td>-</td>
-                                                            测试用{% endcomment %}
+                                                        {% comment %}<td>-</td>
+                                                        测试用{% endcomment %}
                                                         <td>-</td>
 
 
@@ -295,46 +294,25 @@
         </div>
         <!-- 认知表量表详细模态框 结束-->
 
-        <!-- 扫描记录删除确认模态框 开始 -->
-        <div class="modal fade" id="delete_scan_modal" role="dialog" aria-labelledby="myModalLabel"
+    {% endfor %}
+    <!-- 删除模态框 开始 -->
+    <div class="modal fade" id="dont_need_ma" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <div class="form-group" align="center">
-                                <p id="del_scan_alert_message"></p>
-                            </div>
-                        </div>
-                    </div>
                     <div class="modal-body">
                         <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-md-12">
-                                <label class="control-label col-md-4 col-sm-6 col-xs-6 text-right" for="sex">图形验证码：<span
-                                                    class="required"></span></label>
-                                <div class="col-md-6">
-                                    <form id="form1" runat="server">
-                                        <div class="input-group" id="box2">
-                                            <input type="tel" class="form-control" id="verification_input" oninput="verification()" placeholder="请输入图形验证码"/>
-                                            <span><canvas id="canvas" width="120" height="45"></canvas></span>
-                                            <a href="" id="changeImg">看不清，换一张</a></span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-md-12 text-center">
-                                <div class="col-md-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                                    <p id="verification_result"></p>
-                                </div>
-
+                            <div class="form-group" align="center">
+                                <p id="dont_need_alert_message"></p>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div class="row">
                             <div class="text-center">
-                                <a id="delete_scan_href" onclick='deleteScan()'>
-                                    <button class="btn btn-success" id="confirm_del_button">确定</button>
+
+                                <a href="" id="dont_need_ma_href">
+                                    <button class="btn btn-success">确定</button>
                                 </a>
                                 <a href="">
                                     <button class="btn btn-danger" data-dismiss="modal">取消</button>
@@ -345,36 +323,7 @@
                 </div>
             </div>
         </div>
-        <!--  扫描记录删除确认模态框 结束 -->
-
-        <!-- 提示没有权限删除模态框 开始 -->
-        <div class="modal fade" id="del_scan_permission_alert_modal" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="form-group" align="center">
-                                <p id="del_scan_permission_alert_message"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="text-center">
-                                <a href="">
-                                    <button class="btn btn-danger"
-                                            data-dismiss="modal">确定</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 提示没有权限删除模态框 结束 -->
-
-    {% endfor %}
+    <!-- 删除模态框 结束 -->
     <div class="right_col" role="main">
         <div class="row " style="margin-left:-20px">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -393,9 +342,7 @@
                     {% csrf_token %}
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>个人信息
-                                <small>基本信息</small>
-                            </h2>
+                            <h2>个人信息<small>基本信息</small></h2>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -403,7 +350,7 @@
                             <div class="form-horizontal form-label-left">
 
                                 <div class="col-md-1"></div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                for="patient_id">受试编号<span class="required">*:</span></label>
@@ -456,7 +403,7 @@
 
                                     <div class="row" id="ghr_modify"
                                          style="display: none;margin:12px;margin-bottom:12px; border:1.5px solid cadetblue;">
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <label class="" for="subject_number"
                                                    style="text-align: right  ;margin-top: 10px ">患者编号<span
                                                     class="required">:</span></label>
@@ -531,7 +478,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
 
 
                                     <div class="form-group">
@@ -592,7 +539,22 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">是否需要长期医嘱表/病程记录？<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                        <input type="radio" name="is_medical_advice" value=1 data-labelauty="是"/>
+                                        <input type="radio" name="is_medical_advice" value=0 data-labelauty="否"/>
+                                    </div>
+                                    <a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}" id="medical_advice_typein" style="position: absolute;display: none" >
+                                        <u>长期医嘱表/病程记录上传</u>
+                                    </a>
+                                    <a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}" id="medical_advice_check" style="position: absolute;display: none" >
+                                        <u>查看修改长期医嘱表/病程记录</u>
+                                    </a>
+                                    <div class="col-md-1"></div>
+                                </div>
+
                             </div>
 
                         </div>
@@ -690,14 +652,12 @@
                                         </td>
                                     {% endif %}
                                     <td>
-                                        <a href="javascript:void(0);"
-                                           onclick="deleteJob_before(
-                                                   '{{ patient_detail.standard_id }}','{{ doctor_id }}','{{ patient_detail|get_item:'doctor__id' }}',{{ patient_detail|get_item:'id'}},{{ patient_detail|get_item:'patient_id'}})"
-                                           style="color:white;">
-                                            <button class="btn btn-warning btn-xs" style="margin:0px;color:white">
-                                                删除
-                                            </button>
-                                        </a>
+                                        <button class="btn btn-warning btn-xs">
+
+                                            <a onclick='return deleteJob("{{ patient_detail.standard_id }}", "{{ patient_detail.create_time }}");'
+                                               href="/patients/del_followup?patient_session_id={{ patient_detail|get_item:'id' }}&patient_id={{ patient_detail|get_item:'patient_id' }}"
+                                               style="color:white;">删除</a>
+                                        </button>
                                     </td>
                                     </tr>
                                     {% endfor %}
@@ -714,16 +674,18 @@
 {% endblock %}
 
 {% block js %}
+
+
     <script src="{% static '/js/layerJquery.js' %}"></script>
-    {#    <script src="{% static '/js/layer.js' %}"></script>#}
-    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/layer.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
     <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
-
+    <script src="{% static '/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 
     <script>
         var i = 1;
+
         function addLine_ghr() {
 
             var txt1 = document.createElement("p");
@@ -784,6 +746,8 @@
 
 
         }
+
+
     </script>
 
 
@@ -823,7 +787,7 @@
             document.getElementById("diagnosis").value ={{ diagnosis }};
             var diagnosistype ={{ diagnosis }};
             {#var del_action ={{ del_action }};#}
-            if (diagnosistype == 7) {
+            if(diagnosistype == 7) {
 
                 document.getElementById("ghr_label_div").style.display = "";
                 document.getElementById("ghr_diagnosis_p").style.display = "";
@@ -874,9 +838,10 @@
             }
 
 
-            if (diagnosistype == 99) {
-                {#$("#other_diagnosis_div").attr("style","display:block;");#}
-                document.getElementById("other_diagnosis_div").style.display = "";
+
+            if(diagnosistype == 99) {
+                 {#$("#other_diagnosis_div").attr("style","display:block;");#}
+                 document.getElementById("other_diagnosis_div").style.display = "";
 
             }
 
@@ -899,24 +864,15 @@
         }
 
     </script>
-
     <script>
-        var patientid = null;
-        var sessionid = null;
-        function deleteJob_before(id, doctorid, p_doctorid,p_sessionid,p_patientid) {
-            patientid=p_patientid;
-            sessionid=p_sessionid;
-            if (doctorid == p_doctorid) {
-                $('#delete_scan_modal').modal("show");
-                document.getElementById("del_scan_alert_message").innerHTML = "确定删除复扫编号为" + id + "的复扫信息吗？";
-            } else {
-                $('#del_scan_permission_alert_modal').modal("show");
-                document.getElementById("del_scan_permission_alert_message").innerHTML = "您没有权限删除该复扫信息！";
-            }
-        }
 
-        function deleteScan() {
-            $("#delete_scan_href").attr("href", "/patients/del_followup?patient_id="+patientid+"&patient_session_id="+sessionid);
+        function deleteJob(id, date) {
+            var text = "确定要删除" + id + "患者" + date + "的复诊信息吗?"
+            if (confirm(text)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     </script>
 
@@ -934,7 +890,8 @@
         }
 
         function judge_diagnosis(obj) {
-            if (obj.options[obj.selectedIndex].value == 99) {
+            if (obj.options[obj.selectedIndex].value == 99)
+            {
                 document.getElementById("other_diagnosis_div").style.display = "";
                 document.getElementById("singleSelect").disabled = "true";
                 document.getElementById("ghr_diagnosis_add").disabled = "true";
@@ -980,91 +937,47 @@
 
         {#$('#myModal').modal('hide');#}
 
-
     </script>
-
-    <script>
-        {#验证码图片的生成#}
-        {#生成一个随机数#}
-
-        var verification_code = ""
-
-        function randomNum(min, max) {
-            return Math.floor(Math.random() * (max - min) + min);
-        }
-
-        {#生成一个随机色#}
-        function randomColor(min, max) {
-            var r = randomNum(min, max);
-            var g = randomNum(min, max);
-            var b = randomNum(min, max);
-            return "rgb(" + r + "," + g + "," + b + ")";
-        }
-        
-        drawPic();
-        {#切换验证码图片#}
-        document.getElementById("changeImg").onclick = function (e) {
-            e.preventDefault();
-            drawPic();
-        }
-
-        {#绘制验证码图片#}
-        function drawPic() {
-            var canvas = document.getElementById("canvas");
-            var width = canvas.width;
-            var height = canvas.height;
-            var ctx = canvas.getContext('2d');
-            ctx.textBaseline = 'bottom';
-
-            {#绘制背景色#}
-            ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
-            ctx.fillRect(0, 0, width, height);
-            {#绘制文字#}
-            var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
-            for (var i = 0; i < 4; i++) {
-                var txt = str[randomNum(0, str.length)];
-                verification_code=verification_code+txt;
-                ctx.fillStyle = randomColor(50, 160);  //随机生成字体颜色
-                ctx.font = randomNum(30, 40) + 'px SimHei'; //随机生成字体大小
-                var x = 10 + i * 25;
-                var y = randomNum(25, 45);
-                var deg = randomNum(-20, 20);
-                //修改坐标原点和旋转角度
-                ctx.translate(x, y);
-                ctx.rotate(deg * Math.PI / 180);
-                ctx.fillText(txt, 0, 0);
-                //恢复坐标原点和旋转角度
-                ctx.rotate(-deg * Math.PI / 180);
-                ctx.translate(-x, -y);
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            document.cookie = "enter_page=select;path=/"
+            if_medical_advice ="{{ medical_advice.is_medical_advice }}"
+            if_progress_note ="{{ medical_advice.is_progress_note }}"
+            if (if_medical_advice == '1'|| if_progress_note == '1') {
+                $('input:radio[name="is_medical_advice"]:first').attr('checked', 'checked');
+                $("#medical_advice_check").removeAttr("style", "display:none;");
             }
-            {#绘制干扰线#}
-            for (var i = 0; i < 5; i++) {
-                ctx.strokeStyle = randomColor(40, 180);
-                ctx.beginPath();
-                ctx.moveTo(randomNum(0, width), randomNum(0, height));
-                ctx.lineTo(randomNum(0, width), randomNum(0, height));
-                ctx.stroke();
+            if(if_medical_advice == '0' && if_progress_note == '0'){
+                $('input:radio[name="is_medical_advice"]:last').attr('checked', 'checked');
             }
-            {#绘制干扰点#}
-            for (var i = 0; i < 50; i++) {
-                ctx.fillStyle = randomColor(0, 255);
-                ctx.beginPath();
-                ctx.arc(randomNum(0, width), randomNum(0, height), 1, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-        }
+            $('input:radio[name="is_medical_advice"]').click(function () {
+                //若查询不到信息，is_medical_advice为空字符串
+                is_medical_advice = "{{ medical_advice.is_medical_advice }}";
+                is_progress_note = "{{ medical_advice.is_progress_note }}";
+                click_medical_advice = $(this).val();
+                {# 点击否 #}
+                if (Number(click_medical_advice == 0)){
+                    $("#medical_advice_typein").attr("style", "display:none;");
+                    $("#medical_advice_check").attr("style", "display:none;");
+                    $('#dont_need_ma').modal("show");
+                    var standard_id = 'NN_' + formatZero({{ patient_id }}, 8);
+                    var name = "{{ patient_baseinfo.name }}";
+                    var patient_id="{{ patient_baseinfo.id }}"
+                    document.getElementById("dont_need_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不需要长期医嘱/病程记录了吗？";
+                    $("#dont_need_ma_href").attr("href","/patients/dont_need_ma?patient_id="+patient_id);
+                }
+                {#点击是#}
+                if (Number(click_medical_advice == 1)) {
+                    if ((is_medical_advice == ''||is_medical_advice == '0'||is_medical_advice == 'None') && (is_progress_note == ''||is_progress_note =='0'||is_progress_note =='None')) {
+                        $("#medical_advice_typein").removeAttr("style", "display:none;");
+                    }
 
-        function verification() {
-            var value_verification_input=document.getElementById("verification_input").value;
-            if (verification_code==value_verification_input){
-                document.getElementById("verification_result").innerHTML = "验证码输入正确";
-                $('#confirm_del_button').prop('disabled', false);
-            }
-            else{
-                document.getElementById("verification_result").innerHTML = "验证码输入错误";
-                $('#confirm_del_button').prop('disabled', true);
-            }
-         }
+                    if (is_medical_advice == '1'|| is_progress_note == '1') {
+                        $("#medical_advice_check").removeAttr("style", "display:none;");
+                    }
+                }
+            });
+        });
     </script>
 
 {% endblock %}

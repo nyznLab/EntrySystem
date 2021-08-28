@@ -1,6 +1,6 @@
 from datetime import date
 from datetime import datetime
-from patients.models import DPatientDetail
+# from patients.models import DPatientDetail
 # 分页
 class Paginator:
     def __init__(self,obj_count=1,obj_perpage=1,pagetag_current=1,pagetag_dsp_count=1):
@@ -120,6 +120,20 @@ def calculate_age_by_scandate(born, scan_date):
 def object_judgment(object_flag):
     if object_flag:
         return None
+
+
+
+
+# 获取患者病程记录存储路径
+def get_patient_progress_note_direct(instance, filename):
+    return '病程记录/{}/{}'.format(str(instance.patient_id), filename)
+
+# 获取患者长期医嘱记录存储路径
+def get_patient_medical_advice_direct(instance, filename):
+    return '医嘱记录/{}/{}'.format(str(instance.patient_id), filename)
+
+
+
 
 # 获取住院患者病程记录存储路径
 def get_progress_note_direct(instance,filename):

@@ -1,0 +1,880 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block title %}新建被试{% endblock %}
+{% block css %}
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <style>
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 4px;
+            vertical-align: middle;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .tab1 {
+        {#background-color: #E8E8E8;#}
+            font-weight: bold;
+            font-size: larger;
+      }
+        .sel_beauty {
+            background: #fafdfe;
+            height: 28px;
+            width: 180px;
+            line-height: 28px;
+            border: 1px solid #9bc0dd;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            width: 160px;
+            color: #2C4257;
+            font-size: 7px
+        }
+
+
+.table input.labelauty + label {
+    margin-bottom: 0px;
+    width: 100%;
+    display: table;
+    font-size: 13px;
+    padding: 20px;
+    text-align: center;
+    background-color: #efefef;
+    color: #b3b3b3;
+    cursor: pointer;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    transition: background-color 0.25s;
+    -moz-transition: background-color 0.25s;
+    -webkit-transition: background-color 0.25s;
+    -o-transition: background-color 0.25s;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+    </style>
+{% endblock %}
+{% block content %}
+    {% load SelfDefinedFilter %}
+    {% for session_id, session_details in patients_states.items %}
+
+        <!-- 个人一般量表详细模态框 开始 -->
+        <div class="modal fade" id="modal_DetailInfo_{{ session_id }}" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">
+                                个人一般信息列表
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover table-bordered" style="font-size: 10px;">
+                                        <thead>
+                                        <tr>
+                                            <th>测查种类</th>
+                                            <th>测查时间</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                            <th>查看</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for scale_id, scale_detail in session_details.items %}
+                                            {% if scale_detail|get_item:'scale__do_scale_type' == 0 %}
+                                                <tr>
+                                                    <td>{{ scale_detail|get_item:'scale__scale_name' }}</td>
+                                                    <td>{{ scale_detail|get_item:'end_time' }}</td>
+
+
+                                                        {% if scale_detail|get_item:'state' == 1 %}
+                                                            <td> 已完成</td>
+                                                            <td><a href={{ scale_detail|get_baseinfo_redo_scale_url }}>重做</a></td>
+                                                            <td><a href={{ scale_detail|get_baseinfo_check_scale_url }}>查看</a></td>
+                                                        {% else %}
+                                                            <td> 未完成</td>
+                                                            <td><a href={{ scale_detail|get_baseinfo_redo_scale_url }}>续做</a></td>
+                                                            <td><a >-</a></td>
+                                                        {% endif %}
+
+
+
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 个人一般量表详细模态框 结束-->
+        <!-- 自测表量表详细模态框 开始 -->
+        <div class="modal fade" id="modal_SelfTest_{{ session_id }}" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">
+                                自测量表信息列表
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover table-bordered" style="font-size: 10px;">
+                                        <thead>
+                                        <tr>
+                                            <th>测查种类</th>
+                                            <th>测查时间</th>
+                                            <th>状态</th>
+                                            <th>续做</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for scale_id, scale_detail in session_details.items %}
+                                            {% if scale_detail|get_item:'scale__do_scale_type' == 2 %}
+                                                <tr>
+                                                    <td>{{ scale_detail|get_item:'scale__scale_name' }}</td>
+                                                    {% if scale_detail|get_item:'state' == 1 %}
+                                                        <td>{{ scale_detail|get_item:'end_time' }}</td>
+                                                        <td>已完成</td>
+                                                        <td><a href={{ scale_detail|get_scale_url }}>重做</a></td>
+                                                        <td>-</td>
+                                                    {% else %}
+                                                        <td>-</td>
+                                                        <td>未完成</td>
+                                                        <td><a href={{ scale_detail|get_scale_url }}>续做</a></td>
+                                                        <td>-</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 自测表量表详细模态框 结束-->
+        <!-- 他测表量表详细模态框 开始 -->
+        <div class="modal fade" id="modal_OtherTest_{{ session_id }}" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                他测量表信息列表
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover table-bordered" style="font-size: 10px;">
+                                        <thead>
+                                        <tr>
+                                            <th>测查种类</th>
+                                            <th>测查时间</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                            <th>查看</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for scale_id, scale_detail in session_details.items %}
+                                            {% if scale_detail|get_item:'scale__do_scale_type' == 1 %}
+                                                <tr>
+                                                    <td>{{ scale_detail|get_item:'scale__scale_name' }}</td>
+                                                    {% if scale_detail|get_item:'state' == 1 %}
+                                                        <td>{{ scale_detail|get_item:'end_time' }}</td>
+                                                        <td>已完成</td>
+                                                        <td><a href={{ scale_detail|get_scale_url }}>重做</a></td>
+                                                        <td><a href={{ scale_detail|check_scale }}>查看</a></td>
+                                                    {% else %}
+                                                        <td>-</td>
+                                                        <td>未完成</td>
+                                                        <td><a href={{ scale_detail|get_scale_url }}>续做</a></td>
+                                                        <td>-</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 他测表量表详细模态框 结束-->
+        <!-- 认知表量表详细模态框 开始 -->
+        <div class="modal fade" id="modal_cognitionTest_{{ session_id }}" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">
+                                认知量表信息列表
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover table-bordered" style="font-size: 10px;">
+                                        <thead>
+                                        <tr>
+                                            <th>测查种类</th>
+                                            <th>测查时间</th>
+                                            <th>状态</th>
+                                            <th>续做</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for scale_id, scale_detail in session_details.items %}
+                                            {% if scale_detail|get_item:'scale__do_scale_type' == 3 %}
+                                                <tr>
+                                                    <td>{{ scale_detail|get_item:'scale__scale_name' }}</td>
+                                                    {% if scale_detail|get_item:'state' == 1 %}
+                                                        <td>{{ scale_detail|get_item:'end_time' }}</td>
+                                                        <td>已完成</td>
+                                                        <td><a href={{ scale_detail|get_scale_url }}>重做</a></td>
+                                                        <td>-</td>
+                                                    {% else %}
+                                                        <td>-</td>
+                                                        <td>未完成</td>
+                                                        <td><a href={{ scale_detail|get_scale_url }}>续做</a></td>
+                                                        <td>-</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 认知表量表详细模态框 结束-->
+    {% endfor %}
+
+    <!-- 详细信息模态框 开始 -->
+    {% for patient_detail in patient_detail_res %}
+        <div class="modal fade" id="modal_detail_{{ forloop.counter }}" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            详细信息
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="/patients/update_patient_detail?patient_session_id={{ patient_detail.id }}&patient_id={{ patient_detail.patient_id }}&page=2" method="post">
+
+                                    <div style="text-align: center">
+                                        <div>
+                                            <table class="table table-hover table-bordered" align="center" valign="center" style="font-size: 10px;">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="tab1">认知是否完成</td>
+                                                    <td>
+                                                        {% if patient_detail.cognitive == 0 or patient_detail.cognitive is null %}
+                                                            <div class="col-md-6">
+                                                                <input type="radio" name="cognitive" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="radio" name="cognitive" value=1 data-labelauty="是" />
+                                                            </div>
+                                                        {% else%}
+                                                            <div class="col-md-6">
+                                                                <input type="radio" name="cognitive" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                               <input type="radio" name="cognitive" value=1 data-labelauty="是" checked/>
+                                                            </div>
+
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">录音是否完成</td>
+                                                    <td>
+                                                        {% if  patient_detail.sound  == 0 or patient_detail.sound is null %}
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="sound" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="sound" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="sound" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="sound" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">血液是否采集</td>
+                                                    <td>
+                                                        {% if  patient_detail.blood  == 0 or patient_detail.blood is null%}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="blood" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="blood" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="blood" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="blood" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">毛发是否收集</td>
+                                                    <td>
+                                                        {% if  patient_detail.hairs  == 0 or patient_detail.hairs is null%}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="hairs" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="hairs" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="hairs" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="hairs" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">粪便是否检测</td>
+                                                    <td>
+
+                                                        {% if  patient_detail.manure  == 0 or patient_detail.manure is null%}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="manure" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="manure" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="manure" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="manure" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">是否用药</td>
+                                                    <td>
+                                                        {% if  patient_detail.drugs_information  == 0 or patient_detail.drugs_information is null %}
+                                                             <div class="col-md-6">
+                                                                 <input type="radio" name="drugs_information" value=0 data-labelauty="否" checked/>
+                                                             </div>
+
+                                                            <div class="col-md-6">
+                                                                <input type="radio" name="drugs_information" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else%}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="drugs_information" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="drugs_information" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">磁共振检查是否完成</td>
+                                                    <td>
+                                                        {% if  patient_detail.mri_examination  == 0 or patient_detail.mri_examination is null %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="mri_examination" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="mri_examination" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="mri_examination" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="mri_examination" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">tms治疗情况</td>
+                                                    <td>
+
+                                                        {% if  patient_detail.tms  == 0 or patient_detail.tms is null %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="tms" value=0 data-labelauty="否" checked/>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="tms" value=1 data-labelauty="是"/>
+                                                            </div>
+                                                        {% else %}
+                                                             <div class="col-md-6">
+                                                            <input type="radio" name="tms" value=0 data-labelauty="否" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <input type="radio" name="tms" value=1 data-labelauty="是" checked/>
+                                                            </div>
+                                                        {% endif %}
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">年龄</td>
+                                                    <td>
+                                                        {{ patient_detail.age|processNone }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">职业</td>
+                                                    <td>
+                                                        <input type="text" name="occupation" style="border: none;text-align: center" value="{{ patient_detail.occupation|processNone }}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">教育背景</td>
+                                                    <td>
+                                                        <input type="text" name="education"  style="border: none;text-align: center" value="{{ patient_detail.education|processNone }}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">受教育年限</td>
+                                                    <td>
+                                                        <input type="text" name="years"  style="border: none;text-align: center" value="{{ patient_detail.years|processNone }}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">情感状态</td>
+                                                    <td>
+                                                    <select name="emotional_state" id="emotional_state"  style="border: none">
+                                                        <option value=0>未填</option>
+                                                        <option value=1>单身</option>
+                                                        <option value=2>未婚</option>
+                                                        <option value=3>已婚</option>
+                                                        <option value=4>离婚</option>
+                                                        <option value=5>再婚</option>
+                                                        <option value=6>分居</option>
+                                                        <option value=7>丧偶</option>
+                                                    </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">电话</td>
+                                                    <td>
+                                                        <input type="text" name="phone"  style="border: none;text-align: center" value="{{ patient_detail.phone|processNone }}"/>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tab1">被试来源</td>
+                                                    <td>
+                                                    <select name="source" id="source" style="border: none">
+                                                        <option value=0>未填</option>
+                                                        <option value=1>门诊</option>
+                                                        <option value=2>病区</option>
+                                                        <option value=3>非医院</option>
+                                                    </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">身高</td>
+                                                    <td>
+                                                        <input type="text" name="height" style="border: none;text-align: center" placeholder="CM" value="{{ patient_detail.height|processNone }}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">体重</td>
+                                                    <td>
+                                                        <input type="text" name="weight" style="border: none;text-align: center" placeholder="KG" value="{{ patient_detail.weight|processNone }}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">腰围</td>
+                                                    <td> <input type="text" name="waist" style="border: none;text-align: center" value="{{ patient_detail.waist|processNone }}"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">臀围</td>
+                                                    <td><input type="text" name="hip" style="border: none;text-align: center" value="{{ patient_detail.hip|processNone }}"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">利手</td>
+                                                    <td>{{ patient_detail.handy|processNone }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">备注</td>
+                                                    <td>
+                                                        <input type="text" name="note" style="border: none;text-align: center" value="{{ patient_detail.note|processNone }}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">扫描时间</td>
+                                                    <td>{{ patient_detail.scan_date|processNone }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tab1">更新时间</td>
+                                                    <td>{{ patient_detail.update_time|processNone }}</td>
+                                                </tr>
+
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                        <div class="text-center">
+                                            {% csrf_token %}
+                                            <input type="submit" class="btn btn-success" value="完成"/>
+                                            <a href="/patients/get_patient_detail?patient_id={{ patient_detail.patient_id }}" >
+                                                <button type="button" class="btn btn-danger">取消</button>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+         <script>
+       function getData(){
+        var patient_detail_emotional_state = "{{ patient_detail.emotional_state  }}";
+        var emotional_state = Number(patient_detail_emotional_state);
+        $("#emotional_state option[value="+emotional_state+"]").prop("selected",true);
+
+        var patient_detail_source = "{{ patient_detail.source  }}";
+        var source = Number(patient_detail_source);
+        $("#source option[value="+source+"]").prop("selected",true);
+
+      {% comment %}  var patient_detail_diagnosis = "{{ patient_baseinfo.diagnosis }}";
+        var diagnosis = Number(patient_detail_diagnosis);
+        $("#diagnosis option[value="+diagnosis+"]").prop("selected",true);
+
+        if(diagnosis == 99) {
+                document.getElementById("other_diagnosis_div").style.display = "";
+                document.getElementById("other_diagnosis").value="{{ patient_baseinfo.other_diagnosis }}";
+            }{% endcomment %}
+       }
+    </script>
+    {% endfor %}
+    <!-- 详细信息模态框模态框 结束-->
+
+    <div class="right_col" role="main">
+        <div class="row " style="margin-left:-20px">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="/patients/subjectManage">被试管理</a></li>
+                    <li class="active"><a href="#">信息录入</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row x_panel">
+            <div class="col-md-12 col-xs-12">
+
+            <form action="/patients/update_base_info?patient_id={{ patient_id }}" method="post">
+            {% csrf_token %}
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>个人信息<small>基本信息</small></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br/>
+                        <div class="form-horizontal form-label-left">
+
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="patient_id">受试编号<span class="required">*:</span></label>
+                                    <div id="patient_id" class="col-md-2 col-sm-2 col-xs-12" style="padding-top: 7px;margin-bottom: 0;text-align: left"></div>
+                                </div>
+
+
+                            <div class="form-group">
+                                    <label for="birth_date" class="control-label col-md-2 col-sm-2 col-xs-12">出生日期 <span class="required">*:</span></label>
+                                    <div id="birth_date" class="col-md-2 col-sm-2 col-xs-12" style="padding-top: 7px;margin-bottom: 0;text-align: left">
+                                        {{ birth_date }}
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subject_number">诊断情况<span class="required">*:</span></label>
+                                    <div class="col-md-2 col-sm-2 col-xs-12" style="padding-top: 7px;margin-bottom: 0;text-align: left">
+                                    <select name="diagnosis" id="diagnosis" class="sel_beauty"  onchange="judge_diagnosis(this)">
+                                        <option value=0>&nbsp;&nbsp;&nbsp;未诊断</option>
+                                        <option value=1>&nbsp;&nbsp;&nbsp;健康者</option>
+                                        <option value=2>&nbsp;&nbsp;&nbsp;重性抑郁障碍</option>
+                                        <option value=3>&nbsp;&nbsp;&nbsp;焦虑障碍</option>
+                                        <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
+                                        <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
+                                        <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
+                                        <option value=7>&nbsp;&nbsp;&nbsp;高危遗传</option>
+                                        <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
+                                        <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
+                                        <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="other_diagnosis_div" style="display: none">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-6" for="subject_number">其他诊断<span class="required">*:</span></label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                        <input id="other_diagnosis" name="other_diagnosis" class="sel_beauty" value="{{ other_diagnosis|processNone }}">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+
+
+                                 <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">民族 <span class="required">*:</span></label>
+                                    <div class="col-md-2 col-sm-2 col-xs-12" style="padding-top: 7px;margin-bottom: 0;text-align: left">
+                                        <select class="sel_beauty form-control" name="nation" id="nation" style="font-size: 7px">
+                                            {% for items in nation_list %}
+
+                                                {% if items.ethnicity_name == nation %}
+                                                    <option value="{{ items.ethnicity_name }}"
+                                                            selected="true">{{ items.ethnicity_name }}={{ items.id }}</option>
+                                                {% else %}
+                                                    <option value="{{ items.ethnicity_name }}">{{ items.ethnicity_name }}={{ items.id }}</option>
+                                                {% endif %}
+                                                }
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">姓名 <span class="required">*:</span></label>
+                                    <div id="name" class="col-md-4 col-sm-4 col-xs-12" style="padding-top: 7px;margin-bottom: 0;text-align: left">
+
+                                            <input type="text" class="sel_beauty form-control input-sm" name="name" required="required" value="{{ name }}"/>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-6" for="sex">性别 <span class="required">*:</span></label>
+                                    {% if sex == 0 %}
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                            <input type="radio"  name="sex" value=0 data-labelauty="男" checked/>
+                                        </div>
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                            <input type="radio"  name="sex" value=1 data-labelauty="女"/>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                            <input type="radio"  name="sex" value=0 data-labelauty="男"/>
+                                        </div>
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                            <input type="radio"  name="sex" value=1 data-labelauty="女" checked/>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-10" style="text-align: center">
+                        <input type="submit" class="btn btn-success" id="change_detail" value="保存修改"/>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        <div class="row x_panel">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>复扫信息</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br/>
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <table id="datatable" class="table table-striped table-hover"
+                                       style="font-size: 13px;cellspacing:15px;">
+                                    <thead>
+                                    <tr>
+                                        <th>复扫编号</th>
+                                        <th>复扫时间</th>
+                                        <th>诊断</th>
+                                        <th>医生</th>
+                                        <th>一般信息表测查</th>
+                                        <th>他评测查</th>
+                                        <th>自评测查</th>
+                                        <th>认知测查</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for patient_detail in patient_detail_res %}
+                                        {% if patient_detail|get_item:'session_id'|divisibleby:"2" %}
+                                            <tr class="success">
+                                                {% else %}
+                                            <tr>
+                                        {% endif %}
+                                    <td><a href="#modal_detail_{{ forloop.counter }}" data-toggle="modal" style="text-decoration: underline">{{ patient_detail.standard_id }}</a></td>
+                                    <td>
+                                        {{ patient_detail|get_item:'create_time' }}
+                                    </td>
+                                    <td>
+                                        {{ patient_detail|get_diagnosis_by_dict }}
+                                    </td>
+                                    <td>
+                                        {{ patient_detail|get_item:'doctor__name' }}
+                                    </td>
+                                    <td>
+                                        <a href="#modal_DetailInfo_{{ patient_detail|get_item:'session_id' }}"
+                                           data-toggle="modal" data-orderId="{{ patient_detail.id }}">量表详情</a>
+
+                                    </td>
+                                    <td>
+                                        <a href="#modal_OtherTest_{{ patient_detail|get_item:'session_id' }}"
+                                           data-toggle="modal" data-orderId="{{ patient_detail.id }}">量表详情</a>
+                                    </td>
+                                    <td>
+                                        <a href="#modal_SelfTest_{{ patient_detail|get_item:'session_id' }}"
+                                           data-toggle="modal">量表详情</a>
+                                    </td>
+                                    <td>
+                                        <a href="#modal_cognitionTest_{{ patient_detail|get_item:'session_id' }}"
+                                           data-toggle="modal">量表详情</a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning btn-xs">
+
+                                            <a onclick='return deleteJob("{{ patient_detail.standard_id }}", "{{ patient_detail.create_time }}");'
+                                               href="/patients/del_followup?patient_session_id={{ patient_detail|get_item:'id' }}&patient_id={{ patient_detail|get_item:'patient_id' }}"
+                                               style="color:white;">删除</a>
+                                        </button>
+                                    </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+     <script>
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+        });
+    </script>
+
+
+
+    <script type="text/javascript" language="JavaScript">
+
+        $(document).ready(function () {
+            document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_id }}, 8)
+            document.getElementById("diagnosis").value={{ diagnosis }};
+            var diagnosistype ={{ diagnosis }};
+            if(diagnosistype == 99)
+              document.getElementById("other_diagnosis_div").style.display = ""
+        });
+
+        function formatZero(num, len) {
+            if (String(num).length > len) return num;
+            return (Array(len).join(0) + num).slice(-len);
+        }
+
+    </script>
+    <script>
+
+        function deleteJob(id, date) {
+            var text = "确定要删除" + id + "患者" + date + "的复诊信息吗?"
+            if (confirm(text)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+
+    <script>
+        function judge_diagnosis(obj) {
+            if (obj.options[obj.selectedIndex].value == 99) {
+                document.getElementById("other_diagnosis_div").style.display = "";
+            } else {
+                document.getElementById("other_diagnosis_div").style.display = "none";
+                document.getElementById("other_diagnosis").value="NULL";
+            }
+        }
+
+        $("#change_detail").click(function (){
+            $("#change_detail").submit()
+        })
+
+    </script>
+
+{% endblock %}

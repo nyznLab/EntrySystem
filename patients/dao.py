@@ -78,6 +78,10 @@ def add_patient_appointment(PatientAppoientment_object):
     PatientAppoientment_object.save()
 
 
+# add DPatientIsMedicalAdvice表
+def add_medical_advice(medical_advice_object):
+    medical_advice_object.save()
+
 ################ del 部分 ################
 ################ del 部分 ################
 ################ del 部分 ################
@@ -193,6 +197,32 @@ def get_patient_detail_lastsession(patient_id):
     if patient_detail_list.count() == 0:
         return None
     return patient_detail_list[0]
+
+# 根据patient_id获取长期医嘱信息表中的相关记录
+def get_medical_advice_info(patient_id):
+    medical_advice_info = patients_models.DPatientIsMedicalAdvice.objects.filter(patient_id=patient_id)
+    if medical_advice_info.count() == 0:
+        return None
+    return medical_advice_info[0]
+
+# 长期医嘱表中更新备注
+def add_medical_adviec_ps(patient_id, postscript):
+    medical_adviec_ps = patients_models.DPatientIsMedicalAdvice.objects.filter(patient_id=patient_id)
+    medical_adviec_ps.update(postscript=postscript)
+
+
+# !!!!!
+def del_medical_advice_by_patientid(patient_id):
+    res = patients_models.BPatientMedicalAdviceDetail.objects.filter(patient_id=patient_id)
+    if res.exists():
+        res.delete()
+# !!!!!!!
+def get_medical_advice_drug(patient_id):
+    medical_advice_drug = patients_models.BPatientMedicalAdviceDetail.objects.filter(patient_id=patient_id)
+    if medical_advice_drug.count() == 0:
+        return None
+    return medical_advice_drug
+
 
 
 # r_patient_scales表相关：

@@ -24,7 +24,7 @@
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/patients/采血" method="post" name="subjectEstablishForm">
+                <form action="/patients/add_patient_baseinfo" method="post" name="subjectEstablishForm">
                     {% csrf_token %}
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -516,7 +516,7 @@ var num=1
     <script>
         function getData() {
             var blood = Number("{{ patient_detail.blood }}");
-            {#alert(blood)#}
+            alert(blood)
             if ('{{ patient_detail.blood }}' != 'None') {
                 $("input[name='blood'][value=" + blood + "]").prop("checked", true);
                 if(blood==1){
@@ -541,8 +541,6 @@ var num=1
                 click_blood = $(this).val();
                 {#点击否#}
                 if (Number(click_blood == 0)) {
-                    $("#blood_check").attr("style","display:none;");
-                    $("#blood_typein").attr("style","display:none;");
                     if(blood != '0'){
                         $('#delete_blood_modal').modal("show");
                         var standard_id = "{{ patient_detail.standard_id }}";
@@ -555,10 +553,12 @@ var num=1
                 }
                 {#点击是#}
                 if (Number(click_blood == 1)) {
-                    if(blood == 'None' || blood == '0'){
+                    if(blood == 'None'){
                         $("#blood_typein").removeAttr("style","display:none;");
                     }
-
+                    if(blood == '0'){
+                        $("#blood_check").removeAttr("style","display:none;");
+                    }
                 }
             });
 

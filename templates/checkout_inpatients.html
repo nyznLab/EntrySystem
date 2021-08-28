@@ -343,7 +343,6 @@
                                                 <div class="file-loading"
                                                      style="position:relative;border:1px solid red;">
                                                     <input id="input-24" name="input24[]" type="file" multiple/>
-                                                </div>
                                                 <div class='load_img2'></div>
                                             </div>
                                         </div>
@@ -359,8 +358,8 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
-    <script type="text/javascript" src="{% static '/js/pdfobject.min.js' %}"></script>
+    <script srcpe="text/javascript" src="{% static '/js/pdfobject.min.js' %}"></script>="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+    <script ty
     <script src="{% static '/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 s
     <script type="text/javascript" src="{% static '/js/fileinput.js' %}"></script>
@@ -547,12 +546,12 @@ s
     <script type="application/javascript">
         function upload_progress_note(inpatient_id) {
             var formData = new FormData();
-            formData.append('inpatient_id', inpatient_id);
+            formData.append('patient_id', inpatient_id);
             formData.append('progress_note', document.getElementById("progress_note").files[0])
             formData.append("csrfmiddlewaretoken", $("[name = 'csrfmiddlewaretoken']").val())
             $.ajax({
                 type: 'POST',
-                url: "/inpatients/upload_progress_note",
+                url: "/inpatients/upload_progress_note_test",
                 data: formData,
                 cache: false,
                 processData: false,

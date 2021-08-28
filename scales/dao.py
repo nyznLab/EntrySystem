@@ -1093,33 +1093,3 @@ def get_or_default_self_tests_obj_by_scale_id(scale_id, patient_session_id, doct
 
 def del_duration_by_scale_id(patient_session_id, scale_id):
     scales_models.RSelfTestDuration.objects.filter(patient_session_id=patient_session_id, scale_id=scale_id).delete()
-
-
-def add_suibe_database(rPatientSuicideBehavior, state):
-    # 插入前的级联检验
-    tools_insertCascadeCheck.insert_suibe_check(rPatientSuicideBehavior)
-    # 插入数据库
-    rPatientSuicideBehavior.save()
-    # 修改r_patient_scales表中state状态
-    update_rscales_state(rPatientSuicideBehavior.patient_session_id, rPatientSuicideBehavior.scale_id, state)
-
-#自杀行为表
-def get_patient_suibe_byPatientDetailId(patient_detail_id):
-    patient_suibe = scales_models.RPatientSuicideBehavior.objects.filter(patient_session=patient_detail_id)
-    if patient_suibe.count() == 0:
-        return None
-    else:
-        return patient_suibe[0]
-
-#获取suibe填写结果
-def get_suibe_answer(patient_id):
-    suibe_list = scales_models.RPatientSuicideBehavior.objects.filter(patient_session_id=patient_id)[0]
-    return suibe_list
-def get_suibe_isfirst(patient_id):
-    scale_queryset = patient_models.DPatientDetail.objects.filter(id=patient_id)
-    isfirst=scale_queryset[0].session_id
-    return isfirst
-def del_suibe(patient_session_id, scale_id):
-    res = scales_models.RPatientSuicideBehavior.objects.filter(patient_session_id=patient_session_id, scale_id=scale_id)
-    if res.exists():
-        res[0].delete()

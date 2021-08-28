@@ -13,11 +13,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR =os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 医嘱记录，病程记录存放目录
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -93,7 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
         'NAME': 'entry_system',         # 你要存储数据的库名，事先要创建之
         'USER': 'root',         # 数据库用户名
-        'PASSWORD': '12345678',     # 密码
+        'PASSWORD': 'caijian123',     # 密码
         'HOST': 'localhost',    # 主机
         'PORT': '3306',         # 数据库使用的端口
     }
