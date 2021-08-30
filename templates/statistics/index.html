@@ -493,14 +493,14 @@
         })
 
         let n = 0, timer = setInterval(function(){
-            n = n + 100/3;
+            n = n + Math.floor(Math.random()*10+10);
             if(n>100){
                 n = 100;
                 clearInterval(timer);
                 //othis.removeClass(DISABLED);
             }
             element.progress('global_progress', n+'%');
-        }, 1200);
+        }, 700);
 
 
         // 主页面选项卡
@@ -509,7 +509,7 @@
             console.log(this); //当前Tab标题所在的原始DOM元素
             console.log(data.index); //得到当前Tab的所在下标
             console.log(data.elem); //得到当前的Tab大容器
-
+            
         });
 
 
@@ -976,6 +976,8 @@
             ,done:function (res, curr, count){
 
                 soulTable.render(this)
+                element.progress('global_progress','100%');
+                clearInterval(timer);
                 // 这里添加id是为了driver能够通过id找到这些按钮
                 $('[lay-event="LAYTABLE_COLS"]').attr('id','cols_btn')
                 $('[lay-event="LAYTABLE_PRINT"]').attr('id','print_btn')
