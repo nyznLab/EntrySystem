@@ -30,6 +30,7 @@ phq_9 = 29  # PHQ-9
 gad_7 = 30  # GAD-7
 insomnia = 31  # 失眠严重指数量表
 pss = 32  # 压力知觉量表
+suibe=33 #自杀行为表
 '''#### 获取他评的题数 ####'''
 other_test_scale_num = {
     '7': 17,  # hamd_17
@@ -67,6 +68,7 @@ scales_html_dict = {1: '/scales/get_family_form',
                     30: 'nbh/ajax_gad_7.html',
                     31: 'nbh/ajax_insomnia.html',
                     32: 'nbh/ajax_pss.html',
+                    33: '/scales/get_suibe_form'
                     }
 
 check_scales_html_dict = {7: '/scales/get_check_hamd_17_form',
@@ -92,6 +94,7 @@ check_scales_html_dict = {7: '/scales/get_check_hamd_17_form',
                           30: '/scales/get_check_gad_7_form',
                           31: '/scales/get_check_insomnia_form',
                           32: '/scales/get_check_pss_form',
+                          33: '/scales/get_check_suibe_form',
                           }
 
 general_info_type = 0
