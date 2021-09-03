@@ -26,6 +26,11 @@ def processNone(value):
         return ''
     return value
 
+@register.filter(name='processSession')
+def processSession(value):
+    num = str(value)
+    return 'S' + num.zfill(3)
+
 @register.filter(name='get_diagnosis_by_dict')
 def get_diagnosis_by_dict(patient):
     if patient['patient_id__diagnosis'] is None:

@@ -635,3 +635,20 @@ def insert_Phq_check(rPatientPhq_object):
             object_flag = False
         tools_utils.object_judgment(object_flag)
 
+def insert_suibe_check(rPatientSuicideBehavior_object):
+    # 空值判断
+    if rPatientSuicideBehavior_object is None \
+            or rPatientSuicideBehavior_object.patient_session_id is None \
+            or rPatientSuicideBehavior_object.scale_id is None \
+            or rPatientSuicideBehavior_object.doctor_id is None:
+        tools_utils.object_judgment(True)
+    else:
+        # 非空时外键判断
+        dPatientDetail = patients_models.DPatientDetail.objects.filter(pk=rPatientSuicideBehavior_object.patient_session_id)[0]
+        dScales = scales_models.DScales.objects.filter(pk=rPatientSuicideBehavior_object.scale_id)[0]
+        doctor = users_models.SUser.objects.filter(pk=rPatientSuicideBehavior_object.doctor_id)[0]
+        if dPatientDetail is None or dScales is None or doctor is None:
+            object_flag = True
+        else:
+            object_flag = False
+        tools_utils.object_judgment(object_flag)

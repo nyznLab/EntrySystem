@@ -49,6 +49,7 @@ class BPatientBaseInfo(models.Model):
 class DPatientDetail(models.Model):
 
     SCAN_OPTIONS = [
+        (0, '无'),
         (1, '初扫'),
         (2, '只采血'),
         (3, '复扫'),
