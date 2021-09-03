@@ -52,12 +52,13 @@ urlpatterns = [
     url(r'^add_blood', views.add_blood),
 
     url(r'^get_patient_by_search', views.get_patient_by_search),
+    # 使用说明及日志
+    url(r'^get_program_log', views.get_program_log),
 
     # 使用说明及日志
     url(r'^get_program_log', views.get_program_log),
     # 用来捕获未匹配成功的url
     url(r'', views.get_patient_by_search),
-
 
 
 
