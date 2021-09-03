@@ -28,7 +28,7 @@ from tools.exception import BussinessException
 from tools.Utils import get_patient_progress_note_direct
 from django.core.files import File
 from django.conf import settings
-from tools import doc2pdf_test
+from tools import doc2pdf_version2
 import datetime
 
 scale_class_dict = {7: [scales_models.RPatientHamd17, [8, 21, 35], ['正常', '可能有抑郁症', '可能是轻或中度抑郁', '可能为严重抑郁']], \
@@ -735,7 +735,7 @@ def upload_progress_note(request):
         # patient.progress_note_path.delete()
         # 3.转成pdf文件
         file_path = settings.MEDIA_ROOT + file_path #改为绝对路径
-        inst = doc2pdf_test.StreamingConvertedPdfTest(progress_note, file_path)
+        inst = doc2pdf_version2.StreamingConvertedPdfTest(progress_note, file_path)
         progress_note_pdf = inst.get_content()
 
         patient.progress_note_path = File(open(progress_note_pdf.get('path'), 'rb'))
