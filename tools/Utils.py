@@ -1,6 +1,6 @@
 from datetime import date
 from datetime import datetime
-from patients.models import DPatientDetail
+#from patients.models import DPatientDetail
 # 分页
 class Paginator:
     def __init__(self,obj_count=1,obj_perpage=1,pagetag_current=1,pagetag_dsp_count=1):
