@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>长期医嘱信息</title>
+</head>
+<body>
+medical_advices
+</body>
+</html>
+
+
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}被试管理{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static '/css/appointToday.css' %}">
+<link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static '/css/tinyselect.css' %}">
+<link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />
+<style>
+    .sel_beauty {
+        background: #fafdfe;
+        height: 33px;
+        width: 100px;
+        line-height: 28px;
+        border: 1px solid #9bc0dd;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+    }
+</style>
+<script src="{% static '/js/layerJquery.js' %}"></script>
+<script src="{% static '/js/layer.js' %}"></script>
+{% endblock %}
+{% block content %}
+
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="/patients/subjectManage">被试管理</a></li>
+                    <li><a href="/patients/get_patient_detail?patient_id={{ patient_id }}">信息录入</a></li>
+                    <li><a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}">长期医嘱/病程记录管理</a></li>
+                    <li class="active">长期医嘱信息<a href="#"> </a></li>
+                    <div style="float: right;margin-bottom: 0px;">
+                        <a id ="return_url" href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}"
+                           class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-10  col-md-offset-1">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>长期医嘱单 </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br>
+                        <div class="form-group">
+                            <table border="1" class="clearfix">
+                                <thead>
+                                    <tr>
+                                        <td rowspan="2" align="center">起始日期</td>
+                                        <td colspan="4" rowspan="2" align="center">医嘱</td>
+                                        <td rowspan="2" align="center">医生签名</td>
+                                        <td rowspan="2" align="center">执行护士签名</td>
+                                        <td colspan="3" align="center">停止</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">停止日期</td>
+                                        <td align="center">停止医生签名</td>
+                                        <td align="center">停止执行护士签名</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for advice in medical_advice %}
+                                    <tr>
+                                        <td>
+
+                                            {{ advice.start_time|processNone }}
+                                            &nbsp;
+                                        </td>
+                                        <td>
+
+                                            {{ advice.medical_name|processNone }}
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                           {{ advice.dose_num|processNone }} {{ advice.dose_unit|processNone }}
+
+                                        </td>
+
+                                        <td>
+                                            {{ advice.drug_type|processNone }}
+
+                                            &nbsp;
+                                        </td>
+
+                                        <td>
+                                           {{ advice.usage_way|processNone }}
+                                            &nbsp;
+                                        </td>
+
+                                        <td>
+                                           {{ advice.start_doctor|processNone }}
+                                            &nbsp;
+                                        </td>
+
+                                        <td>
+                                            {{ advice.start_nurse|processNone }}
+                                            &nbsp;
+                                        </td>
+
+
+                                        <td>
+                                            {{ advice.end_time|processNone }}
+                                            &nbsp;
+                                        </td>
+
+                                        <td>
+                                            {{ advice.end_doctor|processNone }}
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            {{ advice.end_nurse|processNone }}
+                                            &nbsp;
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+
+
+{% endblock %}

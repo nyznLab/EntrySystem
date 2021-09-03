@@ -403,7 +403,7 @@
                             <div class="form-horizontal form-label-left">
 
                                 <div class="col-md-1"></div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                for="patient_id">受试编号<span class="required">*:</span></label>
@@ -456,7 +456,7 @@
 
                                     <div class="row" id="ghr_modify"
                                          style="display: none;margin:12px;margin-bottom:12px; border:1.5px solid cadetblue;">
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <label class="" for="subject_number"
                                                    style="text-align: right  ;margin-top: 10px ">患者编号<span
                                                     class="required">:</span></label>
@@ -531,7 +531,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
 
 
                                     <div class="form-group">
@@ -592,9 +592,22 @@
                                     </div>
 
                                 </div>
+                                <div class="col-md-5">
+
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">是否需要长期医嘱表/病程记录？<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                        <input type="radio" name="is_medical_advice" value=1 data-labelauty="是"/>
+                                        <input type="radio" name="is_medical_advice" value=0 data-labelauty="否"/>
+                                    </div>
+                                    <a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}" id="medical_advice_typein" style="position: absolute;display: none" >
+                                        <u>长期医嘱表/病程记录上传</u>
+                                    </a>
+                                    <a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}" id="medical_advice_check" style="position: absolute;display: none" >
+                                        <u>查看修改长期医嘱表/病程记录</u>
+                                    </a>
+                                </div>
                                 <div class="col-md-1"></div>
                             </div>
-
                         </div>
                         <div class="col-md-10" style="text-align: center">
                             <input type="submit" class="btn btn-success" id="change_detail" value="保存修改"/>
@@ -982,7 +995,47 @@
 
 
     </script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            document.cookie = "enter_page=select;path=/"
+            if_medical_advice ="{{ medical_advice.is_medical_advice }}"
+            if_progress_note ="{{ medical_advice.is_progress_note }}"
+            if (if_medical_advice == '1'|| if_progress_note == '1') {
+                $('input:radio[name="is_medical_advice"]:first').attr('checked', 'checked');
+                $("#medical_advice_check").removeAttr("style", "display:none;");
+            }
+            if(if_medical_advice == '0' && if_progress_note == '0'){
+                $('input:radio[name="is_medical_advice"]:last').attr('checked', 'checked');
+            }
+            $('input:radio[name="is_medical_advice"]').click(function () {
+                //若查询不到信息，is_medical_advice为空字符串
+                is_medical_advice = "{{ medical_advice.is_medical_advice }}";
+                is_progress_note = "{{ medical_advice.is_progress_note }}";
+                click_medical_advice = $(this).val();
+                {# 点击否 #}
+                if (Number(click_medical_advice == 0)){
+                    $("#medical_advice_typein").attr("style", "display:none;");
+                    $("#medical_advice_check").attr("style", "display:none;");
+                    $('#dont_need_ma').modal("show");
+                    var standard_id = 'NN_' + formatZero({{ patient_id }}, 8);
+                    var name = "{{ patient_baseinfo.name }}";
+                    var patient_id="{{ patient_baseinfo.id }}"
+                    document.getElementById("dont_need_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不需要长期医嘱/病程记录了吗？";
+                    $("#dont_need_ma_href").attr("href","/patients/dont_need_ma?patient_id="+patient_id);
+                }
+                {#点击是#}
+                if (Number(click_medical_advice == 1)) {
+                    if ((is_medical_advice == ''||is_medical_advice == '0'||is_medical_advice == 'None') && (is_progress_note == ''||is_progress_note =='0'||is_progress_note =='None')) {
+                        $("#medical_advice_typein").removeAttr("style", "display:none;");
+                    }
 
+                    if (is_medical_advice == '1'|| is_progress_note == '1') {
+                        $("#medical_advice_check").removeAttr("style", "display:none;");
+                    }
+                }
+            });
+        });
+    </script>
     <script>
         {#验证码图片的生成#}
         {#生成一个随机数#}

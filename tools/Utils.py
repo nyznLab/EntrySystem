@@ -121,6 +121,20 @@ def object_judgment(object_flag):
     if object_flag:
         return None
 
+
+
+
+# 获取患者病程记录存储路径
+def get_patient_progress_note_direct(instance, filename):
+    return '病程记录/{}/{}'.format(str(instance.patient_id), filename)
+
+# 获取患者长期医嘱记录存储路径
+def get_patient_medical_advice_direct(instance, filename):
+    return '医嘱记录/{}/{}'.format(str(instance.patient_id), filename)
+
+
+
+
 # 获取住院患者病程记录存储路径
 def get_progress_note_direct(instance,filename):
     return '病程记录/{}/{}'.format(str(instance.id),filename)
