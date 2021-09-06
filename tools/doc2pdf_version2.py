@@ -22,6 +22,7 @@ def create_pdf(wordPath, pdfPath, linuxPdfPath):
     word转pdf,如果目录中有该文件则更新
     :param wordPath: word文件路径
     :param pdfPath:  生成pdf文件路径
+    :param linuxPdfPath:  linux系统生成pdf文件路径
     三个参数是因为Linux和windows的文件存储方式不同，存储路径的输入格式应该也不同。
     因此，windows存储pdf的路径为pdfPath；Linux存储pdf的路径为linuxPdfPath
     """

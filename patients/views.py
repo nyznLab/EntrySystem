@@ -25,7 +25,7 @@ import patients.models as patient_model
 import inpatients.dao as inpatients_dao
 from tools.responseMessage import ErrorMessage,SuccessMessage
 from tools.exception import BussinessException
-from tools.Utils import get_patient_progress_note_direct
+from tools.Utils import get_patient_progress_note_direct,get_patient_medical_advice_direct
 from django.core.files import File
 from django.conf import settings
 from tools import doc2pdf_version2
@@ -659,6 +659,7 @@ def upload_medical_advice(request):
     bPatientMedicalAdviceDetail_list = []
     medical_advice_dict = inpatients_dao.get_medical_dict()
     patient_id = request.POST.get('patient_id')
+    fs = FileSystemStorage()
     try:
         excel = request.FILES['medical_advice']
         if excel.name.split('.')[-1] in ['xls','xlsx']:
@@ -671,8 +672,10 @@ def upload_medical_advice(request):
 
             if patient.ma_create_time == None:
                 patient.ma_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # 删除旧的Excel文件
+            excel_path = get_patient_medical_advice_direct(patient, excel.name)
+            fs.delete(excel_path)
 
-            # patient.medical_advice_path.delete()
             patient.medical_advice_path = excel
             patient.is_medical_advice = 1
             patient.ma_update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -730,16 +733,18 @@ def upload_progress_note(request):
         fs.delete(save_path)
         file_path = fs.save(save_path, progress_note)
 
-        # 2.删除旧记录
-        # patient.progress_note_path.delete()
-        # 3.转成pdf文件
-        file_path = settings.MEDIA_ROOT + file_path #改为绝对路径
+        # 2.转成pdf文件
+        file_path = settings.MEDIA_ROOT + file_path  # 改为绝对路径
         inst = doc2pdf_version2.StreamingConvertedPdfTest(progress_note, file_path)
         progress_note_pdf = inst.get_content()
 
         patient.progress_note_path = File(open(progress_note_pdf.get('path'), 'rb'))
 
-        # 3.存储文件,入库
+        # 3.删除旧的pdf文件
+        pdf_path = get_patient_progress_note_direct(patient, progress_note.name.split('.')[-2] + '.pdf')
+        fs.delete(pdf_path)
+
+        # 4.存储文件,入库
         if patient.pn_create_time == None:
             patient.pn_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         patient.progress_note_path.name = progress_note_pdf.get('name')

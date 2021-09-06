@@ -207,7 +207,7 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                {% if medical_advice.medical_advice_path == '' or medical_advice == None %}
+                                {% if medical_advice.medical_advice_path == '' or medical_advice == None or medical_advice.is_medical_advice == 0 %}
                                     <a href="javascript:alert('未上传长期医嘱单');">
                                         <button type="button" class="btn btn-success">长期医嘱单</button>
                                     </a>
@@ -217,7 +217,7 @@
                                     </a>
                                 {% endif %}
                                 <br>
-                                {% if medical_advice.progress_note_path == '' or medical_advice == None %}
+                                {% if medical_advice.progress_note_path == '' or medical_advice == None or medical_advice.is_progress_note == 0 %}
                                     <a href="javascript:alert('未上传病程信息');">
                                         <button type="button" class="btn btn-success" id="">
                                             &nbsp;&nbsp;病程信息&nbsp;&nbsp;
@@ -550,21 +550,25 @@ s
     <script>
     //输入框默认显示已有备注
         var ps_content = "{{ medical_advice.postscript }}"
+        var ps_is_medical_advice = "{{ medical_advice.is_medical_advice }}"
         var ps_defaut = "请输入前期用药备注。"
-        if (ps_content ==""||ps_content =="None"){
+        if (ps_content ==""||ps_content =="None"||ps_is_medical_advice =="0"||ps_is_medical_advice ==""){
             $("#ps_textarea").attr("placeholder",ps_defaut)
         }
         else{
             $("#ps_textarea").val(ps_content)
         }
         $("#submit_ps").click(function (){
-            if ($("#ps_textarea").val() == ""){
+            if(ps_is_medical_advice =="0"||ps_is_medical_advice ==""||ps_is_medical_advice =="None") {
+                alert("未上传长期医嘱单，请在上传长期医嘱后再进行备注。")
+                return false
+            } else if ($("#ps_textarea").val() == ""){
                 alert("新的备注内容为空，如果需要修改，请正确填写备注。")
                 return false
             }else if($("#ps_textarea").val() == ps_content && $("#ps_textarea").val() != "None"){
                 alert("备注内容无修改！")
                 return false
-            } else{
+            }else{
                 alert("修改成功！")
                 return true
             }
