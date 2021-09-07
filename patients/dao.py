@@ -208,7 +208,7 @@ def get_medical_advice_info(patient_id):
 # 长期医嘱表中更新备注
 def add_medical_adviec_ps(patient_id, postscript):
     medical_adviec_ps = patients_models.DPatientIsMedicalAdvice.objects.filter(patient_id=patient_id)
-    medical_adviec_ps.update(postscript=postscript)
+    medical_adviec_ps.update(postscript=postscript, is_postscript=1)
 
 
 # 医嘱表更新前清空旧记录的方法
@@ -223,7 +223,17 @@ def get_medical_advice_drug(patient_id):
         return None
     return medical_advice_drug
 
-
+# 无需长期医嘱、病程记录、备注，设置识别字段为0
+def set_dont_need_ma_or_pn(patient_id):
+    patient = get_medical_advice_info(patient_id)
+    # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
+    if patient == None:
+        patients_models.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
+        patient = get_medical_advice_info(patient_id)
+    patient.is_medical_advice = 0
+    patient.is_progress_note = 0
+    patient.is_postscript = 0
+    patient.save()
 
 # r_patient_scales表相关：
 # get r patient_detail 的自评量表状态

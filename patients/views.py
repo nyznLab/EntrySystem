@@ -672,7 +672,7 @@ def upload_medical_advice(request):
 
             if patient.ma_create_time == None:
                 patient.ma_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            # 删除旧的Excel文件
+            # 删除旧的Excel同名文件
             excel_path = get_patient_medical_advice_direct(patient, excel.name)
             fs.delete(excel_path)
 
@@ -720,40 +720,42 @@ def upload_progress_note(request):
         fs = FileSystemStorage()
         patient_id = request.POST.get('patient_id')
         progress_note = request.FILES['progress_note']
-        patient = patients_dao.get_medical_advice_info(patient_id)
-
-        # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
-        if patient == None:
-            patient_model.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
+        if progress_note.name.split('.')[-1] in ['doc', 'docm', 'docx']:
             patient = patients_dao.get_medical_advice_info(patient_id)
+            # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
+            if patient == None:
+                patient_model.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
+                patient = patients_dao.get_medical_advice_info(patient_id)
 
-        # 1.存储word文件作为备份
-        progress_note.seek(0)
-        save_path = get_patient_progress_note_direct(patient, progress_note.name)
-        fs.delete(save_path)
-        file_path = fs.save(save_path, progress_note)
+            # 1.存储word文件作为备份
+            progress_note.seek(0)
+            save_path = get_patient_progress_note_direct(patient, progress_note.name)
+            fs.delete(save_path)
+            file_path = fs.save(save_path, progress_note)
 
-        # 2.转成pdf文件
-        file_path = settings.MEDIA_ROOT + file_path  # 改为绝对路径
-        inst = doc2pdf_version2.StreamingConvertedPdfTest(progress_note, file_path)
-        progress_note_pdf = inst.get_content()
+            # 2.转成pdf文件
+            file_path = settings.MEDIA_ROOT + file_path  # 改为绝对路径
+            inst = doc2pdf_version2.StreamingConvertedPdfTest(progress_note, file_path)
+            progress_note_pdf = inst.get_content()
 
-        patient.progress_note_path = File(open(progress_note_pdf.get('path'), 'rb'))
+            patient.progress_note_path = File(open(progress_note_pdf.get('path'), 'rb'))
 
-        # 3.删除旧的pdf文件
-        pdf_path = get_patient_progress_note_direct(patient, progress_note.name.split('.')[-2] + '.pdf')
-        fs.delete(pdf_path)
+            # 3.删除旧的pdf文件
+            pdf_path = get_patient_progress_note_direct(patient, progress_note.name.split('.')[-2] + '.pdf')
+            fs.delete(pdf_path)
 
-        # 4.存储文件,入库
-        if patient.pn_create_time == None:
-            patient.pn_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        patient.progress_note_path.name = progress_note_pdf.get('name')
-        # patient.progress_note_path = progress_note_pdf.get('name')
-        patient.is_progress_note = 1
-        patient.pn_update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        patient.save()
-        # 返回message
-        res_message = SuccessMessage('上传成功')
+            # 4.存储文件,入库
+            if patient.pn_create_time == None:
+                patient.pn_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            patient.progress_note_path.name = progress_note_pdf.get('name')
+            # patient.progress_note_path = progress_note_pdf.get('name')
+            patient.is_progress_note = 1
+            patient.pn_update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            patient.save()
+            # 返回message
+            res_message = SuccessMessage('上传成功')
+        else:
+            res_message = ErrorMessage('上传文件必须为word格式,请检验')
     return HttpResponse(json.dumps(res_message.__dict__))
 
 # 查看医嘱表
@@ -774,15 +776,7 @@ def read_progress_note(request):
 # 当选择不需要长期医嘱表、病程记录时修改数据库中的字段
 def dont_need_ma_or_pn(request):
     patient_id = request.GET.get('patient_id')
-    patient = patients_dao.get_medical_advice_info(patient_id)
-    # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
-    if patient == None:
-        patient_model.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
-        patient = patients_dao.get_medical_advice_info(patient_id)
-
-    patient.is_medical_advice = 0
-    patient.is_progress_note = 0
-    patient.save()
+    patients_dao.set_dont_need_ma_or_pn(patient_id)
     redirect_url = '/patients/get_patient_detail?patient_id='+patient_id
     return redirect(redirect_url)
 

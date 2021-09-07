@@ -551,24 +551,33 @@ s
     //输入框默认显示已有备注
         var ps_content = "{{ medical_advice.postscript }}"
         var ps_is_medical_advice = "{{ medical_advice.is_medical_advice }}"
+        var is_ps = "{{ medical_advice.is_postscript }}"
         var ps_defaut = "请输入前期用药备注。"
-        if (ps_content ==""||ps_content =="None"||ps_is_medical_advice =="0"||ps_is_medical_advice ==""){
+        if (ps_content ==""||ps_content =="None"||ps_is_medical_advice =="0"||ps_is_medical_advice ==""||is_ps =="0"){
             $("#ps_textarea").attr("placeholder",ps_defaut)
-        }
-        else{
-            $("#ps_textarea").val(ps_content)
+        }else{
+            //先处理换行符，否则无法正确读取包含换行符的内容
+            line_feed_back = ps_content.replaceAll('&lt;br/&gt;','\n');
+            $("#ps_textarea").val(line_feed_back);
+            //$("#ps_textarea").val(ps_content);
         }
         $("#submit_ps").click(function (){
+            //处理换行符以作比较
+            var line_feed_compare = $("#ps_textarea").val();
+            line_feed_compare = line_feed_compare.replace(/\n/g,'&lt;br/&gt;');
+            var line_feed_input = $("#ps_textarea").val();
+            line_feed_input = line_feed_input.replace(/\n/g,'<br/>');
             if(ps_is_medical_advice =="0"||ps_is_medical_advice ==""||ps_is_medical_advice =="None") {
                 alert("未上传长期医嘱单，请在上传长期医嘱后再进行备注。")
                 return false
-            } else if ($("#ps_textarea").val() == ""){
+            } else if (line_feed_compare == ""){
                 alert("新的备注内容为空，如果需要修改，请正确填写备注。")
                 return false
-            }else if($("#ps_textarea").val() == ps_content && $("#ps_textarea").val() != "None"){
+            }else if(line_feed_compare == ps_content && line_feed_compare != "None"){
                 alert("备注内容无修改！")
                 return false
             }else{
+                $("#ps_textarea").val(line_feed_input)
                 alert("修改成功！")
                 return true
             }

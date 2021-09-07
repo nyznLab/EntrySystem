@@ -196,7 +196,8 @@ class DPatientIsMedicalAdvice(models.Model):
     progress_note_path = models.FileField(upload_to=get_patient_progress_note_direct)
     pn_create_time = models.DateTimeField(blank=True, null=True)
     pn_update_time = models.DateTimeField(blank=True, null=True)
-    postscript = models.CharField(max_length=200, blank=True, null=True)
+    postscript = models.CharField(max_length=400, blank=True, null=True)
+    is_postscript = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
