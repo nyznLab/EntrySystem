@@ -573,7 +573,7 @@ s
             } else if (line_feed_compare == ""){
                 alert("新的备注内容为空，如果需要修改，请正确填写备注。")
                 return false
-            }else if(line_feed_compare == ps_content && line_feed_compare != "None"){
+            }else if(line_feed_compare == ps_content && line_feed_compare != "None" && is_ps != "0"){
                 alert("备注内容无修改！")
                 return false
             }else{
