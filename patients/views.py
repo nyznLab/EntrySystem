@@ -17,6 +17,19 @@ from tools.Utils import Paginator
 import json
 import scales.dao as scales_dao
 import time
+from django.core.files.storage import FileSystemStorage
+from django.utils.datastructures import MultiValueDictKeyError
+from inpatients.views import get_type
+import tools.excelUtils as utils
+import patients.models as patient_model
+import inpatients.dao as inpatients_dao
+from tools.responseMessage import ErrorMessage,SuccessMessage
+from tools.exception import BussinessException
+from tools.Utils import get_patient_progress_note_direct,get_patient_medical_advice_direct
+from django.core.files import File
+from django.conf import settings
+from tools import doc2pdf_version2
+import datetime
 
 scale_class_dict = {7: [scales_models.RPatientHamd17, [8, 21, 35], ['正常', '可能有抑郁症', '可能是轻或中度抑郁', '可能为严重抑郁']], \
                     8: [scales_models.RPatientHama, [7, 14, 21, 29], ['没有焦虑', '可能有焦虑', '肯定有焦虑', '肯定有明显焦虑', '可能为严重焦虑']], \
@@ -127,6 +140,10 @@ def add_patient_baseinfo(request):
     patients_dao.add_rscales(scales_list, patient_detail.id)
     # 更新随访表
     # followup_dao.add_followup(patient_id, session_id, patient_detail.id, scan_date)
+    # 添加一条长期医嘱信息表记录
+    medical_advice = patients_models.DPatientIsMedicalAdvice(patient_id=patient_id)
+    patients_dao.add_medical_advice(medical_advice)
+
     # 页面跳转，select_scales页面
     patient_detail_id = patients_dao.get_patient_detail_byPatientIdAndSessionId(patient_id, session_id).id
 
@@ -153,7 +170,7 @@ def add_patient_followup(request):
     patient_detail.contact_way = patient_detail_last.contact_way
     patient_detail.contact_info = patient_detail_last.contact_info
     patient_detail.handy = patient_detail_last.handy
-    patient_detail.note = patient_detail_last.note
+    # patient_detail.note = patient_detail_last.note
     patient_detail.age = tools_utils.calculate_age_by_scandate(str(patient_baseinfo.birth_date), str(scan_date))
     patient_detail.scan_date=scan_date
     patient_detail.doctor_id = doctor_id
@@ -202,8 +219,8 @@ def add_patient_followup(request):
 def get_patient_detail(request):
     if request.GET:
         patient_id = request.GET.get("patient_id")
-
         patient_baseinfo = patients_dao.get_base_info_byPK(patient_id)
+        medical_advice = patients_dao.get_medical_advice_info(patient_id)
         patient_detail_list = DPatientDetail.objects.all().select_related('patient__doctor').filter(
             patient_id=patient_id).values('id', 'patient_id', 'session_id', 'standard_id', 'create_time','update_time',
                                           'cognitive','sound','blood','hairs','manure','drugs_information',
@@ -253,7 +270,9 @@ def get_patient_detail(request):
                           'ghr_kinship': ghr_kinship,
                           'num_ghr': num_ghr,
                           'patients':patients,
-                          'doctor_id':request.session.get('doctor_id')
+                          'doctor_id':request.session.get('doctor_id'),
+                          'medical_advice': medical_advice,
+                          'patient_baseinfo': patient_baseinfo,
                       })
     else:
         return render(request, 'patient_detail.html', {"username": request.session.get("username")})
@@ -600,6 +619,165 @@ def add_ghr_by_post(request,id):
                 rPatientGhr = patients_models.RPatientGhr(ghr_id=id, doctor_id=doctor_id)
 
 
+# 查看、上传长期医嘱以及病程记录
+def add_medical_advice_or_progress_note(request):
+    patient_id = request.GET.get('patient_id')
+    medical_advice = patients_dao.get_medical_advice_info(patient_id)
+    patient_baseinfo = patients_dao.get_base_info_byPK(patient_id)
+    if patient_baseinfo.birth_date is not None:
+        patient_baseinfo.birth_date = patient_baseinfo.birth_date.strftime('%Y-%m-%d')
+    return render(request, 'checkout_patients.html', {
+                                                   'patient_baseinfo': patient_baseinfo,
+                                                   'medical_advice': medical_advice,
+                                              })
+
+# 上传长期医嘱表
+def upload_medical_advice(request):
+    '''
+    1.校验格式
+    2.文件备份存储到服务器
+    3.excel数据存储到数据库
+        3.1删除旧的数据记录
+        3.2读取excel表格
+        3.3数据存储到数据库
+    Args:
+        request:
+
+    Returns:
+
+    '''
+    bPatientMedicalAdviceDetail_list = []
+    medical_advice_dict = inpatients_dao.get_medical_dict()
+    patient_id = request.POST.get('patient_id')
+    fs = FileSystemStorage()
+    try:
+        excel = request.FILES['medical_advice']
+        if excel.name.split('.')[-1] in ['xls','xlsx']:
+            # 文件备份到服务器
+            patient = patients_dao.get_medical_advice_info(patient_id)
+            # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
+            if patient == None:
+                patient_model.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
+                patient = patients_dao.get_medical_advice_info(patient_id)
+
+            if patient.ma_create_time == None:
+                patient.ma_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # 删除旧的Excel同名文件
+            excel_path = get_patient_medical_advice_direct(patient, excel.name)
+            fs.delete(excel_path)
+
+            patient.medical_advice_path = excel
+            patient.is_medical_advice = 1
+            patient.ma_update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            patient.save()
+            # read完之后会指向文件末尾,需要seek(0)移动指针
+            excel.seek(0)
+            excel_object_list = utils.read_excel(excel.read())
+            # 根据patient_id删除旧的记录
+            patients_dao.del_medical_advice_by_patientid(patient_id)
+            # 读取excel表格信息转化成数据库对象入库
+            for excel_object in excel_object_list:
+                # 计算属于哪一个大类
+                type = get_type(excel_object, medical_advice_dict)
+                bPatientMedicalAdviceDetail = patient_model.BPatientMedicalAdviceDetail(start_time=excel_object.start_time,
+                                                                                        medical_name=excel_object.medical_name,
+                                                                                        patient_id=patient_id,
+                                                                                        dose_num=excel_object.dose_num, dose_unit=excel_object.dose_unit,
+                                                                                        drug_type=excel_object.drug_type, type=type, group=excel_object.group_flag,
+                                                                                        start_doctor=excel_object.start_doctor, start_nurse=excel_object.start_nurse,
+                                                                                        end_doctor=excel_object.end_doctor, end_nurse=excel_object.end_nurse,
+                                                                                        end_time=excel_object.end_time, usage_way=excel_object.usage_way)
+                bPatientMedicalAdviceDetail_list.append(bPatientMedicalAdviceDetail)
+            patient_model.BPatientMedicalAdviceDetail.objects.bulk_create(bPatientMedicalAdviceDetail_list)
+            res_message = SuccessMessage('上传成功')
+        else:
+            res_message = ErrorMessage('上传文件必须为excel格式,请检验')
+    except BussinessException as e:
+        res_message = ErrorMessage(e.message)
+    except MultiValueDictKeyError as e:
+        res_message = ErrorMessage('文件不存在,请重新上传')
+    return HttpResponse(json.dumps(res_message.__dict__))
+
+# 上传病程记录
+def upload_progress_note(request):
+    '''
+    将病程记录转化为pdf,上传到服务器,
+    1.删除旧记录
+    2.转化为pdf文件
+    3.存储文件,更新数据库
+    '''
+    if request.method == 'POST':
+        fs = FileSystemStorage()
+        patient_id = request.POST.get('patient_id')
+        progress_note = request.FILES['progress_note']
+        if progress_note.name.split('.')[-1] in ['doc', 'docm', 'docx']:
+            patient = patients_dao.get_medical_advice_info(patient_id)
+            # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
+            if patient == None:
+                patient_model.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
+                patient = patients_dao.get_medical_advice_info(patient_id)
+
+            # 1.存储word文件作为备份
+            progress_note.seek(0)
+            save_path = get_patient_progress_note_direct(patient, progress_note.name)
+            fs.delete(save_path)
+            file_path = fs.save(save_path, progress_note)
+
+            # 2.转成pdf文件
+            file_path = settings.MEDIA_ROOT + file_path  # 改为绝对路径
+            inst = doc2pdf_version2.StreamingConvertedPdfTest(progress_note, file_path)
+            progress_note_pdf = inst.get_content()
+
+            patient.progress_note_path = File(open(progress_note_pdf.get('path'), 'rb'))
+
+            # 3.删除旧的pdf文件
+            pdf_path = get_patient_progress_note_direct(patient, progress_note.name.split('.')[-2] + '.pdf')
+            fs.delete(pdf_path)
+
+            # 4.存储文件,入库
+            if patient.pn_create_time == None:
+                patient.pn_create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            patient.progress_note_path.name = progress_note_pdf.get('name')
+            # patient.progress_note_path = progress_note_pdf.get('name')
+            patient.is_progress_note = 1
+            patient.pn_update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            patient.save()
+            # 返回message
+            res_message = SuccessMessage('上传成功')
+        else:
+            res_message = ErrorMessage('上传文件必须为word格式,请检验')
+    return HttpResponse(json.dumps(res_message.__dict__))
+
+# 查看医嘱表
+def read_medical_advice(request):
+    patient_id = request.GET.get('patient_id')
+    medical_advice = patients_dao.get_medical_advice_drug(patient_id)
+
+    return render(request, 'ma_detail.html', {'medical_advice': medical_advice,
+                                              'patient_id': patient_id})
+# 查看病程记录pdf文件
+def read_progress_note(request):
+    patient_id = request.GET.get('patient_id')
+    progress_note = patients_dao.get_medical_advice_info(patient_id)
+
+    return render(request, 'pn_detail.html', {'progress_note': progress_note,
+                                              'patient_id': patient_id})
+
+# 当选择不需要长期医嘱表、病程记录时修改数据库中的字段
+def dont_need_ma_or_pn(request):
+    patient_id = request.GET.get('patient_id')
+    patients_dao.set_dont_need_ma_or_pn(patient_id)
+    redirect_url = '/patients/get_patient_detail?patient_id='+patient_id
+    return redirect(redirect_url)
+
+# 添加长期医嘱、病程记录备注
+def add_ma_ps(request):
+    patient_id = request.GET.get('patient_id')
+    medical_advice = patients_dao.get_medical_advice_info(patient_id)
+    ps = request.POST.get('ps')
+    patients_dao.add_medical_adviec_ps(patient_id, ps)
+    redirect_url = '/patients/add_patient_ma_or_pn?patient_id=' + patient_id
+    return redirect(redirect_url)
 
 def add_blood(request):
     patient_session_id = request.GET.get('patient_session_id')
