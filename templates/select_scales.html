@@ -50,9 +50,8 @@
                                        required="required" oninput="{blood_sample_id_change()}"/>
                             </div>
 
-
-
                         </div>
+                          <p class="col-sm-offset-3" style="font-size: 10px;color: lightcoral;">温馨提示：如果该人次无法做血，样本编号填写000，直接提交即可</p>
 
 
                         <div class="row" style="margin-bottom: 10px;">
@@ -67,25 +66,22 @@
                             <div class="col-sm-4">
                                 <input type="date" class=" sel_beauty form-control input-sm" name="blood_sampling_date" disabled/>
                             </div>
-
-
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
-
                             <label class="col-sm-5 control-label" for="total_blood_number" style="text-align: right">全血(管/1000ml):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="total_blood_number" disabled/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="total_blood_number"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" disabled/>
                             </div>
-
-
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
 
                             <label class="col-sm-5 control-label" for="plasma_number" style="text-align: right">血浆(管/540ml):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="plasma_number" disabled/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="plasma_number"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" disabled/>
                             </div>
 
 
@@ -94,14 +90,16 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-5 control-label" for="hemocyte_number" style="text-align: right">血细胞(管/1000ml):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="hemocyte_number" disabled/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="hemocyte_number"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" disabled/>
                             </div>
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-5 control-label" for="extract_dna" style="text-align: right">DNA提取(浓度ng/ul):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " min="0" step="0.00001" name="extract_dna" disabled/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" step="0.00001"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" name="extract_dna" disabled/>
                             </div>
 
                         </div>
