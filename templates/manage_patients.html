@@ -9,6 +9,9 @@
     <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />
 
     <style>
+        select {
+            font-size: 10px;
+        }
         .sel_beauty {
             background: #fafdfe;
             height: 33px;
@@ -40,35 +43,30 @@
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/patients/add_patient_baseinfo" method="post" name="subjectEstablishForm">
-                    {% csrf_token %}
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h5 class="modal-title" id="myModalLabel">
-                            新建被试：添加基本信息
-                        </h5>
-                    </div>
-                    <div class="modal-body">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="myModalLabel">
+                        新建被试：添加基本信息
+                    </h5>
+                </div>
 
+                <div class="modal-body">
+                    <form action="/patients/add_patient_baseinfo" method="post" name="subjectEstablishForm"
+                          id="submit_newpatient_form">
+                        {% csrf_token %}
                         <div class="row" style="margin-bottom: 10px;">
-
                             <label class="col-sm-2 control-label" for="name" style="text-align: right">编号：</label>
                             <div class="col-sm-4">
                                 <input type="number" class=" sel_beauty form-control input-sm " name="patient_id"
                                        required="required"/>
                             </div>
-
-
                             <label class="col-sm-2 control-label" style="text-align: right" for="sex"> 扫描日期：</label>
                             <div class="col-sm-4">
                                 <input type="date" class=" sel_beauty form-control input-sm" name="scan_date"
                                        required="required"/>
                             </div>
-
                         </div>
-
                         <div class="row" style="margin-bottom: 10px;">
-
                             <label class="col-sm-2 control-label" for="name" style="text-align: right">姓名：</label>
                             <div class="col-sm-4">
                                 <input type="text" class=" sel_beauty form-control input-sm " name="name"
@@ -82,9 +80,7 @@
                                 <input type="radio" class="flat" name="sex" value=1><span
                                     style="margin-right: 10px;"></span>女
                             </div>
-
                         </div>
-
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-2 control-label" for="birth_date"
                                    style="text-align: right">出生日期：</label>
@@ -92,127 +88,161 @@
                                 <input type="date" class="sel_beauty form-control input-sm" name="birth_date"
                                        required="required"/>
                             </div>
-
                             <label class="col-sm-2 control-label" for="nation" style="text-align: right">民族：</label>
                             <div class="col-sm-4">
                                 <select tabindex="-1" class="sel_beauty select2_single form-control col-md-4"
-                                        name='nation' style="font-size: 10px">
+                                        name='nation'>
                                     <option></option>
                                     {% for nation in nations %}
                                         <option value={{ nation.ethnicity_name }}>{{ nation.ethnicity_name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-
                         </div>
-
                         <div class="row" style="margin-bottom: 10px;">
-
                             <label class="col-sm-2 control-label" for="subject_number"
                                    style="text-align: right">诊断情况<span class="required">:</span></label>
                             <input type="hidden" value="{{ patient_detail.diagnosis }}" id="diagnosis">
                             <div class="col-md-4">
-                                <select tabindex="-1" style="font-size: 10px" name="diagnosis" id="diagnosis"
+                                <select tabindex="-1" name="diagnosis" id="diagnosis"
                                         class="sel_beauty select2_single form-control col-md-4"
                                         onchange="judge_diagnosis(this)">
-                                    <option value=0>未诊断</option>
-                                    <option value=1>健康者</option>
-                                    <option value=2>重性抑郁障碍</option>
-                                    <option value=3>焦虑障碍</option>
-                                    <option value=4>双相障碍</option>
-                                    <option value=5>精神分裂症</option>
-                                    <option value=6>强迫症</option>
-                                    <option value=7>高危遗传</option>
-                                    <option value=8>临床高危</option>
-                                    <option value=9>抑郁症状</option>
-                                    <option value=99>其他诊断</option>
+                                    <option value=0>&nbsp;&nbsp;&nbsp;未诊断</option>
+                                    <option value=1>&nbsp;&nbsp;&nbsp;健康者</option>
+                                    <option value=2>&nbsp;&nbsp;&nbsp;重性抑郁障碍</option>
+                                    <option value=3>&nbsp;&nbsp;&nbsp;焦虑障碍</option>
+                                    <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
+                                    <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
+                                    <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
+                                    <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
+                                    <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
+                                    <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
                                 </select>
                             </div>
-                            <div id="other_diagnosis_div" style="display: none">
-
-                                <label class="col-sm-2 control-label" for="subject_number" style="text-align: right">其他诊断<span
+                            <label class="col-sm-2 control-label" for="ghr" style="text-align: right">高危遗传:</label>
+                            <div class="col-sm-4" onchange="isghr_change()">
+                                <input type="radio" name="is_ghr" value="0" data-labelauty="否" checked/>
+                                <span style="margin-right: 10px;"></span>否<span style="margin-right: 20px;"></span>
+                                <input type="radio" name="is_ghr" value="1" data-labelauty="是"/>
+                                <span style="margin-right: 10px;">是</span>
+                            </div>
+                        </div>
+                        <div class="row">
+{#                            <div id="comment_note_div">#}
+{#                                <label class="col-sm-2 control-label" for="comment_note"#}
+{#                                       style="text-align: right">备注<span#}
+{#                                        class="required">:</span></label>#}
+{#                                <div class="col-md-4">#}
+{#                                    <input type="text" class="sel_beauty form-control input-sm" id="comment_note"#}
+{#                                           name="comment_note" class="sel_beauty">#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div id="other_diagnosis_div" style="display: None">
+                                <label class="col-sm-2 control-label" for="other_diagnosis"
+                                       style="text-align: right">其他诊断<span
                                         class="required">:</span></label>
                                 <div class="col-md-4">
                                     <input type="text" class="sel_beauty form-control input-sm" id="other_diagnosis"
                                            name="other_diagnosis" class="sel_beauty">
                                 </div>
                             </div>
-
-
                         </div>
-                        <div class="row" id="ghr_div"
-                             style="display: none;margin:12px;margin-bottom:12px; border:1.5px solid cadetblue;">
-                            <div class="col-md-4">
-                                <label class="" for="subject_number"
-                                       style="text-align: right  ;margin-top: 10px ">患者编号<span class="required">:</span></label>
-                                <select tabindex="-1"
-                                        style="font-size: 5px;  margin-top: 5px ;margin-bottom: 5px ;max-height: 5px"
-                                        class="sel_beauty" name="kin_patient_id_0" id="singleSelect">
-                                    <option value=0>无</option>
-                                    {% for obj in all_patients %}
-                                        <option value="{{ obj.id }}">{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>
-                                    {% endfor %}
-                                </select>
-
+                    </form>
+                    <div class="x_panel" id="ghr_panel"
+                         style="display:None; border: 0px;padding:0px 10px;margin:0px;">
+                        <div class="row"
+                             style="display: block;margin:5px 0px; padding:15px 15px 0px 15px; border:0px solid;">
+                            <div class="x_title text-center">
+                                    <span style="margin: 0px; font-size:7px;">
+                                    高危遗传亲属信息
+                                    </span>
+                                    <input type="hidden" name="max_ghr_id"/>
                             </div>
-                            <div class="col-md-4">
-                                <label class="" for="subject_number"
-                                       style="text-align: right;margin-top: 10px ">患病类型<span
-                                        class="required">:</span></label>
-                                <select tabindex="-1" style=" font-size: 5px; margin-top: 10px ;margin-bottom: 10px "
-                                        name="diagnosis_0" id="ghr_diagnosis"
-                                        class="sel_beauty select2_single form-control col-md-4" required>
-                                    <option value=2>重性抑郁障碍</option>
-                                    <option value=3>焦虑障碍</option>
-                                    <option value=4>双相障碍</option>
-                                    <option value=5>精神分裂症</option>
-                                    <option value=6>强迫症</option>
-                                    <option value=8>临床高危</option>
-                                    <option value=9>抑郁症状</option>
-                                    <option value=99>其他诊断</option>
-                                </select>
-
+                            <div class="row col-md-12">
+                                <label class="col-md-4 text-center">编号</label>
+                                <label class="col-md-4 text-center">患病类型</label>
+                                <label class="col-md-4 text-center" style="padding-right:30px;">亲属关系</label>
                             </div>
-                            <div class="col-md-2">
-                                <label class="" for="subject_number"
-                                       style="text-align: right;margin-top: 10px">亲属关系<span
-                                        class="required">:</span></label>
-                                <select tabindex="-1" style=" font-size: 5px; margin-bottom: 10px ; margin-top: 10px "
-                                        name="kinship_0" id="ghr_kinship"
-                                        class="sel_beauty select2_single form-control col-md-4" required>
-                                    <option value=0>父亲</option>
-                                    <option value=1>母亲</option>
-                                    <option value=2>儿子</option>
-                                    <option value=3>女儿</option>
-                                    <option value=4>哥哥</option>
-                                    <option value=5>弟弟</option>
-                                    <option value=6>姐姐</option>
-                                    <option value=7>妹妹</option>
-                                </select>
+                            <div class="form-horizontal form-label-left" id="ghr_relatives">
+                                <div class="row col-md-12 ghr_relative_class" id="ghr_relative0"
+                                     style="display: block; padding:0px; margin:5px 0px;">
+                                    <form action="" method="post" class="ghr_relative_form">
+                                        <table style="width: 100%;" class="ghr_relative_table">
+                                            <tr>
+                                                <td>
+                                                    <select style="margin-bottom: 0;text-align: left"
+                                                            class="sel_beauty ghr_select ghr_id"
+                                                            name="ghr_id" id="testtest"
+                                                            required>
+                                                        <option selected="selected" disabled="disabled"
+                                                                style="display: None" value=""></option>
+                                                        <option value=0>无</option>
+                                                        {% for obj in all_patients %}
+                                                            <option value="{{ obj.id }}">{{ obj.id }}-{{ obj.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select style="margin-bottom: 0;text-align: left"
+                                                            class="sel_beauty ghr_select ghr_diagnose"
+                                                            name="ghr_diagnose" required>
+                                                        <option selected="selected" disabled="disabled"
+                                                                style="display: None" value=""></option>
+                                                        <option value=2>重性抑郁障碍</option>
+                                                        <option value=3>焦虑障碍</option>
+                                                        <option value=4>双相障碍</option>
+                                                        <option value=5>精神分裂症</option>
+                                                        <option value=6>强迫症</option>
+                                                        <option value=8>临床高危</option>
+                                                        <option value=9>抑郁症状</option>
+                                                        <option value=99>其他诊断</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select style="margin-bottom: 0;text-align: left"
+                                                            class="sel_beauty  ghr_select kinship_add"
+                                                            name="kinship_add"
+                                                            required>
+                                                        <option selected="selected" disabled="disabled"
+                                                                style="display: None" value=""></option>
+                                                        <option value=0>父亲</option>
+                                                        <option value=1>母亲</option>
+                                                        <option value=2>儿子</option>
+                                                        <option value=3>女儿</option>
+                                                        <option value=4>哥哥</option>
+                                                        <option value=5>弟弟</option>
+                                                        <option value=6>姐姐</option>
+                                                        <option value=7>妹妹</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="button" value=" + " class="btn-sm"
+                                                           onClick="addLine_ghr()"
+                                                           style="background-color: white; border:1px solid; padding:1px 1.5px;margin-right: 1px;"
+                                                    ><input id="del_ghr_btn0"
+                                                            class="del_ghr_btn_class btn-sm"
+                                                            type="button" value=" - "
+                                                            onClick="delLine_ghr(this)"
+                                                            style="display:none; background-color: white; border:1px solid;padding:1px 3px;">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="col-md-2" style="text-align: right;margin-bottom: 10px; ">
-                                <p>
-                                    <input type="button" value="+" onClick="addLine()"
-                                           style="margin-bottom: 10px; background-color: white ; border:1px solid;margin-top: 10px"></input>
-                                </p>
-                            </div>
-
-                            <p id="ghr_add"></p>
-
                         </div>
-
                     </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="text-center">
-                                <input type="submit" class="btn btn-success" onclick="" value="提交"/>
-                                <a href="manage_patients.html">
-                                    <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="">取消</button>
-                                </a>
-                            </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-success" onclick="submit_new_patient()" value="提交"/>
+                            <a href="manage_patients.html">
+                                <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="">取消</button>
+                            </a>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -231,7 +261,6 @@
                     </h5>
                 </div>
                 <div class="modal-body">
-
                     <div class="row" style="margin-bottom: 10px;">
 
                         <label class="col-sm-2 control-label" for="name" style="text-align: right">编号：</label>
@@ -240,9 +269,7 @@
                                    id="patient_id_search"/>
                             <input type="hidden" name="patient_id_cache"/>
                         </div>
-
                     </div>
-
                     <div class="row" style="margin-bottom: 10px;">
                         <label class="col-sm-2 control-label" for="name" style="text-align: right">姓名：</label>
                         <div class="col-sm-4">
@@ -264,20 +291,19 @@
                                style="text-align: right">诊断情况<span class="required">:</span></label>
                         <input type="hidden" value="{{ patient_detail.diagnosis }}" id="diagnosis1">
                         <div class="col-md-4">
-                            <select tabindex="-1" style="font-size: 10px" name="diagnosis1" id="diagnosis_search"
+                            <select tabindex="-1" name="diagnosis1" id="diagnosis_search"
                                     class="sel_beauty select2_single form-control col-md-4">
                                 <option value="">所有</option>
-                                <option value=0>未诊断</option>
-                                <option value=1>健康者</option>
-                                <option value=2>重性抑郁障碍</option>
-                                <option value=3>焦虑障碍</option>
-                                <option value=4>双相障碍</option>
-                                <option value=5>精神分裂症</option>
-                                <option value=6>强迫症</option>
-                                <option value=7>高危遗传</option>
-                                <option value=8>临床高危</option>
-                                <option value=9>抑郁症状</option>
-                                <option value=99>其他诊断</option>
+                                <option value=0>&nbsp;&nbsp;&nbsp;未诊断</option>
+                                <option value=1>&nbsp;&nbsp;&nbsp;健康者</option>
+                                <option value=2>&nbsp;&nbsp;&nbsp;重性抑郁障碍</option>
+                                <option value=3>&nbsp;&nbsp;&nbsp;焦虑障碍</option>
+                                <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
+                                <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
+                                <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
+                                <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
+                                <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
+                                <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
                             </select>
 
                             <input type="hidden" name="diagnosis_cache"/>
@@ -566,7 +592,8 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <a href="#modal_container_subjectBaseInfo_build" data-toggle="modal">
-                            <button class="btn btn-success btn-sm"><span class="fa fa-plus"></span><span>&nbsp;&nbsp;新建被试</span>
+                            <button class="btn btn-success btn-sm" onclick="isghr_change()"><span
+                                    class="fa fa-plus"></span><span>&nbsp;&nbsp;新建被试</span>
                             </button>
                         </a>
                         <a href="#modal_container_search" data-toggle="modal">
@@ -727,29 +754,19 @@
 
 {% block js %}
     <script src="{% static '/js/layerJquery.js' %}"></script>
-    <script src="{% static '/js/layer.js' %}"></script>
-
+    <script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
+    {#        <script src="{% static '/js/layer.js' %}"></script>#}
     <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+
     <script type="text/javascript" language="JavaScript">
         function judge_diagnosis(obj) {
             if (obj.options[obj.selectedIndex].value == 99) {
-                document.getElementById("other_diagnosis_div").style.display = "";
-                document.getElementById("ghr_div").style.display = "none";
-                document.getElementById("singleSelect").disabled = "true";
-                document.getElementById("ghr_diagnosis").disabled = "true";
-                document.getElementById("ghr_kinship").disabled = "true";
-            }
-            else if (obj.options[obj.selectedIndex].value == 7) {
-                document.getElementById("other_diagnosis_div").style.display = "none";
-                document.getElementById("ghr_div").style.display = "";
+                $("#other_diagnosis_div").show();
             } else {
-                document.getElementById("ghr_div").style.display = "none";
-                document.getElementById("other_diagnosis_div").style.display = "none";
-                document.getElementById("singleSelect").disabled = "true";
-                document.getElementById("ghr_diagnosis").disabled = "true";
-                document.getElementById("ghr_kinship").disabled = "true";
+                $("#other_diagnosis_div").hide();
+                $("#other_diagnosis").val("");
             }
         }
         {#查找病人#}
@@ -822,7 +839,6 @@
             return (Array(length).join("0") + num).slice(-length);
         }
 
-
         /*获取生成id
         这一段千万千万不能删呀！！！！！！！！！
         千万千万不能删呀！！！！！！！！！
@@ -844,9 +860,11 @@
             });
         })
         */
+
     </script>
     {% comment %}填充0{% endcomment %}
 
+    {#  模态框相关js函数#}
     <script>
         var patientid = null;
         function del_patient_before(patient_id,patient_name
@@ -867,68 +885,158 @@
          }
     </script>
 
+    {#  高危相关的js函数#}
     <script>
-        var i = 1;
-        function addLine() {
+        {#Ajax提交页面上的高危亲属信息到后台#}
+        function save_ghr_relatives() {
+            let saveghr_success = 1;
+            let isnull_ghr_relative = 0;
+            let subforms_data = [];
+            var is_ghr_radio = $("input[type=radio][name=is_ghr]:checked").val();
 
-            var txt1 = document.createElement("p");
-            var s = ""
-            s += "<div class=col-md-4 style=margin: 10px >"
+            if(is_ghr_radio == 1){
+                let ori_max_ghrid = $("input[name='max_ghr_id']").val();
+                {#循环获取非空的子form表单#}
+                for (let i = 0; i <= ori_max_ghrid; i++) {
+                $('.ghr_select').removeAttr("disabled");
+                if ($("#ghr_relative" + i + ">.ghr_relative_form").serialize() !="" ) {
+                    let new_subform_data = $("#ghr_relative" + i + ">.ghr_relative_form").serializeArray();
+                    if (new_subform_data.length == 3) {
+                        let new_subform_obj = [];
+                        for (let j = 0; j < new_subform_data.length; j++) {
+                            let Element = new_subform_data[j];
+                            let select_value = Element.value;
+                            new_subform_obj[j] = select_value;
+                        }
+                        subforms_data.push(new_subform_obj);
+                    } else {
+                        isnull_ghr_relative = 1;
+                    }
+                }
+            }
+                if (isnull_ghr_relative == 1) {
+                    alert("请将高危亲属信息补充完整！");
+                }
+                if (isnull_ghr_relative == 0) {
+                    $.ajax({
+                        url: "/patients/ajax_ghr",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: false,
+                        async:false,
+                        data: JSON.stringify(
+                            {'ghr_submit': subforms_data}
+                        ),
+                        success: function (ghr_json) {
+                            saveghr_success = 0;
+                        },
+                        error: function () {
+                            saveghr_success = 1;
+                        }
+                    });
+                }
+            }
+            if(is_ghr_radio == 0){
+                subforms_data = [];
+                $.ajax({
+                        url: "/patients/ajax_ghr",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: false,
+                        async:false,
+                        data: JSON.stringify(
+                            {'ghr_submit': subforms_data}
+                        ),
+                        success: function (ghr_json) {
+                            saveghr_success = 0;
+                        },
+                        error: function () {
+                            saveghr_success = 1;
+                        }
+                    });
+            }
+            return saveghr_success;
+        }
 
-            s += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty  form-control col-md-4 id=singleSelect" + i + " name=kin_patient_id_" + i + " >"
-            s += " <option value= 0 >无</option>"
-            s += " {% for obj in all_patients %}"
-                s += "<option value ={{ obj.id }}>{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>"
+        {#页面上添加一行高危亲属信息（最后面添加）#}
 
-                s+="{% endfor %}"
-            s += " </select>"
-            s += "</div>"
-            txt1.innerHTML = s;
-            var txt2 = document.createElement("p");
-            var str = "";
-            str += "<div class=col-md-4 style=margin: 10px>"
-            str += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty select2_single form-control col-md-4 required id=ghr_diagnosis" + i + " name=diagnosis_" + i + ">"
-            str += "<option  value=2>" + '重性抑郁障碍';
-            str += "<option  value=3>" + '焦虑障碍';
-            str += "<option  value=4>" + '双相障碍';
-            str += "<option  value=5>" + '精神分裂症';
-            str += "<option  value=6>" + '强迫症';
-            str += "<option  value=8>" + '临床高危';
-            str += "<option  value=9>" + '抑郁症状';
-            str += "<option  value=99>" + '其他诊断';
-            str += "</select>";
-            str += "</div>";
-            txt2.innerHTML = str;
-            var txt3 = document.createElement("p");
-            var str2 = "";
-            str2 += "<div class=col-md-4 style=margin: 10px>"
-            str2 += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty select2_single form-control col-md-4 required id=ghr_kinship" + i + " name=kinship_" + i + ">"
-            str2 += "<option  value=0>" + '父亲';
-            str2 += "<option  value=1>" + '母亲';
-            str2 += "<option  value=2>" + '儿子';
-            str2 += "<option  value=3>" + '女儿';
-            str2 += "<option  value=4>" + '哥哥';
-            str2 += "<option  value=5>" + '弟弟';
-            str2 += "<option  value=6>" + '姐姐';
-            str2 += "<option  value=7>" + '妹妹';
-            str2 += "</select>";
-            str2 += "</div>";
-            txt3.innerHTML = str2;
-            $("#ghr_add").append(txt1, txt2, txt3);
-            $("#singleSelect" + i + "").select2();
-            $("#ghr_diagnosis" + i + "").select2();
-            $("#ghr_kinship" + i + "").select2();
-            i++;
+        function addLine_ghr() {
+            let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length;
+            let ori_max_ghrid = $("input[name='max_ghr_id']").val();
+            let max_ghrid = ++ori_max_ghrid;
+            {#增加新的一行高危亲属输入#}
+            let new_ghr_relative = $(".ghr_relative_class:first").clone();
+            new_ghr_relative.appendTo("#ghr_relatives");
+            {#修改新增行的id，删除按钮的id#}
+            $(".ghr_relative_class:last").attr('id', 'ghr_relative' +  max_ghrid);
+            $(".ghr_relative_class:last .del_ghr_btn_class").attr('id', 'del_ghr_btn' + max_ghrid);
+            $("input[name='max_ghr_id']").val(max_ghrid);
+
+            {#当高危亲属行>2时，出现删除行按钮#}
+            if (ghr_relatives_num >= 1) {
+                $(".del_ghr_btn_class").show();
+            }
+        }
+
+        {#页面上删除指定行的高危亲属#}
+
+        function delLine_ghr(del_ghr_btn_obj) {
+            let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length - 1;
+            var del_ghr_id = $("#" + del_ghr_btn_obj.id).closest(".ghr_relative_class").attr("id");
+            $("#" + del_ghr_id).remove();
+
+            {#当高危亲属行<2时，隐藏删除行按钮#}
+            if (ghr_relatives_num <= 1) {
+                $(".del_ghr_btn_class").hide();
+            }
+        }
+
+        {#页面上删除所有高危亲属行,剩一个#}
+
+        function delall_ghr() {
+            let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
+            if (ghr_form_num >= 1) {
+                for (let i = 0; i < ghr_form_num - 1; i++) {
+                    $(".ghr_relative_class:last").remove();
+                }
+            }
+            $('.ghr_select').removeAttr("disabled");
+            $(".ghr_select").val("");
+            $("input[name='max_ghr_id']").val("");
+
+        }
+
+        {#切换ghr单选框#}
+        function isghr_change() {
+            console.log("xxxx");
+            var is_ghr_radio = $("input[type=radio][name=is_ghr]:checked").val();
+            console.log(is_ghr_radio);
+            if (is_ghr_radio == 1) {
+                console.log("切换是高危的单选框")
+                $("#ghr_panel").show();
+                $('.ghr_select').removeAttr("disabled");
+                $(".ghr_select").val("");
+            }
+            else {
+                delall_ghr();
+                $("#ghr_panel").hide();
+                $('.ghr_select').prop("disabled", true);
+            }
+         }
+
+        function submit_new_patient() {
+            var isghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
+            var ghr_submit = 0;
+            ghr_submit = save_ghr_relatives();
+            if (ghr_submit == 0) {
+                $("#submit_newpatient_form").submit();
+                alert("提交成功！")
+            }
         }
     </script>
-    <script type="text/javascript">
-        $(document).ready(function () {//加载页面时执行select2
-            $('#singleSelect').select2();
-            $('#ghr_diagnosis').select2();
-            $('#ghr_kinship').select2();
-        });
-    </script>
 
+
+    {#  验证码相关js函数#}
     <script>
         {#验证码图片的生成#}
         {#生成一个随机数#}
@@ -998,25 +1106,17 @@
                 ctx.fill();
             }
         }
+
+        function verification() {
+            var value_verification_input = document.getElementById("verification_input").value;
+            if (verification_code == value_verification_input) {
+                document.getElementById("verification_result").innerHTML = "验证码输入正确";
+                $('#confirm_del_a_patient_button').prop('disabled', false);
+            } else {
+                document.getElementById("verification_result").innerHTML = "验证码输入错误";
+                $('#confirm_del_a_patient_button').prop('disabled', true);
+            }
+        }
     </script>
-    <script>
-            function verification(){
-            var value_verification_input=document.getElementById("verification_input").value;
-            {#var value_verification_input=document.querySelector("#verification_input");#}
-            {#value_verification_input.addEventListener("keyup", function(e) {#}
-                if (verification_code == value_verification_input) {
-                    document.getElementById("verification_result").innerHTML = "验证码输入正确";
-                    $('#confirm_del_a_patient_button').prop('disabled', false);
-                } else {
-                    document.getElementById("verification_result").innerHTML = "验证码输入错误";
-                    $('#confirm_del_a_patient_button').prop('disabled', true);
-                }
-            {# }) #}
-             }
-    </script>
-
-
-
-
 
 {% endblock %}

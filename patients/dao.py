@@ -110,6 +110,8 @@ def del_patient_base_info_byPK(patient_id):
 
 #高危信息表
 def add_patient_ghr(rPatientGhr):
+    # 插入数据库前的级联检验
+    tools_insertCascadeCheck.insert_patient_base_info_check(rPatientGhr)
     rPatientGhr.save()
 
 ################ get 部分 ################

@@ -54,6 +54,8 @@ urlpatterns = [
     # 使用说明及日志
     url(r'^get_program_log', views.get_program_log),
 
+    url(r'^ajax_ghr', views.ajax_ghr),
+
     # 用来捕获未匹配成功的url
     url(r'', views.get_patient_by_search),
 
