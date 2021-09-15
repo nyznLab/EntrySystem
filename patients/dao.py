@@ -78,6 +78,10 @@ def add_patient_appointment(PatientAppoientment_object):
     PatientAppoientment_object.save()
 
 
+# add DPatientIsMedicalAdvice表
+def add_medical_advice(medical_advice_object):
+    medical_advice_object.save()
+
 ################ del 部分 ################
 ################ del 部分 ################
 ################ del 部分 ################
@@ -194,6 +198,42 @@ def get_patient_detail_lastsession(patient_id):
         return None
     return patient_detail_list[0]
 
+# 根据patient_id获取长期医嘱信息表中的相关记录
+def get_medical_advice_info(patient_id):
+    medical_advice_info = patients_models.DPatientIsMedicalAdvice.objects.filter(patient_id=patient_id)
+    if medical_advice_info.count() == 0:
+        return None
+    return medical_advice_info[0]
+
+# 长期医嘱表中更新备注
+def add_medical_adviec_ps(patient_id, postscript):
+    medical_adviec_ps = patients_models.DPatientIsMedicalAdvice.objects.filter(patient_id=patient_id)
+    medical_adviec_ps.update(postscript=postscript, is_postscript=1)
+
+
+# 医嘱表更新前清空旧记录的方法
+def del_medical_advice_by_patientid(patient_id):
+    res = patients_models.BPatientMedicalAdviceDetail.objects.filter(patient_id=patient_id)
+    if res.exists():
+        res.delete()
+# 查询数据库中的用药信息
+def get_medical_advice_drug(patient_id):
+    medical_advice_drug = patients_models.BPatientMedicalAdviceDetail.objects.filter(patient_id=patient_id)
+    if medical_advice_drug.count() == 0:
+        return None
+    return medical_advice_drug
+
+# 无需长期医嘱、病程记录、备注，设置识别字段为0
+def set_dont_need_ma_or_pn(patient_id):
+    patient = get_medical_advice_info(patient_id)
+    # 若d_patient_is_medical_advice表中无此病人的信息，则先创建一条这个病人的记录
+    if patient == None:
+        patients_models.DPatientIsMedicalAdvice.objects.create(patient_id=patient_id)
+        patient = get_medical_advice_info(patient_id)
+    patient.is_medical_advice = 0
+    patient.is_progress_note = 0
+    patient.is_postscript = 0
+    patient.save()
 
 # r_patient_scales表相关：
 # get r patient_detail 的自评量表状态

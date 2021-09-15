@@ -31,6 +31,47 @@
     display: grid;
     width: 100%;
     grid-template-columns: 5fr 1fr;}
+    .version_panel ul > li{
+        margin: 15px 0;
+    }
+    .version_panel ul > li span:first-child{
+        padding: 5px;
+        color: #fff;
+        border-radius:4px;
+        margin: 0 5px;
+        font-size:14px;
+    }
+    .version_panel ul > li span.new{
+        background-color:#5FB878
+    }
+    .version_panel ul > li span.fixed{
+        background-color: #FFB800
+    }
+    .version_panel ul > li span.optimized{
+        background-color:#1E9FFF
+    }
+    .version_panel ul > li a{
+        padding: 3px;
+        border-radius:5px;
+        margin: 0 5px;
+        font-size:14px;
+        color: #2A3F54;
+        border: 1px solid #2A3F54;
+        font-style:italic;
+    }
+    .version_panel ul > li a:hover{
+        transition:all .3s;
+        color: #fff;
+        background-color: #2A3F54
+    }
+    .version_panel h4 > span{
+        border-radius:3px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        color: #7D7D7D;
+        font-size:14px !important;
+        margin: 0 5px;
+    }
 	</style>
 {% endblock %}
 {% block content %}
@@ -47,15 +88,20 @@
                     </ul>
                 </div>
             </div>
-            <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
-                   <h4>v2.6.8</h4>
-                   <ul>
-                      <li>【重发】sort方法，以便对数字、非数字及混合类等所有内容的排序进行支持</li>
-                      <li>【新增】dropdown组件的align参数，用于控制下拉菜单水平对齐方式（支持left、center、right），默认left</li>
-                      <li>【加强】table组件的escape参数，用于是否开启xss字符过滤（默认false）</li>
-                      <li>【修复】form相关css的layui-checkbox-disabled书写错误（之前为disabled）</li>
-                   </ul>
-                   <hr/>
+            <div class="dashboard_graph x_panel version_panel" style="margin-top: 0px;height: 80%;">
+                <!-- class名new为【功能新增】tag样式，fixed为【修复】样式，optimized是【优化】样式 -->
+                <h4>v0.2.0<span>2021-09-10</span></h4>
+                <ul>
+                    <li><span class="fixed">功能优化</span>优化了首程、医嘱，现在可以对所有患者上传长期医嘱表以及病程记录<a href="https://docs.qq.com/doc/DWFhXeW9vcXdUQ3Vu"># 04</a></li>
+                </ul>
+                <h4>v0.1.1<span>2021-08-21</span></h4>
+                <ul>
+                    <li><span class="fixed">修复</span>修复了自评最后一题未作答提交后直接跳转的bug。<a href="#"># 12</a></li>
+                </ul>
+                <h4>v0.1.0<span>2021-08-21</span></h4>
+                <ul>
+                    <li><span class="new">功能新增</span>增加了复扫信息统计数据表，可以动态筛选获取想要的复扫记录；添加复扫备注，医务人员在一条具体的复扫记录中可以选择备注。<a href="https://docs.qq.com/doc/DS2pYdGlOTUhlR1Vh"># 10</a><a href="#"># 11</a></li>
+                </ul>
 		    </div>
 	    </div>
     </div>
