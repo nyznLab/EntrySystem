@@ -241,17 +241,18 @@ def add_patient_followup(request):
     patient_baseinfo = patients_dao.get_base_info_byPK(patient_id)
     patient_id, session_id, standard_id = tools_idAssignments.patient_session_id_assignment(patient_baseinfo.id)
     patient_detail_last = patients_dao.get_patient_detail_last_byPatientId(patient_id)
-
     # 插入前的准备工作，这里需要预先进行处理，将上次的值赋进去
-    patient_detail = patient_detail_last
-    patient_detail.id = None
-    patient_detail.tms = None
-    patient_detail.patient_id = patient_id
-    patient_detail.session_id = session_id
-    patient_detail.standard_id = standard_id
+    patient_detail = patients_models.DPatientDetail(patient_id=patient_id,session_id = session_id,standard_id = standard_id)
+    patient_detail.phone=patient_detail_last.phone
+    patient_detail.source = patient_detail_last.source
+    patient_detail.contact_way = patient_detail_last.contact_way
+    patient_detail.contact_info = patient_detail_last.contact_info
+    patient_detail.handy = patient_detail_last.handy
+    # patient_detail.note = patient_detail_last.note
     patient_detail.age = tools_utils.calculate_age_by_scandate(str(patient_baseinfo.birth_date), str(scan_date))
     patient_detail.scan_date=scan_date
     patient_detail.doctor_id = doctor_id
+
 
     patients_dao.add_patient_detail(patient_detail)
     # 获取创建的复扫信息自增id
@@ -716,17 +717,6 @@ def set_attr_by_post(request, _object):
               #  rPatientGhr = patients_models.RPatientGhr(ghr_id=id, doctor_id=doctor_id)
 
 
-def del_blood(request):
-    patient_session_id = request.GET.get('patient_session_id')
-    patient_id = request.GET.get('patient_id')
-    blood_res=patients_models.RPatientBlood.objects.filter(patient_session_id=patient_session_id).first()
-    if blood_res is not None:
-        blood_res.delete()
-    patient_detail_res=patients_models.DPatientDetail.objects.filter(id=patient_session_id).first()
-    patient_detail_res.blood=0
-    patient_detail_res.save()
-    redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
-    return redirect(redirect_url)
 # 查看、上传长期医嘱以及病程记录
 def add_medical_advice_or_progress_note(request):
     patient_id = request.GET.get('patient_id')
@@ -890,6 +880,7 @@ def add_ma_ps(request):
 def add_blood(request):
     patient_session_id = request.GET.get('patient_session_id')
     patient_id = request.GET.get('patient_id')
+    blood_sample_id=request.POST.get('blood_sample_id')
     blood_res = patients_models.RPatientBlood.objects.filter(patient_session_id=patient_session_id).first()
     if blood_res is not None:
         blood_res.delete()
@@ -897,7 +888,10 @@ def add_blood(request):
     rPatientBlood=set_attr_by_post(request, rPatientBlood)
     rPatientBlood.save()
     patient_detail_res=patients_models.DPatientDetail.objects.filter(id=patient_session_id).first()
-    patient_detail_res.blood=1
+    if blood_sample_id=='000':
+        patient_detail_res.blood = 0
+    else:
+        patient_detail_res.blood=1
     patient_detail_res.save()
     redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
     return redirect(redirect_url)

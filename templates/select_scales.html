@@ -16,11 +16,12 @@
             border-radius: 2px;
             width: 135px;
         }
-
-         input::-webkit-outer-spin-button,
+        {#去掉上下箭头#}
+        input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
         }
+
         input[type="number"]{
             -moz-appearance: textfield;
         }
@@ -46,51 +47,41 @@
                             <label class="col-sm-5 control-label" for="blood_sample_id" style="text-align: right">样本编号：</label>
                             <div class="col-sm-4">
                                 <input type="text" class=" sel_beauty form-control input-sm " name="blood_sample_id"
-                                       required="required"/>
+                                       required="required" oninput="{blood_sample_id_change()}"/>
                             </div>
 
-
-
                         </div>
+                          <p class="col-sm-offset-3" style="font-size: 10px;color: lightcoral;">温馨提示：如果该人次无法做血，样本编号填写000，直接提交即可</p>
 
 
                         <div class="row" style="margin-bottom: 10px;">
-
-
-
-
                             <label class="col-sm-5 control-label" style="text-align: right" for="inspect_date"> 送检日期：</label>
                             <div class="col-sm-4">
-                                <input type="date" class=" sel_beauty form-control input-sm" name="inspect_date"
-                                       required="required"/>
+                                <input type="date" class=" sel_beauty form-control input-sm" name="inspect_date" disabled/>
                             </div>
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-5 control-label" style="text-align: right" for="blood_sampling_date"> 采血日期：</label>
                             <div class="col-sm-4">
-                                <input type="date" class=" sel_beauty form-control input-sm" name="blood_sampling_date"
-                                       required="required"/>
+                                <input type="date" class=" sel_beauty form-control input-sm" name="blood_sampling_date" disabled/>
                             </div>
-
-
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
-
                             <label class="col-sm-5 control-label" for="total_blood_number" style="text-align: right">全血(管/1000ml):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="total_blood_number"/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="total_blood_number"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" disabled/>
                             </div>
-
-
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
 
                             <label class="col-sm-5 control-label" for="plasma_number" style="text-align: right">血浆(管/540ml):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="plasma_number"/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="plasma_number"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" disabled/>
                             </div>
 
 
@@ -99,14 +90,16 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-5 control-label" for="hemocyte_number" style="text-align: right">血细胞(管/1000ml):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="hemocyte_number"/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" name="hemocyte_number"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" disabled/>
                             </div>
                         </div>
 
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-5 control-label" for="extract_dna" style="text-align: right">DNA提取(浓度ng/ul):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="extract_dna"/>
+                                <input type="number" class=" sel_beauty form-control input-sm " min="0" step="0.00001"
+                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" name="extract_dna" disabled/>
                             </div>
 
                         </div>
@@ -135,35 +128,7 @@
         </div>
     </div>
     <!-- 模态框结束 -->
-    <!-- 删除确认开始 -->
-        <div class="modal fade" id="delete_blood_modal" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="form-group" align="center">
-                                <p id="del_alert_message"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="text-center">
 
-                                <a href="" id="delete_blood_href">
-                                    <button class="btn btn-success">确定</button>
-                                </a>
-                                <a href="">
-                                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- 删除确认结束 -->
 
     <div class="right_col" role="main">
         <div class="row " style="margin-left:-20px">
@@ -422,12 +387,8 @@
                                     <label class="control-label col-md-offset-1 col-md-5"
                                            for="subject_number">血液信息<span class="required">:</span></label>
                                     <div style="">
-
-                                        <a href="#modal_blood_info" id="blood_typein" data-toggle="modal" style="display: none" >
-                                        <u>血液信息录入</u>
-                                        </a>
-                                        <a href="#modal_blood_info" id="blood_check" data-toggle="modal" style="display: none" >
-                                            <u>查看/修改血液信息</u>
+                                        <a href="#modal_blood_info"  data-toggle="modal"  >
+                                        <u id="blood_typein"></u>
                                         </a>
                                     </div>
 
@@ -470,29 +431,24 @@ var num=1
         function getData() {
             var blood = Number("{{ patient_detail.blood }}");
             if ('{{ patient_detail.blood }}' != 'None') {
-                {#$("input[name='blood'][value=" + blood + "]").prop("checked", true);#}
-                if(blood==1){
-                    $("#blood_check").removeAttr("style","display:none;");
-                    {#数据填充#}
-                    if('{{ r_patient_blood }}'!='None'){
-                        $("input[name='blood_sample_id']").val('{{ r_patient_blood.blood_sample_id|processNone }}');
-                        $("input[name='blood_sampling_date']").val('{{ r_patient_blood.blood_sampling_date|processNone }}');
-                        $("input[name='inspect_date']").val('{{ r_patient_blood.inspect_date|processNone }}');
-                        $("input[name='total_blood_number']").val('{{ r_patient_blood.total_blood_number|processNone }}');
-                        $("input[name='plasma_number']").val('{{ r_patient_blood.plasma_number|processNone }}');
-                        $("input[name='hemocyte_number']").val('{{ r_patient_blood.hemocyte_number|processNone }}');
-                        $("input[name='extract_dna']").val('{{ r_patient_blood.extract_dna|processNone }}');
-                        $("input[name='note']").val('{{ r_patient_blood.note|processNone }}');
-
+                var blood_sample_id="{{ r_patient_blood.blood_sample_id|processNone }}"
+                $("#blood_typein").text('已完成('+blood_sample_id+')')
+                if('{{ r_patient_blood }}'!='None'){
+                    $("input[name='blood_sample_id']").val('{{ r_patient_blood.blood_sample_id|processNone }}');
+                    $("input[name='blood_sampling_date']").val('{{ r_patient_blood.blood_sampling_date|processNone }}');
+                    $("input[name='inspect_date']").val('{{ r_patient_blood.inspect_date|processNone }}');
+                    $("input[name='total_blood_number']").val('{{ r_patient_blood.total_blood_number|processNone }}');
+                    $("input[name='plasma_number']").val('{{ r_patient_blood.plasma_number|processNone }}');
+                    $("input[name='hemocyte_number']").val('{{ r_patient_blood.hemocyte_number|processNone }}');
+                    $("input[name='extract_dna']").val('{{ r_patient_blood.extract_dna|processNone }}');
+                    $("input[name='note']").val('{{ r_patient_blood.note|processNone }}');
+                    if(blood==1){
+                        remove_disabled()
                     }
-                }else if(blood==0){
-                        {#alert(blood)#}
-                        $("#blood_typein").removeAttr("style","display:none;");
-                    }
-
-
+                }
             }else{
-                $("#blood_typein").removeAttr("style","display:none;");
+                $("#blood_typein").text('未完成')
+                $("input[name='blood_sample_id']").val('000');
             }
 
             var cognitive = Number("{{ patient_detail.cognitive }}");
@@ -536,31 +492,6 @@ var num=1
         $(document).ready(function () {
             document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_baseinfo.id }}, 8)
             document.cookie = "enter_page=select;path=/"
-      {% comment %}      $("input:radio[name='blood']").click(function() {
-                blood="{{ patient_detail.blood }}";
-                click_blood = $(this).val();
-                {#点击否#}
-                if (Number(click_blood == 0)) {
-                    $("#blood_check").attr("style","display:none;");
-                    $("#blood_typein").attr("style","display:none;");
-                    if(blood != '0'){
-                        $('#delete_blood_modal').modal("show");
-                        var standard_id = "{{ patient_detail.standard_id }}";
-                        var name = "{{ patient_baseinfo.name }}";
-                        var patient_session_id="{{ patient_session_id }}"
-                        var patient_id="{{ patient_baseinfo.id }}"
-                        document.getElementById("del_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不做血了吗？";
-                        $("#delete_blood_href").attr("href","/patients/del_blood?patient_session_id="+patient_session_id+"&patient_id="+patient_id);
-                    }
-                }
-                {#点击是#}
-                if (Number(click_blood == 1)) {
-                    if(blood == 'None' || blood == '0'){
-                        $("#blood_typein").removeAttr("style","display:none;");
-                    }
-
-                }
-            });{% endcomment %}
 
             // 扫描备注切换
             let $option_num = $('#scan_note_num_container'),
@@ -610,6 +541,22 @@ var num=1
         $(document).ready(function () {
             $("input[type='radio']").labelauty();
         });
+        function remove_disabled(){
+            $("input[name='blood_sampling_date']").removeAttr("disabled","disabled");
+            $("input[name='inspect_date']").removeAttr("disabled","disabled");
+            $("input[name='total_blood_number']").removeAttr("disabled","disabled");
+            $("input[name='plasma_number']").removeAttr("disabled","disabled");
+            $("input[name='hemocyte_number']").removeAttr("disabled","disabled");
+            $("input[name='extract_dna']").removeAttr("disabled","disabled");
+        }
+        function add_disabled(){
+            $("input[name='blood_sampling_date']").attr("disabled","disabled");
+            $("input[name='inspect_date']").attr("disabled","disabled");
+            $("input[name='total_blood_number']").attr("disabled","disabled");
+            $("input[name='plasma_number']").attr("disabled","disabled");
+            $("input[name='hemocyte_number']").attr("disabled","disabled");
+            $("input[name='extract_dna']").attr("disabled","disabled");
+        }
 
          function addCookie(name,value,expiresHours){
             var cookieString=name+"="+escape(value);
@@ -621,7 +568,26 @@ var num=1
             }
             document.cookie=cookieString;
         }
+        function blood_sample_id_change(){
+             blood_sample_id=document.getElementsByName('blood_sample_id')[0].value;
+             if(blood_sample_id=='000'){
+                $("input[name='blood_sampling_date']").val('');
+                $("input[name='inspect_date']").val('');
+                $("input[name='total_blood_number']").val('');
+                $("input[name='plasma_number']").val('');
+                $("input[name='hemocyte_number']").val('');
+                $("input[name='extract_dna']").val('');
+                $("input[name='note']").val('');
+                add_disabled()
+             }else {
+                 remove_disabled()
+             }
+        }
+
+
     </script>
+
+
 
 {#    <script>#}
 {#        function judge_diagnosis(obj) {#}

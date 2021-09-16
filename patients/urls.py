@@ -47,7 +47,6 @@ urlpatterns = [
 
     # 貌似未使用
     url(r'^subjectDetailInfo', views.subjectDetailInfo),
-    url(r'^del_blood', views.del_blood),
     url(r'^add_blood', views.add_blood),
 
     url(r'^get_patient_by_search', views.get_patient_by_search),
