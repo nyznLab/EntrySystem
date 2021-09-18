@@ -495,12 +495,12 @@
         let n = 0, timer = setInterval(function(){
             n = n + Math.floor(Math.random()*10+10);
             if(n>100){
-                n = 100;
-                clearInterval(timer);
+                n = 0;
+                //clearInterval(timer);
                 //othis.removeClass(DISABLED);
             }
             element.progress('global_progress', n+'%');
-        }, 700);
+        }, 500);
 
 
         // 主页面选项卡
