@@ -864,7 +864,7 @@
     </script>
     {% comment %}填充0{% endcomment %}
 
-    {#  模态框相关js函数#}
+    //  模态框相关js函数
     <script>
         var patientid = null;
         function del_patient_before(patient_id,patient_name
@@ -885,9 +885,9 @@
          }
     </script>
 
-    {#  高危相关的js函数#}
+    // 高危相关的js函数
     <script>
-        {#Ajax提交页面上的高危亲属信息到后台#}
+        //Ajax提交页面上的高危亲属信息到后台
         function save_ghr_relatives() {
             let saveghr_success = 1;
             let isnull_ghr_relative = 0;
@@ -958,40 +958,40 @@
             return saveghr_success;
         }
 
-        {#页面上添加一行高危亲属信息（最后面添加）#}
+        //页面上添加一行高危亲属信息（最后面添加）
 
         function addLine_ghr() {
             let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length;
             let ori_max_ghrid = $("input[name='max_ghr_id']").val();
             let max_ghrid = ++ori_max_ghrid;
-            {#增加新的一行高危亲属输入#}
+            //增加新的一行高危亲属输入
             let new_ghr_relative = $(".ghr_relative_class:first").clone();
             new_ghr_relative.appendTo("#ghr_relatives");
-            {#修改新增行的id，删除按钮的id#}
+            //修改新增行的id，删除按钮的id
             $(".ghr_relative_class:last").attr('id', 'ghr_relative' +  max_ghrid);
             $(".ghr_relative_class:last .del_ghr_btn_class").attr('id', 'del_ghr_btn' + max_ghrid);
             $("input[name='max_ghr_id']").val(max_ghrid);
 
-            {#当高危亲属行>2时，出现删除行按钮#}
+            //当高危亲属行>2时，出现删除行按钮
             if (ghr_relatives_num >= 1) {
                 $(".del_ghr_btn_class").show();
             }
         }
 
-        {#页面上删除指定行的高危亲属#}
+        //页面上删除指定行的高危亲属
 
         function delLine_ghr(del_ghr_btn_obj) {
             let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length - 1;
             var del_ghr_id = $("#" + del_ghr_btn_obj.id).closest(".ghr_relative_class").attr("id");
             $("#" + del_ghr_id).remove();
 
-            {#当高危亲属行<2时，隐藏删除行按钮#}
+            //当高危亲属行<2时，隐藏删除行按钮
             if (ghr_relatives_num <= 1) {
                 $(".del_ghr_btn_class").hide();
             }
         }
 
-        {#页面上删除所有高危亲属行,剩一个#}
+        //页面上删除所有高危亲属行,剩一个
 
         function delall_ghr() {
             let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
@@ -1006,13 +1006,10 @@
 
         }
 
-        {#切换ghr单选框#}
+        //切换ghr单选框
         function isghr_change() {
-            console.log("xxxx");
             var is_ghr_radio = $("input[type=radio][name=is_ghr]:checked").val();
-            console.log(is_ghr_radio);
             if (is_ghr_radio == 1) {
-                console.log("切换是高危的单选框")
                 $("#ghr_panel").show();
                 $('.ghr_select').removeAttr("disabled");
                 $(".ghr_select").val("");
@@ -1036,17 +1033,17 @@
     </script>
 
 
-    {#  验证码相关js函数#}
+    // 验证码相关js函数
     <script>
-        {#验证码图片的生成#}
-        {#生成一个随机数#}
+        //验证码图片的生成
+        //生成一个随机数
         var verification_code = "";
 
         function randomNum(min, max) {
             return Math.floor(Math.random() * (max - min) + min);
         }
 
-        {#生成一个随机色#}
+        //生成一个随机色
         function randomColor(min, max) {
             var r = randomNum(min, max);
             var g = randomNum(min, max);
@@ -1055,13 +1052,13 @@
         }
 
         drawPic();
-        {#切换验证码图片#}
+        //切换验证码图片
         document.getElementById("changeImg").onclick = function (e) {
             e.preventDefault();
             drawPic();
         }
 
-        {#绘制验证码图片#}
+        //绘制验证码图片
         function drawPic() {
             var canvas = document.getElementById("canvas");
             var width = canvas.width;
@@ -1069,10 +1066,10 @@
             var ctx = canvas.getContext('2d');
             ctx.textBaseline = 'bottom';
 
-            {#绘制背景色#}
+            //绘制背景色
             ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
             ctx.fillRect(0, 0, width, height);
-            {#绘制文字#}
+            //绘制文字
             var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
             for (var i = 0; i < 4; i++) {
                 var txt = str[randomNum(0, str.length)];
@@ -1090,7 +1087,7 @@
                 ctx.rotate(-deg * Math.PI / 180);
                 ctx.translate(-x, -y);
             }
-            {#绘制干扰线#}
+            //绘制干扰线
             for (var i = 0; i < 5; i++) {
                 ctx.strokeStyle = randomColor(40, 180);
                 ctx.beginPath();
@@ -1098,7 +1095,7 @@
                 ctx.lineTo(randomNum(0, width), randomNum(0, height));
                 ctx.stroke();
             }
-            {#绘制干扰点#}
+            //绘制干扰点
             for (var i = 0; i < 50; i++) {
                 ctx.fillStyle = randomColor(0, 255);
                 ctx.beginPath();
