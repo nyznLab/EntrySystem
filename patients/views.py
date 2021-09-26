@@ -771,20 +771,25 @@ def add_ma_ps(request):
     return redirect(redirect_url)
 
 def add_blood(request):
+    # import json
+    # print('=' * 20)
+    # print(json.dumps(request.POST))
     patient_session_id = request.GET.get('patient_session_id')
     patient_id = request.GET.get('patient_id')
     blood_sample_id=request.POST.get('blood_sample_id')
-    blood_res = patients_models.RPatientBlood.objects.filter(patient_session_id=patient_session_id).first()
-    if blood_res is not None:
-        blood_res.delete()
-    rPatientBlood= patients_models.RPatientBlood(patient_session_id=patient_session_id)
-    rPatientBlood=set_attr_by_post(request, rPatientBlood)
-    rPatientBlood.save()
+    rPatientBlood_old = patients_models.RPatientBlood.objects.filter(patient_session_id=patient_session_id).first()
+    rPatientBlood_new = patients_models.RPatientBlood(patient_session_id=patient_session_id)
+    if rPatientBlood_old is not None:
+        rPatientBlood_new.id=rPatientBlood_old.id
+        rPatientBlood_new.create_time=rPatientBlood_old.create_time
+    rPatientBlood_new=set_attr_by_post(request, rPatientBlood_new)
     patient_detail_res=patients_models.DPatientDetail.objects.filter(id=patient_session_id).first()
-    if blood_sample_id=='000':
+    if blood_sample_id=='-请输入-':
         patient_detail_res.blood = 0
+        rPatientBlood_new.blood_sample_id=''
     else:
         patient_detail_res.blood=1
+    rPatientBlood_new.save()
     patient_detail_res.save()
     redirect_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),str(patient_id))
     return redirect(redirect_url)
