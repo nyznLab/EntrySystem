@@ -1241,3 +1241,33 @@ def get_patient_id(patient_session_id):
     res = patient_models.DPatientDetail.objects.filter(pk=patient_session_id).values("patient").first()[
         "patient"]
     return res
+
+
+# 根据 scale_id, scale_content_id 取量表总分的计算规则
+def get_scale_calculate_rules_obj(scale_id, scale_content_id):
+    res = scales_models.TScalesCalculateRules.objects.filter(
+        scale_definition_id=scale_id,
+        scale_content_id=scale_content_id,
+        delete=config.Del_No
+    ).order_by(
+        "-scale_version"
+    ).values(
+        "calculate_rule"
+    ).first()
+    return res
+
+
+def insert_scale_total_score(scale_definition_id, scale_content_id, calculate_rule_id, patient_session_id, score_name,
+                             score_value, create_user):
+    res = scales_models.TScalesTotalScores.objects.create(
+        scale_definition_id=scale_definition_id,
+        scale_content_id=scale_content_id,
+        calculate_rule_id=calculate_rule_id,
+        patient_session_id=patient_session_id,
+        score_name=score_name,
+        score_value=score_value,
+        create_user=create_user,
+        delete=config.Del_No,
+        create_time=int(time.time()),
+    )
+    return res

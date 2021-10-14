@@ -1,5 +1,6 @@
 import ast
 import json
+import logging
 import time
 
 import scales.dao as scales_dao
@@ -235,3 +236,55 @@ def get_answer_by_index(scale_id, patient_session_id, question_index):
 # 根据patient_session_id 取 patient_id
 def get_patient_id(patient_session_id):
     return scales_dao.get_patient_id(patient_session_id)
+
+
+# 处理计算总分的规则
+def process_total_score_calculate_rules(calculate_rules):
+    calculate_rules_list = str(calculate_rules).split("//")
+    calculate_rules_dic = {}
+    for calculate_rule in calculate_rules_list:
+        calculate_rules_dic[str(calculate_rule).split(":")[0]] = str(calculate_rule).split(":")[1]
+    return calculate_rules_dic
+
+
+# 写入量表总分
+def write_scale_total_scores(scale_definition_id, scale_content_id, calculate_rule_id, patient_session_id, score_name,
+                             score_value, create_user):
+    return scales_dao.insert_scale_total_score(
+        scale_definition_id,
+        scale_content_id,
+        calculate_rule_id,
+        patient_session_id,
+        score_name,
+        score_value,
+        create_user,
+    )
+
+
+#  计算量表总分
+def calculate_scale_score(patient_session_id, scale_id, user_id):
+    score_dic = {}
+    # 取答题记录
+    scale_answer_obj = scales_dao.get_scale_answers(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
+    # 根据量表的version取scale_content_id
+    scale_content_id = scales_dao.get_scale_content_by_id_and_version(scale_id, scale_answer_obj.varsion)
+    # 取总分计算规则
+    calculate_rules_obj = scales_dao.get_scale_calculate_rules_obj(scale_id, scale_content_id)
+    # 处理总分计算规则
+    calculate_rules_dic = process_total_score_calculate_rules(calculate_rules_obj)
+    # 计算总分
+    for score_name in calculate_rules_dic.keys():
+        res = write_scale_total_scores(
+            scale_id,
+            scale_content_id,
+            calculate_rules_obj["id"],
+            patient_session_id,
+            score_name,
+            call_match_rules(calculate_rules_dic[score_name], scale_answer_obj),
+            user_id,
+        )
+        if res is None:
+            logging.warning(f"calculate_scale_score of patient_session_id {patient_session_id} "
+                            f"on scale {scale_id}"
+                            f" error: {json.dumps(scale_answer_obj)}")
+    return score_dic

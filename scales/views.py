@@ -2188,8 +2188,10 @@ def get_next_question(request):
             return JsonResponse(rsp)
         # 当前题目不满足就继续找下一题
         last_answered_question_index += 1
-    # 遍历结束也没有找到满足条件的题目则表示当前量表已经完成，将量表完成状态置为已完成，返回给前端　Ｆａｌｓｅ
+    # 遍历结束也没有找到满足条件的题目则表示当前量表已经完成，将量表完成状态置为已完成，返回给前端False
     Do.complete_scale(patient_session_id, scale_id)
+    # 写入量表总分
+    Do.calculate_scale_score(patient_session_id, scale_id)
     return HttpResponse(False)
 
 

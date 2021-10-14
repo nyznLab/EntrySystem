@@ -1984,3 +1984,35 @@ class RPatientSuicideBehavior(models.Model):
     class Meta:
         managed = False
         db_table = 'r_patient_suicide_behavior'
+
+
+class TScalesTotalScores(models.Model):
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    scale_definition_id = models.IntegerField(blank=False, null=False)
+    scale_content_id = models.IntegerField(blank=False, null=False)
+    calculate_rule_id = models.IntegerField(blank=False, null=False)
+    patient_session_id = models.IntegerField(null=False, blank=False)
+    score_name = models.CharField(max_length=20, null=False, default="")
+    score_value = models.FloatField(blank=True, null=True)
+    delete = models.IntegerField(null=False, default=0)
+    create_time = models.IntegerField()
+    create_user = models.IntegerField(null=False, blank=False)
+
+    class Meta:
+        managed = False
+        db_table = 't_scales_total_scores'
+
+
+class TScalesCalculateRules(models.Model):
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    scale_definition_id = models.IntegerField(blank=False, null=False)
+    scale_content_id = models.IntegerField(blank=False, null=False)
+    calculate_rule = models.CharField(max_length=500, defaule="", null=False)
+    version = models.IntegerField(null=False, default=0)
+    delete = models.IntegerField(null=False, default=0)
+    create_time = models.IntegerField()
+    create_user = models.IntegerField(null=False, blank=False)
+
+    class Meta:
+        managed = False
+        db_table = 't_scale_calculate_rules'
