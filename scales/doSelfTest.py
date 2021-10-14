@@ -270,6 +270,8 @@ def calculate_scale_score(patient_session_id, scale_id, user_id):
     scale_content_id = scales_dao.get_scale_content_by_id_and_version(scale_id, scale_answer_obj.varsion)
     # 取总分计算规则
     calculate_rules_obj = scales_dao.get_scale_calculate_rules_obj(scale_id, scale_content_id)
+    if calculate_rules_obj is None:
+        return
     # 处理总分计算规则
     calculate_rules_dic = process_total_score_calculate_rules(calculate_rules_obj)
     # 计算总分
