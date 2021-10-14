@@ -191,7 +191,7 @@
             setTimeout(function () {
                 isClick = false;
             }, 1000);
-            if (question_index > 46) {
+            if (question_index > 47) {
                 alert("请不要重复提交！");
                 return;
             } else if (question_index_1 == 2) {
@@ -208,7 +208,6 @@
             } else if (question_index_1 === 10) {
                 if (document.question_form_1.question7.value === "0") {
                     ajax_post($('#question_form_1'));
-
                     update_question_1(question_index_1 + 1);
                     question_index++;
                     question_index++;
@@ -223,6 +222,7 @@
                     alert("问题不能为空！");
                     return;
                 }
+
             }else if(question_index_1 === 11){
                 const answer = document.getElementsByName('question8').value;
                 if (answer === ""){
