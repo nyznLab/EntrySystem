@@ -16,54 +16,106 @@ class RuleParser(object):
     }
 
     def equals(self, answer, *args):
-        print("RuleParser")
-        print(getattr(answer, args[0]))
-        return float(getattr(answer, args[0])) == float(args[1])
+        opt1 = args[0]
+        opt2 = args[1]
+        if isinstance(args[0], str):
+            opt1 = float(getattr(answer, args[0]))
+        if isinstance(args[0], str):
+            opt2 = float(getattr(answer, args[1]))
+        return opt1 == opt2
 
     def not_equals(self, answer, *args):
-        print("RuleParser")
-        print(getattr(answer, args[0]))
-        return float(getattr(answer, args[0])) != float(args[1])
+        opt1 = args[0]
+        opt2 = args[1]
+        if isinstance(args[0], str):
+            opt1 = float(getattr(answer, args[0]))
+        if isinstance(args[0], str):
+            opt2 = float(getattr(answer, args[1]))
+        return opt1 != opt2
 
     def grater(self, answer, *args):
-        print("RuleParser")
-        print(getattr(answer, args[0]))
-        return float(getattr(answer, args[0])) > float(args[1])
+        opt1 = args[0]
+        opt2 = args[1]
+        if isinstance(args[0], str):
+            opt1 = float(getattr(answer, args[0]))
+        if isinstance(args[0], str):
+            opt2 = float(getattr(answer, args[1]))
+        return opt1 > opt2
 
     def grater_equals(self, answer, *args):
-        print("RuleParser")
-        print(getattr(answer, args[0]))
-        return float(getattr(answer, args[0])) >= float(args[1])
+        opt1 = args[0]
+        opt2 = args[1]
+        if isinstance(args[0], str):
+            opt1 = float(getattr(answer, args[0]))
+        if isinstance(args[0], str):
+            opt2 = float(getattr(answer, args[1]))
+        return opt1 >= opt2
 
     def lower(self, answer, *args):
-        print("RuleParser")
-        print(getattr(answer, args[0]))
-        return float(getattr(answer, args[0])) < float(args[1])
+        opt1 = args[0]
+        opt2 = args[1]
+        if isinstance(args[0], str):
+            opt1 = float(getattr(answer, args[0]))
+        if isinstance(args[0], str):
+            opt2 = float(getattr(answer, args[1]))
+        return opt1 < opt2
 
     def lower_equals(self, answer, *args):
-        print("RuleParser")
-        print(getattr(answer, args[0]))
-        return float(getattr(answer, args[0])) <= float(args[1])
+        opt1 = args[0]
+        opt2 = args[1]
+        if isinstance(args[0], str):
+            opt1 = float(getattr(answer, args[0]))
+        if isinstance(args[0], str):
+            opt2 = float(getattr(answer, args[1]))
+        return opt1 <= opt2
 
     @staticmethod
-    def or_(answer, args):
+    def or_(answer, *args):
         return any(args)
 
     @staticmethod
-    def and_(answer, args):
+    def and_(answer, *args):
         return all(args)
 
     def plus(self, answer, *args):
-        return float(getattr(answer, args[0])) + float(getattr(answer, args[1]))
+        ans = 0
+        for arg in args:
+            if isinstance(arg, str):
+                ans += getattr(answer, arg)
+            else:
+                ans += arg
+        return float(ans)
 
     def minus(self, answer, *args):
-        return float(getattr(answer, args[0])) - float(getattr(answer, args[1]))
+        ans = args[0]
+        if isinstance(args[0], str):
+            ans = float(getattr(answer, args[0]))
+        for arg in args[1:]:
+            if isinstance(arg, str):
+                ans -= getattr(answer, arg)
+            else:
+                ans -= arg
+        return float(ans)
 
     def multiply(self, answer, *args):
-        return float(getattr(answer, args[0])) * float(getattr(answer, args[1]))
+        ans = 0
+        for arg in args:
+            if isinstance(arg, str):
+                ans *= getattr(answer, arg)
+            else:
+                ans *= arg
+        return float(ans)
 
     def divide(self, answer, *args):
-        return float(getattr(answer, args[0])) / float(getattr(answer, args[1]))
+        ans = args[0]
+        if isinstance(args[0], str):
+            ans = float(getattr(answer, args[0]))
+        for arg in args[1:]:
+            if isinstance(arg, str):
+                ans /= getattr(answer, arg)
+            else:
+                ans /= arg
+        return float(ans)
 
     # 校验规则是否合法
     def validate(self, rules):
@@ -87,13 +139,10 @@ class RuleParser(object):
     def evaluate(self, answer, rules):
         # 通过反射取到对应计算的方法
         func = getattr(self, self.ALIAS[rules[0]])
-        if not isinstance(rules[1], list) and not isinstance(rules[2], list):
-            # 如果后两个操作数都不是列表（说明后面的操作数不是新的表达式）则直接计算 把结果返回
-            ans = func(answer, rules[1], rules[2])
-            print(func, rules[1:], ans)
-            return ans
-        # 后面的操作数是表达式 先依次把他们计算出来 再计算
-        args = [self.evaluate(answer, x) for x in rules[1:]]
-        ans = func(args)
-        print(func, args, ans)
+        for index, expression in enumerate(rules[1:]):
+            # 遍历后面的操作数 如果操作数也是一个表达式 则先计算子表达式
+            if isinstance(expression, list):
+                expression_answer = self.evaluate(answer, expression)
+                rules[index + 1] = expression_answer
+        ans = func(answer, *rules[1:])
         return ans

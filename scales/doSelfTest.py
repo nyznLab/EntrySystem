@@ -221,6 +221,8 @@ def redo_scale(scale_id, patient_session_id):
     if res is None:
         # 之前没做过对应量表 不能重做
         return False
+    # 将总分记录删掉
+    scales_dao.delete_scale_scores(scale_id, patient_session_id)
     # 将量表完成状态置为未完成
     not_complete_scale(scale_id, patient_session_id)
     return True
@@ -248,11 +250,11 @@ def process_total_score_calculate_rules(calculate_rules):
 
 
 # 写入量表总分
-def write_scale_total_scores(scale_definition_id, scale_content_id, calculate_rule_id, patient_session_id, score_name,
+def write_scale_total_scores(scale_definition_id, scale_answers_id, calculate_rule_id, patient_session_id, score_name,
                              score_value, create_user):
     return scales_dao.insert_scale_total_score(
         scale_definition_id,
-        scale_content_id,
+        scale_answers_id,
         calculate_rule_id,
         patient_session_id,
         score_name,
@@ -278,7 +280,7 @@ def calculate_scale_score(patient_session_id, scale_id, user_id):
     for score_name in calculate_rules_dic.keys():
         res = write_scale_total_scores(
             scale_id,
-            scale_content_id,
+            scale_answer_obj["id"],
             calculate_rules_obj["id"],
             patient_session_id,
             score_name,

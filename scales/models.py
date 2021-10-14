@@ -1989,7 +1989,7 @@ class RPatientSuicideBehavior(models.Model):
 class TScalesTotalScores(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
     scale_definition_id = models.IntegerField(blank=False, null=False)
-    scale_content_id = models.IntegerField(blank=False, null=False)
+    scale_answers_id = models.IntegerField(blank=False, null=False)
     calculate_rule_id = models.IntegerField(blank=False, null=False)
     patient_session_id = models.IntegerField(null=False, blank=False)
     score_name = models.CharField(max_length=20, null=False, default="")

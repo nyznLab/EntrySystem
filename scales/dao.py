@@ -1257,11 +1257,12 @@ def get_scale_calculate_rules_obj(scale_id, scale_content_id):
     return res
 
 
-def insert_scale_total_score(scale_definition_id, scale_content_id, calculate_rule_id, patient_session_id, score_name,
+# 插入总分记录
+def insert_scale_total_score(scale_definition_id, scale_answers_id, calculate_rule_id, patient_session_id, score_name,
                              score_value, create_user):
     res = scales_models.TScalesTotalScores.objects.create(
         scale_definition_id=scale_definition_id,
-        scale_content_id=scale_content_id,
+        scale_answers_id=scale_answers_id,
         calculate_rule_id=calculate_rule_id,
         patient_session_id=patient_session_id,
         score_name=score_name,
@@ -1271,3 +1272,12 @@ def insert_scale_total_score(scale_definition_id, scale_content_id, calculate_ru
         create_time=int(time.time()),
     )
     return res
+
+
+# 删除总分记录
+def delete_scale_scores(scale_id, patient_session_id):
+    res = scales_models.TScalesTotalScores.objects.filter(
+        patient_session_id=patient_session_id,
+        delete=config.Del_No,
+        scale_definition_id=scale_id,
+    ).update(delete=config.Del_Yse)
