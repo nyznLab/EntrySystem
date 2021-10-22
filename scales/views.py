@@ -2169,6 +2169,7 @@ def update_scales_content(request):
 def get_next_question(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
+    user_id = request.session.get('doctor_id')
     # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
     # 取最后一个已完成题目的索引
@@ -2188,10 +2189,11 @@ def get_next_question(request):
             return JsonResponse(rsp)
         # 当前题目不满足就继续找下一题
         last_answered_question_index += 1
+    print("get_next_question not return")
     # 遍历结束也没有找到满足条件的题目则表示当前量表已经完成，将量表完成状态置为已完成，返回给前端False
     Do.complete_scale(patient_session_id, scale_id)
     # 写入量表总分
-    Do.calculate_scale_score(patient_session_id, scale_id)
+    Do.calculate_scale_score(patient_session_id, scale_id, user_id)
     return HttpResponse(False)
 
 
@@ -2200,6 +2202,7 @@ def get_question_by_index(request):
     patient_session_id = request.POST.get("patient_session_id")
     scale_id = request.POST.get("scale_id")
     question_index = str(request.POST.get("question_index"))
+    user_id = request.session.get('doctor_id')
     # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
     print("get_question_by_index :", patient_session_id, scale_id, question_index,
@@ -2223,6 +2226,8 @@ def get_question_by_index(request):
         # 已经没有题目了　更改量表完成状态为已完成
         Do.complete_scale(patient_session_id, scale_id)
         print("get_question_by_index return true")
+        # 写入量表总分
+        Do.calculate_scale_score(patient_session_id, scale_id, user_id)
         return JsonResponse(True, safe=False)
 
 
@@ -2268,6 +2273,7 @@ def submit_scale(request):
     doctor_id = request.session.get('doctor_id')
     form_data = json.loads(request.POST.get('data'))
     duration = request.POST.get('duration')
+    print(f"submit_scale: {patient_session_id}, {scale_id}, {form_data}, {duration}")
     try:
         # 写入答案
         Do.write_scale_answer(scale_id, patient_session_id, form_data, doctor_id)

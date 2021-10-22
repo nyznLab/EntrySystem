@@ -1,3 +1,21 @@
+def optStrToFloat(answer, args):
+    opt1 = args[0]
+    opt2 = args[1]
+    if isinstance(args[0], str):
+        tem = getattr(answer, args[0])
+        if tem is None:
+            opt1 = 0
+        else:
+            opt1 = float(tem)
+    if isinstance(args[1], str):
+        tem = getattr(answer, args[1])
+        if tem is None:
+            opt2 = 0
+        else:
+            opt2 = float(tem)
+    return opt1, opt2
+
+
 class RuleParser(object):
     # 操作字典
     ALIAS = {
@@ -15,104 +33,106 @@ class RuleParser(object):
         '/': 'divide',
     }
 
-    def equals(self, answer, *args):
-        opt1 = args[0]
-        opt2 = args[1]
-        if isinstance(args[0], str):
-            opt1 = float(getattr(answer, args[0]))
-        if isinstance(args[0], str):
-            opt2 = float(getattr(answer, args[1]))
+    @staticmethod
+    def equals(answer, *args):
+        opt1, opt2 = optStrToFloat(answer, args)
         return opt1 == opt2
 
-    def not_equals(self, answer, *args):
-        opt1 = args[0]
-        opt2 = args[1]
-        if isinstance(args[0], str):
-            opt1 = float(getattr(answer, args[0]))
-        if isinstance(args[0], str):
-            opt2 = float(getattr(answer, args[1]))
+    @staticmethod
+    def not_equals(answer, *args):
+        opt1, opt2 = optStrToFloat(answer, args)
         return opt1 != opt2
 
-    def grater(self, answer, *args):
-        opt1 = args[0]
-        opt2 = args[1]
-        if isinstance(args[0], str):
-            opt1 = float(getattr(answer, args[0]))
-        if isinstance(args[0], str):
-            opt2 = float(getattr(answer, args[1]))
+    @staticmethod
+    def grater(answer, *args):
+        opt1, opt2 = optStrToFloat(answer, args)
         return opt1 > opt2
 
-    def grater_equals(self, answer, *args):
-        opt1 = args[0]
-        opt2 = args[1]
-        if isinstance(args[0], str):
-            opt1 = float(getattr(answer, args[0]))
-        if isinstance(args[0], str):
-            opt2 = float(getattr(answer, args[1]))
+    @staticmethod
+    def grater_equals(answer, *args):
+        opt1, opt2 = optStrToFloat(answer, args)
         return opt1 >= opt2
 
-    def lower(self, answer, *args):
-        opt1 = args[0]
-        opt2 = args[1]
-        if isinstance(args[0], str):
-            opt1 = float(getattr(answer, args[0]))
-        if isinstance(args[0], str):
-            opt2 = float(getattr(answer, args[1]))
+    @staticmethod
+    def lower(answer, *args):
+        opt1, opt2 = optStrToFloat(answer, args)
         return opt1 < opt2
 
-    def lower_equals(self, answer, *args):
-        opt1 = args[0]
-        opt2 = args[1]
-        if isinstance(args[0], str):
-            opt1 = float(getattr(answer, args[0]))
-        if isinstance(args[0], str):
-            opt2 = float(getattr(answer, args[1]))
+    @staticmethod
+    def lower_equals(answer, *args):
+        opt1, opt2 = optStrToFloat(answer, args)
         return opt1 <= opt2
 
     @staticmethod
-    def or_(answer, *args):
+    def or_(*args):
         return any(args)
 
     @staticmethod
-    def and_(answer, *args):
+    def and_(*args):
         return all(args)
 
-    def plus(self, answer, *args):
+    @staticmethod
+    def plus(answer, *args):
         ans = 0
         for arg in args:
             if isinstance(arg, str):
-                ans += getattr(answer, arg)
+                tem = getattr(answer, arg)
+                if tem is None:
+                    ans += 0
+                else:
+                    ans += float(tem)
             else:
                 ans += arg
         return float(ans)
 
-    def minus(self, answer, *args):
+    @staticmethod
+    def minus(answer, *args):
         ans = args[0]
         if isinstance(args[0], str):
-            ans = float(getattr(answer, args[0]))
+            tem = getattr(answer, args[0])
+            if tem is None:
+                ans = 0
+            else:
+                ans = float(tem)
         for arg in args[1:]:
             if isinstance(arg, str):
-                ans -= getattr(answer, arg)
+                tem = getattr(answer, arg)
+                if tem is not None:
+                    ans -= float(tem)
             else:
                 ans -= arg
         return float(ans)
 
-    def multiply(self, answer, *args):
+    @staticmethod
+    def multiply(answer, *args):
         ans = 0
         for arg in args:
             if isinstance(arg, str):
-                ans *= getattr(answer, arg)
+                tem = getattr(answer, arg)
+                if tem is None:
+                    return 0
+                else:
+                    ans *= float(tem)
             else:
                 ans *= arg
         return float(ans)
 
-    def divide(self, answer, *args):
+    @staticmethod
+    def divide(answer, *args):
         ans = args[0]
         if isinstance(args[0], str):
-            ans = float(getattr(answer, args[0]))
+            tem = getattr(answer, args[0])
+            if tem is None:
+                return 0
+            else:
+                ans = float(tem)
         for arg in args[1:]:
             if isinstance(arg, str):
-                ans /= getattr(answer, arg)
+                tem = getattr(answer, arg)
+                if tem is None:
+                    ans /= .001
+                else:
+                    ans /= float(tem)
             else:
                 ans /= arg
         return float(ans)

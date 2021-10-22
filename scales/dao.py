@@ -1250,27 +1250,30 @@ def get_scale_calculate_rules_obj(scale_id, scale_content_id):
         scale_content_id=scale_content_id,
         delete=config.Del_No
     ).order_by(
-        "-scale_version"
+        "version"
     ).values(
-        "calculate_rule"
+        "calculate_rule",
+        "id"
     ).first()
     return res
 
 
 # 插入总分记录
-def insert_scale_total_score(scale_definition_id, scale_answers_id, calculate_rule_id, patient_session_id, score_name,
-                             score_value, create_user):
+def insert_scale_total_score(scale_definition_id, scale_answers_id, scale_content_id, calculate_rule_id,
+                             patient_session_id, score_name, score_value, create_user):
     res = scales_models.TScalesTotalScores.objects.create(
         scale_definition_id=scale_definition_id,
         scale_answers_id=scale_answers_id,
+        scale_content_id=scale_content_id,
         calculate_rule_id=calculate_rule_id,
         patient_session_id=patient_session_id,
         score_name=score_name,
         score_value=score_value,
-        create_user=create_user,
         delete=config.Del_No,
         create_time=int(time.time()),
+        create_user=create_user,
     )
+    print(f"insert_scale_total_score: {res}")
     return res
 
 

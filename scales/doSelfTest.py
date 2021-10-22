@@ -242,7 +242,9 @@ def get_patient_id(patient_session_id):
 
 # 处理计算总分的规则
 def process_total_score_calculate_rules(calculate_rules):
+    print(f"process_total_score_calculate_rules: {calculate_rules}")
     calculate_rules_list = str(calculate_rules).split("//")
+    print(f"process_total_score_calculate_rules split: {calculate_rules_list}")
     calculate_rules_dic = {}
     for calculate_rule in calculate_rules_list:
         calculate_rules_dic[str(calculate_rule).split(":")[0]] = str(calculate_rule).split(":")[1]
@@ -250,11 +252,14 @@ def process_total_score_calculate_rules(calculate_rules):
 
 
 # 写入量表总分
-def write_scale_total_scores(scale_definition_id, scale_answers_id, calculate_rule_id, patient_session_id, score_name,
-                             score_value, create_user):
+def write_scale_total_scores(scale_definition_id, scale_answers_id, scale_content_id, calculate_rule_id,
+                             patient_session_id, score_name, score_value, create_user):
+    print(f"write_scale_total_scores: {scale_definition_id}, {scale_answers_id}, {calculate_rule_id}, "
+          f"{patient_session_id}, {score_name}, {score_value}, {create_user}")
     return scales_dao.insert_scale_total_score(
         scale_definition_id,
         scale_answers_id,
+        scale_content_id,
         calculate_rule_id,
         patient_session_id,
         score_name,
@@ -265,22 +270,28 @@ def write_scale_total_scores(scale_definition_id, scale_answers_id, calculate_ru
 
 #  计算量表总分
 def calculate_scale_score(patient_session_id, scale_id, user_id):
+    print(f"calculate_scale_score: {patient_session_id}, {scale_id}")
     score_dic = {}
     # 取答题记录
     scale_answer_obj = scales_dao.get_scale_answers(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
     # 根据量表的version取scale_content_id
-    scale_content_id = scales_dao.get_scale_content_by_id_and_version(scale_id, scale_answer_obj.varsion)
+    scale_content = scales_dao.get_scale_content_by_id_and_version(scale_id, scale_answer_obj.version)
+    if scale_content is not None:
+        scale_content_id = scale_content.id
+    print(f"scale_content_id: {scale_content_id}")
     # 取总分计算规则
     calculate_rules_obj = scales_dao.get_scale_calculate_rules_obj(scale_id, scale_content_id)
     if calculate_rules_obj is None:
         return
     # 处理总分计算规则
-    calculate_rules_dic = process_total_score_calculate_rules(calculate_rules_obj)
+    calculate_rules_dic = process_total_score_calculate_rules(calculate_rules_obj["calculate_rule"])
+    print(f"calculate_rules_dic: {calculate_rules_dic}")
     # 计算总分
     for score_name in calculate_rules_dic.keys():
         res = write_scale_total_scores(
             scale_id,
-            scale_answer_obj["id"],
+            scale_answer_obj.id,
+            scale_content_id,
             calculate_rules_obj["id"],
             patient_session_id,
             score_name,
