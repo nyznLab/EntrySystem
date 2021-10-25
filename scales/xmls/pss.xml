@@ -22,32 +22,32 @@
         <option type="radio" name="question3" value="5">总是</option>
     </question>
     <question index="4" title="成功地处理恼人的生活麻烦">
-        <option type="radio" name="question4" value="1">从不</option>
-        <option type="radio" name="question4" value="2">偶尔</option>
+        <option type="radio" name="question4" value="5">从不</option>
+        <option type="radio" name="question4" value="4">偶尔</option>
         <option type="radio" name="question4" value="3">有时</option>
-        <option type="radio" name="question4" value="4">时常</option>
-        <option type="radio" name="question4" value="5">总是</option>
+        <option type="radio" name="question4" value="2">时常</option>
+        <option type="radio" name="question4" value="1">总是</option>
     </question>
     <question index="5" title="感到自己是有效地处理生活中所发生的重要改变">
-        <option type="radio" name="question5" value="1">从不</option>
-        <option type="radio" name="question5" value="2">偶尔</option>
+        <option type="radio" name="question5" value="5">从不</option>
+        <option type="radio" name="question5" value="4">偶尔</option>
         <option type="radio" name="question5" value="3">有时</option>
-        <option type="radio" name="question5" value="4">时常</option>
-        <option type="radio" name="question5" value="5">总是</option>
+        <option type="radio" name="question5" value="2">时常</option>
+        <option type="radio" name="question5" value="1">总是</option>
     </question>
     <question index="6" title="对于有能力处理自己私人的问题感到很有信心">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
+        <option type="radio" name="question6" value="5">从不</option>
+        <option type="radio" name="question6" value="4">偶尔</option>
         <option type="radio" name="question6" value="3">有时</option>
-        <option type="radio" name="question6" value="4">时常</option>
-        <option type="radio" name="question6" value="5">总是</option>
+        <option type="radio" name="question6" value="2">时常</option>
+        <option type="radio" name="question6" value="1">总是</option>
     </question>
     <question index="7" title="感到事情顺心如意">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
+        <option type="radio" name="question7" value="5">从不</option>
+        <option type="radio" name="question7" value="4">偶尔</option>
         <option type="radio" name="question7" value="3">有时</option>
-        <option type="radio" name="question7" value="4">时常</option>
-        <option type="radio" name="question7" value="5">总是</option>
+        <option type="radio" name="question7" value="2">时常</option>
+        <option type="radio" name="question7" value="1">总是</option>
     </question>
     <question index="8" title="发现自己无法处理所有自己必须做的事情">
         <option type="radio" name="question8" value="1">从不</option>
@@ -57,18 +57,18 @@
         <option type="radio" name="question8" value="5">总是</option>
     </question>
     <question index="9" title="有办法控制生活中恼人的事情">
-        <option type="radio" name="question9" value="1">从不</option>
-        <option type="radio" name="question9" value="2">偶尔</option>
+        <option type="radio" name="question9" value="5">从不</option>
+        <option type="radio" name="question9" value="4">偶尔</option>
         <option type="radio" name="question9" value="3">有时</option>
-        <option type="radio" name="question9" value="4">时常</option>
-        <option type="radio" name="question9" value="5">总是</option>
+        <option type="radio" name="question9" value="2">时常</option>
+        <option type="radio" name="question9" value="1">总是</option>
     </question>
     <question index="10" title="常觉得自己是驾驭事情的主人">
-        <option type="radio" name="question10" value="1">从不</option>
-        <option type="radio" name="question10" value="2">偶尔</option>
+        <option type="radio" name="question10" value="5">从不</option>
+        <option type="radio" name="question10" value="4">偶尔</option>
         <option type="radio" name="question10" value="3">有时</option>
-        <option type="radio" name="question10" value="4">时常</option>
-        <option type="radio" name="question10" value="5">总是</option>
+        <option type="radio" name="question10" value="2">时常</option>
+        <option type="radio" name="question10" value="1">总是</option>
     </question>
     <question index="11" title="常生气，因为很多事情的发生是超出自己所能控制的">
         <option type="radio" name="question11" value="1">从不</option>
@@ -78,18 +78,18 @@
         <option type="radio" name="question11" value="5">总是</option>
     </question>
     <question index="12" title="经常想到有些事情是自己必须完成的">
-        <option type="radio" name="question12" value="1">从不</option>
-        <option type="radio" name="question12" value="2">偶尔</option>
+        <option type="radio" name="question12" value="5">从不</option>
+        <option type="radio" name="question12" value="4">偶尔</option>
         <option type="radio" name="question12" value="3">有时</option>
-        <option type="radio" name="question12" value="4">时常</option>
-        <option type="radio" name="question12" value="5">总是</option>
+        <option type="radio" name="question12" value="2">时常</option>
+        <option type="radio" name="question12" value="1">总是</option>
     </question>
     <question index="13" title="常能掌握时间安排方式">
-        <option type="radio" name="question13" value="1">从不</option>
-        <option type="radio" name="question13" value="2">偶尔</option>
+        <option type="radio" name="question13" value="5">从不</option>
+        <option type="radio" name="question13" value="4">偶尔</option>
         <option type="radio" name="question13" value="3">有时</option>
-        <option type="radio" name="question13" value="4">时常</option>
-        <option type="radio" name="question13" value="5">总是</option>
+        <option type="radio" name="question13" value="2">时常</option>
+        <option type="radio" name="question13" value="1">总是</option>
     </question>
     <question index="14" title="常感到困难的事情堆积如山，而自己无法克服它们">
         <option type="radio" name="question14" value="1">从不</option>

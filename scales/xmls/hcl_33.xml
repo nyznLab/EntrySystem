@@ -201,7 +201,7 @@
         <option type="radio" name="question43" value="1">是</option>
         <option type="radio" name="question43" value="0">否</option>
     </question>
-    <question index="44" title="请估计在过去 13 个月中您在这种“高涨”状态中度过多少天。总计大约多少天:" rule="{'==', 'question43', '1'}">
+    <question index="44" title="请估计在过去 13 个月中您在这种“高涨”状态中度过多少天。总计大约多少天:" rule="['==', 'question43', 1]">
         <option type="text" name="question44"/>
     </question>
     <question index="45" title="您可以把自己描述为一个上下起伏的人吗：一段时间极度兴奋，另一段时间则愁眉苦脸？">

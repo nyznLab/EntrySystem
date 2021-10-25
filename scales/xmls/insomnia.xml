@@ -39,7 +39,7 @@
         <option type="radio" name="question6" value="1">仅为</option>
         <option type="radio" name="question6" value="2">颇为</option>
         <option type="radio" name="question6" value="3">非常</option>
-        <option type="radio" name="question6" value="4">机之明显</option>
+        <option type="radio" name="question6" value="4">极之明显</option>
     </question>
     <question index="7" title="你对你现时的睡眠问题有多忧虑/苦恼？">
         <option type="radio" name="question7" value="0">完全没有</option>
