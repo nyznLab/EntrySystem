@@ -116,10 +116,13 @@
             return;
         }
         // 提交表单
+        console.log("submitForm");
         submitForm();
         // 更新题目文本
+        console.log("updateQuestionContent");
         updateQuestionContent(++index);
         // 更新答案
+        console.log("updateFormAnswer");
         updateFormAnswer();
     });
 
@@ -140,6 +143,7 @@
 
     // 更新题目文本
     function updateQuestionContent(direction) {
+        console.log("updateQuestionContent");
         $.ajaxSettings.async = false;
         let rsp;
         while (true) {
@@ -156,12 +160,13 @@
                 },
                 "Json"
             );
-
+            console.log(" if(rsp === false)");
             if(rsp === false){
                 // 有规则且不成立
+                index ++;
                 continue;
             }
-
+            console.log(" if(rsp === true)");
             if(rsp === true){
                 // 没有题目
                 if(index === 0){
@@ -171,7 +176,7 @@
                 }
                 break;
             }
-
+            console.log("updateQuestion");
             // 渲染题目
             console.log(rsp);
             cleanOptions();
@@ -274,6 +279,7 @@
 
     // 题号获取题目
     function getQuestionContent(req) {
+        console.log("getQuestionContent");
         let rsp;
         $.post("/scales/get_question_by_index",
             req,

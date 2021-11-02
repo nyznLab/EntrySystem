@@ -3,13 +3,13 @@ def optStrToFloat(answer, args):
     opt2 = args[1]
     if isinstance(args[0], str):
         tem = getattr(answer, args[0])
-        if tem is None:
+        if tem is None or tem == "":
             opt1 = 0
         else:
             opt1 = float(tem)
     if isinstance(args[1], str):
         tem = getattr(answer, args[1])
-        if tem is None:
+        if tem is None or tem == "":
             opt2 = 0
         else:
             opt2 = float(tem)
@@ -77,7 +77,7 @@ class RuleParser(object):
         for arg in args:
             if isinstance(arg, str):
                 tem = getattr(answer, arg)
-                if tem is None:
+                if tem is None or tem == "":
                     ans += 0
                 else:
                     ans += float(tem)
@@ -90,7 +90,7 @@ class RuleParser(object):
         ans = args[0]
         if isinstance(args[0], str):
             tem = getattr(answer, args[0])
-            if tem is None:
+            if tem is None or tem == "":
                 ans = 0
             else:
                 ans = float(tem)
@@ -109,7 +109,7 @@ class RuleParser(object):
         for arg in args:
             if isinstance(arg, str):
                 tem = getattr(answer, arg)
-                if tem is None:
+                if tem is None or tem == "":
                     return 0
                 else:
                     ans *= float(tem)
@@ -122,14 +122,14 @@ class RuleParser(object):
         ans = args[0]
         if isinstance(args[0], str):
             tem = getattr(answer, args[0])
-            if tem is None:
+            if tem is None or tem == "":
                 return 0
             else:
                 ans = float(tem)
         for arg in args[1:]:
             if isinstance(arg, str):
                 tem = getattr(answer, arg)
-                if tem is None:
+                if tem is None or tem == "":
                     ans /= .001
                 else:
                     ans /= float(tem)
@@ -164,5 +164,6 @@ class RuleParser(object):
             if isinstance(expression, list):
                 expression_answer = self.evaluate(answer, expression)
                 rules[index + 1] = expression_answer
+        print(f"evaluate: {rules}")
         ans = func(answer, *rules[1:])
         return ans
