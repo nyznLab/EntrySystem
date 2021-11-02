@@ -80,6 +80,7 @@
     let scaleId = {{ scaleId }};
     let Clicked = false;
     $(document).ready(function () {
+        $.ajaxSettings.async = false;
         $.post("/scales/get_scale_metadata",
             {patient_session_id: patientSessionId, scale_id: scaleId},
             function (result, statue) {
@@ -103,6 +104,13 @@
                 }
             });
         date = new Date();
+        console.log("ready");
+        console.log(index);
+        if (index === 1) {
+            console.log("if in");
+            document.getElementById("previous").disabled = true;
+        }
+        $.ajaxSettings.async = true;
     });
 
     $("#submit").click(function () {
