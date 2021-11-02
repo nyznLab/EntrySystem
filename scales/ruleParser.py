@@ -105,7 +105,7 @@ class RuleParser(object):
 
     @staticmethod
     def multiply(answer, *args):
-        ans = 0
+        ans = 1
         for arg in args:
             if isinstance(arg, str):
                 tem = getattr(answer, arg)
