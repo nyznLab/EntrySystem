@@ -334,6 +334,11 @@
                 return;
             }
         }
+        if (index === 1){
+            document.getElementById("previous").disabled = false;
+        }else{
+            document.getElementById("previous").disabled = true;
+        }
     }
 
     function cleanOptions() {

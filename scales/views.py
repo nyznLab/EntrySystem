@@ -2288,10 +2288,16 @@ def submit_scale(request):
 
 # 重做
 def redo_scale(request):
-    patient_session_id = request.POST.get('patient_session_is')
-    scale_id = request.POST.get('scale_id')
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = request.GET.get('scale_id')
     # 重做量表
-    return HttpResponse(Do.redo_scale(scale_id, patient_session_id))
+    """这里的判断逻辑其实要写在前端  暂时后端处理一下"""
+    if not Do.redo_scale(scale_id, patient_session_id):
+        return HttpResponse("重做失败，请联系管理员")
+    return render(request, r"nbh/self_test.html", {
+        "patientSessionId": patient_session_id,
+        "scaleId": scale_id,
+    })
 
 
 # 删除量表内容
