@@ -381,7 +381,7 @@ def get_select_scales(request):
                                                   "todo_cognition_scale_size": len(cognition_scale_list),
                                                   'tms': tms,
                                                   'r_patient_blood': r_patient_blood,
-                                                  'options_list': options
+                                                  'options_list': options,
                                                   })
 
 

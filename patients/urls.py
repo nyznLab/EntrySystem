@@ -29,15 +29,35 @@ urlpatterns = [
     url(r'^update_patient_detail', views.update_patient_detail),
     # 修改病人基本信息
     url(r'^update_base_info', views.update_base_info),
+
+    # 查看、上传长期医嘱以及病程记录
+    url(r'^add_patient_ma_or_pn', views.add_medical_advice_or_progress_note),
+    # 查看长期医嘱表信息
+    url(r'^read_medical_advice', views.read_medical_advice),
+    # 查看病程记录信息
+    url(r'^read_progress_note', views.read_progress_note),
+    # 上传长期医嘱表
+    url(r'^upload_medical_advice', views.upload_medical_advice),
+    # 上传病程记录
+    url(r'^upload_progress_note', views.upload_progress_note),
+    # 无需长期医嘱或病程记录，设置数据库相关字段
+    url(r'^dont_need_ma', views.dont_need_ma_or_pn),
+    # 添加长期医嘱表、病程记录备注
+    url(r'^add_ps', views.add_ma_ps),
+
     # 貌似未使用
     url(r'^subjectDetailInfo', views.subjectDetailInfo),
-    url(r'^del_blood', views.del_blood),
     url(r'^add_blood', views.add_blood),
 
     url(r'^get_patient_by_search', views.get_patient_by_search),
+    # 使用说明及日志
+    url(r'^get_program_log', views.get_program_log),
+
+    url(r'^ajax_ghr', views.ajax_ghr),
 
     # 用来捕获未匹配成功的url
     url(r'', views.get_patient_by_search),
+
 
 
 ]
