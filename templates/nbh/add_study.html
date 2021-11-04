@@ -218,8 +218,9 @@
                    var patient_leader=Number("{{ patient_baseinfo_study.patient_leader }}");
                    $("input[name='patient_leader'][value="+patient_leader+"]").prop("checked",true);
                    if (patient_leader==0){
-                        $(".patient_class_leader_occupation").attr("style","display:none;");
-                       $("input[name='patient_leader_occupation']").val('');
+                       $("input[name='patient_leader_occupation']").removeAttr("disabled");
+                       $("#patient_leader_occupation").val("");
+                       $(".patient_class_leader_occupation").attr("style","display:none;");
                    }else if(patient_leader==1){
                        $(".patient_class_leader_occupation").attr("style","display:block;");
                        $("input[name='patient_leader_occupation']").val('{{ patient_baseinfo_study.patient_leader_occupation|processNone }}');
@@ -276,6 +277,7 @@
                 patient_leader = $(this).val();
                 if (Number(patient_leader == 0)) {
                     $(".patient_class_leader_occupation").hide();
+                    $("input[name='patient_leader_occupation']").val("");
                     $(".patient_class_leader_occupation").removeAttr("required");
                 }
                 if (Number(patient_leader == 1)) {
@@ -287,6 +289,7 @@
                 patient_live_school = $(this).val();
                 if (Number(patient_live_school == 0)) {
                     $(".patient_go_home_frequency").hide();
+                    $("input[name='patient_home_frequency']").val("");
                     $(".patient_go_home_frequency").removeAttr("required");
                 }
                 if (Number(patient_live_school == 1)) {

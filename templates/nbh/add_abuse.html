@@ -310,8 +310,8 @@
 <script>
 $(document).ready(function(){
     $("input[type='radio']").labelauty();
-    cookie_val = getCookie('enter_page')
-    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+    cookie_val = getCookie('enter_page');
+    set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}');
         $('.smoke_detail').hide();
         $('#patient_smoke_1').change(function(){
        if ($('#patient_smoke_1 option:selected').val()>1){
@@ -319,6 +319,9 @@ $(document).ready(function(){
        }
        else{
            $('.smoke_detail').hide();
+           $("input[name='patient_smoke_age']").val("");
+           $("input[name='patient_daily_smoke_num']").val("");
+           $("input[name='patient_stop_smoke_age']").val("");
        }
     });
 
