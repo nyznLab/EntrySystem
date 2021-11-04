@@ -699,7 +699,9 @@ def get_handy_byPatientDetailId(patient_detail_id):
 def get_min_unfinished_scale(do_scale_type, patient_session_id, cur_scale_id):
     res = scales_models.RPatientScales.objects.filter(scale__do_scale_type=do_scale_type,
                                                       patient_session_id=patient_session_id,
-                                                      state=0).values("scale_id").order_by('scale_id').first()
+                                                      state=0,
+                                                      scale__id__gt=cur_scale_id,
+                                                      ).values("scale_id").order_by('scale_id').first()
     print("next scales")
     print(res)
     if res is None:
