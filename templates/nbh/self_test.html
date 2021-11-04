@@ -124,13 +124,10 @@
             return;
         }
         // 提交表单
-        console.log("submitForm");
         submitForm();
         // 更新题目文本
-        console.log("updateQuestionContent");
-        updateQuestionContent(++index);
+        updateQuestionContent("next");
         // 更新答案
-        console.log("updateFormAnswer");
         updateFormAnswer();
         // 更新按钮
         document.getElementById("previous").disabled = false;
@@ -147,7 +144,7 @@
             return;
         }
         // 更新题目文本
-        updateQuestionContent(--index);
+        updateQuestionContent("previous");
         // 更新答案
         updateFormAnswer();
         // 更新按钮
@@ -162,6 +159,13 @@
         $.ajaxSettings.async = false;
         let rsp;
         while (true) {
+            if (direction === "next"){
+                console.log("update next question content");
+                ++index;
+            }else {
+                console.log("update previous question content");
+                --index;
+            }
             $.post("/scales/get_question_by_index",
                 {
                     patient_session_id: patientSessionId,
@@ -178,7 +182,7 @@
             console.log(" if(rsp === false)");
             if(rsp === false){
                 // 有规则且不成立
-                index ++;
+                // index ++;
                 continue;
             }
             console.log(" if(rsp === true)");
@@ -191,9 +195,7 @@
                 }
                 break;
             }
-            console.log("updateQuestion");
             // 渲染题目
-            console.log(rsp);
             cleanOptions();
             updateQuestion(rsp);
             break;

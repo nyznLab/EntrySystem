@@ -1192,10 +1192,8 @@ def delete_scale_answers(scale_model, patient_session_id):
 
 # 更新量表中某道题的答案
 def update_scales(scale_model, patient_session_id, form_content, doctor_id, scale_id):
-    print("update_scales entry: ", scale_model, patient_session_id, form_content, doctor_id, scale_id)
     # 先去查有没有记录
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
-    print(res)
     if res is None:
         # 没有记录说明是写入第一道题 所以先创建一个
         res = scale_model.objects.create(patient_session_id=patient_session_id,
@@ -1273,7 +1271,6 @@ def insert_scale_total_score(scale_definition_id, scale_answers_id, scale_conten
         create_time=int(time.time()),
         create_user=create_user,
     )
-    print(f"insert_scale_total_score: {res}")
     return res
 
 
