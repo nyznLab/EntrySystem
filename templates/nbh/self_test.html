@@ -7,7 +7,7 @@
             <h4 align="center"> 您确认要退出当前自评量表测评吗？</h4>
             <div align="center">
                 <button type="button"
-                        onclick="location='/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&session_id={{ session_id }}'"
+                        onclick="location='/scales/select_scales?patient_session_id={{ patientSessionId }}&patient_id=&session_id='"
                         class="btn btn-danger" style="width:68px;height:34px">退出
                 </button>
                 <button type="button" class="btn btn-success" style="width:68px;height:34px" data-dismiss="modal">关闭
@@ -74,6 +74,13 @@
 <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
 <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
 <script type="text/javascript" language="JavaScript">
+    // dom加载完毕
+    const $m_btn = $('.exit_button');
+    const $modal = $('#exit_confirm');
+    $m_btn.on('click', function () {
+        $modal.modal({backdrop: 'static'});
+    });
+
     let date;
     let index;
     let patientSessionId = {{ patientSessionId }};

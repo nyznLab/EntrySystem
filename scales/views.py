@@ -347,7 +347,7 @@ def get_cognition_forms(request):
 # 进入四个选择项的界面，需要获取到各个量表类型他的list
 def get_select_scales(request):
     patient_session_id = request.GET.get('patient_session_id')
-    patient_id = request.GET.get('patient_id')
+    patient_id = scales_dao.get_patient_id(patient_session_id)
     patient = patients_dao.get_base_info_byPK(patient_id)
     patient.birth_date = patient.birth_date.strftime('%Y-%m-%d')
     # patient_detail = patients_dao.get_patient_detail_last_byPatientId(patient_id)
