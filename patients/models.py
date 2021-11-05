@@ -43,6 +43,7 @@ class BPatientBaseInfo(models.Model):
     other_diagnosis = models.CharField(max_length=45)
     inpatient_state = models.IntegerField(choices=HOSPITALIZED_TYPE,default=HospitalizedState.NOT_HOSPITALIZED)
     is_ghr = models.IntegerField(blank=True, null=True)
+    is_modify_diagnosis = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'b_patient_base_info'
