@@ -43,6 +43,8 @@ def list_appointment(request):
     appointment_time = request.GET.get('time')
     status = request.GET.get('status')
     keywords = request.GET.get('keywords')
+    is_appointment_date = request.GET.get('is_appointment_date')
+
     # 分页参数
     limit = request.GET.get('limit')
     page = request.GET.get('page')
@@ -70,6 +72,9 @@ def list_appointment(request):
     # 关键词
     if keywords:
         args['keywords'] = keywords
+    # 待定状态
+    if is_appointment_date:
+        args['is_appointment_date'] = is_appointment_date
 
     # 获取列表
     appointment_data = service.list_appointment(args)
@@ -145,7 +150,7 @@ def check_patient(request, appointment_id):
     # 删除数据
     appointment = service.get_appointment(appointment_id)
     if appointment is not None:
-        if appointment.status == 1 or appointment.status == 2:
+        if appointment.status == 1 or appointment.status == 2 or (appointment.appointment_date == '' or appointment.appointment_date == None):
             # 已经报到，不能取消
             return JsonUtil.error({}, 0, '该预约不能执行【报到】操作')
         else:
@@ -289,8 +294,10 @@ def edit_appointment(request, appointment_id):
     print('--------------------------')
     if request.method == 'GET':
         # 处理特殊数据
-        appointment.birth_date = str(appointment.birth_date)
-        appointment.appointment_date = str(appointment.appointment_date)
+        if appointment.birth_date is not None:
+            appointment.birth_date = str(appointment.birth_date)
+        if appointment.appointment_date is not None:
+            appointment.appointment_date = str(appointment.appointment_date)
         # 已存在的预约项目
         had_items_data = []
         if appointment.items is not None:
@@ -353,6 +360,7 @@ def create_appointment(request):
         })
     else:
         # 新增
+        # appointment = AttrUtil.set_attr(request, TAppointment())
         appointment = AttrUtil.set_attr(request, TAppointment())
         '''
         其他参数处理

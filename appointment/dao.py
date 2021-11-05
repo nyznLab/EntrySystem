@@ -63,6 +63,12 @@ class AppointmentDao:
         if 'end_date' in filter_args:
             end_date = filter_args['end_date']
             del filter_args['end_date']
+
+        is_appointment_date = ''
+        if 'is_appointment_date' in filter_args:
+            is_appointment_date = filter_args['is_appointment_date']
+            del filter_args['is_appointment_date']
+
         print('查询参数filter_args222222222======================')
         print(filter_args)
         print('查询参数filter_args33333333======================')
@@ -73,6 +79,12 @@ class AppointmentDao:
         # 日期范围查询
         if start_date != '' and end_date != '':
             list_appointment = list_appointment.filter(Q(appointment_date__gte=start_date) & Q(appointment_date__lte=end_date))
+        # 待定
+        if is_appointment_date != '':
+            if is_appointment_date == 0:
+                list_appointment = list_appointment.filter(Q(appointment_date=None))
+            elif is_appointment_date == 1:
+                list_appointment = list_appointment.filter(~Q(appointment_date=None))
         # 排序
         list_appointment = list_appointment.order_by("-appointment_id")
         return list_appointment
@@ -108,6 +120,14 @@ class AppointmentDao:
                 filter_args['status'] = 2  # 取消
             elif status == 10:
                 filter_args['status'] = 0  # 未报到
+
+            is_appointment_date = int(args.get('is_appointment_date', 0))
+            if is_appointment_date == 0:
+                pass
+            elif is_appointment_date == 1:
+                filter_args['is_appointment_date'] = 1
+            elif is_appointment_date == 10:
+                filter_args['is_appointment_date'] = 0
 
             # 关键词
             keywords = args.get('keywords', '')

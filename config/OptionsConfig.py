@@ -35,19 +35,27 @@ appointment_time_data = {
 # 预约项目
 appointment_items_data = {
     1: {
-        'title': '项目1',
+        'title': '采血',
         'url': 'url1',
     },
     2:  {
-        'title': '项目2',
+        'title': '扫描',
         'url': 'url2',
     },
     3:  {
-        'title': '项目3',
+        'title': '他评',
         'url': 'url3',
     },
     4:  {
-        'title': '项目4',
+        'title': '自评',
+        'url': 'url4',
+    },
+    5:  {
+        'title': '认知',
+        'url': 'url4',
+    },
+    6:  {
+        'title': '录音',
         'url': 'url4',
     },
 }

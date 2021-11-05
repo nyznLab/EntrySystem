@@ -60,16 +60,16 @@
                         </div>
 
                         <div class="layui-form-item" >
-                            <label class="layui-form-label"><font color=red>* </font>预约日期</label>
+                            <label class="layui-form-label">预约日期</label>
                             <div class="layui-input-block">
-                                <input type="search" name="appointment_date" id="appointment_date" value="{{ appointment.appointment_date|default:'' }}" required lay-verify="required" placeholder="年/月/日" autocomplete="off" class="layui-input ted-pr5">
+                                <input type="search" name="appointment_date" id="appointment_date" value="{{ appointment.appointment_date|default:'' }}" placeholder="年/月/日" autocomplete="off" class="layui-input ted-pr5">
                             </div>
                         </div>
 
                         <div class="layui-form-item" >
-                            <label class="layui-form-label"><font color=red>* </font>预约时间</label>
+                            <label class="layui-form-label">预约时间</label>
                             <div class="layui-input-block">
-                                <select name="appointment_time" id="appointment_time" required lay-verify="required" lay-search>
+                                <select name="appointment_time" id="appointment_time" lay-search>
                                     <option value="">请选择</option>
                                     {% for time_key, time_value in appointment_time_data.items %}
                                         <option value="{{ time_key }}" {% if time_key == appointment.appointment_time %}selected{% endif %}>{{ time_value }}</option>
@@ -377,6 +377,14 @@
                     }
                     data.field['items'] = items_str
                     //console.log(items_str);
+                    if (data.field.appointment_date == '') {
+                        //delete data.field.appointment_date;
+                        data.field['appointment_date'] = '';
+                    }
+                    if (data.field.appointment_time == '') {
+                        //delete data.field.appointment_time;
+                        data.field['appointment_time'] = 0;
+                    }
                     //console.log(data.field);return false;
                     layer.load({ time: 0 });
                     $.ajax({
