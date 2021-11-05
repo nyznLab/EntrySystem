@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>病程记录信息</title>
+</head>
+<body>
+progress_note
+</body>
+</html>
+
+
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}被试管理{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static '/css/appointToday.css' %}">
+<link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static '/css/tinyselect.css' %}">
+<link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet" />
+<style>
+    .sel_beauty {
+        background: #fafdfe;
+        height: 33px;
+        width: 100px;
+        line-height: 28px;
+        border: 1px solid #9bc0dd;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+    }
+    .pdfobject-container{
+         height: 1000px;
+    }
+
+    .pdfobject{
+        border: 1px solid #666;
+    }
+</style>
+<script src="{% static '/js/layerJquery.js' %}"></script>
+<script src="{% static '/js/layer.js' %}"></script>
+{% endblock %}
+{% block content %}
+
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="/patients/subjectManage">被试管理</a></li>
+                    <li><a href="/patients/get_patient_detail?patient_id={{ patient_id }}">信息录入</a></li>
+                    <li><a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}">长期医嘱/病程记录管理</a></li>
+                    <li class="active">病程记录信息<a href="#"> </a></li>
+                    <div style="float: right;margin-bottom: 0px;">
+                        <a id ="return_url" href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}"
+                           class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-10  col-md-offset-1">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>病程记录 </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br>
+                        <div id="pn_pdf" height="800px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+<script src="{% static '/vendors/PDFObject-master/pdfobject.min.js' %}"></script>
+<script>
+        // 找到pdf文件路径
+        PDFObject.embed('{{ progress_note.progress_note_path.url }}', "#pn_pdf");
+</script>
+
+{% endblock %}

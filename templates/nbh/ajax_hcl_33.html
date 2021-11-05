@@ -159,7 +159,7 @@
     let question_index_2 = 1;
     let question_index = 1 + {{ question_index }};
     let end_flag = 0;
-    let isClick1=isClick2=true;
+    let isClick=false;
     if(question_index <= 2){
         for(let index = 1 ; index < question_index ; index ++){
             update_question_1(index);
@@ -183,9 +183,15 @@
     }
 
     $(document).ready(function () {
-
         $("#question_submit_1").on('click', function () {
-            if (question_index > 46) {
+            if (isClick) {
+                return;
+            }
+            isClick=true;
+            setTimeout(function () {
+                isClick = false;
+            }, 1000);
+            if (question_index > 47) {
                 alert("请不要重复提交！");
                 return;
             } else if (question_index_1 == 2) {
@@ -202,7 +208,6 @@
             } else if (question_index_1 === 10) {
                 if (document.question_form_1.question7.value === "0") {
                     ajax_post($('#question_form_1'));
-
                     update_question_1(question_index_1 + 1);
                     question_index++;
                     question_index++;
@@ -217,6 +222,7 @@
                     alert("问题不能为空！");
                     return;
                 }
+
             }else if(question_index_1 === 11){
                 const answer = document.getElementsByName('question8').value;
                 if (answer === ""){
@@ -247,16 +253,16 @@
                 }
             }
             $("input[type='radio']").removeAttr("checked");
-            {# 限制点击频率 #}
-            setTimeout(function () {
-                isClick1 = false;
-            }, 1000);
-            if (isClick1) {
-                return;
-            }
         });
 
         $("#question_submit_2").on('click', function () {
+            if (isClick) {
+                return;
+            }
+            isClick=true;
+            setTimeout(function () {
+                isClick = false;
+            }, 1000);
             if (question_index_2 == 33) {
                 ajax_post($('#question_form_2'));
                 update_question_2(question_index_2);
@@ -282,13 +288,6 @@
                 }
             }
             $("input[type='radio']").removeAttr("checked");
-            {# 限制点击频率 #}
-            setTimeout(function () {
-                isClick2 = false;
-            }, 1000);
-            if (isClick2) {
-                return;
-            }
         });
     });
 
@@ -565,7 +564,6 @@
     }
 
     function ajax_post(form) {
-        isClick1=isClick2=true;
         const csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url: 'http://' + location.host +

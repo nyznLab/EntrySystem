@@ -4,7 +4,7 @@ import patients.models as patients_models
 import scales.models as scales_models
 import users.models as users_models
 from django.apps import apps
-from django.forms import model_to_dict
+from django.db.models import Max,Count
 
 
 # 获取每位病人的一条复扫记录的所做量表情况
@@ -23,6 +23,7 @@ def get_one_patient_scales(patient_session_id):
                 done_list.append(i.scale_id)
             else:
                 not_done_list.append(i.scale_id)
+
         # 检出哪些量表该患者不需要做
         for n in range(1, scale_count + 1):
             if n not in done_list + not_done_list:
@@ -119,3 +120,7 @@ def get_scales_score(patient_session_id):
             scales_score[scale_name] = {}
     return scales_score
 
+
+def get_all_session():
+    session = patients_models.DPatientDetail.objects.values('session_id').annotate(Count('session_id')).order_by()
+    return session

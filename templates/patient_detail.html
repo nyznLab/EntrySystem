@@ -294,7 +294,35 @@
             </div>
         </div>
         <!-- 认知表量表详细模态框 结束-->
+        <!-- 确认无需长期医嘱、病程记录模态框 开始 -->
+        <div class="modal fade" id="dont_need_ma" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="form-group" align="center">
+                                    <p id="dont_need_alert_message"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="text-center">
 
+                                    <a href="" id="dont_need_ma_href">
+                                        <button class="btn btn-success">确定</button>
+                                    </a>
+                                    <a href="">
+                                        <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- 确认无需长期医嘱、病程记录模态框 结束 -->
         <!-- 扫描记录删除确认模态框 开始 -->
         <div class="modal fade" id="delete_scan_modal" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
@@ -373,8 +401,8 @@
             </div>
         </div>
         <!-- 提示没有权限删除模态框 结束 -->
-
     {% endfor %}
+
     <div class="right_col" role="main">
         <div class="row " style="margin-left:-20px">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -388,8 +416,8 @@
         <div class="row x_panel">
             <div class="col-md-12 col-xs-12">
 
-                <form name="modify_form" action="/patients/update_base_info?patient_id={{ patient_id }}" method="post"
-                      onSubmit="return myCheck(this) ">
+                <form name="modify_form" id="baseinfo_form"
+                      action="/patients/update_base_info?patient_id={{ patient_id }}" method="post">
                     {% csrf_token %}
                     <div class="x_panel">
                         <div class="x_title">
@@ -403,14 +431,13 @@
                             <div class="form-horizontal form-label-left">
 
                                 <div class="col-md-1"></div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                for="patient_id">受试编号<span class="required">*:</span></label>
                                         <div id="patient_id" class="col-md-2 col-sm-2 col-xs-12"
                                              style="padding-top: 7px;margin-bottom: 0;text-align: left"></div>
                                     </div>
-
 
                                     <div class="form-group">
                                         <label for="birth_date" class="control-label col-md-2 col-sm-2 col-xs-12">出生日期
@@ -421,6 +448,31 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="ghr">高危遗传 <span
+                                                class="required">*:</span></label>
+                                        {% if is_ghr == 1 %}
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=0 data-labelauty="否"/>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=1 data-labelauty="是"
+                                                       checked/>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=0 data-labelauty="否"
+                                                       checked/>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=1 data-labelauty="是"/>
+                                            </div>
+                                        {% endif %}
+                                    </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subject_number">诊断情况<span
@@ -436,7 +488,6 @@
                                                 <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
                                                 <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
                                                 <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
-                                                <option value=7>&nbsp;&nbsp;&nbsp;高危遗传</option>
                                                 <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
                                                 <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
                                                 <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
@@ -445,80 +496,6 @@
                                         </div>
 
                                     </div>
-                                    <div id="ghr_label_div" class="form-group" style="display: none;">
-                                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subject_number">高危类型<span
-                                                class="required">*:</span></label>
-                                        <div id="ghr_diagnosis_p" class="form-group col-md-10 col-sm-2 col-xs-12"
-                                             style="display: none; ">
-                                            <p id="ghr_diagnosis_div"></p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" id="ghr_modify"
-                                         style="display: none;margin:12px;margin-bottom:12px; border:1.5px solid cadetblue;">
-                                        <div class="col-md-4">
-                                            <label class="" for="subject_number"
-                                                   style="text-align: right  ;margin-top: 10px ">患者编号<span
-                                                    class="required">:</span></label>
-                                            <select tabindex="-1"
-                                                    style="font-size: 5px;  margin-top: 5px ;margin-bottom: 5px ;max-height: 5px"
-                                                    class="sel_beauty" name="patient_session_id_add_0"
-                                                    id="singleSelect">
-                                                <option value=0>无</option>
-                                                {% for obj in patients %}
-                                                    <option value="{{ obj.id }}">{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>
-                                                {% endfor %}
-                                            </select>
-
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="" for="subject_number"
-                                                   style="text-align: right;margin-top: 10px ">患病类型<span
-                                                    class="required">:</span></label>
-                                            <select tabindex="-1"
-                                                    style=" font-size: 5px; margin-top: 10px ;margin-bottom: 10px "
-                                                    name="diagnosis_add_0" id="ghr_diagnosis_add"
-                                                    class="sel_beauty select2_single form-control col-md-4" required>
-                                                <option value=2>重性抑郁障碍</option>
-                                                <option value=3>焦虑障碍</option>
-                                                <option value=4>双相障碍</option>
-                                                <option value=5>精神分裂症</option>
-                                                <option value=6>强迫症</option>
-                                                <option value=8>临床高危</option>
-                                                <option value=9>抑郁症状</option>
-                                                <option value=99>其他诊断</option>
-                                            </select>
-
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="" for="subject_number"
-                                                   style="text-align: right;margin-top: 10px">亲属关系<span
-                                                    class="required">:</span></label>
-                                            <select tabindex="-1"
-                                                    style=" font-size: 5px; margin-bottom: 10px ; margin-top: 10px "
-                                                    name="kinship_add_0" id="ghr_kinship_add"
-                                                    class="sel_beauty select2_single form-control col-md-4" required>
-                                                <option value=0>父亲</option>
-                                                <option value=1>母亲</option>
-                                                <option value=2>儿子</option>
-                                                <option value=3>女儿</option>
-                                                <option value=4>哥哥</option>
-                                                <option value=5>弟弟</option>
-                                                <option value=6>姐姐</option>
-                                                <option value=7>妹妹</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2" style="text-align: right;margin-bottom: 10px; ">
-                                            <p>
-                                                <input type="button" value="+" onClick="addLine_ghr()"
-                                                       style="margin-bottom: 10px; background-color: white ; border:1px solid;margin-top: 10px"></input>
-                                            </p>
-                                        </div>
-
-                                        <p id="ghr_add"></p>
-
-                                    </div>
-
 
                                     <div class="form-group" id="other_diagnosis_div" style="display: none">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-6" for="subject_number">其他诊断<span
@@ -531,7 +508,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
 
 
                                     <div class="form-group">
@@ -555,7 +532,6 @@
                                         </div>
                                     </div>
 
-
                                     <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">姓名 <span
                                                 class="required">*:</span></label>
@@ -567,6 +543,7 @@
 
                                         </div>
                                     </div>
+
                                     <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-6" for="sex">性别 <span
                                                 class="required">*:</span></label>
@@ -592,15 +569,124 @@
                                     </div>
 
                                 </div>
+                                <div class="col-md-5">
+
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">是否需要长期医嘱表/病程记录？<span class="required">:</span></label>
+                                    <div class="col-md-2 col-sm-3 form-group has-feedback row" style="width: 15%;margin-top: 7px;">
+                                        <input type="radio" name="is_medical_advice" value=1 data-labelauty="是"/>
+                                        <input type="radio" name="is_medical_advice" value=0 data-labelauty="否"/>
+                                    </div>
+                                    <a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}" id="medical_advice_typein" style="position: absolute;display: none" >
+                                        <u>长期医嘱表/病程记录上传</u>
+                                    </a>
+                                    <a href="/patients/add_patient_ma_or_pn?patient_id={{ patient_id }}" id="medical_advice_check" style="position: absolute;display: none" >
+                                        <u>查看修改长期医嘱表/病程记录</u>
+                                    </a>
+                                </div>
                                 <div class="col-md-1"></div>
                             </div>
-
-                        </div>
-                        <div class="col-md-10" style="text-align: center">
-                            <input type="submit" class="btn btn-success" id="change_detail" value="保存修改"/>
                         </div>
                     </div>
                 </form>
+                {#患病类型为高危类型，出现高危亲属信息#}
+
+                <div class="x_panel" id="ghr_panel" style="display:none;">
+                    <div class="x_title">
+                        <h2>高危遗传亲属信息
+                            <small>关联亲属</small>
+                        </h2>
+                        <div class="clearfix"></div>
+                        <input type="hidden" name="max_ghr_id"/>
+                    </div>
+                    <div class="x_content">
+                        <br/>
+                        <div class="form-horizontal form-label-left" id="ghr_relatives">
+                            <div class="row col-md-12 ghr_relative_class" id="ghr_relative0"
+                                 style="display: block;margin:12px;margin-bottom:12px;">
+
+                                <form action="" method="post" class="ghr_relative_form">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <table style="width: 100%;" class="ghr_relative_table">
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">编号
+                                                        <span class="required">:</span>
+                                                    </label>
+                                                    <select style="margin-bottom: 0;text-align: left"
+                                                            class="sel_beauty  ghr_select ghr_id" name="ghr_id"
+                                                            required>
+                                                        <option selected="selected" disabled="disabled"
+                                                                style='display: none' value=''></option>
+                                                        <option value=0>无</option>
+                                                        {% for obj in patients %}
+                                                            <option value="{{ obj.id }}">{{ obj.id }}-{{ obj.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <label class="control-label">患病类型
+                                                        <span class="required">:</span>
+                                                    </label>
+                                                    <select style="margin-bottom: 0;text-align: left"
+                                                            class="sel_beauty ghr_select ghr_diagnose"
+                                                            name="ghr_diagnose" required>
+                                                        <option selected="selected" disabled="disabled"
+                                                                style='display: none' value=''></option>
+                                                        <option value=2>重性抑郁障碍</option>
+                                                        <option value=3>焦虑障碍</option>
+                                                        <option value=4>双相障碍</option>
+                                                        <option value=5>精神分裂症</option>
+                                                        <option value=6>强迫症</option>
+                                                        <option value=8>临床高危</option>
+                                                        <option value=9>抑郁症状</option>
+                                                        <option value=99>其他诊断</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <label class="control-label">亲属关系<span
+                                                            class="required">:</span></label>
+                                                    <select style="margin-bottom: 0;text-align: left"
+                                                            class="sel_beauty  ghr_select kinship_add"
+                                                            name="kinship_add"
+                                                            required>
+                                                        <option selected="selected" disabled="disabled"
+                                                                style='display: none' value=''></option>
+                                                        <option value=0>父亲</option>
+                                                        <option value=1>母亲</option>
+                                                        <option value=2>儿子</option>
+                                                        <option value=3>女儿</option>
+                                                        <option value=4>哥哥</option>
+                                                        <option value=5>弟弟</option>
+                                                        <option value=6>姐姐</option>
+                                                        <option value=7>妹妹</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="button" value=" + " class="btn-sm"
+                                                           onClick="addLine_ghr()"
+                                                           style="background-color: white; border:1px solid; padding:2px 3.5px;margin-right: 2px;"
+                                                    ><input id="del_ghr_btn0" class="del_ghr_btn_class btn-sm"
+                                                            type="button" value=" - "
+                                                            onClick="delLine_ghr(this)"
+                                                            style="display:none; background-color: white; border:1px solid;padding:2px 5px;">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10" style="text-align: center">
+                    <input type="submit" class="btn btn-success" id="change_detail" value="保存修改"/>
+                </div>
+                {#                <div class="col-md-10" style="text-align: center">#}
+                {#                    <input type="submit" class="btn btn-success" id="testtest" value="测试"#}
+                {#                           onclick="save_ghr_relatives()"/>#}
+                {#                </div>#}
             </div>
         </div>
 
@@ -703,7 +789,6 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -717,78 +802,12 @@
     <script src="{% static '/js/layerJquery.js' %}"></script>
     {#    <script src="{% static '/js/layer.js' %}"></script>#}
     <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
     <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
 
-
     <script>
-        var i = 1;
-        function addLine_ghr() {
-
-            var txt1 = document.createElement("p");
-            var s = ""
-            s += "<div class=col-md-4 style=margin: 10px >"
-
-            s += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty  form-control col-md-4 id=singleSelect" + i + " name=patient_session_id_add_" + i + " >"
-            s += " <option value= 0 >无</option>"
-            s += " {% for obj in patients %}"
-                s += "<option value ={{ obj.id }}>{{ obj.id }}-{{ obj.name }}-{{ obj.birth_date }}</option>"
-                s+="{% endfor %}"
-            s += " </select>"
-            s += "</div>"
-
-            txt1.innerHTML = s;
-
-            var txt2 = document.createElement("p");
-            var str = "";
-            str += "<div class=col-md-4 style=margin: 10px>"
-            str += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty select2_single form-control col-md-4 required id=ghr_diagnosis_add" + i + " name=diagnosis_add_" + i + ">"
-            str += "<option  value=2>" + '重性抑郁障碍';
-            str += "<option  value=3>" + '焦虑障碍';
-            str += "<option  value=4>" + '双相障碍';
-            str += "<option  value=5>" + '精神分裂症';
-            str += "<option  value=6>" + '强迫症';
-            str += "<option  value=8>" + '临床高危';
-            str += "<option  value=9>" + '抑郁症状';
-            str += "<option  value=99>" + '其他诊断';
-
-            str += "</select>";
-            str += "</div>";
-
-
-            txt2.innerHTML = str;
-            var txt3 = document.createElement("p");
-            var str2 = "";
-            str2 += "<div class=col-md-4 style=margin: 10px>"
-            str2 += "<select tabindex=-1 style=font-size: 10px ;style=margin: 10px; class=sel_beauty select2_single form-control col-md-4 required id=ghr_kinship_add" + i + " name=kinship_add_" + i + ">"
-            str2 += "<option  value=0>" + '父亲';
-            str2 += "<option  value=1>" + '母亲';
-            str2 += "<option  value=2>" + '儿子';
-            str2 += "<option  value=3>" + '女儿';
-            str2 += "<option  value=4>" + '哥哥';
-            str2 += "<option  value=5>" + '弟弟';
-            str2 += "<option  value=6>" + '姐姐';
-            str2 += "<option  value=7>" + '妹妹';
-            str2 += "</select>";
-            str2 += "</div>";
-
-
-            txt3.innerHTML = str2;
-
-            $("#ghr_add").append(txt1, txt2, txt3);
-            $("#singleSelect" + i + "").select2();
-            $("#ghr_diagnosis_add" + i + "").select2();
-            $("#ghr_kinship_add" + i + "").select2();
-            i++;
-
-
-        }
-    </script>
-
-
-    <script>
-
         function saveForm() {
             $('#modify_form').ajaxSubmit(function () {
                 alert("设置保存成功！");
@@ -798,90 +817,243 @@
 
     </script>
 
+    // 高危相关的js函数
     <script>
-        var num = 1
+        //Ajax提交页面上的高危亲属信息到后台
+        function save_ghr_relatives() {
+            let saveghr_success = 1;
+            let isnull_ghr_relative = 0;
+            let subforms_data = [];
+            var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
 
-        function myCheck(modify_form) {
-            if (num == 1) {
-                alert("提交成功！");
-            }
-            num = num + 1;
-            return true;
-        }
-    </script>
-
-
-    <script type="text/javascript" language="JavaScript">
-
-        $(document).ready(function () {
-            document.cookie = "enter_page=detail;path=/"
-            $("input[type='radio']").labelauty();
-            $('#singleSelect').select2();
-            $('#ghr_diagnosis_add').select2();
-            $('#ghr_kinship_add').select2();
-            document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_id }}, 8)
-            document.getElementById("diagnosis").value ={{ diagnosis }};
-            var diagnosistype ={{ diagnosis }};
-            {#var del_action ={{ del_action }};#}
-            if (diagnosistype == 7) {
-
-                document.getElementById("ghr_label_div").style.display = "";
-                document.getElementById("ghr_diagnosis_p").style.display = "";
-                {#document.getElementById("ghr_modify").style.display = "";#}
-
-                var j ={{ num_ghr }};
-                for (i = 1; i <= j; i++) {
-
-                    var txt1 = document.createElement("p");
-                    var str = "";
-                    str += "<div   class=col-md-6 style=margin: 10px; >"
-                    str += "<select tabindex=-1 style=font-size: 10px ; class=sel_beauty  form-control   id=ghr_diagnosis" + i + " name=diagnosis_" + i + ">"
-                    str += "<option  value=2>" + '重性抑郁障碍';
-                    str += "<option  value=3>" + '焦虑障碍';
-                    str += "<option  value=4>" + '双相障碍';
-                    str += "<option  value=5>" + '精神分裂症';
-                    str += "<option  value=6>" + '强迫症';
-                    str += "<option  value=8>" + '临床高危';
-                    str += "<option  value=9>" + '抑郁症状';
-                    str += "<option  value=99>" + '其他诊断';
-
-                    str += "</select>";
-                    str += "</div>";
-                    txt1.innerHTML = str;
-
-                    var txt2 = document.createElement("p");
-                    var str2 = "";
-                    str2 += "<div   class=col-md-6  style=margin: 10px  >"
-                    str2 += "<select tabindex=-1 style=font-size: 10px ;  disabled class=sel_beauty select2_single form-control readonly id=ghr_kinship" + i + " name=kinship_" + i + ">"
-                    str2 += "<option  value=0>" + '父亲';
-                    str2 += "<option  value=1>" + '母亲';
-                    str2 += "<option  value=2>" + '儿子';
-                    str2 += "<option  value=3>" + '女儿';
-                    str2 += "<option  value=4>" + '哥哥';
-                    str2 += "<option  value=5>" + '弟弟';
-                    str2 += "<option  value=6>" + '姐姐';
-                    str2 += "<option  value=7>" + '妹妹';
-                    str2 += "</select>";
-                    str2 += "</div>";
-                    txt2.innerHTML = str2;
-
-                    $("#ghr_diagnosis_div").append(txt1, txt2);
-
-                    document.getElementById("ghr_diagnosis" + i + "").value = {{ ghr_diagnosis }}[i - 1];
-                    document.getElementById("ghr_kinship" + i + "").value = {{ ghr_kinship }}[i - 1];
-
+            if(is_ghr_radio == 1){
+                let ori_max_ghrid = $("input[name='max_ghr_id']").val();
+                //循环获取非空的子form表单
+                for (let i = 0; i <= ori_max_ghrid; i++) {
+                $('.ghr_select').removeAttr("disabled");
+                if ($("#ghr_relative" + i + ">.ghr_relative_form").serialize() !="" ) {
+                    let new_subform_data = $("#ghr_relative" + i + ">.ghr_relative_form").serializeArray();
+                    if (new_subform_data.length == 3) {
+                        let new_subform_obj = [];
+                        for (let j = 0; j < new_subform_data.length; j++) {
+                            let Element = new_subform_data[j];
+                            let select_value = Element.value;
+                            new_subform_obj[j] = select_value;
+                        }
+                        subforms_data.push(new_subform_obj);
+                    } else {
+                        isnull_ghr_relative = 1;
+                    }
                 }
             }
+                if (isnull_ghr_relative == 1) {
+                    alert("请将高危亲属信息补充完整！");
+                }
+                if (isnull_ghr_relative == 0) {
+                    $.ajax({
+                        url: "/patients/ajax_ghr",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: false,
+                        async:false,
+                        data: JSON.stringify(
+                            {'ghr_submit': subforms_data}
+                        ),
+                        success: function (ghr_json) {
+                            ghr_array = ghr_json['ghr_submit'];
+                            var is_ghr ={{ is_ghr }};
+                            {#var is_ghr = 1;#}
+                            show_ghr_relatives(is_ghr, ghr_array);
+                            saveghr_success = 0;
+                        },
+                        error: function () {
+                            saveghr_success = 1;
+                        }
+                    });
+                }
+            }
+            if(is_ghr_radio == 0){
+                subforms_data = [];
+                $.ajax({
+                        url: "/patients/ajax_ghr",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: false,
+                        async:false,
+                        data: JSON.stringify(
+                            {'ghr_submit': subforms_data}
+                        ),
+                        success: function (ghr_json) {
+                            var is_ghr ={{ is_ghr }};
+
+                            show_ghr_relatives(is_ghr,[]);
+                            saveghr_success = 0;
+                        },
+                        error: function () {
+                            saveghr_success = 1;
+                        }
+                    });
+            }
+            return saveghr_success;
+        }
 
 
-            if (diagnosistype == 99) {
-                {#$("#other_diagnosis_div").attr("style","display:block;");#}
-                document.getElementById("other_diagnosis_div").style.display = "";
+        //页面上添加一行高危亲属信息（最后面添加）
+
+        function addLine_ghr() {
+            let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length;
+            let ori_max_ghrid = $("input[name='max_ghr_id']").val();
+            let max_ghrid = ++ori_max_ghrid;
+            //增加新的一行高危亲属输入
+            let new_ghr_relative = $(".ghr_relative_class:first").clone();
+            new_ghr_relative.appendTo("#ghr_relatives");
+            //修改新增行的id，删除按钮的id
+            $(".ghr_relative_class:last").attr('id', 'ghr_relative' +  max_ghrid);
+            $(".ghr_relative_class:last .del_ghr_btn_class").attr('id', 'del_ghr_btn' + max_ghrid);
+            $("input[name='max_ghr_id']").val(max_ghrid);
+
+            //当高危亲属行>2时，出现删除行按钮
+            if (ghr_relatives_num >= 1) {
+                $(".del_ghr_btn_class").show();
+            }
+        }
+
+        //页面上删除指定行的高危亲属
+
+        function delLine_ghr(del_ghr_btn_obj) {
+            let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length - 1;
+            var del_ghr_id = $("#" + del_ghr_btn_obj.id).closest(".ghr_relative_class").attr("id");
+            $("#" + del_ghr_id).remove();
+
+            //当高危亲属行<2时，隐藏删除行按钮
+            if (ghr_relatives_num <= 1) {
+                $(".del_ghr_btn_class").hide();
+            }
+        }
+
+        //页面上删除所有高危亲属行,剩一个
+
+        function delall_ghr() {
+            let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
+            if (ghr_form_num >= 1) {
+                for (let i = 0; i < ghr_form_num - 1; i++) {
+                    $(".ghr_relative_class:last").remove();
+                }
+            }
+            $('.ghr_select').removeAttr("disabled");
+            $(".ghr_select").val("");
+            $("input[name='max_ghr_id']").val("");
+
+        }
+
+        //展示后台传过来的ghr亲属数据
+
+        function show_ghr_relatives(is_ghr, ghr_relatives_data) {
+            if (is_ghr == 1) {
+                $("input[type=radio][name=ghr_radio][value='1']").attr("checked", 'checked');
+                let ghr_relatives_length = ghr_relatives_data.length;
+                    $("#ghr_panel").show();
+                    let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
+                    if (ghr_form_num != ghr_relatives_length) {
+                        delall_ghr();
+                        for (let i = 0; i < ghr_relatives_length - 1; i++) {
+                            addLine_ghr();
+                        }
+                    }
+                    for (let i = 0; i < ghr_relatives_length; i++) {
+                        let ghr_relative = ghr_relatives_data[i];
+                        if (ghr_relative.length != 0) {
+                            $("#ghr_relative" + i + " .ghr_id").val(ghr_relative[0] + '');
+                            $("#ghr_relative" + i + " .ghr_diagnose").val(ghr_relative[1] + '');
+                            $("#ghr_relative" + i + " .kinship_add").val(ghr_relative[2] + '');
+                        }
+                    }
+            }
+            if(is_ghr == 0){
+                $("input[type=radio][name=ghr_radio][value='0']").attr("checked", 'checked');
+                delall_ghr();
+                $("#ghr_panel").hide();
+                $('.ghr_select').prop("disabled", true);
+            }
+        }
+
+        // 切换ghr单选框
+        $("input[type=radio][name=ghr_radio]").click(function () {
+            var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
+            if (is_ghr_radio == 1) {
+                var is_ghr = {{is_ghr}};
+
+                if (is_ghr == 1) {
+                    var ghr_relatives_data = {{ghr_relatives_data}};
+                    $('.ghr_select').removeAttr("disabled");
+                    show_ghr_relatives(is_ghr, ghr_relatives_data);
+                } else {
+                    $("#ghr_panel").show();
+                    $(".ghr_select").val("");
+                    $('.ghr_select').removeAttr("disabled");
+                }
+            } else {
+                delall_ghr();
+                $("#ghr_panel").hide();
+                $('.ghr_select').prop("disabled", true);
 
             }
-
         });
 
+
+    </script>
+
+    <script>
+        function addCookie(name, value, expiresHours) {
+            var cookieString = name + "=" + escape(value);
+            //判断是否设置过期时间
+            if (expiresHours > 0) {
+                var date = new Date();
+                date.setTime(date.getTime + expiresHours * 3600 * 1000);
+                cookieString = cookieString + "; expires=" + date.toGMTString() + ";path=/";
+            }
+            document.cookie = cookieString;
+        }
+
+        function judge_diagnosis(obj) {
+            if (obj.options[obj.selectedIndex].value == 99) {
+                $("#other_diagnosis_div").show();
+            } else {
+                $("#other_diagnosis_div").hide();
+                $("#other_diagnosis").val("");
+            }
+        }
+
+        //点击保存修改按钮
+        $("#change_detail").click(function () {
+            var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
+            var ghr_submit = 0;
+            ghr_submit = save_ghr_relatives();
+            if (ghr_submit == 0) {
+                $("#baseinfo_form").submit();
+                alert("提交成功！")
+            }
+
+        })
+    </script>
+
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            document.cookie = "enter_page=detail;path=/";
+            $("input[type='radio']").labelauty();
+            document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_id }}, 8);
+            document.getElementById("diagnosis").value ={{ diagnosis }};
+            var diagnosistype ={{ diagnosis }};
+
+            if (diagnosistype == 99) {
+                document.getElementById("other_diagnosis_div").style.display = "";
+            }
+
+            var is_ghr = {{is_ghr}}
+            var ghr_relatives_data = {{ghr_relatives_data}};
+
+            show_ghr_relatives(is_ghr, ghr_relatives_data);
+        });
 
         function getCookie(name) {
             var strCookie = document.cookie;
@@ -900,6 +1072,7 @@
 
     </script>
 
+    // 删除复扫信息前验证
     <script>
         var patientid = null;
         var sessionid = null;
@@ -920,80 +1093,61 @@
         }
     </script>
 
-    <script>
-
-        function addCookie(name, value, expiresHours) {
-            var cookieString = name + "=" + escape(value);
-            //判断是否设置过期时间
-            if (expiresHours > 0) {
-                var date = new Date();
-                date.setTime(date.getTime + expiresHours * 3600 * 1000);
-                cookieString = cookieString + "; expires=" + date.toGMTString() + ";path=/";
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            document.cookie = "enter_page=select;path=/"
+            if_medical_advice ="{{ medical_advice.is_medical_advice }}"
+            if_progress_note ="{{ medical_advice.is_progress_note }}"
+            if (if_medical_advice == '1'|| if_progress_note == '1') {
+                $('input:radio[name="is_medical_advice"]:first').attr('checked', 'checked');
+                $("#medical_advice_check").removeAttr("style", "display:none;");
             }
-            document.cookie = cookieString;
-        }
-
-        function judge_diagnosis(obj) {
-            if (obj.options[obj.selectedIndex].value == 99) {
-                document.getElementById("other_diagnosis_div").style.display = "";
-                document.getElementById("singleSelect").disabled = "true";
-                document.getElementById("ghr_diagnosis_add").disabled = "true";
-                document.getElementById("ghr_kinship_add").disabled = "true";
-
-                var j ={{ num_ghr }};
-                for (i = 1; i <= j; i++) {
-                    document.getElementById("ghr_diagnosis" + i + "").disabled = "true";
+            if(if_medical_advice == '0' && if_progress_note == '0'){
+                $('input:radio[name="is_medical_advice"]:last').attr('checked', 'checked');
+            }
+            $('input:radio[name="is_medical_advice"]').click(function () {
+                //若查询不到信息，is_medical_advice为空字符串
+                is_medical_advice = "{{ medical_advice.is_medical_advice }}";
+                is_progress_note = "{{ medical_advice.is_progress_note }}";
+                click_medical_advice = $(this).val();
+                //点击否
+                if (Number(click_medical_advice == 0)){
+                    $("#medical_advice_typein").attr("style", "display:none;");
+                    $("#medical_advice_check").attr("style", "display:none;");
+                    $('#dont_need_ma').modal("show");
+                    var standard_id = 'NN_' + formatZero({{ patient_id }}, 8);
+                    var name = "{{ patient_baseinfo.name }}";
+                    var patient_id="{{ patient_baseinfo.id }}"
+                    document.getElementById("dont_need_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不需要长期医嘱/病程记录了吗？";
+                    $("#dont_need_ma_href").attr("href","/patients/dont_need_ma?patient_id="+patient_id);
                 }
-                document.getElementById("ghr_label_div").style.display = "none";
-                document.getElementById("ghr_diagnosis_p").style.display = "none";
-                document.getElementById("ghr_modify").style.display = "none";
-            } else if (obj.options[obj.selectedIndex].value == 7) {
-                document.getElementById("other_diagnosis_div").style.display = "none";
-                document.getElementById("other_diagnosis").value = "NULL";
-                document.getElementById("ghr_modify").style.display = "";
-            } else {
+                //点击是
+                if (Number(click_medical_advice == 1)) {
+                    if ((is_medical_advice == ''||is_medical_advice == '0'||is_medical_advice == 'None') && (is_progress_note == ''||is_progress_note =='0'||is_progress_note =='None')) {
+                        $("#medical_advice_typein").removeAttr("style", "display:none;");
+                    }
 
-                var j ={{ num_ghr }};
-                for (i = 1; i <= j; i++) {
-                    document.getElementById("ghr_diagnosis" + i + "").disabled = "true";
+                    if (is_medical_advice == '1'|| is_progress_note == '1') {
+                        $("#medical_advice_check").removeAttr("style", "display:none;");
+                    }
                 }
-                document.getElementById("ghr_modify").style.display = "none";
-                document.getElementById("ghr_label_div").style.display = "none";
-                document.getElementById("ghr_diagnosis_p").style.display = "none";
-                document.getElementById("other_diagnosis_div").style.display = "none";
-                document.getElementById("other_diagnosis").value = "";
-                document.getElementById("singleSelect").disabled = "true";
-                document.getElementById("ghr_diagnosis_add").disabled = "true";
-                document.getElementById("ghr_kinship_add").disabled = "true";
-            }
-        }
-
-        $("#change_detail").click(function () {
-
-            var j ={{ num_ghr }};
-            for (i = 1; i <= j; i++) {
-                $("#ghr_kinship" + i + "").removeAttr("disabled");
-            }
-            $("#change_detail").submit();
-        })
-
-
-        {#$('#myModal').modal('hide');#}
-
-
+            });
+        });
     </script>
 
-    <script>
-        {#验证码图片的生成#}
-        {#生成一个随机数#}
 
-        var verification_code = ""
+    //验证码生成与验证相关js
+    <script>
+        //验证码图片的生成
+
+        //生成一个随机数
+        var verification_code = "";
 
         function randomNum(min, max) {
             return Math.floor(Math.random() * (max - min) + min);
         }
 
-        {#生成一个随机色#}
+        //生成一个随机色
         function randomColor(min, max) {
             var r = randomNum(min, max);
             var g = randomNum(min, max);
@@ -1002,13 +1156,13 @@
         }
         
         drawPic();
-        {#切换验证码图片#}
+        //切换验证码图片
         document.getElementById("changeImg").onclick = function (e) {
             e.preventDefault();
             drawPic();
-        }
+        };
 
-        {#绘制验证码图片#}
+        //绘制验证码图片
         function drawPic() {
             var canvas = document.getElementById("canvas");
             var width = canvas.width;
@@ -1016,10 +1170,10 @@
             var ctx = canvas.getContext('2d');
             ctx.textBaseline = 'bottom';
 
-            {#绘制背景色#}
+            //绘制背景色
             ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
             ctx.fillRect(0, 0, width, height);
-            {#绘制文字#}
+            //绘制文字
             var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
             for (var i = 0; i < 4; i++) {
                 var txt = str[randomNum(0, str.length)];
@@ -1037,7 +1191,7 @@
                 ctx.rotate(-deg * Math.PI / 180);
                 ctx.translate(-x, -y);
             }
-            {#绘制干扰线#}
+            //绘制干扰线
             for (var i = 0; i < 5; i++) {
                 ctx.strokeStyle = randomColor(40, 180);
                 ctx.beginPath();
@@ -1045,7 +1199,7 @@
                 ctx.lineTo(randomNum(0, width), randomNum(0, height));
                 ctx.stroke();
             }
-            {#绘制干扰点#}
+            //绘制干扰点
             for (var i = 0; i < 50; i++) {
                 ctx.fillStyle = randomColor(0, 255);
                 ctx.beginPath();
@@ -1054,6 +1208,7 @@
             }
         }
 
+        //#验证验证码
         function verification() {
             var value_verification_input=document.getElementById("verification_input").value;
             if (verification_code==value_verification_input){

@@ -1,0 +1,130 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>使用说明及日志</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#</body>#}
+{#</html>#}
+
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}使用说明及日志{% endblock %}
+{% block css %}
+<link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+	<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+    input::-webkit-input-placeholder{
+    	color: #DCDCDC;
+    	font-size: 8px;
+    }
+    .gridContainer{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 5fr 1fr;}
+    .version_panel ul > li{
+        margin: 15px 0;
+    }
+    .version_panel ul > li span:first-child{
+        padding: 5px;
+        color: #fff;
+        border-radius:4px;
+        margin: 0 5px;
+        font-size:14px;
+    }
+    .version_panel ul > li span.new{
+        background-color:#5FB878
+    }
+    .version_panel ul > li span.fixed{
+        background-color: #FFB800
+    }
+    .version_panel ul > li span.optimized{
+        background-color:#1E9FFF
+    }
+    .version_panel ul > li a{
+        padding: 3px;
+        border-radius:5px;
+        margin: 0 5px;
+        font-size:14px;
+        color: #2A3F54;
+        border: 1px solid #2A3F54;
+        font-style:italic;
+    }
+    .version_panel ul > li a:hover{
+        transition:all .3s;
+        color: #fff;
+        background-color: #2A3F54
+    }
+    .version_panel h4 > span{
+        border-radius:3px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        color: #7D7D7D;
+        font-size:14px !important;
+        margin: 0 5px;
+    }
+	</style>
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+		<div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">使用说明及日志</a></li>
+						 <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="#"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+            <div class="dashboard_graph x_panel version_panel" style="margin-top: 0px;height: 80%;">
+                <!-- class名new为【功能新增】tag样式，fixed为【修复】样式，optimized是【优化】样式 -->
+                <h4>v0.4.1<span>2021-09-16</span></h4>
+                <ul>
+                    <li><span class="fixed">修复</span>table组件进度条优化</li>
+                </ul>
+                <h4>v0.4.0<span>2021-09-15</span></h4>
+                <ul>
+                    <li><span class="optimized">功能优化</span>在信息录入页面和新建被试模态框里，优化了高危遗传相关功能。<a href="javascript:void(0);"># 1</a></li>
+                </ul>
+                <h4>v0.3.0<span>2021-09-10</span></h4>
+                <ul>
+                    <li><span class="optimized">功能优化</span>血液提交逻辑优化。<a href="javascript:void(0);"># 9</a></li>
+                </ul>
+                <h4>v0.2.0<span>2021-09-10</span></h4>
+                <ul>
+                    <li><span class="optimized">功能优化</span>优化了首程、医嘱，现在可以对所有患者上传长期医嘱表以及病程记录。<a href="javascript:void(0);"># 4</a></li>
+                </ul>
+                <h4>v0.1.1<span>2021-08-21</span></h4>
+                <ul>
+                    <li><span class="fixed">修复</span>修复了自评最后一题未作答提交后直接跳转的bug。<a href="javascript:void(0);"># 12</a></li>
+                </ul>
+                <h4>v0.1.0<span>2021-08-21</span></h4>
+                <ul>
+                    <li><span class="new">功能新增</span>增加了复扫信息统计数据表，可以动态筛选获取想要的复扫记录；添加复扫备注，医务人员在一条具体的复扫记录中可以选择备注。<a href="https://docs.qq.com/doc/DS2pYdGlOTUhlR1Vh"># 10</a><a href="#"># 11</a></li>
+                </ul>
+		    </div>
+	    </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script>
+
+</script>
+{% endblock %}
