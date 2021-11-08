@@ -156,8 +156,7 @@
                                                         <td>{{ scale_detail|get_item:'end_time' }}</td>
                                                         <td>已完成</td>
                                                         <td>
-                                                            <a href='/scales/redo_self_tests?patient_session_id=
-                                                                    {{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
+                                                            <a href='/scales/redo_scale?patient_session_id={{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
                                                         </td>
                                                         <td><a href={{ scale_detail|get_self_check_scale_url }}>查看</a>
                                                         </td>
@@ -401,6 +400,7 @@
             </div>
         </div>
         <!-- 提示没有权限删除模态框 结束 -->
+
     {% endfor %}
 
     <div class="right_col" role="main">
@@ -683,10 +683,6 @@
                 <div class="col-md-10" style="text-align: center">
                     <input type="submit" class="btn btn-success" id="change_detail" value="保存修改"/>
                 </div>
-                {#                <div class="col-md-10" style="text-align: center">#}
-                {#                    <input type="submit" class="btn btn-success" id="testtest" value="测试"#}
-                {#                           onclick="save_ghr_relatives()"/>#}
-                {#                </div>#}
             </div>
         </div>
 
@@ -800,13 +796,11 @@
 
 {% block js %}
     <script src="{% static '/js/layerJquery.js' %}"></script>
-    {#    <script src="{% static '/js/layer.js' %}"></script>#}
-    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
     <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
-
     <script>
         function saveForm() {
             $('#modify_form').ajaxSubmit(function () {
@@ -817,8 +811,8 @@
 
     </script>
 
-    // 高危相关的js函数
     <script>
+    // 高危相关的js函数
         //Ajax提交页面上的高危亲属信息到后台
         function save_ghr_relatives() {
             let saveghr_success = 1;
@@ -1072,8 +1066,8 @@
 
     </script>
 
-    // 删除复扫信息前验证
     <script>
+        // 删除复扫信息前验证
         var patientid = null;
         var sessionid = null;
         function deleteJob_before(id, doctorid, p_doctorid,p_sessionid,p_patientid) {
@@ -1135,11 +1129,9 @@
         });
     </script>
 
-
-    //验证码生成与验证相关js
     <script>
+        //验证码生成与验证相关js
         //验证码图片的生成
-
         //生成一个随机数
         var verification_code = "";
 

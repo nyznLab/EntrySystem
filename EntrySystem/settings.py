@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -78,7 +78,6 @@ TEMPLATES = [
 
             'libraries': {
                 'SelfDefinedFilter': 'patients.templatetags.SelfDefinedFilter',
-                'TagFilter': 'filter.TagFilter',
             }
         },
     },
@@ -169,4 +168,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 设置关闭浏览器时失效
 # 在settings文件内添加下面的代码
 INTERNAL_IPS = ['127.0.0.1']
+
 X_FRAME_OPTIONS = 'ALLOWALL'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

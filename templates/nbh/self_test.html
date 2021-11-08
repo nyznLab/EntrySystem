@@ -1,0 +1,386 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block content %}
+<div class="modal fade" id="exit_confirm" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <h4 align="center"> 您确认要退出当前自评量表测评吗？</h4>
+            <div align="center">
+                <button type="button"
+                        onclick="location='/scales/select_scales?patient_session_id={{ patientSessionId }}&patient_id=&session_id='"
+                        class="btn btn-danger" style="width:68px;height:34px">退出
+                </button>
+                <button type="button" class="btn btn-success" style="width:68px;height:34px" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li>量表评估</li>
+                    <li>自评量表</li>
+                    <li class="active"></li>
+                    <div style="float: right;margin-bottom: 0;"></div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel" style="margin-top: 0;height:80%;">
+        <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+            <div align="center" style="padding-left: 18%; padding-right: 20%">
+                <h5>
+                    <strong>
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <i class="fa fa-hand-o-down"></i>&nbsp;
+                        <div class="warn">
+                        </div>
+                    </strong>
+                </h5>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="question_area" name="question_area" style="text-align: center">
+            {% csrf_token %}
+            <form id="question_form" name="question_form" action="#">
+                <h3>
+                    <div class="row question"></div>
+                </h3>
+                <div class="options"></div>
+                <div>
+                    <input id="submit" type="button" class="btn btn-success text-center"
+                           style="width:68px;height:34px" value="下一题">
+                    <input id="previous" type="button" class="btn btn-info text-center"
+                           style="width:68px;height:34px" value="上一题">
+                    <input type="button" class="btn btn-danger text-center exit_button" style="width:68px;height:34px"
+                           value="退&nbsp;&nbsp;出">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script type="text/javascript" language="JavaScript">
+    // dom加载完毕
+    const $m_btn = $('.exit_button');
+    const $modal = $('#exit_confirm');
+    $m_btn.on('click', function () {
+        $modal.modal({backdrop: 'static'});
+    });
+
+    let date;
+    let index;
+    let patientSessionId = {{ patientSessionId }};
+    let scaleId = {{ scaleId }};
+    let Clicked = false;
+    $(document).ready(function () {
+        $.ajaxSettings.async = false;
+        $.post("/scales/get_scale_metadata",
+            {patient_session_id: patientSessionId, scale_id: scaleId},
+            function (result, statue) {
+                if (statue === "success") {
+                    console.log(result);
+                    $(".active").text(result.title);
+                    $(".warn").text(result.warn);
+                }
+            });
+        $.post("/scales/get_next_question",
+            {patient_session_id: patientSessionId, scale_id: scaleId},
+            function (result, statue) {
+                if (statue === "success") {
+                    console.log(result);
+                    if(result === "False"){
+                        $(".question").text("量表已完成");
+                        return;
+                    }
+                    updateQuestion(result.content);
+                    index = result.index;
+                }
+            });
+        date = new Date();
+        console.log("ready");
+        console.log(index);
+        if (index === 1) {
+            console.log("if in");
+            document.getElementById("previous").disabled = true;
+        }
+        $.ajaxSettings.async = true;
+    });
+
+    $("#submit").click(function () {
+        // 限制点击频率
+        if(!clickFrequency()){
+            return;
+        }
+        // 没有选择不能提交下一题
+        if(!isFormSelected()){
+            alert("请输入答案");
+            return;
+        }
+        // 提交表单
+        submitForm();
+        // 更新题目文本
+        updateQuestionContent("next");
+        // 更新答案
+        updateFormAnswer();
+        // 更新按钮
+        document.getElementById("previous").disabled = false;
+
+    });
+
+    $("#previous").click(function () {
+        if(index === 1){
+            alert("已经是第一题了");
+            return;
+        }
+        // 限制点击频率
+        if(!clickFrequency()){
+            return;
+        }
+        // 更新题目文本
+        updateQuestionContent("previous");
+        // 更新答案
+        updateFormAnswer();
+        // 更新按钮
+        if (index === 1){
+            document.getElementById("previous").disabled = true;
+        }
+    });
+
+    // 更新题目文本
+    function updateQuestionContent(direction) {
+        console.log("updateQuestionContent");
+        $.ajaxSettings.async = false;
+        let rsp;
+        while (true) {
+            if (direction === "next"){
+                console.log("update next question content");
+                ++index;
+            }else {
+                console.log("update previous question content");
+                --index;
+            }
+            $.post("/scales/get_question_by_index",
+                {
+                    patient_session_id: patientSessionId,
+                    scale_id: scaleId,
+                    question_index: index,
+                },
+                function (result, statue) {
+                    if (statue === "success") {
+                        rsp = result;
+                    }
+                },
+                "Json"
+            );
+            console.log(" if(rsp === false)");
+            if(rsp === false){
+                // 有规则且不成立
+                // index ++;
+                continue;
+            }
+            console.log(" if(rsp === true)");
+            if(rsp === true){
+                // 没有题目
+                if(index === 0){
+                    alert("不能再向上了");
+                }else{
+                    window.location.replace("/scales/get_next_self_scale_url?patient_session_id={{ patientSessionId }}&scale_id={{ scaleId|add:"1" }}");
+                }
+                break;
+            }
+            // 渲染题目
+            cleanOptions();
+            updateQuestion(rsp);
+            break;
+        }
+        $.ajaxSettings.async = true;
+    }
+
+    // 更新答案
+    function updateFormAnswer() {
+        // ajax post 置为同步提交
+        $.ajaxSettings.async = false;
+        // 取答案
+        $.post("/scales/get_answer_by_index",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                question_index: index
+            },
+            function (result, statue) {
+                if (statue === "success") {
+                    console.log(result);
+                    let inputs = document.getElementsByClassName("scale_form");
+                    console.log(inputs[0].type);
+                    if (inputs[0].type === 'radio') {
+                        for (let i = 0; i < inputs.length; i++) {
+                            console.log(inputs[i].value);
+                            if (inputs[i].value === result.answer) {
+                                inputs[i].checked = true;
+                                console.log(inputs[i].checked);
+                            }
+                        }
+                        return;
+                    }
+                    if (inputs[0].type === 'text') {
+                        inputs[0].value = result.answer;
+                    }
+                }
+            },
+            "json"
+        );
+        date = new Date();
+        $.ajaxSettings.async = true;
+    }
+
+    // 题目已选择
+    function isFormSelected() {
+        let inputs = document.getElementsByClassName("scale_form");
+        let isSelected = false;
+        if(inputs[0].type === "text"){
+            if(inputs[0].value !== ""){
+                isSelected = true;
+            }
+        }else{
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].checked === true) {
+                    isSelected = true;
+                    break;
+                }
+            }
+        }
+        return isSelected;
+    }
+
+    // 提交题目
+    function submitForm() {
+        // ajax post 置为同步提交
+        $.ajaxSettings.async = false;
+        // 表单序列化为Json
+        const loginData = $.serializeJSON($('#question_form'));
+        // 提交表单
+        $.post("/scales/submit_scale",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                data: JSON.stringify(loginData),
+                duration: new Date() - date,
+            },
+            function (result, statue) {
+
+            },
+            "json"
+        );
+        $.ajaxSettings.async = true;
+    }
+
+    // 限制点击频次
+    function clickFrequency() {
+        if(!Clicked){
+            // 如果没点过 更新为点过， 设置2秒后过期
+            Clicked = true;
+            setTimeout(function () {
+                Clicked = false;
+            }, 2000);
+            return true;
+        }
+        return false;
+    }
+
+    // 题号获取题目
+    function getQuestionContent(req) {
+        console.log("getQuestionContent");
+        let rsp;
+        $.post("/scales/get_question_by_index",
+            req,
+            function (result, statue) {
+                if (statue === "success") {
+                    rsp = result;
+                }
+            },
+            "json"
+        );
+        return rsp;
+    }
+
+    function updateQuestion(questionInfo) {
+        let input;
+        $(".question").text(questionInfo.title);
+        let j = 0, len = questionInfo.options.length;
+        for (; j < len; j++) {
+            if (questionInfo.options[j].type === "radio") {
+                input = document.createElement("input");
+                input.setAttribute("type", "radio");
+                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("value", questionInfo.options[j].value);
+                input.setAttribute("class", "scale_form");
+                input.setAttribute("data-labelauty", questionInfo.options[j].content);
+                let div = document.createElement("div");
+                div.setAttribute("class", "row show-grid");
+                div.setAttribute("style", "margin:10px");
+                let label = document.createElement("label");
+                let options = $(".options");
+                label.append(input);
+                div.append(input);
+                div.append(questionInfo.options[j].content)
+                options.append(div);
+                continue;
+            }
+            if (questionInfo.options[j].type === "text") {
+                const div = document.createElement("div");
+                div.setAttribute("class", "");
+                div.setAttribute("style", "margin:10px auto;");
+                let options = $(".options");
+                input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
+                input.setAttribute("class", "scale_form");
+                div.append(input);
+                options.append(div);
+                continue;
+            }
+            if (1 === 1) {
+                return;
+            }
+        }
+    }
+
+    function cleanOptions() {
+        let options = $(".options");
+        options.empty();
+    }
+
+    $.extend({
+        serializeJSON: function (obj) {
+            const formArr = obj.serializeArray();
+            const formObj = {};
+            $.each(formArr, function () {
+                if (formObj[this.name]) {
+                    if (!formObj[this.name].push) {
+                        formObj[this.name] = [formObj[this.name]];
+                    }
+                    formObj[this.name].push(this.value || '');
+                } else {
+                    formObj[this.name] = this.value || '';
+                }
+            });
+            return formObj;
+        }
+    });
+</script>
+{% endblock %}

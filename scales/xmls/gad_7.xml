@@ -1,0 +1,45 @@
+<scale title="GAD-7广泛性焦虑障碍量表"
+       warn="指导语：根据过去两周的状况，请您回答是否存在下列描述的状况及频率，请看清楚问题后选择符合您的选项 。">
+    <question index="1" title="感觉紧张，焦虑或急切">
+        <option type="radio" name="question1" value="0">完全不会</option>
+        <option type="radio" name="question1" value="1">好几天</option>
+        <option type="radio" name="question1" value="2">超过一周</option>
+        <option type="radio" name="question1" value="3">几乎每天</option>
+    </question>
+    <question index="2" title="不能够停止或控制担忧">
+        <option type="radio" name="question2" value="0">完全不会</option>
+        <option type="radio" name="question2" value="1">好几天</option>
+        <option type="radio" name="question2" value="2">超过一周</option>
+        <option type="radio" name="question2" value="3">几乎每天</option>
+    </question>
+    <question index="3" title="对各种各样的事情担忧过多">
+        <option type="radio" name="question3" value="0">完全不会</option>
+        <option type="radio" name="question3" value="1">好几天</option>
+        <option type="radio" name="question3" value="2">超过一周</option>
+        <option type="radio" name="question3" value="3">几乎每天</option>
+    </question>
+    <question index="4" title="很难放松下来?">
+        <option type="radio" name="question4" value="0">完全不会</option>
+        <option type="radio" name="question4" value="1">好几天</option>
+        <option type="radio" name="question4" value="2">超过一周</option>
+        <option type="radio" name="question4" value="3">几乎每天</option>
+    </question>
+    <question index="5" title="由于不安而无法静坐?">
+        <option type="radio" name="question5" value="0">完全不会</option>
+        <option type="radio" name="question5" value="1">好几天</option>
+        <option type="radio" name="question5" value="2">超过一周</option>
+        <option type="radio" name="question5" value="3">几乎每天</option>
+    </question>
+    <question index="6" title="变得容易烦恼或急躁?">
+        <option type="radio" name="question6" value="0">完全不会</option>
+        <option type="radio" name="question6" value="1">好几天</option>
+        <option type="radio" name="question6" value="2">超过一周</option>
+        <option type="radio" name="question6" value="3">几乎每天</option>
+    </question>
+    <question index="7" title="感到似乎将有可怕的事情发生而害怕?">
+        <option type="radio" name="question7" value="0">完全不会</option>
+        <option type="radio" name="question7" value="1">好几天</option>
+        <option type="radio" name="question7" value="2">超过一周</option>
+        <option type="radio" name="question7" value="3">几乎每天</option>
+    </question>
+</scale>
