@@ -1,0 +1,215 @@
+<scale title="33项轻躁狂症状清单"
+       warn="指导语：每个人在一生中的不同时期都会体验到精力、活力和情绪上的变化或波动（“高涨”与“低落”或“向上”与“向下”）。<br><br>此问卷的目的旨在评估您在“高涨”时期的特点。">
+    <question index="1" title=" 首先，和平常的状态比起来，您今天感觉怎么样？">
+        <option type="radio" name="question1" value="0">比平常差多了</option>
+        <option type="radio" name="question1" value="1">比平常差</option>
+        <option type="radio" name="question1" value="2">比平常差一点</option>
+        <option type="radio" name="question1" value="3">和平常差不多</option>
+        <option type="radio" name="question1" value="4">比平常好</option>
+        <option type="radio" name="question1" value="5">比平常好一点</option>
+        <option type="radio" name="question1" value="7">比平常好很多</option>
+    </question>
+    <question index="2" title="与其他人相比，您觉得自己怎么样？<br>不管您今天感觉怎么样，请告诉我们通常情况下您和其他人相比的情况，请在下面选出最合适您的描述.<br>与其他人相比，我的活力、精力、情绪怎么样？">
+        <option type="radio" name="question2" value="0">总是相当稳定</option>
+        <option type="radio" name="question2" value="1">通常比较高涨一些</option>
+        <option type="radio" name="question2" value="2">通常比较低落一些</option>
+        <option type="radio" name="question2" value="3">反复的出现高涨与低落</option>
+    </question>
+    <question index="3" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>1) 我需要比较少的睡眠">
+        <option type="radio" name="question3" value="1">是</option>
+        <option type="radio" name="question3" value="0">否</option>
+    </question>
+    <question index="4" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>2) 我感觉更有精力并且更加活跃">
+        <option type="radio" name="question4" value="1">是</option>
+        <option type="radio" name="question4" value="0">否</option>
+    </question>
+    <question index="5" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>3) 我更自信">
+        <option type="radio" name="question5" value="1">是</option>
+        <option type="radio" name="question5" value="0">否</option>
+    </question>
+    <question index="6" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>4) 我更加享受我的工">
+        <option type="radio" name="question6" value="1">是</option>
+        <option type="radio" name="question6" value="0">否</option>
+    </question>
+    <question index="7" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>5) 我社交活动更多（打更多的电话，外出更多）">
+        <option type="radio" name="question7" value="1">是</option>
+        <option type="radio" name="question7" value="0">否</option>
+    </question>
+    <question index="8" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>7) 我更想去旅行和/或者我旅行更多">
+        <option type="radio" name="question8" value="1">是</option>
+        <option type="radio" name="question8" value="0">否</option>
+    </question>
+    <question index="9" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>8) 我想开车更快，或更冒险地开车">
+        <option type="radio" name="question9" value="1">是</option>
+        <option type="radio" name="question9" value="0">否</option>
+    </question>
+    <question index="10" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>9) 我花钱更多，或花了太多钱">
+        <option type="radio" name="question10" value="1">是</option>
+        <option type="radio" name="question10" value="0">否</option>
+    </question>
+    <question index="11"
+              title="请尽力回忆当您处于“高涨”状11时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>10) 在日常生活中，我更加冒险（在工作和/或在其它活动上）">
+        <option type="radio" name="question11" value="1">是</option>
+        <option type="radio" name="question2" value="0">否</option>
+    </question>
+    <question index="12" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>11) 我体力活动量增多（如体育运动等）">
+        <option type="radio" name="question12" value="1">是</option>
+        <option type="radio" name="question12" value="0">否</option>
+    </question>
+    <question index="13" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>12) 我计划更多的活动或者项目">
+        <option type="radio" name="question13" value="1">是</option>
+        <option type="radio" name="question13" value="0">否</option>
+    </question>
+    <question index="14" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>13) 我有更多的点子，更有创造力">
+        <option type="radio" name="question14" value="1">是</option>
+        <option type="radio" name="question14" value="0">否</option>
+    </question>
+    <question index="15" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>14) 我很少害羞或者感到受约束">
+        <option type="radio" name="question15" value="1">是</option>
+        <option type="radio" name="question15" value="0">否</option>
+    </question>
+    <question index="16"
+              title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>15) 我会穿更加鲜艳、更加奢侈的衣服/用更鲜艳、奢侈的化妆品">
+        <option type="radio" name="question16" value="1">是</option>
+        <option type="radio" name="question16" value="0">否</option>
+    </question>
+    <question index="17" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>17) 我想接触更多的人，或者的确接触了更多的人">
+        <option type="radio" name="question17" value="1">是</option>
+        <option type="radio" name="question17" value="0">否</option>
+    </question>
+    <question index="18" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>18) 我对“性”更感兴趣，并且/或者性的方面更活跃">
+        <option type="radio" name="question18" value="1">是</option>
+        <option type="radio" name="question18" value="0">否</option>
+    </question>
+    <question index="19" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>19) 我讲话更多">
+        <option type="radio" name="question19" value="1">是</option>
+        <option type="radio" name="question19" value="0">否</option>
+    </question>
+    <question index="20" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>110) 我思维更快">
+        <option type="radio" name="question20" value="1">是</option>
+        <option type="radio" name="question20" value="0">否</option>
+    </question>
+    <question index="21" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>20) 我讲话时会开更多的玩笑，或者说更多俏皮话">
+        <option type="radio" name="question21" value="1">是</option>
+        <option type="radio" name="question21" value="0">否</option>
+    </question>
+    <question index="22" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>21) 我更容易分心">
+        <option type="radio" name="question22" value="1">是</option>
+        <option type="radio" name="question22" value="0">否</option>
+    </question>
+    <question index="23" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>22) 我尝试许多新鲜事物">
+        <option type="radio" name="question23" value="1">是</option>
+        <option type="radio" name="question23" value="0">否</option>
+    </question>
+    <question index="24" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>23) 我的想法经常从一个话题跳到另一个话题">
+        <option type="radio" name="question24" value="1">是</option>
+        <option type="radio" name="question24" value="0">否</option>
+    </question>
+    <question index="25" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>24) 我做事比平时更快，并且/或者感到更容易">
+        <option type="radio" name="question25" value="1">是</option>
+        <option type="radio" name="question25" value="0">否</option>
+    </question>
+    <question index="26" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>25) 我更没有耐心，并且/或者更容易激惹">
+        <option type="radio" name="question26" value="1">是</option>
+        <option type="radio" name="question26" value="0">否</option>
+    </question>
+    <question index="27" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>27) 我更令别人疲惫不堪，或者更容易让别人发怒">
+        <option type="radio" name="question27" value="1">是</option>
+        <option type="radio" name="question27" value="0">否</option>
+    </question>
+    <question index="28" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>28) 我陷入更多的争吵">
+        <option type="radio" name="question28" value="1">是</option>
+        <option type="radio" name="question28" value="0">否</option>
+    </question>
+    <question index="29" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>29) 我的情绪更高涨、更乐观">
+        <option type="radio" name="question29" value="1">是</option>
+        <option type="radio" name="question29" value="0">否</option>
+    </question>
+    <question index="30" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>210) 我喝更多的咖啡">
+        <option type="radio" name="question30" value="1">是</option>
+        <option type="radio" name="question30" value="0">否</option>
+    </question>
+    <question index="31" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>30) 我吸更多的烟">
+        <option type="radio" name="question31" value="1">是</option>
+        <option type="radio" name="question31" value="0">否</option>
+    </question>
+    <question index="32" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>31) 我喝更多的酒">
+        <option type="radio" name="question32" value="1">是</option>
+        <option type="radio" name="question32" value="0">否</option>
+    </question>
+    <question index="33"
+              title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>32) 我服用更多的药物 (指：镇静剂、抗焦虑剂、兴奋剂等)">
+        <option type="radio" name="question33" value="1">是</option>
+        <option type="radio" name="question33" value="0">否</option>
+    </question>
+    <question index="34" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>33) 我参加更多的游戏或赌博活动">
+        <option type="radio" name="question34" value="1">是</option>
+        <option type="radio" name="question34" value="0">否</option>
+    </question>
+    <question index="35" title="请尽力回忆当您处于“高涨”状态时，您那个时候的感觉怎么样？请您对下列所有的描述进行回答,不管您现在的状态如何。<br>34) 我吃得更多或参加更多的狂欢">
+        <option type="radio" name="question35" value="1">是</option>
+        <option type="radio" name="question35" value="0">否</option>
+    </question>
+    <question index="36" title="您的“高涨”状态对您家庭生活的影响">
+        <option type="radio" name="question36" value="0">正面与负面都有</option>
+        <option type="radio" name="question36" value="1">正面影响</option>
+        <option type="radio" name="question36" value="2">负面影响</option>
+        <option type="radio" name="question36" value="3">没有影响</option>
+    </question>
+    <question index="37" title="您的“高涨”状态对您社会生活的影响">
+        <option type="radio" name="question37" value="0">正面与负面都有</option>
+        <option type="radio" name="question37" value="1">正面影响</option>
+        <option type="radio" name="question37" value="2">负面影响</option>
+        <option type="radio" name="question37" value="3">没有影响</option>
+    </question>
+    <question index="38" title="您的“高涨”状态对您工作的影响">
+        <option type="radio" name="question38" value="0">正面与负面都有</option>
+        <option type="radio" name="question38" value="1">正面影响</option>
+        <option type="radio" name="question38" value="2">负面影响</option>
+        <option type="radio" name="question38" value="3">没有影响</option>
+    </question>
+    <question index="39" title="您的“高涨”状态对您休闲的影响">
+        <option type="radio" name="question39" value="0">正面与负面都有</option>
+        <option type="radio" name="question39" value="1">正面影响</option>
+        <option type="radio" name="question39" value="2">负面影响</option>
+        <option type="radio" name="question39" value="3">没有影响</option>
+    </question>
+    <question index="40" title="与您亲近的人对您“高涨”状态有什么反应或意见？?">
+        <option type="radio" name="question40" value="0">正面的（鼓励和支持）</option>
+        <option type="radio" name="question40" value="1">中性的</option>
+        <option type="radio" name="question40" value="2">负面的（关注、恼火、生气、批评）</option>
+        <option type="radio" name="question40" value="3">正面和负面都有</option>
+        <option type="radio" name="question40" value="4">没有反应</option>
+    </question>
+    <question index="41" title="您过去的“高涨”状态最长一次持续了多久？?">
+        <option type="radio" name="question41" value="0">1天</option>
+        <option type="radio" name="question41" value="1">2-3天</option>
+        <option type="radio" name="question41" value="2">4-7天</option>
+        <option type="radio" name="question41" value="3">1-3周</option>
+        <option type="radio" name="question41" value="4">1个月以上</option>
+        <option type="radio" name="question41" value="5">我不能判断或不知道</option>
+    </question>
+    <question index="42" title="“高涨”状态通常的持续时间 (平均)：?">
+        <option type="radio" name="question42" value="0">1天</option>
+        <option type="radio" name="question42" value="1">2-3天</option>
+        <option type="radio" name="question42" value="2">4-7天</option>
+        <option type="radio" name="question42" value="3">1-3周</option>
+        <option type="radio" name="question42" value="4">1个月以上</option>
+        <option type="radio" name="question42" value="5">我不能判断或不知道</option>
+    </question>
+    <question index="43" title="在过去的 13 个月中，您经历过这种“高涨”的状态吗?">
+        <option type="radio" name="question43" value="1">是</option>
+        <option type="radio" name="question43" value="0">否</option>
+    </question>
+    <question index="44" title="请估计在过去 13 个月中您在这种“高涨”状态中度过多少天。总计大约多少天:" rule="['==', 'question43', 1]">
+        <option type="text" name="question44"/>
+    </question>
+    <question index="45" title="您可以把自己描述为一个上下起伏的人吗：一段时间极度兴奋，另一段时间则愁眉苦脸？">
+        <option type="radio" name="question45" value="1">是</option>
+        <option type="radio" name="question45" value="0">否</option>
+    </question>
+    <question index="46" title="您的情绪有时会突然转变吗？">
+        <option type="radio" name="question46" value="1">是</option>
+        <option type="radio" name="question46" value="0">否</option>
+    </question>
+</scale>
