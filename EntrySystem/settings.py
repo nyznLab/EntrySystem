@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'users',
     'inpatients',
     'followup',
-    'statistics'
+    'statistics',
+    'appointment',
+    'schedule',
 ]
 
 MIDDLEWARE = [
@@ -54,8 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'EntrySystem.MyMiddleware.AuthMiddleWare',
-    # 'EntrySystem.MyMiddleware.PageRecordMiddleWare',
+    'EntrySystem.MyMiddleware.AuthMiddleWare',
+    'EntrySystem.MyMiddleware.PageRecordMiddleWare',
 ]
 
 ROOT_URLCONF = 'EntrySystem.urls'
@@ -76,15 +78,12 @@ TEMPLATES = [
 
             'libraries': {
                 'SelfDefinedFilter': 'patients.templatetags.SelfDefinedFilter',
-
             }
         },
     },
 ]
 
 WSGI_APPLICATION = 'EntrySystem.wsgi.application'
-
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -169,4 +168,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 设置关闭浏览器时失效
 # 在settings文件内添加下面的代码
 INTERNAL_IPS = ['127.0.0.1']
+
+X_FRAME_OPTIONS = 'ALLOWALL'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
