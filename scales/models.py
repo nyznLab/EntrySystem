@@ -1054,6 +1054,11 @@ import django.utils.timezone as timezone
 class RPatientSuicideBehavior(models.Model):
     patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING, unique=True)
     scale = models.ForeignKey(DScales, models.DO_NOTHING)
+    first_suicide_action = models.IntegerField(blank=True, null=True)
+    first_suicide_times = models.CharField(max_length=45, blank=True, null=True)
+    first_self_harming = models.IntegerField(blank=True, null=True)
+    first_self_harming_times = models.CharField(max_length=45, blank=True, null=True)
+    first_suicide_idea = models.IntegerField(blank=True, null=True)
     suicide_action = models.IntegerField(blank=True, null=True)
     suicide_times = models.CharField(max_length=45, blank=True, null=True)
     self_harming = models.IntegerField(blank=True, null=True)

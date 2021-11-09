@@ -85,47 +85,90 @@
                                         <i class="fa fa-hand-o-down"></i>&nbsp;
                                         <i class="fa fa-hand-o-down"></i>&nbsp;
                                         <i class="fa fa-hand-o-down"></i>&nbsp;
-                                        <div id="is_second">请根据您过去1周的表现，回答下列问题：</div>
-                                        <div id="is_first">请根据您过去的表现，回答下列问题：</div>
+                                        <div>请根据您过去的表现，回答下列问题：</div>
                                         <br/>
                                     </strong>
                                     <div class="ln_solid"></div>
                                 </div>
                                 <br>
-                                <div class="form-group row">
-                                      <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >1.有无自杀行为:<span class="  "></span></label>
-                                      <div class="col-md-1 col-sm-1 " id="suicide_action_1">
-                                        <input type="radio" name="suicide_action" value=1 data-labelauty="是"/>
+                                <div id="is_first">
+                                    <div class="form-group row">
+                                      <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >有无自伤行为史:<span class="  "></span></label>
+                                      <div class="col-md-1 col-sm-1 " id="first_self_harming_1">
+                                        <input type="radio" name="first_self_harming" value=1 data-labelauty="是"/>
                                       </div>
-                                      <div class="col-md-1 col-sm-1 " id="suicide_action_2">
-                                        <input type="radio" name="suicide_action" value=0 data-labelauty="否"/>
+                                      <div class="col-md-1 col-sm-1 " id="first_self_harming_2">
+                                        <input type="radio" name="first_self_harming" value=0 data-labelauty="否"/>
                                       </div>
-                                      <div  class="suicide_times" style="display: none">
-                                          <label class="control-label col-md-2 col-sm-2 " >自杀未遂次数:<span class="  "></span></label>
+                                      <div  class="first_self_harming_times" style="display: none">
+                                          <label class="control-label col-md-2 col-sm-2 " >自伤行为次数:<span class="  "></span></label>
                                           <div class="col-md-2 col-sm-2 form-group" >
-                                            <input type="text" id="suicide_times" name="suicide_times" class="form-control" >
+                                            <input type="text" id="first_self_harming_times" name="first_self_harming_times" class="form-control" >
                                           </div>
                                       </div>
-                                </div>
-                                <br>
-                                <div class="form-group row">
-                                <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >2.有无自伤行为:<span class="  "></span></label>
-                                    <div class="col-md-1 col-sm-1 " id="self_harming_1">
-                                        <input type="radio" name="self_harming" value=1 data-labelauty="是"/>
                                     </div>
-                                    <div class="col-md-1 col-sm-1 " id="self_harming_2">
-                                        <input type="radio" name="self_harming" value=0 data-labelauty="否"/>
+                                    <br>
+                                    <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >有无自杀未遂史:<span class="  "></span></label>
+                                        <div class="col-md-1 col-sm-1 " id="first_suicide_action_1">
+                                            <input type="radio" name="first_suicide_action" value=1 data-labelauty="是"/>
+                                        </div>
+                                        <div class="col-md-1 col-sm-1 " id="first_suicide_action_2">
+                                            <input type="radio" name="first_suicide_action" value=0 data-labelauty="否"/>
+                                        </div>
+                                        <div  class="first_suicide_times" style="display: none">
+                                            <label class="control-label col-md-2 col-sm-2 " >自杀未遂次数:<span class="  "></span></label>
+                                            <div class="col-md-2 col-sm-2 form-group" >
+                                                <input type="text" id="first_suicide_times" name="first_suicide_times" class="form-control" >
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div  class="self_harming_times" style="display: none">
-                                        <label class="control-label col-md-2 col-sm-2 " >自伤次数:<span class="  "></span></label>
-                                        <div class="col-md-2 col-sm-2 form-group" >
-                                            <input type="text" id="self_harming_times" name="self_harming_times" class="form-control" >
+                                    <br>
+                                    <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >有无自杀意念史:<span class="  "></span></label>
+                                        <div class="col-md-1 col-sm-1 " id="first_suicide_idea_1">
+                                            <input type="radio" name="first_suicide_idea" value=1 data-labelauty="是"/>
+                                        </div>
+                                        <div class="col-md-1 col-sm-1 " id="first_suicide_idea_2">
+                                            <input type="radio" name="first_suicide_idea" value=0 data-labelauty="否"/>
                                         </div>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="form-group row">
-                                <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >3.有无自杀意念史:<span class="  "></span></label>
+                                      <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >近两周有无自伤行为:<span class="  "></span></label>
+                                      <div class="col-md-1 col-sm-1 " id="self_harming_1">
+                                        <input type="radio" name="self_harming" value=1 data-labelauty="是"/>
+                                      </div>
+                                      <div class="col-md-1 col-sm-1 " id="self_harming_2">
+                                        <input type="radio" name="self_harming" value=0 data-labelauty="否"/>
+                                      </div>
+                                      <div  class="self_harming_times" style="display: none">
+                                          <label class="control-label col-md-2 col-sm-2 " >自伤行为次数:<span class="  "></span></label>
+                                          <div class="col-md-2 col-sm-2 form-group" >
+                                            <input type="text" id="self_harming_times" name="self_harming_times" class="form-control" >
+                                          </div>
+                                      </div>
+                                </div>
+                                <br>
+                                <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >近两周有无自杀企图:<span class="  "></span></label>
+                                    <div class="col-md-1 col-sm-1 " id="suicide_action_1">
+                                        <input type="radio" name="suicide_action" value=1 data-labelauty="是"/>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 " id="suicide_action_2">
+                                        <input type="radio" name="suicide_action" value=0 data-labelauty="否"/>
+                                    </div>
+                                    <div  class="suicide_times" style="display: none">
+                                        <label class="control-label col-md-2 col-sm-2 " >自杀企图次数:<span class="  "></span></label>
+                                        <div class="col-md-2 col-sm-2 form-group" >
+                                            <input type="text" id="suicide_times" name="suicide_times" class="form-control" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-4 col-md-offset-2" >近两周有无自杀意念:<span class="  "></span></label>
                                     <div class="col-md-1 col-sm-1 " id="suicide_idea_1">
                                         <input type="radio" name="suicide_idea" value=1 data-labelauty="是"/>
                                     </div>
@@ -164,6 +207,21 @@
            }
 
            if('{{ suibe_answer }}'!='None') {
+               if ('{{ suibe_answer.first_suicide_action }}' != 'None') {
+                   $("input[name='suicide_action'][value=" + Number({{ suibe_answer.suicide_action }}) + "]").prop("checked", true);
+               }
+               if ('{{ suibe_answer.first_suicide_times }}' != 'None') {
+                   $("input[name='suicide_times'][value=" + Number({{ suibe_answer.suicide_times }}) + "]").prop("checked", true);
+               }
+               if ('{{ suibe_answer.first_self_harming }}' != 'None') {
+                   $("input[name='self_harming'][value=" + Number({{ suibe_answer.self_harming }}) + "]").prop("checked", true);
+               }
+               if ('{{ suibe_answer.first_self_harming_times }}' != 'None') {
+                   $("input[name='self_harming_times'][value=" + Number({{ suibe_answer.self_harming_times }}) + "]").prop("checked", true);
+               }
+               if ('{{ suibe_answer.first_suicide_idea }}' != 'None') {
+                   $("input[name='suicide_idea'][value=" + Number({{ suibe_answer.suicide_idea }}) + "]").prop("checked", true);
+               }
                if ('{{ suibe_answer.suicide_action }}' != 'None') {
                    $("input[name='suicide_action'][value=" + Number({{ suibe_answer.suicide_action }}) + "]").prop("checked", true);
                }
@@ -192,12 +250,32 @@
             $("input[type='radio']").labelauty();
             cookie_val = getCookie('enter_page')
             set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
-            if(Number({{ isfirst }})==1){
-               document.getElementById('is_second').style = 'display: none';
-             }else{
+            if(Number({{ isfirst }})!=1){
                 document.getElementById('is_first').style = 'display: none';
              }
 
+             $("input:radio[name='first_suicide_action']").click(function() {
+                first_suicide_action = $(this).val();
+                if (Number(first_suicide_action == 0)) {
+                    $(".first_suicide_times").hide();
+                    $(".first_suicide_times").removeAttr("required");
+                }
+                if (Number(first_suicide_action == 1)) {
+                    $(".first_suicide_times").show();
+                    $(".first_suicide_times").attr('required','required');
+                }
+            });
+            $("input:radio[name='first_self_harming']").click(function() {
+                first_self_harming = $(this).val();
+                if (Number(first_self_harming == 0)) {
+                    $(".first_self_harming_times").hide();
+                    $(".first_self_harming_times").removeAttr("required");
+                }
+                if (Number(first_self_harming == 1)) {
+                    $(".first_self_harming_times").show();
+                    $(".first_self_harming_times").attr('required','required');
+                }
+            });
             $("input:radio[name='suicide_action']").click(function() {
                 suicide_action = $(this).val();
                 if (Number(suicide_action == 0)) {

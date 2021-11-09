@@ -2127,6 +2127,7 @@ def get_check_suibe_form(request):
     scale_id = tools_config.suibe
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
     suibe_answer = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
+    print(suibe_answer)
     is_first = scales_dao.get_suibe_isfirst(patient_session_id)
     return render(request, 'nbh/edit_suibe.html', {'patient_session_id': patient_session_id,
                                                   'patient_id': request.GET.get('patient_id'),
