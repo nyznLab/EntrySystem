@@ -22,7 +22,7 @@
     </question>
     <question index="5" title="题目五">
         <option type="radio" name="question5" value="0">选项一内容</option>
-        <option type="radio" name="question5" value="1">选项二内容</option>
+        <option type="radio" name="question5" vcalue="1">选项二内容</option>
         <option type="radio" name="question5" value="2">选项三内容</option>
         <option type="radio" name="question5" value="3">选项四内容</option>
     </question>

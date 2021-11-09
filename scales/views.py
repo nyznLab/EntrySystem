@@ -1650,13 +1650,13 @@ def get_ybocs_form(request):
     scale_id = tools_config.ybocs
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     ybocs_answer = scales_dao.get_patient_YBO_byPatientDetailId(patient_session_id)
-    return render(request, 'nbh/edit_ybocs.html', {'patient_session_id': request.GET.get('patient_session_id'),
-                                                   'patient_id': request.GET.get('patient_id'),
-                                                   'username': request.session.get('username'),
-                                                   'scale_name_list': scale_name_list,
-                                                   'scale_id': scale_id,
-                                                   'ybocs_answer': ybocs_answer,
-                                                   'order': order,
+    return render(request, 'nbh/self_test_display.html', {'patientSessionId': patient_session_id,
+                                                          'scaleId': scale_id,
+                                                   # 'patient_id': request.GET.get('patient_id'),
+                                                   # 'username': request.session.get('username'),
+                                                   # 'scale_name_list': scale_name_list,
+                                                   # 'ybocs_answer': ybocs_answer,
+                                                   # 'order': order,
                                                    })
 
 
@@ -2230,6 +2230,30 @@ def get_question_by_index(request):
         Do.calculate_scale_score(patient_session_id, scale_id, user_id)
         return JsonResponse(True, safe=False)
 
+def get_question_by_index_display(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    question_index = str(request.POST.get("question_index"))
+    user_id = request.session.get('doctor_id')
+    # 取scale_content对象
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    print("get_question_by_index :", patient_session_id, scale_id, question_index,
+          question_index in scale_content.keys())
+    # 在scale_content中找对应题目
+    if question_index in scale_content.keys():
+        # 题目存在
+        if "rule" not in scale_content[question_index]:
+            # 没有规则　直接返回题目
+            print("get_question_by_index return" + str(scale_content[question_index]))
+            return JsonResponse(scale_content[question_index])
+        elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
+            # 有规则且规则成立　直接返回题目
+            print("get_question_by_index return" + str(scale_content[question_index]))
+            return JsonResponse(scale_content[question_index])
+        else:
+            # 有规则且规则不成立　返回False给前端
+            print("get_question_by_index return false")
+            return JsonResponse(False, safe=False)
 
 # 根据题号取答案
 def get_answer_by_index(request):
@@ -2248,6 +2272,7 @@ def get_answer_by_index(request):
 def get_scale_metadata(request):
     scale_id = request.POST.get("scale_id")
     patient_session_id = request.POST.get("patient_session_id")
+    print(patient_session_id,scale_id)
     # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
     metadata = {}
