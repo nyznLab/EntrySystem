@@ -1,11 +1,13 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
-import json
+import scales.config as config
 import scales.dao as scales_dao
 import scales.models as scales_models
 import tools.config as tools_config
 import patients.dao as patients_dao
-import tools.Utils as tools_utils
-import patients.models  as patients_models
+import scales.doSelfTest as Do
+import scales.cash as cash
+import patients.models as patients_models
 from .models import RSelfTestDuration
 import logging
 import json
@@ -359,7 +361,7 @@ def get_select_scales(request):
     generalinfo_scale_list, other_test_scale_list, self_test_scale_list, cognition_scale_list = scales_dao.get_uodo_scales(
         patient_session_id)
     tms = patients_models.DPatientDetail.objects.filter(id=patient_session_id)[0].tms
-    r_patient_blood=patients_models.RPatientBlood.objects.filter(patient_session=patient_session_id).first()
+    r_patient_blood = patients_models.RPatientBlood.objects.filter(patient_session=patient_session_id).first()
     if r_patient_blood is not None:
         if r_patient_blood.blood_sampling_date is not None:
             r_patient_blood.blood_sampling_date = r_patient_blood.blood_sampling_date.strftime('%Y-%m-%d')
@@ -1523,8 +1525,8 @@ def self_tests_submit(request):
     test_name = request.POST.get('test_name')
     duration = request.POST.get('duration')
     logging.debug("self_tests_submit, patientSessionId={}, scale_id={}, form_data={}, question_index={}, flag={}"
-                 ", test_name={}, duration={}".format(patient_session_id, scale_id, form_data, question_index, flag,
-                                                      test_name, duration))
+                  ", test_name={}, duration={}".format(patient_session_id, scale_id, form_data, question_index, flag,
+                                                       test_name, duration))
     # print(patient_session_id, scale_id, form_data, question_index, flag, test_name, duration)
     logging.debug("ajax_buffer_before, ajax_buffer={}, patient_session_id={}".format((ajax_buffer),
                                                                                      patient_session_id))
@@ -1609,7 +1611,8 @@ def self_tests_submit(request):
             if ajax_buffer[patient_session_id][key][0] is not None:
                 clean_patient_session_flag = False
                 break
-        logging.debug("parm clean buffer, patient_session_id={}, clean_patient_flat={}".format(patient_session_id, clean_patient_session_flag))
+        logging.debug("parm clean buffer, patient_session_id={}, clean_patient_flat={}".format(patient_session_id,
+                                                                                               clean_patient_session_flag))
         if clean_patient_session_flag:
             # print('clean patient')
             ajax_buffer.pop(patient_session_id)
@@ -1623,19 +1626,17 @@ def get_next_self_scale_id(patient_session_id, cur_scale_id):
     return min_unfinished_scale
 
 
+# TODO 量表间的跳转逻辑需要调整
 def get_next_self_scale_url(request):
     current_scale_id = request.GET.get('scale_id')
     patient_session_id = request.GET.get('patient_session_id')  # 暂定下一个，需要调到最近的未完成量表
     scale_id = get_next_self_scale_id(patient_session_id=patient_session_id, cur_scale_id=current_scale_id)
-    patient_id = request.GET.get('patient_id')
+    patient_id = Do.get_patient_id(patient_session_id)
     if scale_id is None:
         next_test_url = '/scales/select_scales?patient_session_id={}&patient_id={}'.format(str(patient_session_id),
-                                                                                           str(patient_id))
+                                                                                           patient_id)
     else:
-        next_test_url = '/scales/get_self_tests?scale_id={}&patient_session_id={}&patient_id={}'.format(str(scale_id),
-                                                                                                        str(
-                                                                                                            patient_session_id),
-                                                                                                        str(patient_id))
+        next_test_url = '/scales/self_test?patient_session_id={}&scale_id={}'.format(patient_session_id, scale_id)
     print(next_test_url)
     return render(request, 'warning.html', {
         "content": "当前量表已经完成",
@@ -2077,11 +2078,7 @@ def redo_self_tests(request):
                                                                                                     scale_id))
 
 
-def testNewAjax(request):
-    return render(request, 'nbh/ajax_insomnia.html', {'question_index': 0})
-
-
-#自杀行为表
+# 自杀行为表
 def add_suibe(request):
     patient_session_id = request.GET.get('patient_session_id')
     scale_id = tools_config.suibe
@@ -2089,14 +2086,14 @@ def add_suibe(request):
     patient_id = request.GET.get('patient_id')
     rPatientsuibe = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
     rPatientsuibe_new = scales_models.RPatientSuicideBehavior(patient_session_id=patient_session_id, scale_id=scale_id,
-                                                  doctor_id=doctor_id)
+                                                              doctor_id=doctor_id)
     if rPatientsuibe is not None:
         rPatientsuibe_new.create_time = rPatientsuibe.create_time
         rPatientsuibe_new.id = rPatientsuibe.id
     rPatientsuibe_new = set_attr_by_post(request, rPatientsuibe_new)
     scales_dao.add_suibe_database(rPatientsuibe_new, 1)
     redirect_url = '/scales/get_check_suibe_form?patient_session_id={}&patient_id={}'.format(patient_session_id,
-                                                                                            patient_id)
+                                                                                             patient_id)
     # redirect_url = return_next(request)
     return redirect(redirect_url)
 
@@ -2110,16 +2107,16 @@ def get_suibe_form(request):
         scales_dao.update_rscales_state(patient_session_id, scale_id, 0)
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
     suibe_answer = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
-    is_first=scales_dao.get_suibe_isfirst(patient_session_id)
+    is_first = scales_dao.get_suibe_isfirst(patient_session_id)
     return render(request, 'nbh/add_suibe.html', {'patient_session_id': patient_session_id,
-                                                 'patient_id': request.GET.get('patient_id'),
-                                                 'username': request.session.get('username'),
-                                                 'scale_name_list': scale_name_list,
-                                                 'scale_id': scale_id,
-                                                 'suibe_answer': suibe_answer,
-                                                 'order': order,
-                                                 'isfirst':is_first,
-                                                 })
+                                                  'patient_id': request.GET.get('patient_id'),
+                                                  'username': request.session.get('username'),
+                                                  'scale_name_list': scale_name_list,
+                                                  'scale_id': scale_id,
+                                                  'suibe_answer': suibe_answer,
+                                                  'order': order,
+                                                  'isfirst': is_first,
+                                                  })
 
 
 def get_check_suibe_form(request):
@@ -2129,11 +2126,196 @@ def get_check_suibe_form(request):
     suibe_answer = scales_dao.get_patient_suibe_byPatientDetailId(patient_session_id)
     is_first = scales_dao.get_suibe_isfirst(patient_session_id)
     return render(request, 'nbh/edit_suibe.html', {'patient_session_id': patient_session_id,
-                                                  'patient_id': request.GET.get('patient_id'),
-                                                  'username': request.session.get('username'),
-                                                  'scale_name_list': scale_name_list,
-                                                  'scale_id': scale_id,
-                                                  'suibe_answer': suibe_answer,
-                                                  'order': order,
-                                                  'isfirst': is_first,
-                                                  })
+                                                   'patient_id': request.GET.get('patient_id'),
+                                                   'username': request.session.get('username'),
+                                                   'scale_name_list': scale_name_list,
+                                                   'scale_id': scale_id,
+                                                   'suibe_answer': suibe_answer,
+                                                   'order': order,
+                                                   'isfirst': is_first,
+                                                   })
+
+
+# 上传量表内容
+def update_scales_content(request):
+    # 输入参数校验
+    err, handler = Do.update_scales_content_validate(request)
+    if err is not None:
+        return HttpResponse(err)
+    # 用户输入
+    scale_name = request.POST.get('scale_name')
+    # 用户选择
+    scale_definition_id = request.POST.get('scale_definition_id')
+    scale_group = request.POST.get('scale_group')
+
+    scale_content = request.POST.get('scale_content')
+    comment = request.POST.get('comment')
+    create_user = request.POST.get('create_user')
+    # 构造scale_content对象
+    scale_content_model = scales_models.TScalesContent(scale_name=scale_name, scale_definition_id=scale_definition_id,
+                                                       scale_group=scale_group, scale_content=scale_content,
+                                                       comment=comment, create_user=create_user)
+    # 写入数据库
+    rsp = Do.update_scale_content(scale_content_model)
+    # 刷新缓存中的scale_content对象
+    cash.scales_content_handler_dic[scale_definition_id] = {
+        "scaleHandler": handler,
+        "version": scale_content_model.version,
+    }
+    return HttpResponse(rsp)
+
+
+# 返回下一个未完成的题目
+def get_next_question(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    user_id = request.session.get('doctor_id')
+    # 取scale_content对象
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    # 取最后一个已完成题目的索引
+    last_answered_question_index = Do.get_last_question_index(patient_session_id, scale_id)
+    # 遍历scale_content中的题目，从最后一个已完成题目的下一题（所以索引要+1）开始找满足条件的题目
+    while str(last_answered_question_index + 1) in scale_content.keys():
+        # 将题目索引转换成str类型
+        key_str = str(last_answered_question_index + 1)
+        # 当前题号的题目没有规则或者满足规则就返回结果
+        if "rule" not in scale_content[key_str] or Do.match_rules(scale_content[key_str]["rule"], scale_id,
+                                                                  patient_session_id):
+            # 前端也需要记录题号，所以需要将index一起传给前端
+            rsp = {
+                "index": last_answered_question_index + 1,
+                "content": scale_content[key_str],
+            }
+            return JsonResponse(rsp)
+        # 当前题目不满足就继续找下一题
+        last_answered_question_index += 1
+    print("get_next_question not return")
+    # 遍历结束也没有找到满足条件的题目则表示当前量表已经完成，将量表完成状态置为已完成，返回给前端False
+    Do.complete_scale(patient_session_id, scale_id)
+    # 写入量表总分
+    Do.calculate_scale_score(patient_session_id, scale_id, user_id)
+    return HttpResponse(False)
+
+
+# 根据题号取题目内容
+def get_question_by_index(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    question_index = str(request.POST.get("question_index"))
+    user_id = request.session.get('doctor_id')
+    # 取scale_content对象
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    print("get_question_by_index :", patient_session_id, scale_id, question_index,
+          question_index in scale_content.keys())
+    # 在scale_content中找对应题目
+    if question_index in scale_content.keys():
+        # 题目存在
+        if "rule" not in scale_content[question_index]:
+            # 没有规则　直接返回题目
+            print("get_question_by_index return" + str(scale_content[question_index]))
+            return JsonResponse(scale_content[question_index])
+        elif Do.match_rules(scale_content[question_index]["rule"], scale_id, patient_session_id):
+            # 有规则且规则成立　直接返回题目
+            print("get_question_by_index return" + str(scale_content[question_index]))
+            return JsonResponse(scale_content[question_index])
+        else:
+            # 有规则且规则不成立　返回False给前端
+            print("get_question_by_index return false")
+            return JsonResponse(False, safe=False)
+    else:
+        # 已经没有题目了　更改量表完成状态为已完成
+        Do.complete_scale(patient_session_id, scale_id)
+        print("get_question_by_index return true")
+        # 写入量表总分
+        Do.calculate_scale_score(patient_session_id, scale_id, user_id)
+        return JsonResponse(True, safe=False)
+
+
+# 根据题号取答案
+def get_answer_by_index(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    question_index = str(request.POST.get("question_index"))
+    print("get_answer_by_index", patient_session_id, scale_id, question_index)
+    # 从数据库中将对应题目的答案返回给前端
+    res = Do.get_answer_by_index(scale_id, patient_session_id, question_index)
+    return JsonResponse({
+        "answer": res,
+    })
+
+
+#  获取量表标题和警示
+def get_scale_metadata(request):
+    scale_id = request.POST.get("scale_id")
+    patient_session_id = request.POST.get("patient_session_id")
+    # 取scale_content对象
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    metadata = {}
+    if "title" in scale_content.keys():
+        # 如果有title就取出来
+        metadata["title"] = scale_content["title"]
+    if "warn" in scale_content.keys():
+        # 如果有warn就取出来
+        metadata["warn"] = scale_content["warn"]
+    print(metadata)
+    return JsonResponse(metadata)
+
+
+# 提交题目答案
+def submit_scale(request):
+    # 输入参数校验
+    err = Do.submit_scales_input_validate(request)
+    if err is not None:
+        print("submit_scale :" + err)
+        return HttpResponse(err)
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    doctor_id = request.session.get('doctor_id')
+    form_data = json.loads(request.POST.get('data'))
+    duration = request.POST.get('duration')
+    print(f"submit_scale: {patient_session_id}, {scale_id}, {form_data}, {duration}")
+    try:
+        # 写入答案
+        Do.write_scale_answer(scale_id, patient_session_id, form_data, doctor_id)
+        # 写入响应时间
+        Do.write_scale_duration(patient_session_id, scale_id, duration)
+    except ValueError:
+        # 写入出错　返回False给前端
+        return JsonResponse(False, safe=False)
+    # 写入成功　返回True
+    return JsonResponse(True, safe=False)
+
+
+# 重做
+def redo_scale(request):
+    patient_session_id = request.POST.get('patient_session_is')
+    scale_id = request.POST.get('scale_id')
+    # 重做量表
+    return HttpResponse(Do.redo_scale(scale_id, patient_session_id))
+
+
+# 删除量表内容
+def delete_scale_content(scale_id, version):
+    # 删除量表
+    return JsonResponse(json.dumps(Do.delete_scale_content(scale_id, version)))
+
+
+# 测试
+def testNewAjax(request):
+    patient_session_id = request.GET.get("patient_session_id")
+    scale_id = request.GET.get("scale_id")
+    return render(request, r"nbh/self_test.html", {
+        "patientSessionId": patient_session_id,
+        "scaleId": scale_id,
+    })
+
+
+# 自评入口
+def selfTest(request):
+    patient_session_id = request.GET.get("patient_session_id")
+    scale_id = request.GET.get("scale_id")
+    # 自评入口 渲染self_test.html
+    return render(request, r"nbh/self_test.html", {
+        "patientSessionId": patient_session_id,
+        "scaleId": scale_id,
+    })

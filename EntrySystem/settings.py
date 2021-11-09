@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 医嘱记录，病程记录存放目录
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -50,12 +50,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'EntrySystem.MyMiddleware.AuthMiddleWare',
-    'EntrySystem.MyMiddleware.PageRecordMiddleWare',
+    # 'EntrySystem.MyMiddleware.AuthMiddleWare',
+    # 'EntrySystem.MyMiddleware.PageRecordMiddleWare',
 ]
 
 ROOT_URLCONF = 'EntrySystem.urls'
@@ -91,12 +91,12 @@ WSGI_APPLICATION = 'EntrySystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        'NAME': 'entry_system',  # 你要存储数据的库名，事先要创建之
-        'USER': 'root',  # 数据库用户名
-        'PASSWORD': '123456',  # 密码
-        'HOST': 'localhost',  # 主机
-        'PORT': '3306',  # 数据库使用的端口
+        'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
+        'NAME': 'EntrySystem',         # 你要存储数据的库名，事先要创建之
+        'USER': 'root',         # 数据库用户名
+        'PASSWORD': '123456',     # 密码
+        'HOST': 'localhost',    # 主机
+        'PORT': '3306',         # 数据库使用的端口
     }
 }
 
@@ -169,3 +169,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 设置关闭浏览器时失效
 # 在settings文件内添加下面的代码
 INTERNAL_IPS = ['127.0.0.1']
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

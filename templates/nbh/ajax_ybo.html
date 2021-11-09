@@ -505,7 +505,7 @@
     let time = new Date();
     let end_flag = 0;
     let question_index = 1 + {{ question_index }};
-    let isClick=false;
+    let isClick1=isClick2=isClick3=isClick4=isClick5=isClick6=isClick7=isClick8=isClick9=isClick10=true;
     $(document).ready(function () {
         $("input[type='radio']").labelauty();
         if(question_index > 10){
@@ -515,18 +515,9 @@
         }
 
         $("#ybo_1_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_1.forced_frequency.value === "") {
                 alert("问题不能为空！");
-                return;
             } else if (document.ybo_1.forced_frequency.value === "0") {
-                // 如果第一题0设置跳过的题目也为0，并提交
                 question_index += 4;
                 ajax_post($('#ybo_1'));
                 $("div[class='ybo_1']").hide();
@@ -536,105 +527,96 @@
                 $("div[class='ybo_1']").hide();
                 $("div[class='ybo_2']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick1 = false;
+            }, 1000);
+            if (isClick1) {
+                return;
+            }
         });
 
         $("#ybo_2_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_2.impediment_degree1.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_2'));
                 $("div[class='ybo_2']").hide();
                 $("div[class='ybo_3']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick2 = false;
+            }, 1000);
+            if (isClick2) {
+                return;
+            }
         });
 
         $("#ybo_3_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_3.distress.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_3'));
                 $("div[class='ybo_3']").hide();
                 $("div[class='ybo_4']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick3 = false;
+            }, 1000);
+            if (isClick3) {
+                return;
+            }
         });
 
         $("#ybo_4_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_4.fightforced_degree.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_4'));
                 $("div[class='ybo_4']").hide();
                 $("div[class='ybo_5']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick4 = false;
+            }, 1000);
+            if (isClick4) {
+                return;
+            }
         });
 
         $("#ybo_5_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_5.control_ability1.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_5'));
                 $("div[class='ybo_5']").hide();
                 $("div[class='ybo_6']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick5 = false;
+            }, 1000);
+            if (isClick5) {
+                return;
+            }
         });
 
         $("#ybo_6_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_6.compulsion_frequency.value === "") {
                 alert("问题不能为空！");
-                return;
             } else if (document.ybo_6.compulsion_frequency.value === "0") {
 
                 // 第六题选0 默认将跳过的题置为0并提交
-                {% comment %}
-                $("input[name='impediment_degree2'][value= '0']").prop("checked", true);
+                {% comment %}$("input[name='impediment_degree2'][value= '0']").prop("checked", true);
                 $("input[name='stopcompulsion_anxiety'][value='0']").prop("checked", true);
                 $("input[name='stopforced_frequency'][value='0']").prop("checked", true);
-                $("input[name='control_ability2'][value='0']").prop("checked", true);
-                {% endcomment %}
-
+                $("input[name='control_ability2'][value='0']").prop("checked", true);{% endcomment %}
                 end_flag = 1;
                 question_index += 4;
                 ajax_post($('#ybo_6'));
-
                 // 跳转
                 location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
             } else {
@@ -642,83 +624,84 @@
                 $("div[class='ybo_6']").hide();
                 $("div[class='ybo_7']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick6 = false;
+            }, 1000);
+            if (isClick6) {
+                return;
+            }
         });
 
         $("#ybo_7_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            {#重新开始计时#}
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_7.impediment_degree2.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_7'));
                 $("div[class='ybo_7']").hide();
                 $("div[class='ybo_8']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick7 = false;
+            }, 1000);
+            if (isClick7) {
+                return;
+            }
         });
 
         $("#ybo_8_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_8.stopcompulsion_anxiety.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_8'));
                 $("div[class='ybo_8']").hide();
                 $("div[class='ybo_9']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick8 = false;
+            }, 1000);
+            if (isClick8) {
+                return;
+            }
         });
 
         $("#ybo_9_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (document.ybo_9.stopforced_frequency.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 ajax_post($('#ybo_9'));
                 $("div[class='ybo_9']").hide();
                 $("div[class='ybo_10']").show();
             }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick9 = false;
+            }, 1000);
+            if (isClick9) {
+                return;
+            }
         });
 
         $("#ybo_10_submit").on('click', function () {
-            if (isClick) {
-                return;
-            }
-            isClick=true;
-            setTimeout(function () {
-                isClick = false;
-            }, 1000);
             if (question_index > 10) {
                 alert("请不要重复提交");
-                return;
             }
             if (document.ybo_10.control_ability2.value === "") {
                 alert("问题不能为空！");
-                return;
             } else {
                 end_flag = 1;
                 ajax_post($('#ybo_10'));
                 // 跳转
                 location = "/scales/get_next_self_scale_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}";
+            }
+            {# 限制点击频率 #}
+            setTimeout(function () {
+                isClick10 = false;
+            }, 1000);
+            if (isClick10) {
+                return;
             }
         });
 
@@ -730,6 +713,7 @@
         }
 
         function ajax_post(form) {
+            isClick1=isClick2=isClick3=isClick4=isClick5=isClick6=isClick7=isClick8=isClick9=isClick10=true;
             const csrf = $('input[name="csrfmiddlewaretoken"]').val();
             $.ajax({
                 url: 'http://' + location.host +
