@@ -8,18 +8,21 @@
 from django.db import models
 
 
-class RPatientSuicideBehavior(models.Model):
-    patient_session = models.ForeignKey('DPatientDetail', models.DO_NOTHING, unique=True)
-    scale = models.ForeignKey('DScales', models.DO_NOTHING)
-    suicide_action = models.IntegerField(blank=True, null=True)
-    suicide_times = models.CharField(max_length=45, blank=True, null=True)
-    self_harming = models.IntegerField(blank=True, null=True)
-    self_harming_times = models.CharField(max_length=45, blank=True, null=True)
-    suicide_idea = models.IntegerField(blank=True, null=True)
-    doctor = models.ForeignKey('SUser', models.DO_NOTHING)
+class RPatientBlood(models.Model):
+    patient_session = models.ForeignKey('DPatientDetail', models.DO_NOTHING)
+    blood_sample_id = models.CharField(max_length=45, blank=True, null=True)
+    fake_name = models.CharField(max_length=45, blank=True, null=True)
+    blood_sampling_date = models.DateField(blank=True, null=True)
+    centrifugal_date = models.DateField(blank=True, null=True)
+    inspect_date = models.DateField(blank=True, null=True)
+    total_blood_number = models.IntegerField(blank=True, null=True)
+    plasma_number = models.IntegerField(blank=True, null=True)
+    hemocyte_number = models.IntegerField(blank=True, null=True)
+    extract_dna = models.FloatField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
     create_time = models.DateTimeField()
     update_time = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'r_patient_suicide_behavior'
+        db_table = 'r_patient_blood'

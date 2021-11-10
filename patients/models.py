@@ -43,6 +43,7 @@ class BPatientBaseInfo(models.Model):
     other_diagnosis = models.CharField(max_length=45)
     inpatient_state = models.IntegerField(choices=HOSPITALIZED_TYPE,default=HospitalizedState.NOT_HOSPITALIZED)
     is_ghr = models.IntegerField(blank=True, null=True)
+    is_modify_diagnosis = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'b_patient_base_info'
@@ -174,7 +175,9 @@ class BPatientRtms(models.Model):
 class RPatientBlood(models.Model):
     patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
     blood_sample_id = models.CharField(max_length=45, blank=True, null=True)
+    fake_name = models.CharField(max_length=45, blank=True, null=True)
     blood_sampling_date = models.DateField(blank=True, null=True)
+    centrifugal_date = models.DateField(blank=True, null=True)
     inspect_date = models.DateField(blank=True, null=True)
     total_blood_number = models.IntegerField(blank=True, null=True)
     plasma_number = models.IntegerField(blank=True, null=True)

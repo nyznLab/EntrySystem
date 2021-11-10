@@ -449,69 +449,6 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="ghr">高危遗传 <span
-                                                class="required">*:</span></label>
-                                        {% if is_ghr == 1 %}
-                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
-                                                 style="width: 15%;margin-top: 7px;">
-                                                <input type="radio" name="ghr_radio" value=0 data-labelauty="否"/>
-                                            </div>
-                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
-                                                 style="width: 15%;margin-top: 7px;">
-                                                <input type="radio" name="ghr_radio" value=1 data-labelauty="是"
-                                                       checked/>
-                                            </div>
-                                        {% else %}
-                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
-                                                 style="width: 15%;margin-top: 7px;">
-                                                <input type="radio" name="ghr_radio" value=0 data-labelauty="否"
-                                                       checked/>
-                                            </div>
-                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
-                                                 style="width: 15%;margin-top: 7px;">
-                                                <input type="radio" name="ghr_radio" value=1 data-labelauty="是"/>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subject_number">诊断情况<span
-                                                class="required">*:</span></label>
-                                        <div class="  col-md-2 col-sm-2 col-xs-12"
-                                             style="padding-top: 7px;margin-bottom: 0;text-align: left">
-                                            <select name="diagnosis" id="diagnosis" class="sel_beauty"
-                                                    onchange="judge_diagnosis(this)">
-                                                <option value=0>&nbsp;&nbsp;&nbsp;未诊断</option>
-                                                <option value=1>&nbsp;&nbsp;&nbsp;健康者</option>
-                                                <option value=2>&nbsp;&nbsp;&nbsp;重性抑郁障碍</option>
-                                                <option value=3>&nbsp;&nbsp;&nbsp;焦虑障碍</option>
-                                                <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
-                                                <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
-                                                <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
-                                                <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
-                                                <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
-                                                <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
-                                            </select>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="form-group" id="other_diagnosis_div" style="display: none">
-                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="subject_number">其他诊断<span
-                                                class="required">*:</span></label>
-                                        <div class="col-md-2 col-sm-3 form-group has-feedback row"
-                                             style="width: 15%;margin-top: 7px;">
-                                            <input id="other_diagnosis" name="other_diagnosis" class="sel_beauty"
-                                                   value="{{ other_diagnosis|processNone }}">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-
-
-                                    <div class="form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12">民族 <span
                                                 class="required">*:</span></label>
                                         <div class="col-md-2 col-sm-2 col-xs-12"
@@ -568,6 +505,93 @@
                                         {% endif %}
                                     </div>
 
+                                </div>
+                                <div class="col-md-3">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="ghr">高危遗传 <span
+                                                class="required">*:</span></label>
+                                        {% if is_ghr == 1 %}
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=0 data-labelauty="否"/>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=1 data-labelauty="是"
+                                                       checked/>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=0 data-labelauty="否"
+                                                       checked/>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="ghr_radio" value=1 data-labelauty="是"/>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subject_number">诊断情况<span
+                                                class="required">*:</span></label>
+                                        <div class="  col-md-2 col-sm-2 col-xs-12"
+                                             style="padding-top: 7px;margin-bottom: 0;text-align: left">
+                                            <select name="diagnosis" id="diagnosis" class="sel_beauty"
+                                                    onchange="judge_diagnosis(this)">
+                                                <option value=0>&nbsp;&nbsp;&nbsp;未诊断</option>
+                                                <option value=1>&nbsp;&nbsp;&nbsp;健康者</option>
+                                                <option value=2>&nbsp;&nbsp;&nbsp;重性抑郁障碍</option>
+                                                <option value=3>&nbsp;&nbsp;&nbsp;焦虑障碍</option>
+                                                <option value=4>&nbsp;&nbsp;&nbsp;双相障碍</option>
+                                                <option value=5>&nbsp;&nbsp;&nbsp;精神分裂症</option>
+                                                <option value=6>&nbsp;&nbsp;&nbsp;强迫症</option>
+                                                <option value=8>&nbsp;&nbsp;&nbsp;临床高危</option>
+                                                <option value=9>&nbsp;&nbsp;&nbsp;抑郁症状</option>
+                                                <option value=99>&nbsp;&nbsp;&nbsp;其他诊断</option>
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="is_modify_diagnosis">是否修改过诊断 <span
+                                                class="required">*:</span></label>
+                                        {% if is_modify_diagnosis == 1 %}
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="is_modify_diagnosis" value=0 data-labelauty="否"/>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="is_modify_diagnosis" value=1 data-labelauty="是"
+                                                       checked/>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="is_modify_diagnosis" value=0 data-labelauty="否"
+                                                       checked/>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                                 style="width: 15%;margin-top: 7px;">
+                                                <input type="radio" name="is_modify_diagnosis" value=1 data-labelauty="是"/>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group" id="other_diagnosis_div" style="display: none">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="subject_number">其他诊断<span
+                                                class="required">*:</span></label>
+                                        <div class="col-md-2 col-sm-3 form-group has-feedback row"
+                                             style="width: 15%;margin-top: 7px;">
+                                            <input id="other_diagnosis" name="other_diagnosis" class="sel_beauty"
+                                                   value="{{ other_diagnosis|processNone }}">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-5">
 
