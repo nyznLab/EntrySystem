@@ -1,0 +1,23 @@
+/**
+
+ layui官网
+ By 贤心
+
+*/
+
+
+/* 演示 */
+body .layui-layout-admin .site-demo{bottom: 44px; padding: 0px;}
+.layui-nav-item a cite{padding: 0 10px;}
+
+/*
+.layui-layout-admin .site-demo-body{top: 106px;}
+.site-demo-title{position: fixed; left: 220px; right: 0; top: 73px;}
+*/
+
+.layui-layout-admin .site-demo-body{top: 107px;}
+/*.site-demo-title{position: fixed; left: 200px; right: 0; top: 65px;}*/
+.site-demo-title{position: fixed; left: 220px; right: 0; top: 74px; }
+
+/* 框架定义 */
+.layadmin-iframe{position:absolute;width:100%;height:100%;left:0;top:110;right:0;bottom:0}

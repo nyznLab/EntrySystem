@@ -1,0 +1,432 @@
+
+
+
+/*layui优化*/
+table .layui-form-switch {
+    margin-top: 0;
+}
+/*.layui-form-select{
+    z-index: 1000;
+}*/
+/*.layui-form-item .layui-input-inline,
+.layui-input-block {
+    width: 500px;
+}*/
+.layui-form-onswitch,
+.layui-form-checked[lay-skin="primary"] i{
+    border-color: #1aa094;
+    background-color: #1aa094;
+}
+
+/* 弹出层 */
+.layui-fluid{
+    padding: 10px;
+}
+
+/* 下拉框最多显示5条 */
+/*div.layui-form-select > dl { max-height: 190px; }*/
+
+/* 下拉框只向下 */
+.layui-form-selectup dl {
+    bottom: auto;
+}
+
+
+/* 标签字体大小16px */
+.layui-elem-field legend{
+	font-size: 16px;
+}
+
+/* 表格TR鼠标划过背景颜色 */
+.layui-table tbody tr:hover {
+	background-color: #DAEFFD;
+}
+
+/* 左侧导航菜单父级菜单的高度 */
+.layui-nav-tree .layui-nav-item a{
+	height: 55px;
+    line-height: 55px;
+}
+/* 左侧导航菜单子级菜单的高度 */
+.layui-nav-tree .layui-nav-child a{
+	height: 50px;
+    line-height: 50px
+}
+
+/* 输入框必填项加星标
+.layui-form-label.layui-required:after{
+    content:"*";
+    left:15px;
+    top: 8px;
+    color: red;
+    position: absolute;
+    margin-left: 4px;
+    font-weight: 700;
+    line-height: 1.8em;
+}*/
+
+.layadmin-caller {padding:0px}
+.layadmin-caller .caller-seach{padding-bottom:0px}
+.layadmin-caller .caller-pl32{padding:0 5px 0 32px}
+
+
+.layui-table-tips-c:before {
+    position: relative;
+    top: -3px;
+    right: 0px;
+}
+
+/*自定义*/
+.ted-mt5 {
+	margin-top: 5px;
+}
+.ted-ml {
+	margin-left: 10px;
+}
+.ted-ml20 {
+	margin-left: 20px;
+}
+.ted-ml30 {
+	margin-left: 30px;
+}
+.ted-ml40 {
+	margin-left: 40px;
+}
+.ted-ml50 {
+	margin-left: 50px;
+}
+.ted-mr {
+	margin-right: 10px;
+}
+.ted-mt {
+	margin-top: 10px;
+}
+.ted-mt20 {
+	margin-top: 20px;
+}
+.ted-mt30 {
+	margin-top: 30px;
+}
+.ted-mt40 {
+	margin-top: 40px;
+}
+.ted-mb {
+	margin-bottom: 10px;
+}
+.ted-ml23 {
+	margin-left: 23px;
+}
+.ted-ml30 {
+	margin-left: 30px;
+}
+.ted-pl {
+	padding-left: 10px;
+}
+.ted-pr5 {
+	padding-right: 5px;
+}
+.ted-pr {
+	padding-right: 10px;
+}
+.ted-pt {
+	padding-top: 10px;
+}
+.ted-pb {
+	padding-bottom: 10px;
+}
+/* 红色 */
+.ted-red{
+	color: #FF5722;
+}
+/* 蓝色 */
+.ted-blue{
+	color: #01AAED;
+}
+/* 黑色 */
+.ted-black{
+	color: #2F4056;
+}
+/* 黄色 */
+.ted-yellow{
+	color: #FFB800;
+}
+
+.ted-layui-form-label{
+	text-align:left; 
+	width: auto; 
+	padding: 9px 5px;
+}
+
+/* 表格高度 */
+.layui-table-cell {
+    height: 40px;
+    line-height: 40px;
+}
+
+.ted-fontsize16{
+	font-size: 16px;
+}
+
+/* 输入框添加蓝色边框效果，阴影边框效果  */
+
+.layui-input:focus,
+.layui-textarea:focus {
+	border-color: rgba(91, 192, 222, 0.8) !important;
+	-webkit-box-shadow: 0 0 5px rgba(91, 192, 222, .5);
+	-moz-box-shadow: 0 0 5px rgba(91, 192, 222, .5);
+	box-shadow: 0 0 5px rgba(91, 192, 222, .5);
+}
+
+.layui-input:hover,
+.layui-textarea:hover {
+	border-color: rgba(91, 192, 222, 0.8) !important;
+	-webkit-box-shadow: 0 0 5px rgba(91, 192, 222, .5);
+	-moz-box-shadow: 0 0 5px rgba(91, 192, 222, .5);
+	box-shadow: 0 0 5px rgba(91, 192, 222, .5);
+}
+
+/* 表单验证失败红色边框效果，阴影效果 */
+.layui-form-danger, .layui-form-danger:focus, .layui-form-danger:hover{
+	border-color: rgba(255,87,34, .8) !important;
+	-webkit-box-shadow: 0 0 5px rgba(255,87,34, .5);
+	-moz-box-shadow: 0 0 5px rgba(255,87,34, .5);
+	box-shadow: 0 0 5px rgba(255,87,34, .5);
+}
+
+
+/*公共样式*/
+
+
+
+body {
+    background-color: rgba(238, 238, 238, 0.2);
+}
+
+.cl {
+    zoom: 1
+}
+
+.cl:after {
+    content: '\20';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
+}
+
+.l {
+    float: left
+}
+
+.r {
+    float: right
+}
+
+foo, .foo {
+    color: #f00;
+}
+
+/*滚动条*/
+
+
+/*
+::-webkit-scrollbar-corner{
+    background: #1aa094;
+}
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1aa094;
+}
+::-webkit-scrollbar-thumb:window-inactive { background: #1aa094}
+*/
+
+/*顶栏*/
+header {
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #eee;
+    position: fixed;
+    z-index: 1001;
+    color: #333;
+}
+header h1{
+    height: 50px;
+    line-height: 50px;
+    width: 150px;
+    display: block;
+    color: #FFF;
+    float: left;
+    background-color: #404852;
+    text-align: center;
+    font-size: 36px;
+}
+
+header .breadcrumb{
+    margin-left: 150px;
+    padding-left: 20px;
+}
+header .breadcrumb i{
+    float: left;
+}
+header .breadcrumb ul{
+    float: left;
+}
+header .breadcrumb li{
+    float: left;
+    margin: 0 3px;
+}
+
+
+
+
+.main {
+    min-height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+/*左栏*/
+
+.left {
+    position: fixed;
+    left: 0;
+    top: 50px;
+    width: 150px;
+    height: 100%;
+    background: #3c444d;
+    overflow-x: auto;
+}
+
+.left ul li {
+    float: left;
+    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+}
+.left ul li.hidden div{
+    display: none;
+}
+.left ul li.hidden i.arrow{
+    transform:rotate(180deg);
+    -ms-transform:rotate(180deg);
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+    -o-transform:rotate(180deg);
+    padding-bottom: 4px;
+}
+
+.left ul li a {
+    color: #ececec;
+    padding: 10px 0 10px 20px;
+    display: block;
+}
+
+.left ul li a:hover,
+.left ul li a.active {
+    color: #009688;
+    background: #28313c;
+}
+
+.left ul li i:first-child {
+    margin-right: 5px;
+}
+
+.left ul li i.arrow {
+    float: right;
+    margin-right: 20px;
+    font-size: 12px;
+    padding-top: 4px;
+}
+.left ul li>div{
+    position: relative;
+    background-color: #404852;
+}
+.left ul li>div a {
+    padding-left: 45px;
+    color: #b2b2b2;
+}
+
+.left ul li i.active {
+    color: #eee;
+    position: absolute;
+    right: -6px;
+    height: 40px;
+    line-height: 40px;
+    top: 0px;
+    margin: 0;
+    font-size: 20px;
+    z-index: 1;
+    transform: rotateY(180deg);
+}
+
+
+/*右侧*/
+.right {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.right>a>i {
+    margin-right: 5px;
+}
+
+.bform {
+    margin: 20px 30px 0 10px
+}
+
+.right .arz a {
+    color: #fff;
+    padding: 10px 18px;
+    background: #009688;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 2px
+}
+
+.right .arz a i {
+    position: relative;
+    right: 3px;
+    top: 1px
+}
+
+.right .arz {
+    margin: 20px 0 0 30px
+}
+
+.right .arz a:hover {
+    opacity: .8;
+    filter: alpha(opacity=80);
+    color: #fff
+}
+
+
+
+/*分页*/
+
+.page{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.page li{
+    float: left;
+}
+
+.page li a, .page li span{
+    padding: 5px 10px;
+    background-color: #009688;
+    color: #FFF;
+    margin-right: 5px;
+    display: block;
+}
+.page li a:hover, .page li span{
+    background-color: #999;
+}
+
+

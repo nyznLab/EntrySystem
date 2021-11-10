@@ -817,6 +817,7 @@
             $("#adopt_age_1").hide();
             $("#adopt_age_2").hide();
             $("#adopt_age_2").val("");
+            $("#patient_adopt_age").val("")
         });
         $("#patient_adopt_1").on('click', function (event) {
             $("#adopt_age_1").show();
@@ -832,16 +833,29 @@
                 $(".patient_parent_death").hide();
                 $(".patient_parent_death_age").hide();
                 $(".patient_parent_death_age").val("");
+                $(".patient_parent_death").hide();
+                $("select[name='patient_parent_death']").removeAttr("disabled","disabled");
+                $("[name='patient_parent_death']").val('1');
+                $(".patient_parent_death_age").hide();
+                $("select[name='patient_parent_death_age']").removeAttr("disabled","disabled");
+                $("[name='patient_parent_death_age']").val('');
                 /*--有一方过世*/
             } else if (val == "4") {
                 $(".step_parent").hide();
+                $("select[name='step_parent']").removeAttr("disabled","disabled");
+                $("#step_parent").val('0');
+
                 $(".patient_parent_death").show();
                 $(".patient_parent_death_age").show();
             } else {
-                $(".patient_parent_death_age").hide();
                 $(".step_parent").hide();
+                $("#step_parent").val('0');
+
                 $(".patient_parent_death").hide();
-                $(".patient_parent_death_age").val("");
+                $("[name='patient_parent_death']").val('1');
+
+                $(".patient_parent_death_age").hide();
+                $("[name='patient_parent_death_age']").val("");
             }
         });
         /*--居住方式 其他居住方式*/
@@ -852,7 +866,7 @@
 
             } else {
                 $(".patient_live_type_other").hide();
-                $(".patient_live_type_other").val("");
+                $("#patient_live_type_other").val("");
             }
         });
     </script>

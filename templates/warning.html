@@ -34,14 +34,16 @@
         <h1>
             {{ content }}
         </h1>
+        {% autoescape off %}
         <span id="time">5</span>秒钟后自动跳转，点击<a href='{{ distance_url }}'>立即跳转</a>
+        {% endautoescape %}
     </div>
 </div>
-
+{% autoescape off %}
 <script type="text/javascript">
     delayURL("{{ distance_url }}");
 </script>
-
+{% endautoescape %}
 {% endblock %}
 
 {% block js %}

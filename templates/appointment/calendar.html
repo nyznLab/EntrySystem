@@ -1,0 +1,257 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}待办管理{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static '/layui/common/layui/css/layui.css' %}" media="all">
+<link rel="stylesheet" href="{% static '/layui/admin/css/style.css' %}" media="all">
+<link rel="stylesheet" href="{% static '/layui/admin/css/global.css' %}" media="all">
+<!-- 后台模板样式 -->
+<link rel="stylesheet" href="{% static '/layui/common/layui/css/admin.css' %}" media="all"/>
+<link rel="stylesheet" href="{% static '/layui/common/layui/css/template.css' %}" media="all"/>
+<link rel="stylesheet" href="{% static '/layui/common/layui/css/cascader.css' %}" media="all"/>
+
+<script src="{% static '/layui/common/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static '/layui/common/layui/layui-2.6.7.js' %}"></script>
+
+<!-- fullcalendar插件 -->
+<link rel='stylesheet' href="{% static '/fullcalendar/main.css' %}"/>
+<script src="{% static '/fullcalendar/main.js' %}"></script>
+<script src="{% static '/fullcalendar/locales-all.js' %}"></script>
+<style>
+    #calendar {
+        max-width: 1100px;
+        margin: 0px auto 40px auto;
+        padding: 0 10px;
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li><a href="{% url 'index_appointment' %}"><i
+                            class="layui-icon layui-icon-extend layui-extend-tag"></i> 预约和待办</a></li>
+                    <li class="active"><a href="{% url 'index_appointment' %}">预约管理</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="index">
+            <button type="button" class="layui-btn layui-btn-warm"><i
+                    class="layui-icon layui-icon-date"></i>列表模式
+            </button>
+        </a>
+
+    </div>
+    <br>
+    <div class="layui-fluid-ted">
+        <div id='calendar'></div>
+    </div>
+
+    <script>
+        function getData() {
+        }
+
+        layui.config({
+            base: "{% static '/layui/layui-exts/' %}"
+        }).extend({
+            iconExtend: 'iconExtend/iconExtend'
+        }).use(['form', 'laydate', 'laypage', 'table', 'iconExtend'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                laydate = layui.laydate,
+                $ = layui.jquery;
+            var laypage = layui.laypage;
+            var table = layui.table;
+            var iconExtend = layui.iconExtend;//console.log(laydate);
+            // 加载Project对象 项目名称，配置
+            var aliyun = iconExtend.loadProject('aliyun', {icon_class: 'a', style: {'color': 'cyan'}})
+        });
+        // 加载日历插件
+        document.addEventListener('DOMContentLoaded', function () {
+            var initialLocaleCode = 'zh-cn';
+            var localeSelectorEl = document.getElementById('locale-selector');
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                customButtons: {
+                    EventButton: {
+                        text: '新增',
+                        click: function (event, jsEvent, view) {
+                            createSchedule('');
+                        }
+                    }
+                },
+                headerToolbar: {
+                    left: 'prev,next today EventButton',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                initialDate: '{{ today }}',
+                locale: initialLocaleCode,
+                buttonIcons: true,
+                editable: true,
+                eventLimit: true,
+                navLinks: true, // can click day/week names to navigate views
+                dayMaxEvents: true, // allow "more" link when too many events
+                selectable: true,
+                select: function (arg) {
+                    console.log(arg.startStr);
+                    // 添加待办
+                    createSchedule(arg.startStr);
+                    calendar.unselect()
+                },
+                events: function (info, successCallback, failureCallback) {
+                    //console.log(info);
+                    var start_date = new Date(info.start).toLocaleDateString().slice().replace(/\//g, '-');
+                    var end_date = new Date(info.end).toLocaleDateString().slice().replace(/\//g, '-');
+                    console.log(start_date);
+                    console.log(end_date);
+                    $.ajax({
+                        url: "{% url 'calendar_list_appointment' %}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            start_date: start_date,
+                            end_date: end_date,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        success: function (json) { // 获取当前月的数据
+                            var events = [];
+                            console.log(json);
+                            if (json.code == 0) {
+                                $.each(json.data, function (i, c) {
+                                    // 分析颜色
+                                    var color = '';
+                                    if (c.status == 2) { // 已取消
+                                        color = '#D2D2D2';
+                                    } else if (c.status == 1) { // 已完成
+                                        color = '#009688';
+                                    } else { // 进行中
+                                        color = '#01AAED';
+                                    }
+                                    // 时间
+                                    appointment_time_data = c.appointment_time.split("-");
+                                    events.push({
+                                        id: c.appointment_id,
+                                        title: '姓名：' + c.name + '，电话：' + c.phone,
+                                        start: c.appointment_date + 'T' + appointment_time_data[0],
+                                        end: c.appointment_date + 'T' + appointment_time_data[1],
+                                        color: color
+                                    });
+                                });
+                            }
+                            successCallback(events);
+                        }
+                    });
+                },
+                eventClick: function (eventObj) { // 编辑
+                    var id = eventObj.event.id;
+                    console.log(id);
+
+                    layer.load({time: 0});
+                    $.ajax({
+                        type: 'GET',
+                        url: '/appointment/check/' + id + '/',
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded",
+
+                        error: function (request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success: function (data) {
+                            layer.closeAll('loading');
+                            //console.log(data);//return false;
+                            var jsonobj = eval(data);
+                            if (jsonobj.code == 0) {
+                                // 弹窗
+                                layer.open({
+                                    resize: false,
+                                    type: 2,
+                                    id: 'ted-edit-' + id,
+                                    title: '编辑待办 - ' + id,
+                                    maxmin: true,
+                                    shadeClose: false, // 点击遮罩关闭层
+                                    shade: false,
+                                    area: ['50%', '85%'],
+                                    content: '/appointment/edit/' + id + '/',
+                                    end: function () {
+                                        calendar.refetchEvents();
+                                        calendar.render();
+                                    }
+                                });
+                            } else {
+                                layer.msg('未找到数据记录', {time: 1000}, function () {
+
+                                });
+                            }
+                        }
+                    });
+                },
+            });
+
+            calendar.render();
+
+
+            function createSchedule(date) {
+                layer.open({
+                    resize: false,
+                    type: 2,
+                    id: 'ted-create',
+                    title: '新增待办',
+                    maxmin: true,
+                    shadeClose: false, // 点击遮罩关闭层
+                    shade: false,
+                    area: ['50%', '85%'],
+                    content: "{% url 'create_appointment' %}?date=" + date,
+                    end: function () {
+                        calendar.refetchEvents();
+                        calendar.render();
+                    }
+                });
+            }
+        });
+
+        function addDate(date, days) {
+            if (days == undefined || days == '') {
+                days = 1;
+            }
+            var date = new Date(date);
+            date.setDate(date.getDate() + days);
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            return date.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+        }
+
+        // 日期月份/天的显示，如果是1位数，则在前面加上'0'
+        function getFormatDate(arg) {
+            if (arg == undefined || arg == '') {
+                return '';
+            }
+            var re = arg + '';
+            if (re.length < 2) {
+                re = '0' + re;
+            }
+            return re;
+        }
+
+        function openEditLayer(info) {
+            layer.msg('未找到数据记录', {time: 1000}, function () {
+            });
+        }
+    </script>
+
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

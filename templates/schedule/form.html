@@ -1,0 +1,493 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}待办管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/layui.css' %}" media="all">
+    <link rel="stylesheet" href="{% static '/layui/admin/css/style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static '/layui/admin/css/global.css' %}" media="all">
+    <!-- 后台模板样式 -->
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/admin.css' %}" media="all"/>
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/template.css' %}" media="all"/>
+    <link rel="stylesheet" href="{% static '/layui/common/layui/css/cascader.css' %}" media="all"/>
+
+    <script src="{% static '/layui/common/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/layui/common/layui/layui-2.6.7.js' %}"></script>
+{% endblock %}
+{% block body %}
+
+    <div id="app">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body"><!--  style="padding: 15px;" -->
+
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend><i class="layui-icon layui-icon-extend layui-extend-tag"></i> 待办管理</legend>
+                    </fieldset>
+
+                    <form class="layui-form layui-form-pane" id="TedForm" enctype="multipart/form-data" action="{% if is_edit == 1 %}{% url 'edit_schedule' schedule.schedule_id %}{% else %}{% url 'create_schedule' %}{% endif %}" method="POST" style="overflow: visible">
+                        {% csrf_token %}
+                        <input type="hidden" name="schedule_id" id="schedule_id" value="{% if is_edit == 1 %}{{ schedule.schedule_id }}{% endif %}">
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label"><font color=red>* </font>编号</label>
+                                <div class="layui-input-inline" style="width: 200px;">
+                                    <input type="number" name="patient_id" id="patient_id" value="{{ schedule.patient_id|default:'' }}" required lay-verify="required" placeholder="编号" autocomplete="off" class="layui-input ted-pr5">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <button type="button" class="layui-btn layui-btn-normal ted-list-patient-detail"><i class="layui-icon layui-icon-extend layui-extend-search"></i> 查找被试信息</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label layui-required">复扫信息</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="name" name="name" value="{{ schedule.name }}">
+                                <input type="text" id="phone" name="phone" value="{{ schedule.phone }}">
+                                <input type="text" id="standard_id" name="standard_id" value="{{ schedule.standard_id }}">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item ted-patient-info" pane style="display: none;">
+                            <label class="layui-form-label layui-required">个人信息</label>
+                            <div class="layui-input-block">
+                                <div class="layui-form-mid layui-word-aux" style="margin-left: 10px;"><span style="font-weight: bold">受试编号</span>：<span id="patient_code"></span></div>
+                                <div class="layui-form-mid layui-word-aux"><span style="font-weight: bold">姓名</span>：<span id="patient_name"></span></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item ted-patient-info" pane style="display: none;">
+                            <label class="layui-form-label layui-required">复扫信息</label>
+                            <div class="layui-input-block">
+                                <table class="layui-table">
+                                    <tbody id="patient_detail_list_html">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-required"><font color=red>* </font>待办标题</label>
+                            <div class="layui-input-block">
+                                <input type="search" name="title" value="{{ schedule.title|default:'' }}" required lay-verify="required" placeholder="待办标题" autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-required"><font color=red>* </font>待办内容</label>
+                            <div class="layui-input-block">
+                                <input type="search" name="content" value="{{ schedule.content|default:'' }}" required lay-verify="required" placeholder="待办内容" autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color=red>* </font>项目类型</label>
+                            <div class="layui-input-block">
+                                {% load TagFilter %}
+                                {% for items_key, items_value in appointment_items_data.items %}
+                                    <input type="radio" name="item_type" lay-skin="primary" title="{{ items_value.title }}" value="{{ items_key }}" {% if items_key == schedule.item_type %}checked{% endif %}>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-required"><font color=red>* </font>时间段</label>
+                            <div class="layui-input-block">
+                                <input type="search" name="date_range" id="date_range" required lay-verify="required" value="{% if is_edit == 1 %}{{ schedule.start_date|default:'' }} ~ {{ schedule.end_date|default:'' }}{% elif date != '' %}{{ date }} ~ {{ date }}{% endif %}" placeholder=" ~ "
+                                       autocomplete="off" class="layui-input ted-pr5">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color=red>* </font>是否紧急</label>
+                            <div class="layui-input-block" style="width: 30%;">
+                                <input type="radio" name="is_urgent" value="0" title="默认" {% if schedule.is_urgent == 0 or is_edit == 0 %}checked{% endif %}>
+                                <input type="radio" name="is_urgent" value="1" title="紧急" {% if schedule.is_urgent == 1 %}checked{% endif %}>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="备注" class="layui-textarea" name="remark" id="remark">{{ schedule.remark|default:'' }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-layout-admin">
+                            <div class="layui-input-block">
+                                {% if schedule.status != 1 %}
+                                    <button class="layui-btn" lay-submit lay-filter="submit"><i class="layui-icon layui-icon-extend layui-extend-check-circle"></i> 提交保存
+                                    </button>
+{#                                    <button type="reset" class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-extend layui-extend-redo"></i> 重置#}
+{#                                    </button>#}
+                                {% endif %}
+                                {% if schedule.status == 1 %}
+                                    <!-- 已完成 -->
+                                {% elif schedule.status == 2 %}
+                                    <!-- 已取消 -->
+                                    <button type="button" class="layui-btn layui-btn-normal ted-init"><i class="layui-icon layui-icon-extend layui-extend-paper-plane"></i> 恢复待办</button>
+                                {% elif schedule.status == 0 %}
+                                    <!-- 进行中 -->
+                                    <button type="button" class="layui-btn layui-btn-normal ted-done"><i class="layui-icon layui-icon-extend layui-extend-check"></i> 完成待办</button>
+                                    <button type="button" class="layui-btn layui-btn-warm ted-cancel"><i class="layui-icon layui-icon-extend layui-extend-times"></i> 取消待办</button>
+                                {% endif %}
+                                <button type="button" class="layui-btn layui-btn-primary ted-close-iframe"><i class="layui-icon layui-icon-extend layui-extend-times-circle"></i> 关闭窗口
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            layui.config({
+                base: "{% static '/layui/layui-exts/' %}"
+            }).extend({
+                iconExtend: 'iconExtend/iconExtend'
+            }).use(['form', 'laydate', 'laypage', 'table', 'iconExtend'], function () {
+                var form = layui.form,
+                    layer = layui.layer,
+                    laydate = layui.laydate,
+                    $ = layui.jquery;
+                var laypage = layui.laypage;
+                var table = layui.table;
+                var iconExtend = layui.iconExtend;//console.log(laydate);
+                // 加载Project对象 项目名称，配置
+                var aliyun = iconExtend.loadProject('aliyun', {icon_class: 'a', style: {'color': 'cyan'}})
+
+                laydate.render({
+                    elem: '#birth_date',
+                    type: 'date',
+                });
+                laydate.render({
+                    elem: '#schedule_date',
+                    type: 'date',
+                });
+                // 日期选择器
+                laydate.render({
+                    elem: '#date_range'
+                    ,type: 'date'
+                    ,range: '~'
+                    ,format: 'yyyy-MM-dd'
+                });
+
+                $('body').delegate('.ted-init', 'click', function () {
+                    layer.confirm('您确定要执行【恢复】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        layer.load({ time: 0 });
+                        // console.log(this.value);
+                        // console.log(obj.elem.checked);
+                        // return false;
+                        // 执行
+                        $.ajax({
+                            type	: 'GET',
+                            url		: "{% url 'init_schedule' schedule.schedule_id %}",
+                            dataType: 'json',
+                            data	: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                        parent.layer.close(index);
+                                        parent.layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+
+                // 处理
+                $('body').delegate('.ted-done', 'click', function () {
+                    //var id = $(this).data('id');
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/schedule/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    layer.confirm('您确定要执行【完成】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: "{% url 'done_schedule' schedule.schedule_id %}",
+                            dataType: 'json',
+                            data	: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                        parent.layer.close(index);
+                                        parent.layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+                // 取消待办
+                $('body').delegate('.ted-cancel', 'click', function () {
+                    var index = $(this).parents('td').parents('tr').attr('data-index');//console.log('/schedule/delete/'+id+'/');return false;
+                    var curr = $(".layui-laypage-em").next().html();
+                    layer.confirm('您确定要执行【取消待办】操作吗？', {
+                        icon: 3,
+                        title: '温馨提示',
+                        btn: ['确定','再想想'] // 按钮
+                    }, function(){
+                        // 执行删除操作
+                        layer.load({ time: 0 });
+                        $.ajax({
+                            type	: 'post',
+                            url		: "{% url 'cancel_schedule' schedule.schedule_id %}",
+                            dataType: 'json',
+                            data	: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            contentType:"application/x-www-form-urlencoded",
+
+                            error: function(request) {
+                                layer.closeAll('loading');
+                                console.log("Connection error");
+                            },
+                            success	: function(data){
+                                layer.closeAll('loading');
+                                //console.log(data);return false;
+                                var jsonobj = eval(data);
+
+                                //$("tr[data-index='"+index+"']").remove();
+                                var i = layer.confirm();layer.close(i);
+                                var icon = 1;
+                                if ( jsonobj.code == 0 )
+                                {
+                                    icon = 1;
+                                } else {
+                                    icon = 2;
+                                }
+                                layer.msg(jsonobj.message, { icon: icon, shade: 0.5, time: 500 }, function(){
+                                    if (icon == 1) {
+                                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                        parent.layer.close(index);
+                                        parent.layui.table.reload('ted-list');
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }, function(){
+                        /*layer.msg('取消了操作', {
+                            time: 500,
+                        });*/
+                    });
+                });
+
+                form.on('submit(submit)', function (data) {
+                    // 被试记录
+                    var patient_session_id = $("input[name='patient_session_id']:checked").val();
+                    //console.log(patient_session_id);return false;
+                    if (patient_session_id == '' || typeof(patient_session_id) == 'undefined') {
+                        layer.msg('请选择复扫记录！', { icon: 5, anim: 6 });
+                        return false;
+                    }
+                    // 预约项目
+                    var item_type = $("input[name='item_type']:checked").val();
+                    //console.log(item_type);return false;
+                    if (item_type == '' || typeof(item_type) == 'undefined') {
+                        layer.msg('请选择待办项目！', { icon: 5, anim: 6 });
+                        return false;
+                    }
+                    // 时间段处理
+                    var date_range = data.field['date_range'];
+                    var start_date = '';
+                    var end_date = '';
+                    if (date_range) {
+                        var dateRang = date_range.split('~');
+                        start_date = dateRang[0].trim();
+                        end_date = dateRang[1].trim();
+                    }
+                    data.field['start_date'] = start_date
+                    data.field['end_date'] = end_date
+                    //console.log(item_type);
+                    //console.log(data.field);return false;
+                    layer.load({ time: 0 });
+                    $.ajax({
+                        url: data.form.action,
+                        // dataType: 'JSON',
+                        type: 'POST',
+                        async: true,
+                        cache: false,
+                        data: data.field,//JSON.stringify(data.field),
+                        // contentType : "application/json",
+                        // headers : {"Content-Type" : "application/json;charset=utf-8"},
+                        error: function(request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success :function (e) {
+                            layer.closeAll('loading');
+                            var jsonobj = eval('(' + e + ')');
+                            //console.log(jsonobj);return false;
+                            if (jsonobj.code == 0) {
+                                layer.msg(jsonobj.message, {
+                                    icon: 1,
+                                    shade: 0.5,
+                                    time: 500,
+                                }, function(){
+                                    parent.layer.close(index);
+                                    parent.layui.table.reload('ted-list');
+                                });
+                            } else {
+                                layer.msg(jsonobj.message, { icon: 2, shade: 0.5, time: 1000, shadeClose: true});
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+                // 查询被试信息
+                $('body').delegate('.ted-list-patient-detail', 'click', function () {
+                    var patient_id = $('#patient_id').val();
+                    if (patient_id == '') {
+                        layer.msg('编号不能为空', { icon: 2, shade: 0.5, time: 1000, shadeClose: true});
+                        return false;
+                    }
+                    getPatientDetailList(patient_id, {{ schedule.patient_session_id }})
+                });
+
+                if ({{ is_edit }} == 1) {
+                    getPatientDetailList({{ schedule.patient_id|default:0 }}, {{ schedule.patient_session_id|default:0 }})
+                }
+                
+                function getPatientDetailList(patient_id, patient_session_id) {
+                    // 查询数据
+                    layer.load({ time: 0 });
+                    $.ajax({
+                        url: "{% url 'list_patient_detail' %}",
+                        type: 'POST',
+                        data: {
+                            'patient_id' : patient_id,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        // contentType : "application/json",
+                        // headers : {"Content-Type" : "application/json;charset=utf-8"},
+                        error: function(request) {
+                            layer.closeAll('loading');
+                            console.log("Connection error");
+                        },
+                        success :function (e) {
+                            layer.closeAll('loading');
+                            var jsonobj = eval('(' + e + ')');
+                            //console.log(jsonobj);return false;
+                            if (jsonobj.code == 0) {
+                                // 显示患者信息
+                                $('.ted-patient-info').show();
+                                $('#name').val(jsonobj.data.patient_name);
+                                $('#patient_name').html(jsonobj.data.patient_name);
+                                $('#patient_code').html('NN_' + formatZero(jsonobj.data.patient_code, 8));
+                                // 遍历数据
+                                var patient_detail_list_html = '';
+                                var checked = '';
+                                for(var i in jsonobj.data.patient_detail_list) {
+                                    if (patient_session_id == jsonobj.data.patient_detail_list[i].id) {
+                                        checked = 'CHECKED';
+                                    } else {
+                                        checked = '';
+                                    }
+                                    patient_detail_list_html += '<tr><td><input '+checked+' type="radio" lay-filter="ted_select_patient_session_id" class="ted_select_patient_session_id" data-standard-id="'+jsonobj.data.patient_detail_list[i].standard_id+'" data-phone="'+jsonobj.data.patient_detail_list[i].phone+'" name="patient_session_id" value="'+jsonobj.data.patient_detail_list[i].id+'" title="复扫编号：'+jsonobj.data.patient_detail_list[i].standard_id+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复扫时间：'+jsonobj.data.patient_detail_list[i].scan_date+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系电话：'+jsonobj.data.patient_detail_list[i].phone+'"></td></tr>';
+                                }
+                                //console.log(checked);
+                                $('#patient_detail_list_html').html(patient_detail_list_html);
+                                form.render();
+                                //console.log(jsonobj);return false;
+
+                            } else {
+                                layer.msg(jsonobj.message, { icon: 2, shade: 0.5, time: 1000, shadeClose: true});
+                            }
+                        }
+                    });
+                }
+
+                form.on('radio(ted_select_patient_session_id)', function(data){
+                    var phone = data.elem.getAttribute('data-phone');
+                    var standard_id = data.elem.getAttribute('data-standard-id');
+                    $('#phone').val(phone);
+                    $('#standard_id').val(standard_id);
+                });
+
+                function formatZero(num, len) {
+                    if (String(num).length > len) return num;
+                    return (Array(len).join(0) + num).slice(-len);
+                }
+
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+
+                $('body').delegate('.ted-close-iframe', 'click', function () {
+                    parent.layer.close(index);
+                });
+            });
+        </script>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}
