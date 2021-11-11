@@ -93,8 +93,29 @@
             ans=get_answer_by_index(index)
             update_question(rsp,ans)
             index++;
+            console.log(index)
+            console.log("****")
         }
     });
+    function get_answer_by_index(index){
+        $.ajaxSettings.async=false;
+        let res
+        $.post("/scales/get_answer_by_index",
+            {
+                patient_session_id:patientSessionId,
+                scale_id:scaleId,
+                question_index: index,
+            },
+            function (answer){
+                res=answer;
+            },
+            "Json"
+        );
+        console.log("BBB")
+        console.log(res)
+        $.ajaxSettings.async = true;
+        return res;
+    }
 
     function get_question_by_index_display(index){
         $.ajaxSettings.async = false;
@@ -105,46 +126,33 @@
                 scale_id:scaleId,
                 question_index:index,
             },
-        function (result,statue){
-            if (statue==="success"){
+            function (result,statue){
+                if (statue==="success"){
                 rsp=result;
-            }
-        },
-        "Json"
+                }
+            },
+            "Json"
         );
         // 渲染题目
         console.log("AAA")
         console.log(rsp);
-        updateQuestion(rsp);
+        {#updateQuestion(rsp);#}
         $.ajaxSettings.async = true;
-    return rsp;
+        return rsp;
     }
 
-    // 限制点击频次
-    function clickFrequency() {
-        if(!Clicked){
-            // 如果没点过 更新为点过， 设置2秒后过期
-            Clicked = true;
-            setTimeout(function () {
-                Clicked = false;
-            }, 2000);
-            return true;
-        }
-        return false;
-    }
-
-    function updateQuestion(questionInfo) {
+    function update_question(rsq,res){
         let input;
-        $(".question").text(questionInfo.title);
-        let j = 0, len = questionInfo.options.length;
+        $(".question").text(rsq.title);
+        let j = 0, len = rsq.options.length;
         for (; j < len; j++) {
-            if (questionInfo.options[j].type === "radio") {
+            if (rsq.options[j].type === "radio") {
                 input = document.createElement("input");
                 input.setAttribute("type", "radio");
-                input.setAttribute("name", questionInfo.options[j].name);
-                input.setAttribute("value", questionInfo.options[j].value);
+                input.setAttribute("name", rsq.options[j].name);
+                input.setAttribute("value", rsq.options[j].value);
                 input.setAttribute("class", "scale_form");
-                input.setAttribute("data-labelauty", questionInfo.options[j].content);
+                input.setAttribute("data-labelauty", rsq.options[j].content);
                 let div = document.createElement("div");
                 div.setAttribute("class", "row show-grid");
                 div.setAttribute("style", "margin:10px");
@@ -152,18 +160,20 @@
                 let options = $(".options");
                 label.append(input);
                 div.append(input);
-                div.append(questionInfo.options[j].content)
+                div.append(rsq.options[j].content)
                 options.append(div);
+                if(rsq.options[j].value==res)
+                    input.checked = true;
                 continue;
             }
-            if (questionInfo.options[j].type === "text") {
+            if (rsq.options[j].type === "text") {
                 const div = document.createElement("div");
                 div.setAttribute("class", "");
                 div.setAttribute("style", "margin:10px auto;");
                 let options = $(".options");
                 input = document.createElement("input");
                 input.setAttribute("type", "text");
-                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("name", rsq.options[j].name);
                 input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
                 input.setAttribute("class", "scale_form");
                 div.append(input);
@@ -174,12 +184,6 @@
                 return;
             }
         }
-    }
-
-
-    function cleanOptions() {
-        let options = $(".options");
-        options.empty();
     }
 
     $.extend({
