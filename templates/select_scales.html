@@ -56,6 +56,14 @@
 
 
                         <div class="row" style="margin-bottom: 10px;">
+
+                            <label class="col-sm-5 control-label" for="fake_name" style="text-align: right">假名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class=" sel_beauty form-control input-sm " name="fake_name" disabled/>
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-5 control-label" style="text-align: right" for="inspect_date"> 送检日期：</label>
                             <div class="col-sm-4">
                                 <input type="date" class=" sel_beauty form-control input-sm" name="inspect_date" disabled/>
@@ -66,6 +74,14 @@
                             <label class="col-sm-5 control-label" style="text-align: right" for="blood_sampling_date"> 采血日期：</label>
                             <div class="col-sm-4">
                                 <input type="date" class=" sel_beauty form-control input-sm" name="blood_sampling_date" disabled/>
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-5 control-label" style="text-align: right" for="centrifugal_date"> 离心日期：</label>
+                            <div class="col-sm-4">
+                                <input type="date" class=" sel_beauty form-control input-sm" name="centrifugal_date" disabled/>
                             </div>
                         </div>
 
@@ -100,7 +116,7 @@
                             <label class="col-sm-5 control-label" for="extract_dna" style="text-align: right">DNA提取(浓度ng/μl):</label>
                             <div class="col-sm-4">
                                 <input type="number" class=" sel_beauty form-control input-sm " min="0" step="0.00001"
-                                       onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" name="extract_dna" disabled/>
+                                        name="extract_dna" disabled/>
                             </div>
 
                         </div>
@@ -435,7 +451,9 @@ var num=1
                 var blood_sample_id="{{ r_patient_blood.blood_sample_id|processNone }}"
                 if('{{ r_patient_blood }}'!='None'){
                     $("input[name='blood_sample_id']").val('{{ r_patient_blood.blood_sample_id|processNone }}');
+                    $("input[name='fake_name']").val('{{ r_patient_blood.fake_name|processNone }}');
                     $("input[name='blood_sampling_date']").val('{{ r_patient_blood.blood_sampling_date|processNone }}');
+                    $("input[name='centrifugal_date']").val('{{ r_patient_blood.centrifugal_date|processNone }}');
                     $("input[name='inspect_date']").val('{{ r_patient_blood.inspect_date|processNone }}');
                     $("input[name='total_blood_number']").val('{{ r_patient_blood.total_blood_number|processNone }}');
                     $("input[name='plasma_number']").val('{{ r_patient_blood.plasma_number|processNone }}');
@@ -546,16 +564,20 @@ var num=1
             $("input[type='radio']").labelauty();
         });
         function remove_disabled(){
+            $("input[name='fake_name']").removeAttr("disabled","disabled");
             $("input[name='blood_sampling_date']").removeAttr("disabled","disabled");
             $("input[name='inspect_date']").removeAttr("disabled","disabled");
+            $("input[name='centrifugal_date']").removeAttr("disabled","disabled");
             $("input[name='total_blood_number']").removeAttr("disabled","disabled");
             $("input[name='plasma_number']").removeAttr("disabled","disabled");
             $("input[name='hemocyte_number']").removeAttr("disabled","disabled");
             $("input[name='extract_dna']").removeAttr("disabled","disabled");
         }
         function add_disabled(){
+            $("input[name='fake_name']").attr("disabled","disabled");
             $("input[name='blood_sampling_date']").attr("disabled","disabled");
             $("input[name='inspect_date']").attr("disabled","disabled");
+            $("input[name='centrifugal_date']").attr("disabled","disabled");
             $("input[name='total_blood_number']").attr("disabled","disabled");
             $("input[name='plasma_number']").attr("disabled","disabled");
             $("input[name='hemocyte_number']").attr("disabled","disabled");

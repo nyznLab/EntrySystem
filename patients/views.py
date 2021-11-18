@@ -302,6 +302,7 @@ def get_patient_detail(request):
                           'other_diagnosis': patient_baseinfo.other_diagnosis,
                           'ghr_relatives_data':ghr_list,
                           'is_ghr':patient_baseinfo.is_ghr,
+                          'is_modify_diagnosis':patient_baseinfo.is_modify_diagnosis,
                           'patients':patients,
                           'doctor_id':request.session.get('doctor_id'),
                           'medical_advice': medical_advice,
