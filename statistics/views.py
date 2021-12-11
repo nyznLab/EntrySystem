@@ -37,7 +37,7 @@ def get_patient_data(request):
             if data.get('startDate') or data.get('endDate'):
                 search_dict['scan_date__range'] = (data['startDate'], data['endDate'])
 
-            # 以下为量表分数的条件筛选（由于执行几乎重复代码，所以封装成函数）
+            # 以下为量表分数的条件筛选（封装成函数）
             scales_models = {
                 'hama': 'RPatientHama',
                 'hamd17': 'RPatientHamd17',
@@ -51,11 +51,12 @@ def get_patient_data(request):
             count = 0
             fact_data_list = []
 
-            # table的page设置为true后渲染会自动传给后台page和limit值
+            # 前台table设置中的page设置为true后渲染会自动传给后台page和limit值
             page_num = int(data.get('page', 1))
             page_limit = int(data.get('limit', 30))
             print(search_dict)
             scales_scores = []
+
             patients, count = statistics_dao.get_all_patient_by_filter(search_dict)
             if not data.get('all'):
                 patients = paginator(patients, page_num, page_limit)
@@ -64,8 +65,13 @@ def get_patient_data(request):
             for patient_detail in patients:
                 scales_do = statistics_dao.get_one_patient_scales(patient_detail['id'])
                 scales_scores = statistics_dao.get_scales_score(patient_detail['id'])
+                
+                new_self_rating_scores = statistics_dao.get_restructured_self_total_score_by_session_id(
+                    patient_detail['id']
+                )
                 patient_detail.update(scales_do)
                 patient_detail.update(scales_scores)
+                patient_detail.update(new_self_rating_scores)
                 fact_data_list.append(patient_detail)
 
             # 这里返回格式最好保持一致（是指res的key一致，不一致也可以前台parseData处理），data的值为字典列表
@@ -116,3 +122,11 @@ def get_sessions(request):
         s['session_id_standard'] = 'S' + str(s['session_id']).zfill(3)
     return JsonResponse({'code': 0, 'msg': 'ok', 'data': list(session)})
 
+
+def get_restructured_self_rating(request):
+    result = statistics_dao.get_restructured_self_total_score(1871, 12)
+    return JsonResponse({
+        'code': 0,
+        'msg': 'ok',
+        'data': list(result)
+    })
