@@ -127,12 +127,16 @@ def get_self_scale_url(scale_detail):
 # 进入自评量表查看页面
 @register.filter(name='get_self_check_scale_url')
 def get_self_check_scale_url(scale_detail):
-    scale_id = scale_detail['scale_id']
-    patient_session_id = scale_detail['patient_session_id']
-    patient_id = scale_detail['patient_session_id__patient_id']
-    next_page_url = config.check_scales_html_dict[int(scale_id)]
-    redirect_url = '{}?patient_session_id={}&patient_id={}'.format(next_page_url, str(patient_session_id),
-                                                                   str(patient_id))
+    try:
+        scale_id = scale_detail['scale_id']
+        patient_session_id = scale_detail['patient_session_id']
+        patient_id = scale_detail['patient_session_id__patient_id']
+        next_page_url = config.check_scales_html_dict[int(scale_id)]
+        redirect_url = '{}?patient_session_id={}&patient_id={}'.format(next_page_url, str(patient_session_id),
+                                                                       str(patient_id))
+    except Exception as e:
+        print(e)
+        return ""
     return redirect_url
 
 

@@ -16,6 +16,7 @@ scaleId_Models_Map = {
     '30': models.TScaleGad,
     '31': models.TScaleInsomnia,
     '32': models.TScalePss,
+    '34': models.TScalePhoneAbuse,
 }
 
 # 量表完成状态常量
