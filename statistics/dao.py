@@ -49,6 +49,31 @@ def get_one_patient_scales(patient_session_id):
     return scales_dict
 
 
+# 按条件筛选患者信息（只返回patient_id和session_id）
+def get_all_patientID_and_sessionID_by_filter(condition):
+    results = ''
+    count = 0
+
+    if condition:
+        results = patients_models.DPatientDetail.objects.select_related(
+            'patient',
+            'doctor'
+        ).filter(**condition).order_by('patient_id')
+        count = results.count()
+
+    else:
+        results = patients_models.DPatientDetail.objects.select_related(
+            'patient',
+            'doctor'
+        ).order_by('patient_id')
+        count = results.count()
+
+        # results = patients_models.DPatientDetail.objects.filter(patient__name__contains=value)
+
+    info_list = list(results.values('patient_id', 'session_id'))
+
+    return info_list, count
+
 # 按条件筛选患者信息
 def get_all_patient_by_filter(condition):
 
@@ -86,6 +111,24 @@ def get_all_patient_by_filter(condition):
         n += 1
     return info_list, count
 
+
+def get_scales_score_with_scaleid(
+        patient_session_id,
+        models_dict,
+        scale_id_list,
+        scale_total_score_name_list,
+        scale_total_score_list,
+        scale_total_score_compare_list):
+    scales_score = {}
+    for s_id in scale_id_list:
+
+        model = apps.get_model('scales', models_dict[s_id])
+        res = model.objects.filter(patient_session_id=patient_session_id).values()
+        if res.exists():
+            scales_score[models_dict[s_id]] = res[0]
+        else:
+            scales_score[models_dict[s_id]] = {}
+        return scales_score
 
 # 获取量表单项得分与总分
 def get_scales_score(patient_session_id):

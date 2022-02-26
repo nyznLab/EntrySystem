@@ -532,7 +532,7 @@
             }]
             ,title:'statistic_results'
             ,page: true
-            ,url: '{% url 'statistics' %}'
+            ,url: '{% url 'get_data' %}'
             ,height:'full-270'
             ,soulSort: false
             ,overflow: 'tips'
@@ -1481,7 +1481,7 @@
                         }, function(){
                             layer.msg('请稍等...',{time:0})
                             // 全部导出
-                            $.get('{% url 'statistics' %}',{all:1},function (res, status){
+                            $.get('{% url 'get_data' %}',{all:1},function (res, status){
                                 if(status === 'success'){
                                     layer.msg('导出成功！')
                                     table.exportFile(tb_patient.config.id, res.data)
@@ -1494,7 +1494,7 @@
                         layer.confirm('确定导出目前有筛选条件后数据吗？',{ btn: ['确定','取消'] }
                         ,function () {
                             layer.msg('请稍等...',{time:0})
-                            $.get('{% url 'statistics' %}',{all:1,...condition},function (res, status){
+                            $.get('{% url 'get_data' %}',{all:1,...condition},function (res, status){
                                 if(status === 'success'){
                                     layer.msg('导出成功！')
                                     table.exportFile(tb_patient.config.id, res.data)
@@ -1646,7 +1646,7 @@
         $('button#click').click(function (){
             $.ajax({
                 type: 'get',
-                url:'{% url 'statistics' %}',
+                url:'{% url 'get_data' %}',
                 dataType: 'json',
                 success: function (res){
                     console.log(res.data)
