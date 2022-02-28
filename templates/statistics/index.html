@@ -133,6 +133,7 @@
                                 <button class="layui-btn-sm layui-btn layui-btn-primary" lay-event="checkbox_export" id="multiselect_export_btn"><i class="layui-icon layui-icon-export"></i> 多选导出</button>
                             </div>
                             <button class="layui-btn-sm layui-btn layui-btn-primary layui-border-green" lay-event="guide" id="guide_btn"><i class="layui-icon layui-icon-service"></i> 使用引导</button>
+                            <button class="layui-btn-sm layui-btn layui-btn-primary" id="click">测试数据</button>
                         </script>
                     </div>
                 </div>
@@ -332,9 +333,9 @@
 <script type="text/html" id="scalesTpl">
     <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="show" style="padding: 0 9px;line-height: 28px;height: 28px">查看</button>
 </script>
-<script type="text/html" id="filterCompareTpl">
-    <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="addToCompare" style="padding: 0 9px;line-height: 28px;height: 28px">添加到对比</button>
-</script>
+{#<script type="text/html" id="filterCompareTpl">#}
+{#    <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="addToCompare" style="padding: 0 9px;line-height: 28px;height: 28px">添加到对比</button>#}
+{#</script>#}
     <div class="" id="teach_tips" style="display:none">
         <p>这是一个具有筛选功能的复扫记录统计表格</p>
     </div>
@@ -509,13 +510,13 @@
             console.log(this); //当前Tab标题所在的原始DOM元素
             console.log(data.index); //得到当前Tab的所在下标
             console.log(data.elem); //得到当前的Tab大容器
-            
+
         });
 
 
         let driver;
 
-
+        //TODO 表格总设置
         let tb_patient = table.render({
             elem: '#record'
             ,id: 'patient_table'
@@ -531,7 +532,7 @@
             }]
             ,title:'statistic_results'
             ,page: true
-            ,url: '{% url 'statistics' %}'
+            ,url: '{% url 'get_data' %}'
             ,height:'full-270'
             ,soulSort: false
             ,overflow: 'tips'
@@ -718,56 +719,13 @@
 
                 }}
                 ,{field:'doctor',rowspan:3, title:'医生', width:90}
-                ,{title:'他评量表'
-                    ,hide:true
-                    ,rowspan:3
-                    ,width:60
-                    ,collapse:true
-                    ,icon: ['layui-icon layui-icon-triangle-r', 'layui-icon layui-icon-triangle-d']
-                    ,align:'center'
-                    ,childWidth: 'full'
-                    ,isChild: function(d){return d.HAMA.total_score !== undefined}
-                    ,children: function(d){
-                    var col_hama  = []
-                        ,col_hamd17 = []
-                    for(let i in d.HAMA){
-                        let field_obj = {title:i, field:i, sort:true}
-                        col_hama.push(field_obj)
-                    }
-                    for(let i in d.HAMD17){
-                        let field_obj = {title:i, field:i, sort:true}
-                        col_hamd17.push(field_obj)
-                    }
-                    return [{
-                        title:'汉密尔顿焦虑量表（HAMA）'
-
-                        ,page:false
-                        ,cols:[col_hama]
-                        ,data:[d.HAMA]
-                        ,done: function () {
-                            soulTable.render(this);
-                        }
-                    },{
-                        title:'汉密尔顿抑郁量表（HAMD-17）'
-
-                        ,page:false,
-                        cols:[col_hamd17]
-                        ,data:[d.HAMD17]
-                        ,done: function () {
-                            soulTable.render(this);
-                        }
-                    }]
-                    },childClose:function (obj) {
-                        table.resize('patient_table')
-                    }
-                }
-                ,{title:'他评（others-rating）',colspan:4,align:'center', style:'background-color:#000;color:#fff'}
-                ,{title:'自评（self-rating）',colspan:19,align:'center'}
-
-                ,{title:'操作',rowspan: 3,align:'center',width: 120, toolbar: '#filterCompareTpl',fixed: 'right'}
+                ,{title:'他评',colspan:4,align:'center', style:'background-color:#000;color:#fff'}
+                ,{title:'自评',colspan:19,align:'center'}
+                ,{title:'自评（新）',colspan:28,align:'center',width:180}
+                {#,{title:'操作',rowspan: 3,align:'center',width: 120, toolbar: '#filterCompareTpl',fixed: 'right'}#}
             ]
                 ,[
-                {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）- 总分',rowspan: 2,width: 120, templet:function (d) {
+                {field:'HAMA',title:'汉密尔顿焦虑量表（HAMA）',rowspan: 2,width: 120, templet:function (d) {
                     if(d.HAMA.total_score === undefined ){
                         return '--'
                     }
@@ -776,7 +734,7 @@
                     }
                     return d.HAMA.total_score
                 }}
-                ,{field:'HAMD17', title:'汉密尔顿抑郁量表（HAMD-17）- 总分',rowspan: 2, width: 120, templet:function (d) {
+                ,{field:'HAMD17', title:'汉密尔顿抑郁量表（HAMD-17）',rowspan: 2, width: 120, templet:function (d) {
                     if(d.HAMD17.total_score === undefined){
                         return '--'
                     }
@@ -785,7 +743,7 @@
                     }
                     return d.HAMD17.total_score
                 }}
-                ,{field:'YMRS', title:'杨氏躁狂量表（YMRS）- 总分',rowspan: 2,width: 120,templet: function (d) {
+                ,{field:'YMRS', title:'杨氏躁狂量表（YMRS）',rowspan: 2,width: 120,templet: function (d) {
                     if(d.YMRS.total_score === undefined){
                         return '--'
                     }
@@ -794,7 +752,7 @@
                     }
                     return d.YMRS.total_score
                 }}
-                ,{field:'BPRS', title:'简明精神病量表（BPRS）- 总分',rowspan: 2,width: 120,templet: function (d) {
+                ,{field:'BPRS', title:'简明精神病量表（BPRS）',rowspan: 2,width: 120,templet: function (d) {
                     if(d.BPRS.total_score === undefined){
                         return '--'
                     }
@@ -804,7 +762,7 @@
                     return d.BPRS.total_score
                 }}
 
-                ,{field:'adolescent_events', title:'青少年生活事件量表（ALSEC）- 总分',rowspan: 2,width: 120, templet:function (d) {
+                ,{field:'adolescent_events', title:'青少年生活事件量表（ALSEC）',rowspan: 2,width: 120, templet:function (d) {
                     if(d.adolescent_events.total_score === undefined ){
                         return '--'
                     }
@@ -813,7 +771,7 @@
                     }
                     return d.adolescent_events.total_score
                 }}
-                ,{field:'atq', title:'自动思维量表（ATQ）- 总分',rowspan: 2,width:120, templet:function (d) {
+                ,{field:'atq', title:'自动思维（ATQ）',rowspan: 2,width:120, templet:function (d) {
                     if(d.atq.total_score === undefined ){
                         return '--'
                     }
@@ -822,7 +780,7 @@
                     }
                     return d.atq.total_score
                 }}
-                ,{field: 'cognitive_emotion', title:'认知情绪调节问卷（CERQ-C）- 总分',rowspan: 2, width: 120, templet:function (d) {
+                ,{field: 'cognitive_emotion', title:'认知情绪调节问卷（CERQ-C）',rowspan: 2, width: 120, templet:function (d) {
                     if(d.cognitive_emotion.total_score === undefined ){
                         return '--'
                     }
@@ -831,7 +789,7 @@
                     }
                     return d.cognitive_emotion.total_score
                 }}
-                ,{field: 'happiness', title:'斯奈斯和汉密尔顿快乐量表（Happiness）- 总分',rowspan: 2 ,width: 120, templet:function (d) {
+                ,{field: 'happiness', title:'斯奈斯和汉密尔顿快乐（Happiness）',rowspan: 2 ,width: 120, templet:function (d) {
                     if(d.happiness.total_score === undefined ){
                         return '--'
                     }
@@ -840,7 +798,7 @@
                     }
                     return d.happiness.total_score
                 }}
-                ,{field: 'manicsymptom', title: '33项轻躁狂症状清单（HCL-33）- 总分',rowspan: 2, width: 120, templet:function (d) {
+                ,{field: 'manicsymptom', title: '33项轻躁狂症状清单（HCL-33）',rowspan: 2, width: 120, templet:function (d) {
                     if(d.manicsymptom.total_score === undefined ){
                         return '--'
                     }
@@ -849,7 +807,7 @@
                     }
                     return d.manicsymptom.total_score
                 }}
-                ,{field: 'pleasure', title: '快感体验能力量表（TEPS）- 总分',rowspan: 2, width: 120, templet:function (d) {
+                ,{field: 'pleasure', title: '快感体验能力量表（TEPS）',rowspan: 2, width: 120, templet:function (d) {
                     if(d.pleasure.total_score === undefined ){
                         return '--'
                     }
@@ -858,16 +816,25 @@
                     }
                     return d.pleasure.total_score
                 }}
-                ,{field: 'suicidal', title: '自杀意念及行为史（BSS）- 总分',rowspan: 2, width: 120, templet: function (d) {
-                    if(d.suicidal.total_score === undefined ){
+                ,{field: 'suicidal', title: '自杀意念及行为史（BSS）（最近一周）',rowspan: 2, width: 120, templet: function (d) {
+                    if(d.suicidal.total_score_lastweek === undefined ){
                         return '--'
                     }
-                    if(d.suicidal.total_score === '' || d.suicidal.total_score === null){
+                    if(d.suicidal.total_score_lastweek === '' || d.suicidal.total_score_lastweek === null){
                         return '暂无'
                     }
-                    return d.suicidal.total_score
+                    return d.suicidal.total_score_lastweek
                 }}
-                ,{field: 'ybobsessiontable', title:'耶鲁布朗强迫症严重程度（YBOCS）- 总分',rowspan: 2, width: 120, templet:function (d) {
+                ,{field: 'suicidal', title: '自杀意念及行为史（BSS）（最低落）',rowspan: 2, width: 120, templet: function (d) {
+                    if(d.suicidal.total_score_mostdepressed === undefined ){
+                        return '--'
+                    }
+                    if(d.suicidal.total_score_mostdepressed === '' || d.suicidal.total_score_mostdepressed === null){
+                        return '暂无'
+                    }
+                    return d.suicidal.total_score_mostdepressed
+                }}
+                ,{field: 'ybobsessiontable', title:'耶鲁布朗强迫症严重程度（YBOCS）',rowspan: 2, width: 120, templet:function (d) {
                     if(d.ybobsessiontable.total_score === undefined ){
                         return '--'
                     }
@@ -876,7 +843,7 @@
                     }
                     return d.ybobsessiontable.total_score
                 }}
-                ,{filed: 'sembu', title:'简式父母养育方式问卷（S-Embu）- 总分',rowspan: 2,width: 120, templet:function (d) {
+                ,{filed: 'sembu', title:'简式父母养育方式问卷（S-Embu）',rowspan: 2,width: 120, templet:function (d) {
                     if(d.sembu.total_score === undefined ){
                         return '--'
                     }
@@ -885,7 +852,7 @@
                     }
                     return d.sembu.total_score
                 }}
-                ,{field: 'gad', title:'广泛性焦虑障碍量表（GAD-7）- 总分',rowspan: 2,width: 120, templet:function (d) {
+                ,{field: 'gad', title:'广泛性焦虑障碍量表（GAD-7）',rowspan: 2,width: 120, templet:function (d) {
                     if(d.gad.total_score === undefined ){
                         return '--'
                     }
@@ -894,7 +861,7 @@
                     }
                     return d.gad.total_score
                 }}
-                ,{field: 'phq', title:'抑郁症筛查量表（PHQ-9）- 总分',rowspan: 2,width:120, templet:function (d) {
+                ,{field: 'phq', title:'抑郁症筛查量表（PHQ-9）',rowspan: 2,width:120, templet:function (d) {
                     if(d.phq.total_score === undefined ){
                         return '--'
                     }
@@ -903,7 +870,7 @@
                     }
                     return d.phq.total_score
                 }}
-                ,{field: 'pss', title:'压力知觉量表（PSS）- 总分',rowspan: 2,width: 120, templet:function (d) {
+                ,{field: 'pss', title:'压力知觉量表（PSS）',rowspan: 2,width: 120, templet:function (d) {
                     if(d.pss.total_score === undefined ){
                         return '--'
                     }
@@ -912,7 +879,7 @@
                     }
                     return d.pss.total_score
                 }}
-                ,{field: 'insomnia', title: '失眠严重指数量表（Insomnia）- 总分',rowspan: 2,width: 120, templet:function (d) {
+                ,{field: 'insomnia', title: '失眠严重指数量表（Insomnia）',rowspan: 2,width: 120, templet:function (d) {
                     if(d.insomnia.total_score === undefined ){
                         return '--'
                     }
@@ -921,63 +888,322 @@
                     }
                     return d.insomnia.total_score
                 }}
-                ,{title: '儿童期（16岁以前）的成长经历量表',align:'center',colspan:5}
+                ,{title: '儿童期（16岁以前）的成长经历量表',align:'center',colspan: 5}
+
+                ,{field: 'bss',title:'自杀意念及行为史（最近一周）',width:150,align:'center',rowspan: 2, templet:function(d){
+                    if(d.bss.bssLastWeekTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.bss.bssLastWeekTotalScore === '' || d.bss.bssLastWeekTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.bss.bssLastWeekTotalScore
+                }}
+                ,{field: 'bss',title:'自杀意念及行为史（最抑郁）',width:150,align:'center',rowspan: 2, templet:function(d){
+                    if(d.bss.bssMostDepressedTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.bss.bssMostDepressedTotalScore === '' || d.bss.bssMostDepressedTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.bss.bssMostDepressedTotalScore
+                }}
+                ,{field: 'yboc',title:'耶鲁布朗强迫症严重程度', width: 150,align:'center',rowspan: 2,templet:function (d) {
+                    if(d.yboc.yboTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.yboc.yboTotalScore === '' || d.yboc.yboTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.yboc.yboTotalScore
+                }}
+                ,{field: 'hcl',title:'33项轻躁狂症状清单',width:150,align:'center',rowspan: 2,templet:function (d) {
+                    if(d.hcl.hcl33TotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.hcl.hcl33TotalScore === '' || d.hcl.hcl33TotalScore === null){
+                        return '暂无'
+                    }
+                    return d.hcl.hcl33TotalScore
+                }}
+                ,{field: 'shapes',title:'斯奈斯和汉密尔顿快乐量表',width:150,align:'center',rowspan: 2,templet:function (d) {
+                    if(d.shapes.shapesTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.shapes.shapesTotalScore === '' || d.shapes.shapesTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.shapes.shapesTotalScore
+                }}
+                ,{field: 'teps',title:'快感体验能力量表',width:150,align:'center',rowspan: 2,templet:function (d) {
+                    if(d.teps.tepsTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.teps.tepsTotalScore === '' || d.teps.tepsTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.teps.tepsTotalScore
+                }}
+                ,{title:'儿童期成长经历量表', align:'center',colspan:6}
+                ,{title:'认知情绪调节问卷', align:'center',colspan:10}
+                ,{field:'aslec', title:'青少年生活事件量表',width:150, align:'center',rowspan: 2,templet:function (d) {
+                    if(d.aslec.aslecTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.aslec.aslecTotalScore === '' || d.aslec.aslecTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.aslec.aslecTotalScore
+                }}
+                ,{field:'atq', title:'自动思维',width:100,align: 'center',rowspan: 2,templet:function (d) {
+                    if(d.atq.atqTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.atq.atqTotalScore === '' || d.atq.atqTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.atq.atqTotalScore
+                }}
+                ,{field:'phq',title:'PHQ-9',width:100,align: 'center',rowspan: 2,templet:function (d) {
+                    if(d.phq.phq9TotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.phq.phq9TotalScore === '' || d.phq.phq9TotalScore === null){
+                        return '暂无'
+                    }
+                    return d.phq.phq9TotalScore
+                }}
+                ,{field:'gad',title:'GAD-7',width:100,align: 'center',rowspan: 2,templet:function (d) {
+                    if(d.gad.gad7TotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.gad.gad7TotalScore === '' || d.gad.gad7TotalScore === null){
+                        return '暂无'
+                    }
+                    return d.gad.gad7TotalScore
+                }}
+                ,{field:'insomnia',title:'失眠严重指数量表',width:150,align: 'center',rowspan: 2,templet:function (d) {
+                    if(d.insomnia.insomniaTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.insomnia.insomniaTotalScore === '' || d.insomnia.insomniaTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.insomnia.insomniaTotalScore
+                }}
+                ,{field:'pss',title:'压力知觉量表',width:130,align: 'center',rowspan: 2,templet:function (d) {
+                    if(d.pss.pssTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.pss.pssTotalScore === '' || d.pss.pssTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.pss.pssTotalScore
+                }}
             ]
                 ,[
-                {field: 'growth.emotion_abuse_score', title: '情感虐待总分', width: 60, templet:function (d) {
+                {field: 'growth.emotion_abuse_score', title: '情感虐待', width: 90, templet:function (d) {
                     if(d.growth.emotion_abuse_score === undefined ){
                         return '--'
                     }
-                    if(d.growth.emotion_abuse_score === '' || d.insomnia.emotion_abuse_score === null){
+                    if(d.growth.emotion_abuse_score === '' || d.growth.emotion_abuse_score === null){
                         return '暂无'
                     }
                     return d.growth.emotion_abuse_score
                 }}
-                ,{field: 'growth.body_abuse_score', title: '躯体虐待总分', width: 60, templet:function (d) {
+                ,{field: 'growth.body_abuse_score', title: '躯体虐待', width: 90, templet:function (d) {
                     if(d.growth.body_abuse_score === undefined ){
                         return '--'
                     }
-                    if(d.growth.body_abuse_score === '' || d.insomnia.body_abuse_score === null){
+                    if(d.growth.body_abuse_score === '' || d.growth.body_abuse_score === null){
                         return '暂无'
                     }
                     return d.growth.body_abuse_score
                 }}
-                ,{field: 'growth.sex_abuse_score', title: '性虐待总分', width: 60, templet:function (d) {
+                ,{field: 'growth.sex_abuse_score', title: '性虐待', width: 80, templet:function (d) {
                     if(d.growth.sex_abuse_score === undefined ){
                         return '--'
                     }
-                    if(d.growth.sex_abuse_score === '' || d.insomnia.sex_abuse_score === null){
+                    if(d.growth.sex_abuse_score === '' || d.growth.sex_abuse_score === null){
                         return '暂无'
                     }
                     return d.growth.sex_abuse_score
                 }}
-                ,{field: 'growth.emotion_ignore_score', title: '情感忽视总分', width: 60, templet:function (d) {
+                ,{field: 'growth.emotion_ignore_score', title: '情感忽视', width: 90, templet:function (d) {
                     if(d.growth.emotion_ignore_score === undefined ){
                         return '--'
                     }
-                    if(d.growth.emotion_ignore_score === '' || d.insomnia.emotion_ignore_score === null){
+                    if(d.growth.emotion_ignore_score === '' || d.growth.emotion_ignore_score === null){
                         return '暂无'
                     }
                     return d.growth.emotion_ignore_score
                 }}
-                ,{field: 'growth.body_ignore_score', title: '躯体忽视总分', width: 60, templet:function (d) {
+                ,{field: 'growth.body_ignore_score', title: '躯体忽视', width: 90, templet:function (d) {
                     if(d.growth.body_ignore_score === undefined ){
                         return '--'
                     }
-                    if(d.growth.body_ignore_score === '' || d.insomnia.body_ignore_score === null){
+                    if(d.growth.body_ignore_score === '' || d.growth.body_ignore_score === null){
                         return '暂无'
                     }
                     return d.growth.body_ignore_score
                 }}
+
+                ,{field: 'ctqsf', title: '情感虐待', width: 90, templet:function (d) {
+                    if(d.ctqsf.ctqSfEmotionalAbuseTotalScore === undefined ){
+                        return '--'
+                    }
+                    if(d.ctqsf.ctqSfEmotionalAbuseTotalScore === '' || d.ctqsf.ctqSfEmotionalAbuseTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.ctqsf.ctqSfEmotionalAbuseTotalScore
+                }}
+                ,{field: 'ctqsf', title: '躯体虐待', width: 90, templet:function (d) {
+                    if(d.ctqsf.ctqSfPhysicalAbuseTotalScore === undefined ){
+                        return '--'
+                    }
+                    if(d.ctqsf.ctqSfPhysicalAbuseTotalScore === '' || d.ctqsf.ctqSfPhysicalAbuseTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.ctqsf.ctqSfPhysicalAbuseTotalScore
+                }}
+                ,{field: 'ctqsf', title: '性虐待', width: 90, templet:function (d) {
+                    if(d.ctqsf.ctqSfSexualAbuseTotalScore === undefined ){
+                        return '--'
+                    }
+                    if(d.ctqsf.ctqSfSexualAbuseTotalScore === '' || d.ctqsf.ctqSfSexualAbuseTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.ctqsf.ctqSfSexualAbuseTotalScore
+                }}
+                ,{field: 'ctqsf', title: '情感忽视', width: 90, templet:function (d) {
+                    if(d.ctqsf.ctqSfEmotionalIgnoranceTotalScore === undefined ){
+                        return '--'
+                    }
+                    if(d.ctqsf.ctqSfEmotionalIgnoranceTotalScore === '' || d.ctqsf.ctqSfEmotionalIgnoranceTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.ctqsf.ctqSfEmotionalIgnoranceTotalScore
+                }}
+                ,{field: 'ctqsf', title: '躯体忽视', width: 90, templet:function (d) {
+                    if(d.ctqsf.ctqSfPhysicalIgnoranceTotalScore === undefined ){
+                        return '--'
+                    }
+                    if(d.ctqsf.ctqSfPhysicalIgnoranceTotalScore === '' || d.ctqsf.ctqSfPhysicalIgnoranceTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.ctqsf.ctqSfPhysicalIgnoranceTotalScore
+                }}
+                ,{field: 'ctqsf', title: '总分', width: 60, templet:function (d) {
+                    if(d.ctqsf.ctqSfTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.ctqsf.ctqSfTotalScore === '' || d.ctqsf.ctqSfTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.ctqsf.ctqSfTotalScore
+                }}
+
+                ,{field: 'cerqc', title: '自我责难', width: 90, templet:function (d) {
+                    if(d.cerqc.cerqSelfBlameTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqSelfBlameTotalScore === '' || d.cerqc.cerqSelfBlameTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqSelfBlameTotalScore
+                }}
+                ,{field: 'cerqc', title: '责难他人', width: 90, templet:function (d) {
+                    if(d.cerqc.cerqOtherBlameTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqOtherBlameTotalScore === '' || d.cerqc.cerqOtherBlameTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqOtherBlameTotalScore
+                }}
+                ,{field: 'cerqc', title: '沉思', width: 60, templet:function (d) {
+                    if(d.cerqc.cerqMeditationTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqMeditationTotalScore === '' || d.cerqc.cerqMeditationTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqMeditationTotalScore
+                }}
+                ,{field: 'cerqc', title: '灾难化', width: 80, templet:function (d) {
+                    if(d.cerqc.cerqCatastrophicallyTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqCatastrophicallyTotalScore === '' || d.cerqc.cerqCatastrophicallyTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqCatastrophicallyTotalScore
+                }}
+                ,{field: 'cerqc', title: '接受', width: 60, templet:function (d) {
+                    if(d.cerqc.cerqAcceptedTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqAcceptedTotalScore === '' || d.cerqc.cerqAcceptedTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqAcceptedTotalScore
+                }}
+                ,{field: 'cerqc', title: '积极重新关注', width: 120, templet:function (d) {
+                    if(d.cerqc.cerqPositiveRefocusTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqPositiveRefocusTotalScore === '' || d.cerqc.cerqPositiveRefocusTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqPositiveRefocusTotalScore
+                }}
+                ,{field: 'cerqc', title: '积极重新关注', width: 120, templet:function (d) {
+                    if(d.cerqc.cerqPositiveRefocusTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqPositiveRefocusTotalScore === '' || d.cerqc.cerqPositiveRefocusTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqPositiveRefocusTotalScore
+                }}
+                ,{field: 'cerqc', title: '重新关注计划', width: 120, templet:function (d) {
+                    if(d.cerqc.cerqProjectRefocusTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqProjectRefocusTotalScore === '' || d.cerqc.cerqProjectRefocusTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqProjectRefocusTotalScore
+                }}
+                ,{field: 'cerqc', title: '积极重新评价', width: 120, templet:function (d) {
+                    if(d.cerqc.cerqPositiveEvaluationTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqPositiveEvaluationTotalScore === '' || d.cerqc.cerqPositiveEvaluationTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqPositiveEvaluationTotalScore
+                }}
+                ,{field: 'cerqc', title: '理性分析', width: 90, templet:function (d) {
+                    if(d.cerqc.cerqRationalAnalysisTotalScore === undefined){
+                        return '--'
+                    }
+                    if(d.cerqc.cerqRationalAnalysisTotalScore === '' || d.cerqc.cerqRationalAnalysisTotalScore === null){
+                        return '暂无'
+                    }
+                    return d.cerqc.cerqRationalAnalysisTotalScore
+                }}
+
             ]]
             ,excel: {
                 on: false
             }
             ,done:function (res, curr, count){
 
-                soulTable.render(this)
+                {#soulTable.render(this)#}
                 element.progress('global_progress','100%');
                 clearInterval(timer);
+
                 // 这里添加id是为了driver能够通过id找到这些按钮
                 $('[lay-event="LAYTABLE_COLS"]').attr('id','cols_btn')
                 $('[lay-event="LAYTABLE_PRINT"]').attr('id','print_btn')
@@ -1021,7 +1247,7 @@
                             popover:{
                                 title:'基本筛选',
                                 description: '这里是一些基本条件的筛选，用的最多的也是这些条件。接下来，我们来看一下怎么使用过滤条件。',
-                                position:'top'
+                                position:'left'
                             },
                             onPrevious: function () {
                                 layer.close(filter_layer);
@@ -1067,7 +1293,7 @@
                         popover:{
                             title:'扫描日期筛选',
                             description: '使用日期选择器范围筛选复扫记录。',
-                            position:'top'
+                            position:'left'
                         },
                         onNext: function () {
                             layer.close(filter_layer);
@@ -1126,6 +1352,10 @@
                         }
                     }
     ])
+            }
+            ,error:function (){
+                element.progress('global_progress','0');
+                clearInterval(timer);
             }
         })
 
@@ -1251,7 +1481,7 @@
                         }, function(){
                             layer.msg('请稍等...',{time:0})
                             // 全部导出
-                            $.get('{% url 'statistics' %}',{all:1},function (res, status){
+                            $.get('{% url 'get_data' %}',{all:1},function (res, status){
                                 if(status === 'success'){
                                     layer.msg('导出成功！')
                                     table.exportFile(tb_patient.config.id, res.data)
@@ -1264,7 +1494,7 @@
                         layer.confirm('确定导出目前有筛选条件后数据吗？',{ btn: ['确定','取消'] }
                         ,function () {
                             layer.msg('请稍等...',{time:0})
-                            $.get('{% url 'statistics' %}',{all:1,...condition},function (res, status){
+                            $.get('{% url 'get_data' %}',{all:1,...condition},function (res, status){
                                 if(status === 'success'){
                                     layer.msg('导出成功！')
                                     table.exportFile(tb_patient.config.id, res.data)
@@ -1407,18 +1637,16 @@
                 })
 
 
-            }
-
-            else if(layEvent === 'addToCompare'){
+            } else if(layEvent === 'addToCompare'){
 
             }
         })
 
 
-        $('input#click').click(function (){
+        $('button#click').click(function (){
             $.ajax({
                 type: 'get',
-                url:'{% url 'statistics' %}',
+                url:'{% url 'get_data' %}',
                 dataType: 'json',
                 success: function (res){
                     console.log(res.data)
