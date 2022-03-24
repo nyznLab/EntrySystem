@@ -1,0 +1,158 @@
+<scale title="PHQ-9简单自测抑郁量表" warn="指导语：在过去两周里，你生活中以下症状出现的频率有多少？">
+    <question index="1" title="曾不只一次有人告诉我，我花越来越长的时间使用手机">
+        <option type="radio" name="question1" value="0">从无</option>
+        <option type="radio" name="question1" value="1">有时</option>
+        <option type="radio" name="question1" value="2">经常</option>
+        <option type="radio" name="question1" value="3">总是</option>
+    </question>
+    <question index="2" title="我只要有一段时间没有用手机，就会觉得心里不舒服">
+        <option type="radio" name="question2" value="0">从无</option>
+        <option type="radio" name="question2" value="1">有时</option>
+        <option type="radio" name="question2" value="2">经常</option>
+        <option type="radio" name="question2" value="3">总是</option>
+    </question>
+    <question index="3" title="我发现自己使用手机的时间越来越长">
+        <option type="radio" name="question3" value="0">从无</option>
+        <option type="radio" name="question3" value="1">有时</option>
+        <option type="radio" name="question3" value="2">经常</option>
+        <option type="radio" name="question3" value="3">总是</option>
+    </question>
+    <question index="4" title="如果手机突然被没收，或是突然被限制不能用手机，会觉得很难受">
+        <option type="radio" name="question4" value="0">从无</option>
+        <option type="radio" name="question4" value="1">有时</option>
+        <option type="radio" name="question4" value="2">经常</option>
+        <option type="radio" name="question4" value="3">总是</option>
+    </question>
+    <question index="5" title="不管再累，使用手机时总觉得很有精神">
+        <option type="radio" name="question5" value="0">从无</option>
+        <option type="radio" name="question5" value="1">有时</option>
+        <option type="radio" name="question5" value="2">经常</option>
+        <option type="radio" name="question5" value="3">总是</option>
+    </question>
+    <question index="6" title="使用手机所花的时间或金钱，常常超过自己本来预定的程度">
+        <option type="radio" name="question6" value="0">从无</option>
+        <option type="radio" name="question6" value="1">有时</option>
+        <option type="radio" name="question6" value="2">经常</option>
+        <option type="radio" name="question6" value="3">总是</option>
+    </question>
+    <question index="7" title="虽然使用手机对我的日常人际关系造成负面影响，我仍未减少使用手机">
+        <option type="radio" name="question7" value="0">从无</option>
+        <option type="radio" name="question7" value="1">有时</option>
+        <option type="radio" name="question7" value="2">经常</option>
+        <option type="radio" name="question7" value="3">总是</option>
+    </question>
+    <question index="8" title="我曾不止一次因为使用手机的关系而睡不到四小时">
+        <option type="radio" name="question8" value="0">从无</option>
+        <option type="radio" name="question8" value="1">有时</option>
+        <option type="radio" name="question8" value="2">经常</option>
+        <option type="radio" name="question8" value="3">总是</option>
+    </question>
+    <question index="9" title="与三个月前比起来，平均而言，我每周使用手机的时间比以前增加许多">
+        <option type="radio" name="question9" value="0">从无</option>
+        <option type="radio" name="question9" value="1">有时</option>
+        <option type="radio" name="question9" value="2">经常</option>
+        <option type="radio" name="question9" value="3">总是</option>
+    </question>
+    <question index="10" title="我只要有一段时间没有使用手机，就会情绪低落">
+        <option type="radio" name="question10" value="0">从无</option>
+        <option type="radio" name="question10" value="1">有时</option>
+        <option type="radio" name="question10" value="2">经常</option>
+        <option type="radio" name="question10" value="3">总是</option>
+    </question>
+    <question index="11" title="我常常没有打算用手机时，仍会忍不住拿起手机来用一次">
+        <option type="radio" name="question11" value="0">从无</option>
+        <option type="radio" name="question11" value="1">有时</option>
+        <option type="radio" name="question11" value="2">经常</option>
+        <option type="radio" name="question11" value="3">总是</option>
+    </question>
+    <question index="12" title="使用手机而减少和身边朋友的互动">
+        <option type="radio" name="question12" value="0">从无</option>
+        <option type="radio" name="question12" value="1">有时</option>
+        <option type="radio" name="question12" value="2">经常</option>
+        <option type="radio" name="question12" value="3">总是</option>
+    </question>
+    <question index="13" title="我曾因长时间使用手机而眼睛酸涩，肌肉酸痛，或有其他身体不适">
+        <option type="radio" name="question13" value="0">从无</option>
+        <option type="radio" name="question13" value="1">有时</option>
+        <option type="radio" name="question13" value="2">经常</option>
+        <option type="radio" name="question13" value="3">总是</option>
+    </question>
+    <question index="14" title="我每天早上醒来，第一件想到的事就是拿手机看看（不包括使用手机的闹铃）">
+        <option type="radio" name="question14" value="0">从无</option>
+        <option type="radio" name="question14" value="1">有时</option>
+        <option type="radio" name="question14" value="2">经常</option>
+        <option type="radio" name="question14" value="3">总是</option>
+    </question>
+    <question index="15" title="使用智能型手机对我的学业或工作已造成一些负面的影响">
+        <option type="radio" name="question15" value="0">从无</option>
+        <option type="radio" name="question15" value="1">有时</option>
+        <option type="radio" name="question15" value="2">经常</option>
+        <option type="radio" name="question15" value="3">总是</option>
+    </question>
+    <question index="16" title="我只要有一段时间没有使用手机，就会觉得自己好像错过什么">
+        <option type="radio" name="question16" value="0">从无</option>
+        <option type="radio" name="question16" value="1">有时</option>
+        <option type="radio" name="question16" value="2">经常</option>
+        <option type="radio" name="question16" value="3">总是</option>
+    </question>
+    <question index="17" title="使用手机造成我和家人的实际互动减少了">
+        <option type="radio" name="question17" value="0">从无</option>
+        <option type="radio" name="question17" value="1">有时</option>
+        <option type="radio" name="question17" value="2">经常</option>
+        <option type="radio" name="question17" value="3">总是</option>
+    </question>
+    <question index="18" title="使用手机造成我从事休闲活动时间减少了">
+        <option type="radio" name="question18" value="0">从无</option>
+        <option type="radio" name="question18" value="1">有时</option>
+        <option type="radio" name="question18" value="2">经常</option>
+        <option type="radio" name="question18" value="3">总是</option>
+    </question>
+    <question index="19" title="我用智能型手机后在很短的时间内，常常忍不住再次拿手机看看">
+        <option type="radio" name="question19" value="0">从无</option>
+        <option type="radio" name="question19" value="1">有时</option>
+        <option type="radio" name="question19" value="2">经常</option>
+        <option type="radio" name="question19" value="3">总是</option>
+    </question>
+    <question index="20" title="没有智能型手机，我的生活就毫无乐趣可言">
+        <option type="radio" name="question20" value="0">从无</option>
+        <option type="radio" name="question20" value="1">有时</option>
+        <option type="radio" name="question20" value="2">经常</option>
+        <option type="radio" name="question20" value="3">总是</option>
+    </question>
+    <question index="21" title="我曾一边开车、汽车、等红路灯、或走路时，一边用手机，而使自己限于危险中">
+        <option type="radio" name="question21" value="0">从无</option>
+        <option type="radio" name="question21" value="1">有时</option>
+        <option type="radio" name="question21" value="2">经常</option>
+        <option type="radio" name="question21" value="3">总是</option>
+    </question>
+    <question index="22" title="我曾试过想花较少的时间在使用手机上，但却无法做到">
+        <option type="radio" name="question22" value="0">从无</option>
+        <option type="radio" name="question22" value="1">有时</option>
+        <option type="radio" name="question22" value="2">经常</option>
+        <option type="radio" name="question22" value="3">总是</option>
+    </question>
+    <question index="23" title="我习惯睡前使用手机，因此减少睡眠时间或睡眠质量变差">
+        <option type="radio" name="question23" value="0">从无</option>
+        <option type="radio" name="question23" value="1">有时</option>
+        <option type="radio" name="question23" value="2">经常</option>
+        <option type="radio" name="question23" value="3">总是</option>
+    </question>
+    <question index="24" title="跟以前比起来，我必须花更多的时间使用手机才感到满足">
+        <option type="radio" name="question24" value="0">从无</option>
+        <option type="radio" name="question24" value="1">有时</option>
+        <option type="radio" name="question24" value="2">经常</option>
+        <option type="radio" name="question24" value="3">总是</option>
+    </question>
+    <question index="25" title="我无法在用餐时，完全不使用手机">
+        <option type="radio" name="question25" value="0">从无</option>
+        <option type="radio" name="question25" value="1">有时</option>
+        <option type="radio" name="question25" value="2">经常</option>
+        <option type="radio" name="question25" value="3">总是</option>
+    </question>
+    <question index="26" title="我会因为熬夜使用手机而导致白天精神不济">
+        <option type="radio" name="question26" value="0">从无</option>
+        <option type="radio" name="question26" value="1">有时</option>
+        <option type="radio" name="question26" value="2">经常</option>
+        <option type="radio" name="question26" value="3">总是</option>
+    </question>
+</scale>
