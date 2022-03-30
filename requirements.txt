@@ -1,0 +1,6 @@
+Django==2.2.5
+mysqlclient==2.0.1
+PyMySQL==1.0.2
+pytz==2022.1
+sqlparse==0.4.2
+xlrd==2.0.1
