@@ -230,3 +230,25 @@ class BPatientMedicalAdviceDetail(models.Model):
     class Meta:
         managed = False
         db_table = 'b_patient_medical_advice_detail'
+        
+
+
+class BPatientAdmission(models.Model):
+    patient_id = models.IntegerField(blank=True, null=True)
+    admission_id = models.IntegerField(blank=True, null=True)
+    is_medical_advice = models.IntegerField(blank=True, null=True)
+    medical_advice_path = models.FileField()
+    ma_create_time = models.DateTimeField(auto_created=True)
+    ma_update_time = models.DateTimeField(auto_now_add=True)
+    is_progress_note = models.IntegerField(blank=True, null=True)
+    progress_note_path = models.FileField()
+    pn_create_time = models.DateTimeField(auto_created=True)
+    pn_update_time = models.DateTimeField(auto_now_add=True)
+    postscript = models.CharField(max_length=400, blank=True, null=True)
+    is_postscript = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'b_patient_admission'
+        
+    
