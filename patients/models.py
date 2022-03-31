@@ -233,9 +233,12 @@ class BPatientMedicalAdviceDetail(models.Model):
         
 
 
+# 入院表，其中"admission_id"，即每次入院与长期医嘱、病程记录像绑定
+
 class BPatientAdmission(models.Model):
     patient_id = models.IntegerField(blank=True, null=True)
     admission_id = models.IntegerField(blank=True, null=True)
+    admission_time = models.DateTimeField(blank=True, null=True)
     is_medical_advice = models.IntegerField(blank=True, null=True)
     medical_advice_path = models.FileField()
     ma_create_time = models.DateTimeField(auto_created=True)

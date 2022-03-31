@@ -280,3 +280,11 @@ def set_inpatient_type(patient_id,inpatient_state):
 #rtms:
 def add_rtms_info(bPatientRtms):
     bPatientRtms.save()
+
+
+# 新增一个入院
+# 在BPatientAdmission表中添加一条记录
+def add_new_admission(patient_id, admission_id, admission_time):
+    new_admission = patients_models.BPatientAdmission.objects.create(patient_id=patient_id, admission_id=admission_id, admission_time=admission_time)
+    new_admission.save()
+    
