@@ -103,17 +103,19 @@
             function (result, statue) {
                 if (statue === "success") {
                     let inputs = document.getElementsByClassName("question"+index);
+                    console.log(inputs[0]);
                     if (inputs[0].type === 'radio') {
                         for (let i = 0; i < inputs.length; i++) {
                             if (inputs[i].value === result.answer) {
                                 inputs[i].checked = true;
-                                inputs[i].parentElement.setAttribute("style", "Color:red")
+                                inputs[i].parentElement.setAttribute("style", "Color:red");
                             }
                         }
                         return;
                     }
                     if (inputs[0].type === 'text') {
                         inputs[0].value = result.answer;
+                        inputs[0].parentNode.setAttribute("style", "Color:red");
                     }
                 }
             },
@@ -149,12 +151,12 @@
             }
             if (questionInfo.options[j].type === "text") {
                 const div = document.createElement("div");
-                div.setAttribute("class", "question"+index);
                 div.setAttribute("style", "margin:10px auto;");
                 input = document.createElement("input");
                 input.setAttribute("type", "text");
                 input.setAttribute("name", questionInfo.options[j].name);
-                input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
+                input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;");
+                input.setAttribute("class", "question"+index);
                 input.setAttribute("disabled", "disabled");
                 div.append(input);
                 questionAreaDiv.append(div);

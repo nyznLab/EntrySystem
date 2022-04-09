@@ -166,11 +166,9 @@
                                     <td>{{ scale_detail|get_item:'end_time' }}</td>
                                     <td>已完成</td>
                                     <td>
-                                        <a href='/scales/redo_scale?patient_session_id={{ scale_detail|get_item:'
-                                           patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
+                                        <a href='/scales/redo_scale?patient_session_id={{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
                                     </td>
-                                    <td><a href='/scales/self_test_display?patient_session_id={{ scale_detail|get_item:'
-                                           patient_session_id' }}&scale_id={{ scale_id }}'>查看</a>
+                                    <td><a href='/scales/self_test_display?patient_session_id={{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>查看</a>
                                     </td>
 
                                     {% else %}
