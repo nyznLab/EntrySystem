@@ -1920,25 +1920,6 @@ selfTestsEnum = {
 }
 
 
-# # 续做
-# def get_previous_self_tests(request):
-#     patient_session_id = request.GET.get('patient_session_id')
-#     patient_id = request.GET.get('patient_id')
-#     scale_id = int(request.GET.get('scale_id'))
-#     # 如果ajax_buffer中没有当前续作的patient_session_id 或者 没有相应的量表 默认重做
-#     if patient_session_id not in ajax_buffer.keys() or ajax_buffer[patient_session_id][selfTestsEnum[scale_id]] is None:
-#         return redirect(redo_self_tests)
-#     question_index = ajax_buffer[patient_session_id][selfTestsEnum[scale_id]]
-#     session_id = patients_dao.get_patient_detail_byPatientId(patient_session_id)
-#     page_url = tools_config.scales_html_dict[scale_id]
-#     return render(request, page_url, {"patient_session_id": patient_session_id,
-#                                       "patient_id": patient_id,
-#                                       'scale_id': scale_id,
-#                                       'question_index': question_index,
-#                                       'session_id': session_id,
-#                                       'username': request.session.get('username')})
-
-
 # 重做
 def redo_self_tests(request):
     patient_session_id = request.GET.get('patient_session_id')
@@ -2197,6 +2178,18 @@ def get_next_question(request):
     return HttpResponse(False)
 
 
+def get_scale_content_question(request):
+    patient_session_id = request.POST.get("patient_session_id")
+    scale_id = request.POST.get("scale_id")
+    question_index = str(request.POST.get("question_index"))
+    scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+    try:
+        rsp = scale_content[question_index]
+    except KeyError:
+        return JsonResponse(False, safe=False)
+    return JsonResponse(rsp)
+
+
 # 根据题号取题目内容
 def get_question_by_index(request):
     patient_session_id = request.POST.get("patient_session_id")
@@ -2312,6 +2305,17 @@ def selfTest(request):
     scale_id = request.GET.get("scale_id")
     # 自评入口 渲染self_test.html
     return render(request, r"nbh/self_test.html", {
+        "patientSessionId": patient_session_id,
+        "scaleId": scale_id,
+    })
+
+
+# 自评展示
+def selfTestDisplay(request):
+    scale_id = request.GET.get("scale_id")
+    patient_session_id = request.GET.get("patient_session_id")
+    print(f"scale_id:{scale_id}, patient_session_id:{patient_session_id}")
+    return render(request, r"nbh/self_test_display.html", {
         "patientSessionId": patient_session_id,
         "scaleId": scale_id,
     })

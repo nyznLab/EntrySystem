@@ -1,0 +1,165 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="container">
+        <div class="row show-grid">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                    <li>量表评估</li>
+                    <li>自评量表</li>
+                    <li class="active"></li>
+                    <div style="float: right;margin-bottom: 0;"></div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_graph x_panel" style="margin-top: 0">
+        <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+            <div align="center" style="padding-left: 18%; padding-right: 20%">
+                    <strong>
+                        <h1 class="active"></h1>
+                    </strong>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="question_area" name="question_area" style="text-align: center">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+<script type="text/javascript" language="JavaScript">
+    let index = 1;
+    let patientSessionId = {{ patientSessionId }};
+    let scaleId = {{ scaleId }};
+    let isLast = false;
+    $(document).ready(function () {
+        $.ajaxSettings.async = false;
+        $.post("/scales/get_scale_metadata",
+            {patient_session_id: patientSessionId, scale_id: scaleId},
+            function (result, statue) {
+                if (statue === "success") {
+                    console.log(result);
+                    $(".active").text(result.title);
+                    $(".warn").text(result.warn);
+                }
+            });
+        $.ajaxSettings.async = true;
+        console.log("getMetaData")
+        updateQuestionContent()
+        console.log("updateQuestion")
+    });
+
+    // 更新题目文本
+    function updateQuestionContent() {
+        $.ajaxSettings.async = false;
+        let rsp;
+        while (!isLast) {
+            $.post("/scales/get_scale_content_question",
+                {
+                    patient_session_id: patientSessionId,
+                    scale_id: scaleId,
+                    question_index: index,
+                },
+                function (result, statue) {
+                    if (statue === "success") {
+                        rsp = result;
+                    }
+                },
+                "Json"
+            );
+            // 没有题目跳出循环
+            if(rsp === false){
+                isLast = true;
+                break;
+            }
+            // 渲染题目
+            console.log(rsp)
+            addQuestionContent(rsp);
+            setQuestionOptions();
+            index ++;
+        }
+        $.ajaxSettings.async = true;
+    }
+
+    // 更新答案
+    function setQuestionOptions() {
+        // 取答案
+        $.post("/scales/get_answer_by_index",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId,
+                question_index: index
+            },
+            function (result, statue) {
+                if (statue === "success") {
+                    let inputs = document.getElementsByClassName("question"+index);
+                    if (inputs[0].type === 'radio') {
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].value === result.answer) {
+                                inputs[i].checked = true;
+                                inputs[i].parentElement.setAttribute("style", "Color:red")
+                            }
+                        }
+                        return;
+                    }
+                    if (inputs[0].type === 'text') {
+                        inputs[0].value = result.answer;
+                    }
+                }
+            },
+            "json"
+        );
+    }
+
+    function addQuestionContent(questionInfo) {
+        // 渲染题目
+        let questionAreaDiv = $(".question_area");
+        let questionH4 = document.createElement("h3")
+        questionH4.innerText = index + "." + questionInfo.title;
+        questionAreaDiv.append(questionH4);
+        let input;
+        let j = 0, len = questionInfo.options.length;
+        for (; j < len; j++) {
+            if (questionInfo.options[j].type === "radio") {
+                input = document.createElement("input");
+                input.setAttribute("type", "radio");
+                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("value", questionInfo.options[j].value);
+                input.setAttribute("class", "scale_form row show-grid question"+index);
+                input.setAttribute("data-labelauty", questionInfo.options[j].content);
+                input.setAttribute("disabled", "disabled");
+                let div = document.createElement("div");
+                div.setAttribute("style", "margin:10px");
+                let label = document.createElement("label");
+                label.append(input);
+                div.append(input);
+                div.append(questionInfo.options[j].content)
+                questionAreaDiv.append(div);
+                continue;
+            }
+            if (questionInfo.options[j].type === "text") {
+                const div = document.createElement("div");
+                div.setAttribute("class", "question"+index);
+                div.setAttribute("style", "margin:10px auto;");
+                input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("name", questionInfo.options[j].name);
+                input.setAttribute("style", "width:200;text-align:center;vertical-align:middle;")
+                input.setAttribute("disabled", "disabled");
+                div.append(input);
+                questionAreaDiv.append(div);
+            }
+        }
+    }
+</script>
+{% endblock %}
