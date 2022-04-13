@@ -86,6 +86,23 @@ urlpatterns = [
     url(r'^get_check_insomnia_form', views.get_insomnia_form),
     url(r'^get_check_pss_form', views.get_pss_form),
 
+    # 重构自评结果显示
+    url(r'^get_check_re_ybocs_form', views.get_re_ybocs_form),
+    url(r'^get_check_re_bss_form', views.get_re_bss_form),
+    url(r'^get_check_re_hcl_33_form', views.get_re_hcl_33_form),
+    url(r'^get_check_re_shaps_form', views.get_re_shaps_form),
+    url(r'^get_check_re_teps_form', views.get_re_teps_form),
+    url(r'^get_check_re_ctq_sf_form', views.get_re_ctq_sf_form),
+    url(r'^get_check_re_aslec_form', views.get_re_aslec_form),
+    url(r'^get_check_re_cerq_c_form', views.get_re_cerq_c_form),
+    url(r'^get_check_re_s_embu_form', views.get_re_s_embu_form),
+    url(r'^get_check_re_atq_form', views.get_re_atq_form),
+    url(r'^get_check_re_phq_9_form', views.get_re_phq_9_form),
+    url(r'^get_check_re_gad_7_form', views.get_re_gad_7_form),
+    url(r'^get_check_re_insomnia_form', views.get_re_insomnia_form),
+    url(r'^get_check_re_pss_form', views.get_re_pss_form),
+    # 重构自评结果显示（结束）
+
     url(r'^get_last_baseinfo_url', views.get_last_baseinfo_url),
     url(r'^get_next_baseinfo_url', views.get_next_baseinfo_url),
     url(r'^get_check_wcst_form', views.get_check_wcst_form),
@@ -94,6 +111,9 @@ urlpatterns = [
     url(r'^get_check_vept_form', views.get_check_vept_form),
     url(r'^get_self_next_url', views.get_self_next_url),
     url(r'^get_self_last_url', views.get_self_last_url),
+    # 重构跳转自评量表
+    url(r'^get_re_self_next_url', views.get_re_self_next_url),
+    url(r'^get_re_self_last_url', views.get_re_self_last_url),
 
     # -----------------------------------------------------------------#
     url(r'^redo_self_tests', views.redo_self_tests),

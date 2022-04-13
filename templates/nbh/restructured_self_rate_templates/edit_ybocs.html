@@ -1,0 +1,335 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter%}
+{% block title %}耶鲁布朗强迫症严重程度标准量表{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main" >
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表（新）</a></li>
+						 <li class="active"><a href="#" >耶鲁布朗强迫症严重程度标准量表（ybocs）</a></li>
+						 <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height:80%;">
+           <div id="wrapper" >
+                <div id = "left-side" style="height: 100%;margin-left: 10px;;" class="col-md-2">
+                  <ul class="scales_progress" >
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '耶鲁布朗强迫症严重程度' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="finish nodone notclick">
+                      <p>完成</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+                      <div>
+                            <div class="row show-grid">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>耶鲁布朗强迫症严重程度标准量表</strong></h4>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-left:30px"><strong><i class="fa fa-hand-o-down"></i>&nbsp;<i class="fa fa-hand-o-down"></i>&nbsp;<i class="fa fa-hand-o-down"></i>&nbsp;请依照你主要的强迫症状作答，并在题目上圈选适当的数目。</strong></div>
+                            <div id="forced_frequency" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>1. 您每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？</strong></div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="forced_frequency" class="forced_frequency_0" value = 0 {% if ybocs_answer.0 == 0 or ybocs_answer.0 == '0' %}checked{% endif %} data-labelauty="0=完全无强迫思维（回答此项，则第2、3、4、5、题也会选0；所以请直接作答第六题）"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="forced_frequency" class="forced_frequency_others" value = 1 {% if ybocs_answer.0 == 1 or ybocs_answer.0 == '1' %}checked{% endif %} data-labelauty="1=轻微（少于一小时），或偶尔有（一天不超过8次）"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="forced_frequency" class="forced_frequency_others"  value=2 {% if ybocs_answer.0 == 2 or ybocs_answer.0 == '2' %}checked{% endif %} data-labelauty="2=中度（一至三小时），或常常有（一天超过8次，但一天大部分时间没有强迫思维）"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="forced_frequency" class="forced_frequency_others" value=3 {% if ybocs_answer.0 == 3 or ybocs_answer.0 == '3' %}checked{% endif %} data-labelauty="3=重度（多于三小时但不超过八小时），或频率非常高（一天超过8次，且一天大部分时间有强迫思维）"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="forced_frequency" class="forced_frequency_others"  value=4 {% if ybocs_answer.0 == 4 or ybocs_answer.0 == '4' %}checked{% endif %} data-labelauty="4=极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）"/>
+                                </div>
+                            </div>
+                            <div id="impediment_degree1" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>2. 您的强迫思维对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio" name="impediment_degree1" value=0 {% if ybocs_answer.1 == 0 or ybocs_answer.1 == '0' %}checked{% endif %}  data-labelauty="0=不受妨碍"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="impediment_degree1" value=1 {% if ybocs_answer.1 == 1 or ybocs_answer.1 == '1' %}checked{% endif %}  data-labelauty="1=轻微。稍微妨碍社交或工作活动，但整体表现并无大碍"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="impediment_degree1" value=2 {% if ybocs_answer.1 == 2 or ybocs_answer.1 == '2' %}checked{% endif %}  data-labelauty="2=中度。确实妨碍社交或工作活动，但仍可应付"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="impediment_degree1" value=3 {% if ybocs_answer.1 == 3 or ybocs_answer.1 == '3' %}checked{% endif %}  data-labelauty="3=重度。导致社交或工作表现的障碍"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="impediment_degree1" value=4 {% if ybocs_answer.1 == 4 or ybocs_answer.1 == '4' %}checked{% endif %}  data-labelauty="4=极度。无能力应付社交或工作"/>
+                                </div>
+                            </div>
+                            <div id="distress" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>3. 您的强迫思维给您带来多大的苦恼或困扰？</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                    <input type="radio" name="distress" value=0 {% if ybocs_answer.2 == 0 or ybocs_answer.2 == '0' %}checked{% endif %}   data-labelauty="0=没有"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="distress" value=1 {% if ybocs_answer.2 == 1 or ybocs_answer.2 == '1' %}checked{% endif %}  data-labelauty="1=轻微。不会太烦人"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="distress" value=2 {% if ybocs_answer.2 == 2 or ybocs_answer.2 == '2' %}checked{% endif %} data-labelauty="2=中度。觉得很烦，但尚可应付"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="distress" value=3 {% if ybocs_answer.2 == 3 or ybocs_answer.2 == '3' %}checked{% endif %} data-labelauty="3=重度。非常烦人"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" name="distress" value=4 {% if ybocs_answer.2 == 4 or ybocs_answer.2 == '4' %}checked{% endif %} data-labelauty="4=极重。几乎一直持续且令人丧志地苦恼"/>
+                                </div>
+                            </div>
+                            <div id="fightforced_degree" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>4. 您有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio"  name="fightforced_degree" value=0 {% if ybocs_answer.3 == 0 or ybocs_answer.3 == '0' %}checked{% endif %} data-labelauty="0=一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="fightforced_degree" value=1 {% if ybocs_answer.3 == 1 or ybocs_answer.3 == '1' %}checked{% endif %} data-labelauty="1=大部分时间都试图与之对抗（超过一半的时间我都试图与之对抗）"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="fightforced_degree" value=2 {% if ybocs_answer.3 == 2 or ybocs_answer.3 == '2' %}checked{% endif %} data-labelauty="2=用些许努力去对抗"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="fightforced_degree" value=3 {% if ybocs_answer.3 == 3 or ybocs_answer.3 == '3' %}checked{% endif %} data-labelauty="3=屈服于所有的强迫思维，未试图控制，但仍有些不甘心。"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="fightforced_degree" value=4 {% if ybocs_answer.3 == 4 or ybocs_answer.3 == '4' %}checked{% endif %} data-labelauty="4=完全愿意屈服于强迫思维"/>
+                                </div>
+                            </div>
+                            <div id="control_ability1" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>5. 您控制强迫思维的能力有多少？您停止或转移强迫思维的效果如何？（不包括通过强迫行为来停止强迫思维）</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio"  name="control_ability1" value=0 {% if ybocs_answer.4 == 0 or ybocs_answer.4 == '0' %}checked{% endif %} data-labelauty="0=完全控制。我可以完全控制" />
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="control_ability1" value=1 {% if ybocs_answer.4 == 1 or ybocs_answer.4 == '1' %}checked{% endif %} data-labelauty="1=大多能控制。只要花些力气与注意力，即能停止或转移强迫思维"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="control_ability1" value=2 {% if ybocs_answer.4 == 2 or ybocs_answer.4 == '2' %}checked{% endif %} data-labelauty="2=中等程度控制。“有时”能停止或转移强迫思维"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="control_ability1" value=3 {% if ybocs_answer.4 == 3 or ybocs_answer.4 == '3' %}checked{% endif %} data-labelauty="3=控制力弱。很少能成功地停止或消除强迫思维，只能转移"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="control_ability1" value=4 {% if ybocs_answer.4 == 4 or ybocs_answer.4 == '4' %}checked{% endif %} data-labelauty="4=无法控制。完全不能自主，连转移一下强迫思维的能力都没有主诉的强迫行为"/>
+                                </div>
+                            </div>
+                            <div id="compulsion_frequency" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>6. 您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio" class="compulsion_frequency_0 " name="compulsion_frequency" value=0 {% if ybocs_answer.5 == 0 or ybocs_answer.5 == '0' %}checked{% endif %} data-labelauty="0=完全无强迫行为（回答此项，则第7、8、9、10题也会选0）"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=1 {% if ybocs_answer.5 == 1 or ybocs_answer.5 == '1' %}checked{% endif %} data-labelauty="1=轻微（少于一小时），或偶尔有（一天不超过8次）"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=2 {% if ybocs_answer.5 == 2 or ybocs_answer.5 == '2' %}checked{% endif %} data-labelauty="2=中度（一至三小时），或常常有（一天超过8次，但一天大部分时间没有强迫行为）"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=3 {% if ybocs_answer.5 == 3 or ybocs_answer.5 == '3' %}checked{% endif %} data-labelauty="3=重度（多于三小时但不超过八小时），或频率非常高（一天超过8次，且一天大部分时间有强迫行为）"/>
+        
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio" class="compulsion_frequency_others " name="compulsion_frequency" value=4 {% if ybocs_answer.5 == 4 or ybocs_answer.5 == '4' %}checked{% endif %} data-labelauty="4=极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）"/>
+                                </div>
+                            </div>
+                            <div id="impediment_degree2" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>7. 您的强迫行为对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio"  name="impediment_degree2" value=0 {% if ybocs_answer.6 == 0 or ybocs_answer.6 == '0' %}checked{% endif %} data-labelauty="0=不受妨碍"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="impediment_degree2" value=1 {% if ybocs_answer.6 == 1 or ybocs_answer.6 == '1' %}checked{% endif %} data-labelauty="1=轻微。稍微妨碍社交或工作活动，但整体表现并无大碍"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="impediment_degree2" value=2 {% if ybocs_answer.6 == 2 or ybocs_answer.6 == '2' %}checked{% endif %} data-labelauty="2=中度。确实妨碍社交或工作活动，但仍可应付"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="impediment_degree2" value=3 {% if ybocs_answer.6 == 3 or ybocs_answer.6 == '3' %}checked{% endif %} data-labelauty="3=重度。导致社交或工作表现的障碍"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="impediment_degree2" value=4 {% if ybocs_answer.6 == 4 or ybocs_answer.6 == '4' %}checked{% endif %} data-labelauty="4=极度。无能力应付社交或工作"/>
+                                </div>
+                            </div>
+                            <div id="stopcompulsion_anxiety" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>8. 假如被制止从事强迫行为时，您有什么感觉？您会多焦虑？</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio"  name="stopcompulsion_anxiety" value=0 {% if ybocs_answer.7 == 0 or ybocs_answer.7 == '0' %}checked{% endif %} data-labelauty="0=没有焦虑" />
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="stopcompulsion_anxiety" value=1 {% if ybocs_answer.7 == 1 or ybocs_answer.7 == '1' %}checked{% endif %} data-labelauty="1=轻微。假如强迫行为被阻止，只是稍微焦虑"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="stopcompulsion_anxiety" value=2 {% if ybocs_answer.7 == 2 or ybocs_answer.7 == '2' %}checked{% endif %} data-labelauty="2=中度。假如强迫行为被阻止，会有中等程度的焦虑，但是仍可以应付"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="stopcompulsion_anxiety" value=3 {% if ybocs_answer.7 == 3 or ybocs_answer.7 == '3' %}checked{% endif %} data-labelauty="3=严重。假如强迫行为被阻止，会明显且困扰地增加焦虑"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="stopcompulsion_anxiety" value=4 {% if ybocs_answer.7 == 4 or ybocs_answer.7 == '4' %}checked{% endif %} data-labelauty="4=极度。假如有任何需要改变强迫行为的处置时，会导致极度地焦虑"/>
+                                </div>
+                            </div>
+                            <div id="stopforced_frequency" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>9. 您有多努力去对抗强迫行为？或尝试停止强迫行为的频率？（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估您停止强迫行为的效果有多好）</strong></div>
+        
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio"  name="stopforced_frequency" value=0 {% if ybocs_answer.8 == 0 or ybocs_answer.8 == '0' %}checked{% endif %} data-labelauty="0=一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="stopforced_frequency" value=1 {% if ybocs_answer.8 == 1 or ybocs_answer.8 == '1' %}checked{% endif %} data-labelauty="1=大部分时间都试图与之对抗（超过一半的时间我都试图与之对抗）"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="stopforced_frequency" value=2 {% if ybocs_answer.8 == 2 or ybocs_answer.8 == '2' %}checked{% endif %} data-labelauty="2=用些许努力去对抗"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="stopforced_frequency" value=3 {% if ybocs_answer.8 == 3 or ybocs_answer.8 == '3' %}checked{% endif %} data-labelauty="3=屈服于所有的强迫行为，未试图控制，但仍有些不甘心"/>
+                                </div>
+                                <div class="row show-g     rid" style="margin:10px">
+                                    <input type="radio"  name="stopforced_frequency" value=4 {% if ybocs_answer.8 == 4 or ybocs_answer.8 == '4' %}checked{% endif %} data-labelauty="4=完全愿意屈服于强迫行为"/>
+                                </div>
+                            </div>
+                            <div id="control_ability2" style="margin: 20px 20px 20px 30px">
+                                <div class="row"><strong>10. 您控制强迫行为的能力如何？您停止强迫（仪式）行为的效果如何？（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）</strong></div>
+                                <div class="row show-grid" style="margin:10px 0px 10px 10px">
+                                <input type="radio"  name="control_ability2" value=0 {% if ybocs_answer.9 == 0 or ybocs_answer.9 == '0' %}checked{% endif %} data-labelauty="0=完全控制。我可以完全控制" />
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="control_ability2" value=1 {% if ybocs_answer.9 == 1 or ybocs_answer.9 == '1' %}checked{% endif %} data-labelauty="1=大多能控制。只要花些力气与注意力，即能停止强迫行为"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                <input type="radio"  name="control_ability2" value=2 {% if ybocs_answer.9 == 2 or ybocs_answer.9 == '2' %}checked{% endif %} data-labelauty="2=中等程度控制。“有时”控制强迫行为，有些困难"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="control_ability2" value=3 {% if ybocs_answer.9 == 3 or ybocs_answer.9 == '3' %}checked{% endif %} data-labelauty="3=控制力弱。只能忍耐耽搁一下时间，但最终还是必须完成强迫行为"/>
+                                </div>
+                                <div class="row show-grid" style="margin:10px">
+                                    <input type="radio"  name="control_ability2" value=4 {% if ybocs_answer.9 == 4 or ybocs_answer.9 == '4' %}checked{% endif %} data-labelauty="4=完全无法控制。连耽搁一下的能力都没有"/>
+                                </div>
+                            </div>
+
+                          <div class="row">
+                                  <div class="col-md-12 col-sm-12">
+                                     <a  style="float: left;font-weight: bold">总分：{{ ybocs_total_score.0.score_value|processNone }}</a>
+                                 </div>
+
+
+                            </div>
+
+                            <div class="row" id="bt_group">
+                            <div class="col-md-4 col-sm-6 text-center">
+                                <a href="/scales/get_re_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                   id="last_scale">
+                                    <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6" id="next_scale">
+                                {% csrf_token %}
+                                <a href="/scales/get_re_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                    <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                </a>
+                            </div>
+                            <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                    <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                </a>
+                            </div>
+
+                        </div>
+                      </div>
+                  </div>
+			    </div>
+	          </div>
+        </div>
+    </div>
+     <script>
+       function getData(){
+        var order = "{{ order }}";
+        if(order==0){{% comment %}第一个{% endcomment %}
+            $("#last_scale").attr("style","display:none;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }else if(order==1){{% comment %}最后一个{% endcomment %}
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:block;");
+            $("#next_scale").attr("style","display:none;");
+        }else{{# 啥也不是 #}
+            $("#last_scale").attr("style","display:block;");
+            $("#next_scale_final").attr("style","display:none;");
+            $("#next_scale").attr("style","display:block;");
+        }
+
+               {#锁住#}
+               $("input[name='forced_frequency']").attr("disabled","disabled")
+               $("input[name='impediment_degree1']").attr("disabled","disabled");
+               $("input[name='distress']").attr("disabled","disabled");
+               $("input[name='fightforced_degree']").attr("disabled","disabled");
+               $("input[name='control_ability1']").attr("disabled","disabled");
+               $("input[name='compulsion_frequency']").attr("disabled","disabled");
+               $("input[name='stopcompulsion_anxiety']").attr("disabled","disabled");
+               $("input[name='impediment_degree2']").attr("disabled","disabled");
+               $("input[name='stopforced_frequency']").attr("disabled","disabled");
+               $("input[name='control_ability2']").attr("disabled","disabled");
+        
+       }
+    </script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+
+});
+</script>
+
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+
+
+{% endblock %}

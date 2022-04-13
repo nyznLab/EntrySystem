@@ -19,6 +19,27 @@ scaleId_Models_Map = {
     '34': models.TScalePhoneAbuse,
 }
 
+self_scale_question_count = {
+    '11': 10,
+    '12': 40,
+    '13': 46,
+    '14': 14,
+    '15': 18,
+    '16': 29,
+    '17': 36,
+    '18': 27,
+    '19': 7,
+    '20': 30,
+    '29': 9,
+    '30': 7,
+    '31': 7,
+    '32': 14,
+    '34': 99,
+}
+
+
+
+
 # 量表完成状态常量
 Scale_Completed = 1
 Scale_Not_Completed = 0

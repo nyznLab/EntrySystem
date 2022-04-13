@@ -1660,6 +1660,26 @@ def get_ybocs_form(request):
                                                    'order': order,
                                                    })
 
+# 获取重构耶鲁布朗表
+def get_re_ybocs_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.ybocs
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i+1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request, 'nbh/restructured_self_rate_templates/edit_ybocs.html', {
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'ybocs_answer': answer_list,
+        'ybocs_total_score': total_score
+    })
 
 # 获取自杀量表表单
 def get_bss_form(request):
@@ -1676,6 +1696,26 @@ def get_bss_form(request):
                                                  'order': order,
                                                  })
 
+# 获取重构自杀量表表单
+def get_re_bss_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.bss
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request, 'nbh/restructured_self_rate_templates/edit_bss.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'bss_answer': answer_list,
+        'bss_total_score': total_score
+    })
 
 # 获取33项轻躁狂表单
 def get_hcl_33_form(request):
@@ -1691,6 +1731,28 @@ def get_hcl_33_form(request):
                                                     'hcl_33_answer': hcl_33_answer,
                                                     'order': order,
                                                     })
+
+# 获取重构33项轻躁狂表单
+def get_re_hcl_33_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.hcl_33
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request,'nbh/restructured_self_rate_templates/edit_hcl_33.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'hcl_33_answer': answer_list,
+        'hcl_33_total_score': total_score
+    })
 
 
 # 获取斯奈斯快乐量表
@@ -1708,6 +1770,26 @@ def get_shaps_form(request):
                                                    'order': order,
                                                    })
 
+def get_re_shaps_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.shaps
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request, 'nbh/restructured_self_rate_templates/edit_shaps.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'shaps_answer': answer_list,
+        'shaps_total_score': total_score
+    })
 
 # 获取快感体验能力表单
 def get_teps_form(request):
@@ -1724,6 +1806,26 @@ def get_teps_form(request):
                                                   'order': order,
                                                   })
 
+# 获取重构快感体验能力表单
+def get_re_teps_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.teps
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request,'nbh/restructured_self_rate_templates/edit_teps.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'teps_answer': answer_list,
+        'teps_total_score': total_score
+    })
 
 # 获取儿童期成长经历表单
 def get_ctq_sf_form(request):
@@ -1740,6 +1842,26 @@ def get_ctq_sf_form(request):
                                                     'order': order,
                                                     })
 
+# 获取重构儿童期成长经历表单
+def get_re_ctq_sf_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.ctq_sf
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request,'nbh/restructured_self_rate_templates/edit_ctq_sf.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'ctq_sf_answer':answer_list,
+        'ctq_sf_total_score':total_score
+    })
 
 # 获取认知情绪调节表单
 def get_cerq_c_form(request):
@@ -1756,6 +1878,26 @@ def get_cerq_c_form(request):
                                                     'order': order,
                                                     })
 
+def get_re_cerq_c_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.cerq_c
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request,'nbh/restructured_self_rate_templates/edit_cerq_c.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'cerq_c_answer':answer_list,
+        'cerq_c_total_score':total_score
+    })
 
 # 获取青少年生活事件表单
 def get_aslec_form(request):
@@ -1771,6 +1913,27 @@ def get_aslec_form(request):
                                                    'aslec_answer': aslec_answer,
                                                    'order': order,
                                                    })
+# 获取重构青少年生活事件表单
+def get_re_aslec_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.aslec
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request,'nbh/restructured_self_rate_templates/edit_aslec.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'aslec_answer':answer_list,
+        'aslec_total_score':total_score
+    })
 
 
 # 获取简氏父母教育表单
@@ -1788,6 +1951,29 @@ def get_s_embu_form(request):
                                                     'order': order,
                                                     })
 
+# 获取重构简氏父母教育表单
+def get_re_s_embu_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.s_embu
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request,'nbh/restructured_self_rate_templates/edit_s_embu.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        's_embu_answer':answer_list,
+        's_embu_total_score':total_score
+    })
+
+
 
 # 获取自动思维问卷表单
 def get_atq_form(request):
@@ -1803,6 +1989,28 @@ def get_atq_form(request):
                                                  'atq_answer': atq_answer,
                                                  'order': order,
                                                  })
+
+# 获取重构自动思维问卷表单
+def get_re_atq_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.atq
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request,'nbh/restructured_self_rate_templates/edit_atq.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'atq_answer':answer_list,
+        'atq_total_score':total_score
+    })
 
 
 # 获取PHQ_9表单
@@ -1822,6 +2030,30 @@ def get_phq_9_form(request):
     return render(request, 'nbh/edit_phq_9.html')
 
 
+# 获取重构PHQ_9表单
+def get_re_phq_9_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.phq_9
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+
+    return render(request,'nbh/restructured_self_rate_templates/edit_phq_9.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'phq_9_answer':answer_list,
+        'phq_9_total_score':total_score
+    })
+
+
+
 # 获取GAD-7表单
 def get_gad_7_form(request):
     patient_session_id = request.GET.get('patient_session_id')
@@ -1836,6 +2068,27 @@ def get_gad_7_form(request):
                                                    'gad_7_answer': gad_7_answer,
                                                    'order': order,
                                                    })
+
+# 获取重构GAD-7表单
+def get_re_gad_7_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.gad_7
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request,'nbh/restructured_self_rate_templates/edit_gad_7.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'gad_7_answer':answer_list,
+        'gad_7_total_score':total_score
+    })
 
 
 # 获取失眠严重指数量表表单
@@ -1853,6 +2106,27 @@ def get_insomnia_form(request):
                                                       'order': order,
                                                       })
 
+# 获取重构失眠严重指数量表表单
+def get_re_insomnia_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.insomnia
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request,'nbh/restructured_self_rate_templates/edit_insomnia.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'insomnia_answer':answer_list,
+        'insomnia_total_score':total_score
+    })
+
 
 # 获取压力知觉量表表单
 def get_pss_form(request):
@@ -1869,6 +2143,28 @@ def get_pss_form(request):
                                                  'order': order,
                                                  })
 
+# 获取重构压力知觉量表表单
+def get_re_pss_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.pss
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
+    answer_list = []
+    for i in range(config.self_scale_question_count[str(scale_id)]):
+        answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
+        answer_list.append(answer)
+    total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    return render(request,'nbh/restructured_self_rate_templates/edit_pss.html',{
+        'patient_session_id': request.GET.get('patient_session_id'),
+        'patient_id': request.GET.get('patient_id'),
+        'username': request.session.get('username'),
+        'scale_name_list': scale_name_list,
+        'scale_id': scale_id,
+        'order': order,
+        'pss_answer':answer_list,
+        'pss_total_score':total_score
+    })
+
+
 
 def get_self_last_url(request):
     patient_session_id = request.GET.get('patient_session_id')
@@ -1877,6 +2173,19 @@ def get_self_last_url(request):
     rPatientScales = scales_dao.get_last_scales_detail(patient_session_id, scale_id)
 
     last_page_url = tools_config.check_scales_html_dict[rPatientScales.scale_id]
+    redirect_url = '{}?patient_session_id={}&patient_id={}'.format(last_page_url, str(patient_session_id),
+                                                                   str(patient_id))
+    return redirect(redirect_url)
+
+
+# 重构跳转到上一个量表的结果显示
+def get_re_self_last_url(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    patient_id = request.GET.get('patient_id')
+    scale_id = int(request.GET.get('scale_id'))
+    rPatientScales = scales_dao.get_last_scales_detail(patient_session_id, scale_id)
+
+    last_page_url = tools_config.check_re_self_scales_html_dict[rPatientScales.scale_id]
     redirect_url = '{}?patient_session_id={}&patient_id={}'.format(last_page_url, str(patient_session_id),
                                                                    str(patient_id))
     return redirect(redirect_url)
@@ -1892,6 +2201,19 @@ def get_self_next_url(request):
     redirect_url = '{}?patient_session_id={}&patient_id={}'.format(next_page_url, str(patient_session_id),
                                                                    str(patient_id))
     return redirect(redirect_url)
+
+# 重构跳转到下一个量表的结果显示
+def get_re_self_next_url(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    patient_id = request.GET.get('patient_id')
+    scale_id = int(request.GET.get('scale_id'))
+    rPatientScales = scales_dao.get_next_scales_detail(patient_session_id, scale_id)
+
+    next_page_url = tools_config.check_re_self_scales_html_dict[rPatientScales.scale_id]
+    redirect_url = '{}?patient_session_id={}&patient_id={}'.format(next_page_url, str(patient_session_id),
+                                                                   str(patient_id))
+    return redirect(redirect_url)
+
 
 
 def get_next_self_scale_id(patient_session_id, cur_scale_id):
@@ -2135,6 +2457,15 @@ def get_check_suibe_form(request):
                                                    'order': order,
                                                    'isfirst': is_first,
                                                    })
+
+
+# 重构自评量表结果显示页面
+
+
+
+
+
+
 
 
 # 上传量表内容

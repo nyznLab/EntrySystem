@@ -1283,3 +1283,10 @@ def delete_scale_scores(scale_id, patient_session_id):
         delete=config.Del_No,
         scale_definition_id=scale_id,
     ).update(delete=config.Del_Yse)
+
+
+# 获取重构量表总分
+def get_total_score(scale_id, patient_session_id):
+    res = scales_models.TScalesTotalScores.objects \
+        .filter(scale_definition_id=scale_id, patient_session_id=patient_session_id).order_by('id').values('score_name', 'score_value')
+    return res

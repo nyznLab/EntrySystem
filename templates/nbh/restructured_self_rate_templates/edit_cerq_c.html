@@ -1,0 +1,620 @@
+{% extends 'templates/index.html'%}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}认知情绪调节量表（cerq）{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+     <div class="right_col" role="main">
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                         <li ><a href="#">量表评估</a></li>
+                         <li><a href="#" >自评量表</a></li>
+                         <li class="active"><a href="#" >认知情绪调节量表（cerq）</a></li>
+                         <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/patients/get_patient_detail?&patient_id={{ patient_id }}&page=1"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="dashboard_graph x_panel" style="height: 80%;margin-top: 0px;">
+            <div id="wrapper">
+                <div id = "left-side" style="height: 100%;margin-left: 10px;" class="col-md-2">
+                  <ul class="scales_progress">
+                    {% for scale_name in scale_name_list %}
+                        {% if scale_name|get_item:'scale__scale_name' == '认知情绪调节问卷' %}
+                            <li class="step doing  ">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% elif scale_name|get_item:'state' == 0 %}
+                            <li class="step nodone notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% else %}
+                            <li class="step done notclick">
+                                <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                          <p>完成</p>
+                        </li>
+                  </ul>
+                </div>  
+				         
+                <div id="right-side" class="col-md-10">
+                  <div id="first" class="active">
+                           <div class="container">
+                            <div class="row" style="margin-left:5px;margin-top: 5px;padding-bottom: 5px;">
+                                <h4><strong><center>认知情绪调节问卷</center></strong></h4>
+                                <strong><i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;请仔细阅读每个项目并考虑哪个情况与自己最符合。在遇到自己没有经历过的项目时，请先考虑和自己经历过的与其最相似的情境并作出选择。不必考虑你所选择的答案的一致性。1：从不 &nbsp;2：几乎不&nbsp; 3：有时&nbsp; 4：几乎总是&nbsp; 5：总是<br/></strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 column">
+			                        <table   class="table " style="width:100%;">
+				                        <thead>
+					                    <tr>
+						                    <th >
+                                                <center> 问题</center>
+						                    </th>
+                                            <th  >
+                                                <center> 1</center>
+						                    </th>
+                                            <th  >
+                                                <center> 2</center>
+						                    </th>
+                                            <th  >
+                                                <center> 3</center>
+						                    </th>
+                                            <th  >
+                                                <center> 4</center>
+						                    </th>
+                                             <th  >
+                                                <center> 5</center>
+						                    </th>
+
+					                    </tr>
+				                        </thead>
+				                        <tbody align="left">
+                                             <tr>
+						                         <td style="width: 50%;">1.我感到我应该被责备</td>
+                                                 <td style="width: 10%;"><input type="radio" name="question1_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td style="width: 10%;"><input type="radio" name="question1_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td style="width: 10%;"><input type="radio" name="question1_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td style="width: 10%;"><input type="radio" name="question1_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td style="width: 10%;"><input type="radio" name="question1_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>2.我感到我是一个对发生过的事负责任的人</td>
+                                                 <td><input type="radio" name="question2_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question2_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question2_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question2_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question2_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>3.我想我在这种情况下的错误是我造成</td>
+                                                 <td><input type="radio" name="question3_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question3_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question3_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question3_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question3_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>4.我想事情的基本原因在我自己</td>
+                                                 <td><input type="radio" name="question4_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question4_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question4_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question4_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question4_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>
+							                       5.我想我必须接受已经发生的事
+						                        </td>
+                                                 <td><input type="radio" name="question5_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question5_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question5_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question5_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question5_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>6.我想我必须接受这种状况</td>
+                                                 <td><input type="radio" name="question6_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question6_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question6_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question6_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question6_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>7.我想我不能为此改变任何事</td>
+                                                 <td><input type="radio" name="question7_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question7_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question7_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question7_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question7_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>8.我想我必须学会去接受它</td>
+                                                 <td><input type="radio" name="question8_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question8_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question8_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question8_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question8_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>9.我常常回想对我已经经历的事是怎样的感觉</td>
+                                                 <td><input type="radio" name="question9_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question9_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question9_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question9_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question9_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>10.我沉迷于在对我已经经历的事的感觉和想法</td>
+                                                 <td><input type="radio" name="question10_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question10_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question10_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question10_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question10_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>11.我想去明白为什么会对我经历的事有这样的感觉</td>
+                                                 <td><input type="radio" name="question11_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question11_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question11_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question11_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question11_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>12.我细想由于这种形势唤起的感觉</td>
+                                                 <td><input type="radio" name="question12_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question12_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question12_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question12_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question12_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>13.我去想比我经历过的更好的事</td>
+                                                 <td><input type="radio" name="question13_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question13_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question13_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question13_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question13_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>14.我去想那些与现在事情无关的愉快的事</td>
+                                                 <td><input type="radio" name="question14_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question14_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question14_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question14_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question14_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>15.我去想某些好事而不是所发生的事</td>
+                                                 <td><input type="radio" name="question15_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question15_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question15_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question15_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question15_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>16.我去想愉快的经历</td>
+                                                 <td><input type="radio" name="question16_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question16_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question16_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question16_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question16_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>17.我想我怎样才能做到最好</td>
+                                                 <td><input type="radio" name="question17_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question17_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question17_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question17_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question17_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                            <tr>
+						                        <td>18.我在想我能怎样最好地应对这些情况</td>
+                                                 <td><input type="radio" name="question18_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question18_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question18_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question18_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question18_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>19.我在想怎样去改变这种情况</td>
+                                                 <td><input type="radio" name="question19_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question19_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question19_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question19_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question19_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>20.我在想一个我怎样能做得最好的计划</td>
+                                                 <td><input type="radio" name="question20_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question20_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question20_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question20_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question20_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>21.我想我能从这些情形中学到一些东西</td>
+                                                 <td><input type="radio" name="question21_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question21_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question21_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question21_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question21_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>22.我想所发生的事情能让我成为更强的人</td>
+                                                 <td><input type="radio" name="question22_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question22_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question22_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question22_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question22_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>23.我想这种情况也有积极的一面</td>
+                                                 <td><input type="radio" name="question23_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question23_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question23_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question23_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question23_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>24.我寻找事情中的积极方面</td>
+                                                 <td><input type="radio" name="question24_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question24_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question24_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question24_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question24_answer" value=5 data-labelauty="总是"/></td>
+
+					                        </tr>
+											<tr>
+						                        <td>25.我想所有的事情会变得更坏</td>
+                                                 <td><input type="radio" name="question25_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question25_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question25_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question25_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question25_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>26.我想别人有更坏的经历</td>
+                                                 <td><input type="radio" name="question26_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question26_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question26_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question26_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question26_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>27.我想和其他事情相比，这还不是太坏</td>
+                                                 <td><input type="radio" name="question27_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question27_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question27_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question27_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question27_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>28.我告诉自己生命中有更坏的事情</td>
+                                                 <td><input type="radio" name="question28_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question28_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question28_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question28_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question28_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>29.我常常想我经历的事情比别人经历的更糟糕</td>
+                                                 <td><input type="radio" name="question29_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question29_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question29_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question29_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question29_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>30.我不断地想我经历的事情是多么的可怕</td>
+                                                 <td><input type="radio" name="question30_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question30_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question30_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question30_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question30_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>31.我常想我所经历的是可以发生在一个人身上最坏的事</td>
+                                                 <td><input type="radio" name="question31_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question31_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question31_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question31_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question31_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>32.我不断的想这个事情是多么的可怕啊</td>
+                                                 <td><input type="radio" name="question32_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question32_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question32_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question32_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question32_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>33.我感到别人应该为此被责备</td>
+                                                 <td><input type="radio" name="question33_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question33_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question33_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question33_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question33_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>34.我感到别人应对发生的事情负责任</td>
+                                                 <td><input type="radio" name="question34_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question34_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question34_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question34_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question34_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>35.我想这些错误是别人造成的</td>
+                                                 <td><input type="radio" name="question35_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question35_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question35_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question35_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question35_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+											<tr>
+						                        <td>36.我感到事情发生的根本原因在别人身上</td>
+                                                 <td><input type="radio" name="question36_answer" value=1 data-labelauty="从不"/></td>
+                                                 <td><input type="radio" name="question36_answer" value=2 data-labelauty="几乎不"/></td>
+                                                 <td><input type="radio" name="question36_answer" value=3 data-labelauty="有时"/></td>
+                                                 <td><input type="radio" name="question36_answer" value=4 data-labelauty="几乎总是"/></td>
+                                                 <td><input type="radio" name="question36_answer" value=5 data-labelauty="总是"/></td>
+					                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                               <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">总分：{{ cerq_c_answer.total_score|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">自我责难总分：{{ cerq_c_total_score.0.score_value|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">责难他人总分：{{ cerq_c_total_score.1.score_value|processNone }}</a>
+                                </div>
+                                   <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">沉思总分：{{ cerq_c_total_score.2.score_value|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">灾难化总分：{{ cerq_c_total_score.3.score_value|processNone }}</a>
+                                </div>
+                                   <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">接受总分：{{ cerq_c_total_score.4.score_value|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">积极重新关注总分：{{ cerq_c_total_score.5.score_value|processNone }}</a>
+                                </div>
+                                   <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">重新关注计划总分：{{ cerq_c_total_score.6.score_value|processNone }}</a>
+                                </div>
+                                   <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">积极重新评价总分：{{ cerq_c_total_score.7.score_value|processNone }}</a>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <a style="float: left;font-weight: bold">理性分析总分：{{ cerq_c_total_score.8.score_value|processNone }}</a>
+                                </div>
+                            </div>
+
+                               <div class="row" id="bt_group">
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <a href="/scales/get_re_self_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                       id="last_scale">
+                                        <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale">
+                                    {% csrf_token %}
+                                    <a href="/scales/get_re_self_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                                <div class="col-md-4 col-sm-6" id="next_scale_final">
+                                    <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                        <input type="button" class="btn btn-success text-center" value="进入下一量表">
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getData() {
+            var order = "{{ order }}";
+            if (order == 0) {{% comment %}第一个{% endcomment %}
+                $("#last_scale").attr("style", "display:none;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            } else if (order == 1) {{% comment %}最后一个{% endcomment %}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:block;");
+                $("#next_scale").attr("style", "display:none;");
+            } else {{# 啥也不是 #}
+                $("#last_scale").attr("style", "display:block;");
+                $("#next_scale_final").attr("style", "display:none;");
+                $("#next_scale").attr("style", "display:block;");
+            }
+            if ('{{ cerq_c_answer }}' != 'None') {
+                {#数据填充 读数据#}
+                if ('{{ cerq_c_answer.0 }}' != 'None') {
+                    $("input[name='question1_answer'][value=" + Number({{ cerq_c_answer.0 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.1 }}' != 'None') {
+                    $("input[name='question2_answer'][value=" + Number({{ cerq_c_answer.1 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.2 }}' != 'None') {
+                    $("input[name='question3_answer'][value=" + Number({{ cerq_c_answer.2 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.3 }}' != 'None') {
+                    $("input[name='question4_answer'][value=" + Number({{ cerq_c_answer.3 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.4 }}' != 'None') {
+                    $("input[name='question5_answer'][value=" + Number({{ cerq_c_answer.4 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.5 }}' != 'None') {
+                    $("input[name='question6_answer'][value=" + Number({{ cerq_c_answer.5 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.6 }}' != 'None') {
+                    $("input[name='question7_answer'][value=" + Number({{ cerq_c_answer.6 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.7 }}' != 'None') {
+                    $("input[name='question8_answer'][value=" + Number({{ cerq_c_answer.7 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.8 }}' != 'None') {
+                    $("input[name='question9_answer'][value=" + Number({{ cerq_c_answer.8 }}) + "]").prop("checked", true);
+                }if ('{{ cerq_c_answer.9 }}' != 'None') {
+                    $("input[name='question10_answer'][value=" + Number({{ cerq_c_answer.9 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.10 }}' != 'None') {
+                    $("input[name='question11_answer'][value=" + Number({{ cerq_c_answer.10 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.11 }}' != 'None') {
+                    $("input[name='question12_answer'][value=" + Number({{ cerq_c_answer.11 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.12 }}' != 'None') {
+                    $("input[name='question13_answer'][value=" + Number({{ cerq_c_answer.12 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.13 }}' != 'None') {
+                    $("input[name='question14_answer'][value=" + Number({{ cerq_c_answer.13 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.14 }}' != 'None') {
+                    $("input[name='question15_answer'][value=" + Number({{ cerq_c_answer.14 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.15 }}' != 'None') {
+                    $("input[name='question16_answer'][value=" + Number({{ cerq_c_answer.15 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.16 }}' != 'None') {
+                    $("input[name='question17_answer'][value=" + Number({{ cerq_c_answer.16 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.17 }}' != 'None') {
+                    $("input[name='question18_answer'][value=" + Number({{ cerq_c_answer.17 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.18 }}' != 'None') {
+                    $("input[name='question19_answer'][value=" + Number({{ cerq_c_answer.18 }}) + "]").prop("checked", true);
+                }if ('{{ cerq_c_answer.19 }}' != 'None') {
+                    $("input[name='question20_answer'][value=" + Number({{ cerq_c_answer.19 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.20 }}' != 'None') {
+                    $("input[name='question21_answer'][value=" + Number({{ cerq_c_answer.20 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.21 }}' != 'None') {
+                    $("input[name='question22_answer'][value=" + Number({{ cerq_c_answer.21 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.22 }}' != 'None') {
+                    $("input[name='question23_answer'][value=" + Number({{ cerq_c_answer.22 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.23 }}' != 'None') {
+                    $("input[name='question24_answer'][value=" + Number({{ cerq_c_answer.23 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.24 }}' != 'None') {
+                    $("input[name='question25_answer'][value=" + Number({{ cerq_c_answer.24 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.25 }}' != 'None') {
+                    $("input[name='question26_answer'][value=" + Number({{ cerq_c_answer.25 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.26 }}' != 'None') {
+                    $("input[name='question27_answer'][value=" + Number({{ cerq_c_answer.26 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.27 }}' != 'None') {
+                    $("input[name='question28_answer'][value=" + Number({{ cerq_c_answer.27 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.28 }}' != 'None') {
+                    $("input[name='question29_answer'][value=" + Number({{ cerq_c_answer.28 }}) + "]").prop("checked", true);
+                }if ('{{ cerq_c_answer.29 }}' != 'None') {
+                    $("input[name='question30_answer'][value=" + Number({{ cerq_c_answer.29 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.30 }}' != 'None') {
+                    $("input[name='question31_answer'][value=" + Number({{ cerq_c_answer.30 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.31 }}' != 'None') {
+                    $("input[name='question32_answer'][value=" + Number({{ cerq_c_answer.31 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.32 }}' != 'None') {
+                    $("input[name='question33_answer'][value=" + Number({{ cerq_c_answer.32 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.33 }}' != 'None') {
+                    $("input[name='question34_answer'][value=" + Number({{ cerq_c_answer.33 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.34 }}' != 'None') {
+                    $("input[name='question35_answer'][value=" + Number({{ cerq_c_answer.34 }}) + "]").prop("checked", true);
+                }
+                if ('{{ cerq_c_answer.35 }}' != 'None') {
+                    $("input[name='question36_answer'][value=" + Number({{ cerq_c_answer.35 }}) + "]").prop("checked", true);
+                }
+
+            }
+            {#锁住#}
+            $("input[name='question1_answer']").attr("disabled", "disabled");
+            $("input[name='question2_answer']").attr("disabled", "disabled");
+            $("input[name='question3_answer']").attr("disabled", "disabled");
+            $("input[name='question4_answer']").attr("disabled", "disabled");
+            $("input[name='question5_answer']").attr("disabled", "disabled");
+            $("input[name='question6_answer']").attr("disabled", "disabled");
+            $("input[name='question7_answer']").attr("disabled", "disabled");
+            $("input[name='question8_answer']").attr("disabled", "disabled");
+            $("input[name='question9_answer']").attr("disabled", "disabled");
+            $("input[name='question10_answer']").attr("disabled", "disabled");
+            $("input[name='question11_answer']").attr("disabled", "disabled");
+            $("input[name='question12_answer']").attr("disabled", "disabled");
+            $("input[name='question13_answer']").attr("disabled", "disabled");
+            $("input[name='question14_answer']").attr("disabled", "disabled");
+            $("input[name='question15_answer']").attr("disabled", "disabled");
+            $("input[name='question16_answer']").attr("disabled", "disabled");
+            $("input[name='question17_answer']").attr("disabled", "disabled");
+            $("input[name='question18_answer']").attr("disabled", "disabled");
+            $("input[name='question19_answer']").attr("disabled", "disabled");
+            $("input[name='question20_answer']").attr("disabled", "disabled");
+            $("input[name='question21_answer']").attr("disabled", "disabled");
+            $("input[name='question22_answer']").attr("disabled", "disabled");
+            $("input[name='question23_answer']").attr("disabled", "disabled");
+            $("input[name='question24_answer']").attr("disabled", "disabled");
+            $("input[name='question25_answer']").attr("disabled", "disabled");
+            $("input[name='question26_answer']").attr("disabled", "disabled");
+            $("input[name='question27_answer']").attr("disabled", "disabled");
+            $("input[name='question28_answer']").attr("disabled", "disabled");
+            $("input[name='question29_answer']").attr("disabled", "disabled");
+            $("input[name='question30_answer']").attr("disabled", "disabled");
+            $("input[name='question31_answer']").attr("disabled", "disabled");
+            $("input[name='question32_answer']").attr("disabled", "disabled");
+            $("input[name='question33_answer']").attr("disabled", "disabled");
+            $("input[name='question34_answer']").attr("disabled", "disabled");
+            $("input[name='question35_answer']").attr("disabled", "disabled");
+            $("input[name='question36_answer']").attr("disabled", "disabled");
+
+
+        }
+    </script>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js'%}"></script>
+<script>
+$(document).ready(function(){
+	$("input[type='radio']").labelauty();
+});
+</script>
+
+{% endblock %}

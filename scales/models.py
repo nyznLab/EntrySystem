@@ -1412,7 +1412,37 @@ class RPatientGrowth(models.Model):
     class Meta:
         managed = False
         db_table = 'r_patient_growth'
+class RPatientMadrs(models.Model):
+    id = models.IntegerField(primary_key=True)
+    patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
+    scale = models.ForeignKey(DScales, models.DO_NOTHING)
+    observed_depression = models.IntegerField(blank=True, null=True)
+    depression_recount = models.IntegerField(blank=True, null=True)
+    inner_tension = models.IntegerField(blank=True, null=True)
+    sleep_loss = models.IntegerField(blank=True, null=True)
+    anorexia = models.IntegerField(blank=True, null=True)
+    difficulty_concentrating = models.IntegerField(blank=True, null=True)
+    laziness = models.IntegerField(blank=True, null=True)
+    not_feeling = models.IntegerField(blank=True, null=True)
+    pessimistic_thought = models.IntegerField(blank=True, null=True)
+    suicide_concept = models.IntegerField(blank=True, null=True)
+    total_score = models.IntegerField(blank=True, null=True)
+    doctor = models.ForeignKey('users.Suser', models.DO_NOTHING)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
 
+class RPatientCGI(models.Model):
+    id = models.IntegerField(primary_key=True)
+    patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
+    scale = models.ForeignKey(DScales, models.DO_NOTHING)
+    severity_of_illness = models.IntegerField(blank=True, null=True)  # 0-7
+    global_improvement = models.IntegerField(blank=True, null=True)  # 0-7
+    efficacy = models.IntegerField(blank=True, null=True)  # 4-1
+    side_reaction = models.IntegerField(blank=True, null=True)  # 4-1
+    efficacy_index_score = models.IntegerField(blank=True, null=True)
+    doctor = models.ForeignKey('users.Suser', models.DO_NOTHING)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
 
 class RPatientHama(models.Model):
     id = models.IntegerField(primary_key=True)

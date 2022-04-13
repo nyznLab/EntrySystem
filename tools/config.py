@@ -95,6 +95,22 @@ check_scales_html_dict = {7: '/scales/get_check_hamd_17_form',
                           32: '/scales/get_check_pss_form',
                           33: '/scales/get_check_suibe_form',
                           }
+check_re_self_scales_html_dict = {
+    11: '/scales/get_check_re_ybocs_form',
+    12: '/scales/get_check_re_bss_form',
+    13: '/scales/get_check_re_hcl_33_form',
+    14: '/scales/get_check_re_shaps_form',
+    15: '/scales/get_check_re_teps_form',
+    16: '/scales/get_check_re_ctq_sf_form',
+    17: '/scales/get_check_re_cerq_c_form',
+    18: '/scales/get_check_re_aslec_form',
+    19: '/scales/get_check_re_s_embu_form',
+    20: '/scales/get_check_re_atq_form',
+    29: '/scales/get_check_re_phq_9_form',
+    30: '/scales/get_check_re_gad_7_form',
+    31: '/scales/get_check_re_insomnia_form',
+    32: '/scales/get_check_re_pss_form',
+}
 
 general_info_type = 0
 other_test_type = 1

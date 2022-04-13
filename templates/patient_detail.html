@@ -58,6 +58,35 @@
             -webkit-user-select: none;
             -o-user-select: none;
         }
+        .tab-wrap ul{
+           list-style: none;
+        }
+        .tab-wrap ul li{
+            border:1px solid #ccc;
+            background:#eee;
+            cursor:pointer;
+            display:block;
+            float:left;
+            text-align:center;
+            text-decoration:none;
+            width:78px;
+            font-size:14px;
+            line-height:21px;
+            margin:0 2px;
+            position:relative;
+            top:1px;
+            z-index:9;
+            padding: 5px;
+        }
+        .tab-wrap ul li.curr{
+            background:#fff;
+            border-bottom-color:#fff;
+            cursor:default;
+            font-weight:bold;
+        }
+        .self_test_tab_content{
+	        padding:5px;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -137,7 +166,14 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="table table-hover table-bordered" style="font-size: 10px;">
+                                    <div class="tab-wrap">
+                                        <ul>
+                                            <li class="curr" id="tab{{ session_id }}_1" onclick="setTab('tab{{ session_id }}',1,2)">原自评</li>
+                                            <li class="" id="tab{{ session_id }}_2" onclick="setTab('tab{{ session_id }}',2,2)">新自评</li>
+                                        </ul>
+                                    </div>
+                                    <div class="self_test_tab_content" id="con_tab{{ session_id }}_1">
+                                        <table class="table table-hover table-bordered" style="font-size: 10px;">
                                         <thead>
                                         <tr>
                                             <th>测查种类</th>
@@ -177,6 +213,59 @@
                                         {% endfor %}
                                         </tbody>
                                     </table>
+                                    </div>
+                                    <div class="self_test_tab_content" id="con_tab{{ session_id }}_2" style="display: none">
+                                        <table class="table table-hover table-bordered" style="font-size: 10px">
+                                            <thead>
+                                                <tr>
+                                                    <th>测查种类</th>
+                                                    <th>测查时间</th>
+                                                    <th>状态</th>
+                                                    <th>续做</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for scale_id, scale_detail in session_details.items %}
+                                            {% if scale_detail|get_item:'scale__do_scale_type' == 2 %}
+                                                <tr>
+                                                    <td>{{ scale_detail|get_item:'scale__scale_name' }}</td>
+                                                    {% if scale_detail|get_item:'state' == 1 %}
+                                                        <td>{{ scale_detail|get_item:'end_time' }}</td>
+                                                        <td>已完成</td>
+                                                        <td>
+                                                            <a href='/scales/redo_scale?patient_session_id={{ scale_detail|get_item:'patient_session_id' }}&scale_id={{ scale_id }}'>重做</a>
+                                                        </td>
+                                                        <td><a href={{ scale_detail|get_self_check_scale_url }}>查看</a>
+                                                        </td>
+
+                                                    {% else %}
+                                                        <td>-</td>
+                                                        <td>未完成</td>
+                                                        <td><a href={{ scale_detail|get_self_scale_url }}>续做</a></td>
+                                                        {% comment %}
+                                                            <td>-</td>
+                                                            测试用{% endcomment %}
+                                                        <td>-</td>
+
+
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <script async>
+                                        function setTab(name, cursel, n) {
+                                            for (i = 1; i <= n; i++) {
+                                                var menu = document.getElementById(name + '_' + i);
+                                                var con = document.getElementById("con_" + name + "_" + i);
+                                                menu.className = i === cursel ? "curr": "";
+                                                con.style.display = i === cursel ? "block": "none";
+                                            }
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
