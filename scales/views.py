@@ -1666,20 +1666,26 @@ def get_re_ybocs_form(request):
     scale_id = tools_config.ybocs
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i+1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request, 'nbh/restructured_self_rate_templates/edit_ybocs.html', {
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'ybocs_answer': answer_list,
-        'ybocs_total_score': total_score
-    })
+    if not flag:
+        return render(request, 'nbh/restructured_self_rate_templates/edit_ybocs.html', {
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'ybocs_answer': answer_list,
+            'ybocs_total_score': total_score
+        })
+
+    return HttpResponse("还没有做耶鲁布朗量表，请返回并点击新自评下的重做完成评测")
 
 # 获取自杀量表表单
 def get_bss_form(request):

@@ -140,6 +140,24 @@ def get_self_check_scale_url(scale_detail):
     return redirect_url
 
 
+# 进入重构自评量表查看页面
+@register.filter(name='get_re_self_check_scale_url')
+def get_self_check_scale_url(scale_detail):
+    try:
+        scale_id = scale_detail['scale_id']
+        patient_session_id = scale_detail['patient_session_id']
+        patient_id = scale_detail['patient_session_id__patient_id']
+        next_page_url = config.check_re_self_scales_html_dict[int(scale_id)]
+        redirect_url = '{}?patient_session_id={}&patient_id={}'.format(next_page_url, str(patient_session_id),
+                                                                       str(patient_id))
+    except Exception as e:
+        print(e)
+        return ""
+    return redirect_url
+
+
+
+
 @register.filter(name='get_progress_note_url')
 def get_progress_note_url(inpatient):
     if inpatient.progress_note.name.strip() == '':

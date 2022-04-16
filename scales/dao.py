@@ -1232,8 +1232,10 @@ def get_version_of_history_scale(scale_model, patient_session_id):
 # 根据题目index取答案 考虑到性能这里不返回整条记录，只反映对应字段的值
 def get_answer_by_index(scale_model, patient_session_id, question_index):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).values(
-        question_index).first()[question_index]
-    return res
+        question_index).first()
+    if res is None:
+        return '无'
+    return res[question_index]
 
 
 # 根据 patient_session_id 返回对应的 patient id
