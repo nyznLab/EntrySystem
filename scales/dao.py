@@ -719,7 +719,7 @@ def get_scalename_bytype(do_scale_type, patient_session_id):
 # 获取未完成的scale量表
 def get_uodo_scales(patient_session_id):
     scales_list = scales_models.RPatientScales.objects.all().select_related('scale'). \
-        filter(patient_session_id=patient_session_id, state=0).values('scale__do_scale_type', 'scale__scale_name')
+        filter(patient_session_id=patient_session_id, state=0).values('scale__do_scale_type', 'scale__scale_name','scale__id')
     information_list = []
     other_test_list = []
     self_test_list = []

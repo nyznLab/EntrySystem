@@ -309,7 +309,7 @@
                                     {% endif %}
                                 </a>
                                 <br/><br/>
-                                <a href="/scales/get_self_test_forms?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}"
+                                <a href="/scales/self_test?patient_session_id={{ patient_session_id }}&patient_id={{ patient_baseinfo.id }}&scale_id={{ self_test_start_scale_id }}"
                                    style="color: white">
                                     {% if todo_self_test_scale_size == 0 %}
                                         <button class="btn btn-primary  " style="width: 70%" disabled="disabled" type="button">自评量表录入</button>

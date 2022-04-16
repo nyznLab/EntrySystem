@@ -370,6 +370,7 @@ def get_select_scales(request):
         if r_patient_blood.centrifugal_date is not None:
             r_patient_blood.centrifugal_date = r_patient_blood.centrifugal_date.strftime('%Y-%m-%d')
     options = ['无', '初扫', '只采血', '复扫', '出院前', '随访', '再次入院']
+    print(self_test_scale_list)
     return render(request, 'select_scales.html', {'patient_baseinfo': patient,
                                                   'patient_id': patient.id,
                                                   'standard_id': patient_detail.standard_id,
@@ -383,6 +384,7 @@ def get_select_scales(request):
                                                   'tms': tms,
                                                   'r_patient_blood': r_patient_blood,
                                                   'options_list': options,
+                                                  'self_test_start_scale_id':self_test_scale_list[0]['scale__id']
                                                   })
 
 
@@ -1685,7 +1687,7 @@ def get_re_ybocs_form(request):
             'ybocs_total_score': total_score
         })
 
-    return HttpResponse("还没有做耶鲁布朗量表，请返回并点击新自评下的重做完成评测")
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取自杀量表表单
 def get_bss_form(request):
@@ -1708,20 +1710,27 @@ def get_re_bss_form(request):
     scale_id = tools_config.bss
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request, 'nbh/restructured_self_rate_templates/edit_bss.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'bss_answer': answer_list,
-        'bss_total_score': total_score
-    })
+    if not flag:
+        return render(request, 'nbh/restructured_self_rate_templates/edit_bss.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'bss_answer': answer_list,
+            'bss_total_score': total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
+
 
 # 获取33项轻躁狂表单
 def get_hcl_33_form(request):
@@ -1744,22 +1753,26 @@ def get_re_hcl_33_form(request):
     scale_id = tools_config.hcl_33
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_hcl_33.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'hcl_33_answer': answer_list,
+            'hcl_33_total_score': total_score
+        })
 
-    return render(request,'nbh/restructured_self_rate_templates/edit_hcl_33.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'hcl_33_answer': answer_list,
-        'hcl_33_total_score': total_score
-    })
-
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取斯奈斯快乐量表
 def get_shaps_form(request):
@@ -1781,21 +1794,27 @@ def get_re_shaps_form(request):
     scale_id = tools_config.shaps
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
 
-    return render(request, 'nbh/restructured_self_rate_templates/edit_shaps.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'shaps_answer': answer_list,
-        'shaps_total_score': total_score
-    })
+    if not flag:
+        return render(request, 'nbh/restructured_self_rate_templates/edit_shaps.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'shaps_answer': answer_list,
+            'shaps_total_score': total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取快感体验能力表单
 def get_teps_form(request):
@@ -1818,20 +1837,27 @@ def get_re_teps_form(request):
     scale_id = tools_config.teps
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request,'nbh/restructured_self_rate_templates/edit_teps.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'teps_answer': answer_list,
-        'teps_total_score': total_score
-    })
+
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_teps.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'teps_answer': answer_list,
+            'teps_total_score': total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取儿童期成长经历表单
 def get_ctq_sf_form(request):
@@ -1854,20 +1880,26 @@ def get_re_ctq_sf_form(request):
     scale_id = tools_config.ctq_sf
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request,'nbh/restructured_self_rate_templates/edit_ctq_sf.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'ctq_sf_answer':answer_list,
-        'ctq_sf_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_ctq_sf.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'ctq_sf_answer':answer_list,
+            'ctq_sf_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取认知情绪调节表单
 def get_cerq_c_form(request):
@@ -1889,21 +1921,27 @@ def get_re_cerq_c_form(request):
     scale_id = tools_config.cerq_c
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
 
-    return render(request,'nbh/restructured_self_rate_templates/edit_cerq_c.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'cerq_c_answer':answer_list,
-        'cerq_c_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_cerq_c.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'cerq_c_answer':answer_list,
+            'cerq_c_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取青少年生活事件表单
 def get_aslec_form(request):
@@ -1925,21 +1963,27 @@ def get_re_aslec_form(request):
     scale_id = tools_config.aslec
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
 
-    return render(request,'nbh/restructured_self_rate_templates/edit_aslec.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'aslec_answer':answer_list,
-        'aslec_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_aslec.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'aslec_answer':answer_list,
+            'aslec_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 
 # 获取简氏父母教育表单
@@ -1963,21 +2007,27 @@ def get_re_s_embu_form(request):
     scale_id = tools_config.s_embu
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
 
-    return render(request,'nbh/restructured_self_rate_templates/edit_s_embu.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        's_embu_answer':answer_list,
-        's_embu_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_s_embu.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            's_embu_answer':answer_list,
+            's_embu_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 
 
@@ -2002,21 +2052,27 @@ def get_re_atq_form(request):
     scale_id = tools_config.atq
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
 
-    return render(request,'nbh/restructured_self_rate_templates/edit_atq.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'atq_answer':answer_list,
-        'atq_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_atq.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'atq_answer':answer_list,
+            'atq_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 
 # 获取PHQ_9表单
@@ -2042,21 +2098,27 @@ def get_re_phq_9_form(request):
     scale_id = tools_config.phq_9
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
 
-    return render(request,'nbh/restructured_self_rate_templates/edit_phq_9.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'phq_9_answer':answer_list,
-        'phq_9_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_phq_9.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'phq_9_answer':answer_list,
+            'phq_9_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 
 
@@ -2081,20 +2143,26 @@ def get_re_gad_7_form(request):
     scale_id = tools_config.gad_7
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request,'nbh/restructured_self_rate_templates/edit_gad_7.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'gad_7_answer':answer_list,
-        'gad_7_total_score':total_score
-    })
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_gad_7.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'gad_7_answer':answer_list,
+            'gad_7_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 
 # 获取失眠严重指数量表表单
@@ -2118,21 +2186,27 @@ def get_re_insomnia_form(request):
     scale_id = tools_config.insomnia
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request,'nbh/restructured_self_rate_templates/edit_insomnia.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'insomnia_answer':answer_list,
-        'insomnia_total_score':total_score
-    })
 
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_insomnia.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'insomnia_answer':answer_list,
+            'insomnia_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 # 获取压力知觉量表表单
 def get_pss_form(request):
@@ -2155,20 +2229,27 @@ def get_re_pss_form(request):
     scale_id = tools_config.pss
     scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.self_test_type)
     answer_list = []
+    flag = False
     for i in range(config.self_scale_question_count[str(scale_id)]):
         answer = Do.get_answer_by_index(scale_id, patient_session_id, i + 1)
         answer_list.append(answer)
+    if answer_list.count('无') >= config.self_scale_question_count[str(scale_id)]:
+        flag = True
     total_score = scales_dao.get_total_score(scale_id, patient_session_id)
-    return render(request,'nbh/restructured_self_rate_templates/edit_pss.html',{
-        'patient_session_id': request.GET.get('patient_session_id'),
-        'patient_id': request.GET.get('patient_id'),
-        'username': request.session.get('username'),
-        'scale_name_list': scale_name_list,
-        'scale_id': scale_id,
-        'order': order,
-        'pss_answer':answer_list,
-        'pss_total_score':total_score
-    })
+
+    if not flag:
+        return render(request,'nbh/restructured_self_rate_templates/edit_pss.html',{
+            'patient_session_id': request.GET.get('patient_session_id'),
+            'patient_id': request.GET.get('patient_id'),
+            'username': request.session.get('username'),
+            'scale_name_list': scale_name_list,
+            'scale_id': scale_id,
+            'order': order,
+            'pss_answer':answer_list,
+            'pss_total_score':total_score
+        })
+
+    return HttpResponse("还没有做该量表，请返回并点击新自评下的重做完成评测")
 
 
 
