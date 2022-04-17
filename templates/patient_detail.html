@@ -16,20 +16,10 @@
         text-align: center;
     }
 
-    .tab1 {
-
-    {
-        #background-color: #E8E8E8
-    ;
-        #
-    }
-    font-weight: bold
-
-    ;
-    font-size: larger
-
-    ;
-    }
+        .tab1 {
+        {#background-color: #E8E8E8;#} font-weight: bold;
+            font-size: larger;
+        }
 
     .sel_beauty {
         background: #fafdfe;
@@ -472,8 +462,7 @@
                                                     selected="true">{{ items.ethnicity_name }}={{ items.id }}
                                             </option>
                                             {% else %}
-                                            <option value="{{ items.ethnicity_name }}">{{ items.ethnicity_name }}={{
-                                                items.id }}
+                                            <option value="{{ items.ethnicity_name }}">{{ items.ethnicity_name }}={{ items.id }}
                                             </option>
                                             {% endif %}
                                             }
@@ -839,37 +828,37 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static '/js/layerJquery.js' %}"></script>
-<script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
-<script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
-<script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
-<script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
-<script>
-    function saveForm() {
-        $('#modify_form').ajaxSubmit(function () {
-            alert("设置保存成功！");
-        });
-        return false; //阻止表单默认提交
-    }
+    <script src="{% static '/js/layerJquery.js' %}"></script>
+    <script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+    <script>
+        function saveForm() {
+            $('#modify_form').ajaxSubmit(function () {
+                alert("设置保存成功！");
+            });
+            return false; //阻止表单默认提交
+        }
 
-</script>
+    </script>
 
-<script>
+    <script>
     // 高危相关的js函数
-    //Ajax提交页面上的高危亲属信息到后台
-    function save_ghr_relatives() {
-        let saveghr_success = 1;
-        let isnull_ghr_relative = 0;
-        let subforms_data = [];
-        var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
+        //Ajax提交页面上的高危亲属信息到后台
+        function save_ghr_relatives() {
+            let saveghr_success = 1;
+            let isnull_ghr_relative = 0;
+            let subforms_data = [];
+            var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
 
-        if (is_ghr_radio == 1) {
-            let ori_max_ghrid = $("input[name='max_ghr_id']").val();
-            //循环获取非空的子form表单
-            for (let i = 0; i <= ori_max_ghrid; i++) {
+            if(is_ghr_radio == 1){
+                let ori_max_ghrid = $("input[name='max_ghr_id']").val();
+                //循环获取非空的子form表单
+                for (let i = 0; i <= ori_max_ghrid; i++) {
                 $('.ghr_select').removeAttr("disabled");
-                if ($("#ghr_relative" + i + ">.ghr_relative_form").serialize() != "") {
+                if ($("#ghr_relative" + i + ">.ghr_relative_form").serialize() !="" ) {
                     let new_subform_data = $("#ghr_relative" + i + ">.ghr_relative_form").serializeArray();
                     if (new_subform_data.length == 3) {
                         let new_subform_obj = [];
@@ -884,435 +873,378 @@
                     }
                 }
             }
-            if (isnull_ghr_relative == 1) {
-                alert("请将高危亲属信息补充完整！");
+                if (isnull_ghr_relative == 1) {
+                    alert("请将高危亲属信息补充完整！");
+                }
+                if (isnull_ghr_relative == 0) {
+                    $.ajax({
+                        url: "/patients/ajax_ghr",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: false,
+                        async:false,
+                        data: JSON.stringify(
+                            {'ghr_submit': subforms_data}
+                        ),
+                        success: function (ghr_json) {
+                            ghr_array = ghr_json['ghr_submit'];
+                            var is_ghr ={{ is_ghr }};
+                            {#var is_ghr = 1;#}
+                            show_ghr_relatives(is_ghr, ghr_array);
+                            saveghr_success = 0;
+                        },
+                        error: function () {
+                            saveghr_success = 1;
+                        }
+                    });
+                }
             }
-            if (isnull_ghr_relative == 0) {
+            if(is_ghr_radio == 0){
+                subforms_data = [];
                 $.ajax({
-                    url: "/patients/ajax_ghr",
-                    type: "POST",
-                    dataType: "JSON",
-                    contentType: false,
-                    async: false,
-                    data: JSON.stringify(
-                        {'ghr_submit': subforms_data}
-                    ),
-                    success: function (ghr_json) {
-                        ghr_array = ghr_json['ghr_submit'];
-                        var is_ghr = {
-                        {
-                            is_ghr
+                        url: "/patients/ajax_ghr",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: false,
+                        async:false,
+                        data: JSON.stringify(
+                            {'ghr_submit': subforms_data}
+                        ),
+                        success: function (ghr_json) {
+                            var is_ghr ={{ is_ghr }};
+
+                            show_ghr_relatives(is_ghr,[]);
+                            saveghr_success = 0;
+                        },
+                        error: function () {
+                            saveghr_success = 1;
                         }
-                    }
-                        ;
-                        {
-                            #var
-                            is_ghr = 1;
-                            #
-                        }
-                        show_ghr_relatives(is_ghr, ghr_array);
-                        saveghr_success = 0;
-                    },
-                    error: function () {
-                        saveghr_success = 1;
-                    }
-                });
+                    });
+            }
+            return saveghr_success;
+        }
+
+
+        //页面上添加一行高危亲属信息（最后面添加）
+
+        function addLine_ghr() {
+            let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length;
+            let ori_max_ghrid = $("input[name='max_ghr_id']").val();
+            let max_ghrid = ++ori_max_ghrid;
+            //增加新的一行高危亲属输入
+            let new_ghr_relative = $(".ghr_relative_class:first").clone();
+            new_ghr_relative.appendTo("#ghr_relatives");
+            //修改新增行的id，删除按钮的id
+            $(".ghr_relative_class:last").attr('id', 'ghr_relative' +  max_ghrid);
+            $(".ghr_relative_class:last .del_ghr_btn_class").attr('id', 'del_ghr_btn' + max_ghrid);
+            $("input[name='max_ghr_id']").val(max_ghrid);
+
+            //当高危亲属行>2时，出现删除行按钮
+            if (ghr_relatives_num >= 1) {
+                $(".del_ghr_btn_class").show();
             }
         }
-        if (is_ghr_radio == 0) {
-            subforms_data = [];
-            $.ajax({
-                url: "/patients/ajax_ghr",
-                type: "POST",
-                dataType: "JSON",
-                contentType: false,
-                async: false,
-                data: JSON.stringify(
-                    {'ghr_submit': subforms_data}
-                ),
-                success: function (ghr_json) {
-                    var is_ghr = {
-                    {
-                        is_ghr
-                    }
-                }
-                    ;
 
-                    show_ghr_relatives(is_ghr, []);
-                    saveghr_success = 0;
-                },
-                error: function () {
-                    saveghr_success = 1;
-                }
-            });
-        }
-        return saveghr_success;
-    }
+        //页面上删除指定行的高危亲属
 
+        function delLine_ghr(del_ghr_btn_obj) {
+            let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length - 1;
+            var del_ghr_id = $("#" + del_ghr_btn_obj.id).closest(".ghr_relative_class").attr("id");
+            $("#" + del_ghr_id).remove();
 
-    //页面上添加一行高危亲属信息（最后面添加）
-
-    function addLine_ghr() {
-        let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length;
-        let ori_max_ghrid = $("input[name='max_ghr_id']").val();
-        let max_ghrid = ++ori_max_ghrid;
-        //增加新的一行高危亲属输入
-        let new_ghr_relative = $(".ghr_relative_class:first").clone();
-        new_ghr_relative.appendTo("#ghr_relatives");
-        //修改新增行的id，删除按钮的id
-        $(".ghr_relative_class:last").attr('id', 'ghr_relative' + max_ghrid);
-        $(".ghr_relative_class:last .del_ghr_btn_class").attr('id', 'del_ghr_btn' + max_ghrid);
-        $("input[name='max_ghr_id']").val(max_ghrid);
-
-        //当高危亲属行>2时，出现删除行按钮
-        if (ghr_relatives_num >= 1) {
-            $(".del_ghr_btn_class").show();
-        }
-    }
-
-    //页面上删除指定行的高危亲属
-
-    function delLine_ghr(del_ghr_btn_obj) {
-        let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length - 1;
-        var del_ghr_id = $("#" + del_ghr_btn_obj.id).closest(".ghr_relative_class").attr("id");
-        $("#" + del_ghr_id).remove();
-
-        //当高危亲属行<2时，隐藏删除行按钮
-        if (ghr_relatives_num <= 1) {
-            $(".del_ghr_btn_class").hide();
-        }
-    }
-
-    //页面上删除所有高危亲属行,剩一个
-
-    function delall_ghr() {
-        let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
-        if (ghr_form_num >= 1) {
-            for (let i = 0; i < ghr_form_num - 1; i++) {
-                $(".ghr_relative_class:last").remove();
+            //当高危亲属行<2时，隐藏删除行按钮
+            if (ghr_relatives_num <= 1) {
+                $(".del_ghr_btn_class").hide();
             }
         }
-        $('.ghr_select').removeAttr("disabled");
-        $(".ghr_select").val("");
-        $("input[name='max_ghr_id']").val("");
 
-    }
+        //页面上删除所有高危亲属行,剩一个
 
-    //展示后台传过来的ghr亲属数据
-
-    function show_ghr_relatives(is_ghr, ghr_relatives_data) {
-        if (is_ghr == 1) {
-            $("input[type=radio][name=ghr_radio][value='1']").attr("checked", 'checked');
-            let ghr_relatives_length = ghr_relatives_data.length;
-            $("#ghr_panel").show();
+        function delall_ghr() {
             let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
-            if (ghr_form_num != ghr_relatives_length) {
-                delall_ghr();
-                for (let i = 0; i < ghr_relatives_length - 1; i++) {
-                    addLine_ghr();
+            if (ghr_form_num >= 1) {
+                for (let i = 0; i < ghr_form_num - 1; i++) {
+                    $(".ghr_relative_class:last").remove();
                 }
             }
-            for (let i = 0; i < ghr_relatives_length; i++) {
-                let ghr_relative = ghr_relatives_data[i];
-                if (ghr_relative.length != 0) {
-                    $("#ghr_relative" + i + " .ghr_id").val(ghr_relative[0] + '');
-                    $("#ghr_relative" + i + " .ghr_diagnose").val(ghr_relative[1] + '');
-                    $("#ghr_relative" + i + " .kinship_add").val(ghr_relative[2] + '');
-                }
-            }
-        }
-        if (is_ghr == 0) {
-            $("input[type=radio][name=ghr_radio][value='0']").attr("checked", 'checked');
-            delall_ghr();
-            $("#ghr_panel").hide();
-            $('.ghr_select').prop("disabled", true);
-        }
-    }
+            $('.ghr_select').removeAttr("disabled");
+            $(".ghr_select").val("");
+            $("input[name='max_ghr_id']").val("");
 
-    // 切换ghr单选框
-    $("input[type=radio][name=ghr_radio]").click(function () {
-        var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
-        if (is_ghr_radio == 1) {
-            var is_ghr = {
-            {
-                is_ghr
-            }
         }
-            ;
 
+        //展示后台传过来的ghr亲属数据
+
+        function show_ghr_relatives(is_ghr, ghr_relatives_data) {
             if (is_ghr == 1) {
-                var ghr_relatives_data = {
-                {
-                    ghr_relatives_data
-                }
+                $("input[type=radio][name=ghr_radio][value='1']").attr("checked", 'checked');
+                let ghr_relatives_length = ghr_relatives_data.length;
+                    $("#ghr_panel").show();
+                    let ghr_form_num = $("#ghr_relatives>.ghr_relative_class").length;
+                    if (ghr_form_num != ghr_relatives_length) {
+                        delall_ghr();
+                        for (let i = 0; i < ghr_relatives_length - 1; i++) {
+                            addLine_ghr();
+                        }
+                    }
+                    for (let i = 0; i < ghr_relatives_length; i++) {
+                        let ghr_relative = ghr_relatives_data[i];
+                        if (ghr_relative.length != 0) {
+                            $("#ghr_relative" + i + " .ghr_id").val(ghr_relative[0] + '');
+                            $("#ghr_relative" + i + " .ghr_diagnose").val(ghr_relative[1] + '');
+                            $("#ghr_relative" + i + " .kinship_add").val(ghr_relative[2] + '');
+                        }
+                    }
             }
-                ;
-                $('.ghr_select').removeAttr("disabled");
-                show_ghr_relatives(is_ghr, ghr_relatives_data);
+            if(is_ghr == 0){
+                $("input[type=radio][name=ghr_radio][value='0']").attr("checked", 'checked');
+                delall_ghr();
+                $("#ghr_panel").hide();
+                $('.ghr_select').prop("disabled", true);
+            }
+        }
+
+        // 切换ghr单选框
+        $("input[type=radio][name=ghr_radio]").click(function () {
+            var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
+            if (is_ghr_radio == 1) {
+                var is_ghr = {{is_ghr}};
+
+                if (is_ghr == 1) {
+                    var ghr_relatives_data = {{ghr_relatives_data}};
+                    $('.ghr_select').removeAttr("disabled");
+                    show_ghr_relatives(is_ghr, ghr_relatives_data);
+                } else {
+                    $("#ghr_panel").show();
+                    $(".ghr_select").val("");
+                    $('.ghr_select').removeAttr("disabled");
+                }
             } else {
-                $("#ghr_panel").show();
-                $(".ghr_select").val("");
-                $('.ghr_select').removeAttr("disabled");
-            }
-        } else {
-            delall_ghr();
-            $("#ghr_panel").hide();
-            $('.ghr_select').prop("disabled", true);
+                delall_ghr();
+                $("#ghr_panel").hide();
+                $('.ghr_select').prop("disabled", true);
 
-        }
-    });
-
-
-</script>
-
-<script>
-    function addCookie(name, value, expiresHours) {
-        var cookieString = name + "=" + escape(value);
-        //判断是否设置过期时间
-        if (expiresHours > 0) {
-            var date = new Date();
-            date.setTime(date.getTime + expiresHours * 3600 * 1000);
-            cookieString = cookieString + "; expires=" + date.toGMTString() + ";path=/";
-        }
-        document.cookie = cookieString;
-    }
-
-    function judge_diagnosis(obj) {
-        if (obj.options[obj.selectedIndex].value == 99) {
-            $("#other_diagnosis_div").show();
-        } else {
-            $("#other_diagnosis_div").hide();
-            $("#other_diagnosis").val("");
-        }
-    }
-
-    //点击保存修改按钮
-    $("#change_detail").click(function () {
-        var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
-        var ghr_submit = 0;
-        ghr_submit = save_ghr_relatives();
-        if (ghr_submit == 0) {
-            $("#baseinfo_form").submit();
-            alert("提交成功！")
-        }
-
-    })
-</script>
-
-<script type="text/javascript" language="JavaScript">
-    $(document).ready(function () {
-        document.cookie = "enter_page=detail;path=/";
-        $("input[type='radio']").labelauty();
-        document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({
-        {
-            patient_id
-        }
-    },
-        8
-    )
-        ;
-        document.getElementById("diagnosis").value = {
-        {
-            diagnosis
-        }
-    }
-        ;
-        var diagnosistype = {
-        {
-            diagnosis
-        }
-    }
-        ;
-
-        if (diagnosistype == 99) {
-            document.getElementById("other_diagnosis_div").style.display = "";
-        }
-
-        var is_ghr = {
-        {
-            is_ghr
-        }
-    }
-        var ghr_relatives_data = {
-        {
-            ghr_relatives_data
-        }
-    }
-        ;
-
-        show_ghr_relatives(is_ghr, ghr_relatives_data);
-    });
-
-    function getCookie(name) {
-        var strCookie = document.cookie;
-        var arrCookie = strCookie.split("; ");
-        for (var i = 0; i < arrCookie.length; i++) {
-            var arr = arrCookie[i].split("=");
-            if (arr[0] == name) return arr[1];
-        }
-        return "";
-    }
-
-    function formatZero(num, len) {
-        if (String(num).length > len) return num;
-        return (Array(len).join(0) + num).slice(-len);
-    }
-
-</script>
-
-<script>
-    // 删除复扫信息前验证
-    var patientid = null;
-    var sessionid = null;
-
-    function deleteJob_before(id, doctorid, p_doctorid, p_sessionid, p_patientid) {
-        patientid = p_patientid;
-        sessionid = p_sessionid;
-        if (doctorid == p_doctorid) {
-            $('#delete_scan_modal').modal("show");
-            document.getElementById("del_scan_alert_message").innerHTML = "确定删除复扫编号为" + id + "的复扫信息吗？";
-        } else {
-            $('#del_scan_permission_alert_modal').modal("show");
-            document.getElementById("del_scan_permission_alert_message").innerHTML = "您没有权限删除该复扫信息！";
-        }
-    }
-
-    function deleteScan() {
-        $("#delete_scan_href").attr("href", "/patients/del_followup?patient_id=" + patientid + "&patient_session_id=" + sessionid);
-    }
-</script>
-
-<script type="text/javascript" language="JavaScript">
-    $(document).ready(function () {
-        document.cookie = "enter_page=select;path=/"
-        if_medical_advice = "{{ medical_advice.is_medical_advice }}"
-        if_progress_note = "{{ medical_advice.is_progress_note }}"
-        if (if_medical_advice == '1' || if_progress_note == '1') {
-            $('input:radio[name="is_medical_advice"]:first').attr('checked', 'checked');
-            $("#medical_advice_check").removeAttr("style", "display:none;");
-        }
-        if (if_medical_advice == '0' && if_progress_note == '0') {
-            $('input:radio[name="is_medical_advice"]:last').attr('checked', 'checked');
-        }
-        $('input:radio[name="is_medical_advice"]').click(function () {
-            //若查询不到信息，is_medical_advice为空字符串
-            is_medical_advice = "{{ medical_advice.is_medical_advice }}";
-            is_progress_note = "{{ medical_advice.is_progress_note }}";
-            click_medical_advice = $(this).val();
-            //点击否
-            if (Number(click_medical_advice == 0)) {
-                $("#medical_advice_typein").attr("style", "display:none;");
-                $("#medical_advice_check").attr("style", "display:none;");
-                $('#dont_need_ma').modal("show");
-                var standard_id = 'NN_' + formatZero({
-                {
-                    patient_id
-                }
-            },
-                8
-            )
-                ;
-                var name = "{{ patient_baseinfo.name }}";
-                var patient_id = "{{ patient_baseinfo.id }}"
-                document.getElementById("dont_need_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不需要长期医嘱/病程记录了吗？";
-                $("#dont_need_ma_href").attr("href", "/patients/dont_need_ma?patient_id=" + patient_id);
-            }
-            //点击是
-            if (Number(click_medical_advice == 1)) {
-                if ((is_medical_advice == '' || is_medical_advice == '0' || is_medical_advice == 'None') && (is_progress_note == '' || is_progress_note == '0' || is_progress_note == 'None')) {
-                    $("#medical_advice_typein").removeAttr("style", "display:none;");
-                }
-
-                if (is_medical_advice == '1' || is_progress_note == '1') {
-                    $("#medical_advice_check").removeAttr("style", "display:none;");
-                }
             }
         });
-    });
-</script>
 
-<script>
-    //验证码生成与验证相关js
-    //验证码图片的生成
-    //生成一个随机数
-    var verification_code = "";
 
-    function randomNum(min, max) {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
+    </script>
 
-    //生成一个随机色
-    function randomColor(min, max) {
-        var r = randomNum(min, max);
-        var g = randomNum(min, max);
-        var b = randomNum(min, max);
-        return "rgb(" + r + "," + g + "," + b + ")";
-    }
+    <script>
+        function addCookie(name, value, expiresHours) {
+            var cookieString = name + "=" + escape(value);
+            //判断是否设置过期时间
+            if (expiresHours > 0) {
+                var date = new Date();
+                date.setTime(date.getTime + expiresHours * 3600 * 1000);
+                cookieString = cookieString + "; expires=" + date.toGMTString() + ";path=/";
+            }
+            document.cookie = cookieString;
+        }
 
-    drawPic();
-    //切换验证码图片
-    document.getElementById("changeImg").onclick = function (e) {
-        e.preventDefault();
+        function judge_diagnosis(obj) {
+            if (obj.options[obj.selectedIndex].value == 99) {
+                $("#other_diagnosis_div").show();
+            } else {
+                $("#other_diagnosis_div").hide();
+                $("#other_diagnosis").val("");
+            }
+        }
+
+        //点击保存修改按钮
+        $("#change_detail").click(function () {
+            var is_ghr_radio = $("input[type=radio][name=ghr_radio]:checked").val();
+            var ghr_submit = 0;
+            ghr_submit = save_ghr_relatives();
+            if (ghr_submit == 0) {
+                $("#baseinfo_form").submit();
+                alert("提交成功！")
+            }
+
+        })
+    </script>
+
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            document.cookie = "enter_page=detail;path=/";
+            $("input[type='radio']").labelauty();
+            document.getElementById("patient_id").innerHTML = 'NN_' + formatZero({{ patient_id }}, 8);
+            document.getElementById("diagnosis").value ={{ diagnosis }};
+            var diagnosistype ={{ diagnosis }};
+
+            if (diagnosistype == 99) {
+                document.getElementById("other_diagnosis_div").style.display = "";
+            }
+
+            var is_ghr = {{is_ghr}}
+            var ghr_relatives_data = {{ghr_relatives_data}};
+
+            show_ghr_relatives(is_ghr, ghr_relatives_data);
+        });
+
+        function getCookie(name) {
+            var strCookie = document.cookie;
+            var arrCookie = strCookie.split("; ");
+            for (var i = 0; i < arrCookie.length; i++) {
+                var arr = arrCookie[i].split("=");
+                if (arr[0] == name) return arr[1];
+            }
+            return "";
+        }
+
+        function formatZero(num, len) {
+            if (String(num).length > len) return num;
+            return (Array(len).join(0) + num).slice(-len);
+        }
+
+    </script>
+
+    <script>
+        // 删除复扫信息前验证
+        var patientid = null;
+        var sessionid = null;
+        function deleteJob_before(id, doctorid, p_doctorid,p_sessionid,p_patientid) {
+            patientid=p_patientid;
+            sessionid=p_sessionid;
+            if (doctorid == p_doctorid) {
+                $('#delete_scan_modal').modal("show");
+                document.getElementById("del_scan_alert_message").innerHTML = "确定删除复扫编号为" + id + "的复扫信息吗？";
+            } else {
+                $('#del_scan_permission_alert_modal').modal("show");
+                document.getElementById("del_scan_permission_alert_message").innerHTML = "您没有权限删除该复扫信息！";
+            }
+        }
+
+        function deleteScan() {
+            $("#delete_scan_href").attr("href", "/patients/del_followup?patient_id="+patientid+"&patient_session_id="+sessionid);
+        }
+    </script>
+
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            document.cookie = "enter_page=select;path=/"
+            if_medical_advice ="{{ medical_advice.is_medical_advice }}"
+            if_progress_note ="{{ medical_advice.is_progress_note }}"
+            if (if_medical_advice == '1'|| if_progress_note == '1') {
+                $('input:radio[name="is_medical_advice"]:first').attr('checked', 'checked');
+                $("#medical_advice_check").removeAttr("style", "display:none;");
+            }
+            if(if_medical_advice == '0' && if_progress_note == '0'){
+                $('input:radio[name="is_medical_advice"]:last').attr('checked', 'checked');
+            }
+            $('input:radio[name="is_medical_advice"]').click(function () {
+                //若查询不到信息，is_medical_advice为空字符串
+                is_medical_advice = "{{ medical_advice.is_medical_advice }}";
+                is_progress_note = "{{ medical_advice.is_progress_note }}";
+                click_medical_advice = $(this).val();
+                //点击否
+                if (Number(click_medical_advice == 0)){
+                    $("#medical_advice_typein").attr("style", "display:none;");
+                    $("#medical_advice_check").attr("style", "display:none;");
+                    $('#dont_need_ma').modal("show");
+                    var standard_id = 'NN_' + formatZero({{ patient_id }}, 8);
+                    var name = "{{ patient_baseinfo.name }}";
+                    var patient_id="{{ patient_baseinfo.id }}"
+                    document.getElementById("dont_need_alert_message").innerHTML = "确定" + standard_id + "号患者" + name + "不需要长期医嘱/病程记录了吗？";
+                    $("#dont_need_ma_href").attr("href","/patients/dont_need_ma?patient_id="+patient_id);
+                }
+                //点击是
+                if (Number(click_medical_advice == 1)) {
+                    if ((is_medical_advice == ''||is_medical_advice == '0'||is_medical_advice == 'None') && (is_progress_note == ''||is_progress_note =='0'||is_progress_note =='None')) {
+                        $("#medical_advice_typein").removeAttr("style", "display:none;");
+                    }
+
+                    if (is_medical_advice == '1'|| is_progress_note == '1') {
+                        $("#medical_advice_check").removeAttr("style", "display:none;");
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        //验证码生成与验证相关js
+        //验证码图片的生成
+        //生成一个随机数
+        var verification_code = "";
+
+        function randomNum(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        //生成一个随机色
+        function randomColor(min, max) {
+            var r = randomNum(min, max);
+            var g = randomNum(min, max);
+            var b = randomNum(min, max);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+
         drawPic();
-    };
+        //切换验证码图片
+        document.getElementById("changeImg").onclick = function (e) {
+            e.preventDefault();
+            drawPic();
+        };
 
-    //绘制验证码图片
-    function drawPic() {
-        var canvas = document.getElementById("canvas");
-        var width = canvas.width;
-        var height = canvas.height;
-        var ctx = canvas.getContext('2d');
-        ctx.textBaseline = 'bottom';
+        //绘制验证码图片
+        function drawPic() {
+            var canvas = document.getElementById("canvas");
+            var width = canvas.width;
+            var height = canvas.height;
+            var ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'bottom';
 
-        //绘制背景色
-        ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
-        ctx.fillRect(0, 0, width, height);
-        //绘制文字
-        var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
-        for (var i = 0; i < 4; i++) {
-            var txt = str[randomNum(0, str.length)];
-            verification_code = verification_code + txt;
-            ctx.fillStyle = randomColor(50, 160);  //随机生成字体颜色
-            ctx.font = randomNum(30, 40) + 'px SimHei'; //随机生成字体大小
-            var x = 10 + i * 25;
-            var y = randomNum(25, 45);
-            var deg = randomNum(-20, 20);
-            //修改坐标原点和旋转角度
-            ctx.translate(x, y);
-            ctx.rotate(deg * Math.PI / 180);
-            ctx.fillText(txt, 0, 0);
-            //恢复坐标原点和旋转角度
-            ctx.rotate(-deg * Math.PI / 180);
-            ctx.translate(-x, -y);
+            //绘制背景色
+            ctx.fillStyle = randomColor(180, 240); //颜色若太深可能导致看不清
+            ctx.fillRect(0, 0, width, height);
+            //绘制文字
+            var str = 'ABCEFGHJKLMNPQRSTWXY123456789';
+            for (var i = 0; i < 4; i++) {
+                var txt = str[randomNum(0, str.length)];
+                verification_code=verification_code+txt;
+                ctx.fillStyle = randomColor(50, 160);  //随机生成字体颜色
+                ctx.font = randomNum(30, 40) + 'px SimHei'; //随机生成字体大小
+                var x = 10 + i * 25;
+                var y = randomNum(25, 45);
+                var deg = randomNum(-20, 20);
+                //修改坐标原点和旋转角度
+                ctx.translate(x, y);
+                ctx.rotate(deg * Math.PI / 180);
+                ctx.fillText(txt, 0, 0);
+                //恢复坐标原点和旋转角度
+                ctx.rotate(-deg * Math.PI / 180);
+                ctx.translate(-x, -y);
+            }
+            //绘制干扰线
+            for (var i = 0; i < 5; i++) {
+                ctx.strokeStyle = randomColor(40, 180);
+                ctx.beginPath();
+                ctx.moveTo(randomNum(0, width), randomNum(0, height));
+                ctx.lineTo(randomNum(0, width), randomNum(0, height));
+                ctx.stroke();
+            }
+            //绘制干扰点
+            for (var i = 0; i < 50; i++) {
+                ctx.fillStyle = randomColor(0, 255);
+                ctx.beginPath();
+                ctx.arc(randomNum(0, width), randomNum(0, height), 1, 0, 2 * Math.PI);
+                ctx.fill();
+            }
         }
-        //绘制干扰线
-        for (var i = 0; i < 5; i++) {
-            ctx.strokeStyle = randomColor(40, 180);
-            ctx.beginPath();
-            ctx.moveTo(randomNum(0, width), randomNum(0, height));
-            ctx.lineTo(randomNum(0, width), randomNum(0, height));
-            ctx.stroke();
-        }
-        //绘制干扰点
-        for (var i = 0; i < 50; i++) {
-            ctx.fillStyle = randomColor(0, 255);
-            ctx.beginPath();
-            ctx.arc(randomNum(0, width), randomNum(0, height), 1, 0, 2 * Math.PI);
-            ctx.fill();
-        }
-    }
 
-    //#验证验证码
-    function verification() {
-        var value_verification_input = document.getElementById("verification_input").value;
-        if (verification_code == value_verification_input) {
-            document.getElementById("verification_result").innerHTML = "验证码输入正确";
-            $('#confirm_del_button').prop('disabled', false);
-        } else {
-            document.getElementById("verification_result").innerHTML = "验证码输入错误";
-            $('#confirm_del_button').prop('disabled', true);
-        }
-    }
-</script>
+        //#验证验证码
+        function verification() {
+            var value_verification_input=document.getElementById("verification_input").value;
+            if (verification_code==value_verification_input){
+                document.getElementById("verification_result").innerHTML = "验证码输入正确";
+                $('#confirm_del_button').prop('disabled', false);
+            }
+            else{
+                document.getElementById("verification_result").innerHTML = "验证码输入错误";
+                $('#confirm_del_button').prop('disabled', true);
+            }
+         }
+    </script>
 
 {% endblock %}
