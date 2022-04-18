@@ -261,7 +261,7 @@ def get_patient_detail(request):
                                           'cognitive','sound','blood','hairs','manure','drugs_information',
                                           'mri_examination','first','tms','age','occupation','education','years',
                                           'emotional_state','phone','source','height','weight','waist','hip','handy','note','scan_date',
-                                          'patient_id__diagnosis','patient_id__other_diagnosis', 'doctor__name','doctor__id')
+                                          'patient_id__diagnosis','patient_id__other_diagnosis', 'doctor__name','doctor__id').order_by('session_id')
         test_states = scales_models.RPatientScales.objects.all().select_related('patient_session_id__scale'). \
             filter(patient_session_id__patient=patient_baseinfo).values(
             'patient_session_id','patient_session_id__session_id','patient_session_id__patient_id',
