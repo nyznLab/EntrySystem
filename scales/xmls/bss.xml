@@ -7,197 +7,197 @@
     <question index="2" title="自杀未遂或自伤次数" rule="['==', 'question1', 1]">
         <option type="text" name="question2"/>
     </question>
-    <question index="3" title="您希望活下去的程度如何?（最近一周）">
+    <question index="3" title="1.1 您希望活下去的程度如何?（最近一周）">
         <option type="radio" name="question3" value="1">中等到强烈</option>
         <option type="radio" name="question3" value="2">弱</option>
         <option type="radio" name="question3" value="3">没有活着的欲望</option>
     </question>
-    <question index="4" title="您希望活下去的程度如何?（最消沉、最忧郁的时候）">
+    <question index="4" title="1.2 您希望活下去的程度如何?（最消沉、最忧郁的时候）">
         <option type="radio" name="question4" value="1">中等到强烈</option>
         <option type="radio" name="question4" value="2">弱</option>
         <option type="radio" name="question4" value="3">没有活着的欲望</option>
     </question>
-    <question index="5" title="您希望死去的程度如何?（最近一周）">
+    <question index="5" title="2.1 您希望死去的程度如何?（最近一周）">
         <option type="radio" name="question5" value="1">没有死去的欲望</option>
         <option type="radio" name="question5" value="2">弱</option>
         <option type="radio" name="question5" value="3">中等到强烈</option>
     </question>
-    <question index="6" title="您希望死去的程度如何?（最消沉、最忧郁的时候）">
+    <question index="6" title="2.2 您希望死去的程度如何?（最消沉、最忧郁的时候）">
         <option type="radio" name="question6" value="1">没有死去的欲望</option>
         <option type="radio" name="question6" value="2">弱</option>
         <option type="radio" name="question6" value="3">中等到强烈</option>
     </question>
-    <question index="7" title="您要活下去的理由胜过您要死去的理由吗?（最近一周）">
+    <question index="7" title="3.1 您要活下去的理由胜过您要死去的理由吗?（最近一周）">
         <option type="radio" name="question7" value="1">要活下去胜过要死去</option>
         <option type="radio" name="question7" value="2">二者相当</option>
         <option type="radio" name="question7" value="3">要死去胜过要活下来</option>
     </question>
-    <question index="8" title="您要活下去的理由胜过您要死去的理由吗?（最消沉、最忧郁的时候）">
+    <question index="8" title="3.2 您要活下去的理由胜过您要死去的理由吗?（最消沉、最忧郁的时候）">
         <option type="radio" name="question8" value="1">要活下去胜过要死去</option>
         <option type="radio" name="question8" value="2">二者相当</option>
         <option type="radio" name="question8" value="3">要死去胜过要活下来</option>
     </question>
-    <question index="9" title="您主动尝试自杀的愿望程度如何?（最近一周）">
+    <question index="9" title="4.1 您主动尝试自杀的愿望程度如何?（最近一周）">
         <option type="radio" name="question9" value="1">没有</option>
         <option type="radio" name="question9" value="2">弱</option>
         <option type="radio" name="question9" value="3">中等到强烈</option>
     </question>
-    <question index="10" title="您主动尝试自杀的愿望程度如何?（最消沉、最忧郁的时候）">
+    <question index="10" title="4.2 您主动尝试自杀的愿望程度如何?（最消沉、最忧郁的时候）">
         <option type="radio" name="question10" value="1">没有</option>
         <option type="radio" name="question10" value="2">弱</option>
         <option type="radio" name="question10" value="3">中等到强烈</option>
     </question>
-    <question index="11" title="您希望外力结束自己生命，即有“被动自杀愿望”的程度如何?（如，希望一直睡下去不再醒来、意外地死去等）（最近一周）">
+    <question index="11" title="5.1 您希望外力结束自己生命，即有“被动自杀愿望”的程度如何?（如，希望一直睡下去不再醒来、意外地死去等）（最近一周）">
         <option type="radio" name="question11" value="1">没有</option>
         <option type="radio" name="question11" value="2">弱</option>
         <option type="radio" name="question11" value="3">中等到强烈</option>
     </question>
-    <question index="12" title="您希望外力结束自己生命，即有“被动自杀愿望”的程度如何?（如，希望一直睡下去不再醒来、意外地死去等）（最消沉、最忧郁的时候）">
+    <question index="12" title="5.2 您希望外力结束自己生命，即有“被动自杀愿望”的程度如何?（如，希望一直睡下去不再醒来、意外地死去等）（最消沉、最忧郁的时候）">
         <option type="radio" name="question12" value="1">没有</option>
         <option type="radio" name="question12" value="2">弱</option>
         <option type="radio" name="question12" value="3">中等到强烈</option>
     </question>
-    <question index="13" title="您的这种自杀想法持续存在多长时间（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="13" title="6.1 您的这种自杀想法持续存在多长时间（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question13" value="1">短暂、一闪即逝</option>
         <option type="radio" name="question13" value="2">较长时间</option>
         <option type="radio" name="question13" value="3">持续或几乎是持续的</option>
         <option type="radio" name="question13" value="0">近一周无自杀想法</option>
     </question>
-    <question index="14" title="您的这种自杀想法持续存在多长时间（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="14" title="6.2 您的这种自杀想法持续存在多长时间（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question14" value="1">短暂、一闪即逝</option>
         <option type="radio" name="question14" value="2">较长时间</option>
         <option type="radio" name="question14" value="3">持续或几乎是持续的</option>
     </question>
-    <question index="15" title="您自杀想法出现的频度如何?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="15" title="7.1 您自杀想法出现的频度如何?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question15" value="1">极少、偶尔</option>
         <option type="radio" name="question15" value="2">有时</option>
         <option type="radio" name="question15" value="3">经常或持续</option>
         <option type="radio" name="question15" value="0">近一周无自杀想法</option>
     </question>
-    <question index="16" title="您自杀想法出现的频度如何?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="16" title="7.2 您自杀想法出现的频度如何?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question16" value="1">极少、偶尔</option>
         <option type="radio" name="question16" value="2">有时</option>
         <option type="radio" name="question16" value="3">经常或持续</option>
     </question>
-    <question index="17" title="您对自杀持什么态度?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="17" title="8.1 您对自杀持什么态度?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question17" value="1">排斥</option>
         <option type="radio" name="question17" value="2">矛盾或无所谓</option>
         <option type="radio" name="question17" value="3">接受</option>
     </question>
-    <question index="18" title="您对自杀持什么态度?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="18" title="8.2 您对自杀持什么态度?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question18" value="1">排斥</option>
         <option type="radio" name="question18" value="2">矛盾或无所谓</option>
         <option type="radio" name="question18" value="3">接受</option>
     </question>
-    <question index="19" title="您觉得自己控制自杀想法、不把它变成行动的能力如何?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="19" title="9.1 您觉得自己控制自杀想法、不把它变成行动的能力如何?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question19" value="1">能控制</option>
         <option type="radio" name="question19" value="2">不知能否控制</option>
         <option type="radio" name="question19" value="3">不能控制</option>
     </question>
-    <question index="20" title="您觉得自己控制自杀想法、不把它变成行动的能力如何?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="20" title="9.2 您觉得自己控制自杀想法、不把它变成行动的能力如何?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question20" value="1">能控制</option>
         <option type="radio" name="question20" value="2">不知能否控制</option>
         <option type="radio" name="question20" value="3">不能控制</option>
     </question>
-    <question index="21" title="如果出现自杀想法，某些顾虑（如顾及家人、死亡不可逆转等）在多大程度上能阻止您自杀?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="21" title="10.1 如果出现自杀想法，某些顾虑（如顾及家人、死亡不可逆转等）在多大程度上能阻止您自杀?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question21" value="1">能阻止自杀</option>
         <option type="radio" name="question21" value="2">能减少自杀的危险</option>
         <option type="radio" name="question21" value="3">无顾虑或无影响</option>
     </question>
-    <question index="22" title="如果出现自杀想法，某些顾虑（如顾及家人、死亡不可逆转等）在多大程度上能阻止您自杀?（最消沉、最忧郁的时）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="22" title="10.2 如果出现自杀想法，某些顾虑（如顾及家人、死亡不可逆转等）在多大程度上能阻止您自杀?（最消沉、最忧郁的时）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question22" value="1">能阻止自杀</option>
         <option type="radio" name="question22" value="2">能减少自杀的危险</option>
         <option type="radio" name="question22" value="3">无顾虑或无影响</option>
     </question>
-    <question index="23" title="当您想自杀时，主要是为了什么?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="23" title="11.1 当您想自杀时，主要是为了什么?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question23" value="1">控制形势、寻求关注、报复</option>
         <option type="radio" name="question23" value="2">逃避、减轻痛苦、解决问题</option>
         <option type="radio" name="question23" value="3">前两种情况均有</option>
         <option type="radio" name="question23" value="0">近一周无自杀想法</option>
     </question>
-    <question index="24" title="当您想自杀时，主要是为了什么?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="24" title="11.2 当您想自杀时，主要是为了什么?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question24" value="1">控制形势、寻求关注、报复</option>
         <option type="radio" name="question24" value="2">逃避、减轻痛苦、解决问题</option>
         <option type="radio" name="question24" value="3">前两种情况均有</option>
     </question>
-    <question index="25" title="您想过结束自己生命的方法了吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="25" title="12.1 您想过结束自己生命的方法了吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question25" value="1">没想过</option>
         <option type="radio" name="question25" value="2">想过，但没制订出具体细节</option>
         <option type="radio" name="question25" value="3">制订出具体细节或计划得很周详</option>
     </question>
-    <question index="26" title="您想过结束自己生命的方法了吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="26" title="12.2 您想过结束自己生命的方法了吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question26" value="1">没想过</option>
         <option type="radio" name="question26" value="2">想过，但没制订出具体细节</option>
         <option type="radio" name="question26" value="3">制订出具体细节或计划得很周详</option>
     </question>
-    <question index="27" title="您把自杀想法落实的条件或机会如何?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="27" title="13.1 您把自杀想法落实的条件或机会如何?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question27" value="1">没有现成的方法</option>
         <option type="radio" name="question27" value="2">需要时间或精力准备自杀工具</option>
         <option type="radio" name="question27" value="3">有现成的方法和机会或预计将来有方法和机会</option>
         <option type="radio" name="question27" value="0">近一周无自杀想法</option>
     </question>
-    <question index="28" title="您把自杀想法落实的条件或机会如何?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="28" title="13.2 您把自杀想法落实的条件或机会如何?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question28" value="1">没有现成的方法</option>
         <option type="radio" name="question28" value="2">需要时间或精力准备自杀工具</option>
         <option type="radio" name="question28" value="3">有现成的方法和机会或预计将来有方法和机会</option>
     </question>
-    <question index="29" title="您相信自己有能力并且有勇气去自杀吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="29" title="14.1 您相信自己有能力并且有勇气去自杀吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question29" value="1">没有勇气</option>
         <option type="radio" name="question29" value="2">不确信自己有无能力</option>
         <option type="radio" name="question29" value="3">确信自己有能力</option>
     </question>
-    <question index="30" title="您相信自己有能力并且有勇气去自杀吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="30" title="14.2 您相信自己有能力并且有勇气去自杀吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question30" value="1">没有勇气</option>
         <option type="radio" name="question30" value="2">不确信自己有无能力</option>
         <option type="radio" name="question30" value="3">确信自己有能力</option>
     </question>
-    <question index="31" title="您预计某一时间您确实会尝试自杀吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="31" title="15.1 您预计某一时间您确实会尝试自杀吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question31" value="1">不会</option>
         <option type="radio" name="question31" value="2">不确定</option>
         <option type="radio" name="question31" value="3">会</option>
     </question>
-    <question index="32" title="您预计某一时间您确实会尝试自杀吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="32" title="15.2 您预计某一时间您确实会尝试自杀吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question32" value="1">不会</option>
         <option type="radio" name="question32" value="2">不确定</option>
         <option type="radio" name="question32" value="3">会</option>
     </question>
-    <question index="33" title="为了自杀，您的准备行动完成得怎样?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="33" title="16.1 为了自杀，您的准备行动完成得怎样?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question33" value="1">没有准备</option>
         <option type="radio" name="question33" value="2">部分完成（如，开始收集药片）</option>
         <option type="radio" name="question33" value="3">全部完成(如，有药片、刀片、有子弹的枪)</option>
     </question>
-    <question index="34" title="为了自杀，您的准备行动完成得怎样?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="34" title="16.2 为了自杀，您的准备行动完成得怎样?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question34" value="1">没有准备</option>
         <option type="radio" name="question34" value="2">部分完成（如，开始收集药片）</option>
         <option type="radio" name="question34" value="3">全部完成(如，有药片、刀片、有子弹的枪)</option>
     </question>
-    <question index="35" title="您已着手写自杀遗言了吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="35" title="17.1 您已着手写自杀遗言了吗?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question35" value="1">没有考虑</option>
         <option type="radio" name="question35" value="2">仅仅考虑、开始但未写完</option>
         <option type="radio" name="question35" value="3">写完</option>
     </question>
-    <question index="36" title="您已着手写自杀遗言了吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="36" title="17.2 您已着手写自杀遗言了吗?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question36" value="1">没有考虑</option>
         <option type="radio" name="question36" value="2">仅仅考虑、开始但未写完</option>
         <option type="radio" name="question36" value="3">写完</option>
     </question>
-    <question index="37" title="您是否因为预计要结束自己的生命而抓紧处理一些事情？如买保险或准备遗嘱。（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="37" title="18.1 您是否因为预计要结束自己的生命而抓紧处理一些事情？如买保险或准备遗嘱。（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question37" value="1">没有</option>
         <option type="radio" name="question37" value="2">考虑过或做了一些安排</option>
         <option type="radio" name="question37" value="3">有肯定的计划或安排完毕</option>
     </question>
-    <question index="38" title="您是否因为预计要结束自己的生命而抓紧处理一些事情？如买保险或准备遗嘱。（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="38" title="18.2 您是否因为预计要结束自己的生命而抓紧处理一些事情？如买保险或准备遗嘱。（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question38" value="1">没有</option>
         <option type="radio" name="question38" value="2">考虑过或做了一些安排</option>
         <option type="radio" name="question38" value="3">有肯定的计划或安排完毕</option>
     </question>
-    <question index="39" title="您是否让人知道自己的自杀想法?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="39" title="19.1 您是否让人知道自己的自杀想法?（最近一周）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question39" value="1">坦率主动说出想法</option>
         <option type="radio" name="question39" value="2">不主动说出</option>
         <option type="radio" name="question39" value="3">试图欺骗、隐瞒</option>
         <option type="radio" name="question39" value="0">近一周无自杀想法</option>
     </question>
-    <question index="40" title="您是否让人知道自己的自杀想法?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
+    <question index="40" title="19.2 您是否让人知道自己的自杀想法?（最消沉、最忧郁的时候）" rule="['or', ['!=', 'question9', 1], ['!=', 'question10', 1], ['!=', 'question11', 1], ['!=', 'question12', 1]]">
         <option type="radio" name="question40" value="1">坦率主动说出想法</option>
         <option type="radio" name="question40" value="2">不主动说出</option>
         <option type="radio" name="question40" value="3">试图欺骗、隐瞒</option>

@@ -1,68 +1,68 @@
-<scale title="耶鲁布朗强迫症严重程度标准量表" warn="">
-    <question index="1" title="您每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？">
+<scale title="耶鲁布朗强迫症严重程度标准量表" warn="请依照你主要的强迫症状作答，并选择合适的选项。">
+    <question index="1" title="1.您每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？">
         <option type="radio" name="question1" value="0">完全无强迫思维</option>
         <option type="radio" name="question1" value="1">轻微（少于一小时），或偶尔有（一天不超过8次）</option>
         <option type="radio" name="question1" value="2">中度（一至三小时），或常常有（一天超过8次，但一天大部分时间没有强迫思维）</option>
         <option type="radio" name="question1" value="3">重度（多于三小时但不超过八小时），或频率非常高（一天超过8次，且一天大部分时间有强迫思维）</option>
         <option type="radio" name="question1" value="4">极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）</option>
     </question>
-    <question index="2" title="您的强迫思维对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）" rule="['!=', 'question1', 0]">
+    <question index="2" title="2.您的强迫思维对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）" rule="['!=', 'question1', 0]">
         <option type="radio" name="question2" value="0">不受妨碍</option>
         <option type="radio" name="question2" value="1">轻微。稍微妨碍社交或工作活动，但整体表现并无大碍</option>
         <option type="radio" name="question2" value="2">中度。确实妨碍社交或工作活动，但仍可应付</option>
         <option type="radio" name="question2" value="3">重度。导致社交或工作表现的障碍</option>
         <option type="radio" name="question2" value="4">极度。无能力应付社交或工作</option>
     </question>
-    <question index="3" title="您的强迫思维给您带来多大的苦恼或困扰？" rule="['!=', 'question1', 0]">
+    <question index="3" title="3.您的强迫思维给您带来多大的苦恼或困扰？" rule="['!=', 'question1', 0]">
         <option type="radio" name="question3" value="0">没有</option>
         <option type="radio" name="question3" value="1">轻微。不会太烦人</option>
         <option type="radio" name="question3" value="2">中度。觉得很烦，但尚可应付</option>
         <option type="radio" name="question3" value="3">重度。非常烦人</option>
         <option type="radio" name="question3" value="4">极重。几乎一直持续且令人丧志地苦恼</option>
     </question>
-    <question index="4" title="您有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）" rule="['!=', 'question1', 0]">
+    <question index="4" title="4.您有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）" rule="['!=', 'question1', 0]">
         <option type="radio" name="question4" value="0">一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）</option>
         <option type="radio" name="question4" value="1">大部分时间都试图与之对抗（超过一半的时间我都试图与之对抗）</option>
         <option type="radio" name="question4" value="2">用些许努力去对抗</option>
         <option type="radio" name="question4" value="3">屈服于所有的强迫思维，未试图控制，但仍有些不甘心。</option>
         <option type="radio" name="question4" value="4">完全愿意屈服于强迫思维</option>
     </question>
-    <question index="5" title="您控制强迫思维的能力有多少？您停止或转移强迫思维的效果如何？（不包括通过强迫行为来停止强迫思维）" rule="['!=', 'question1', 0]">
+    <question index="5" title="5.您控制强迫思维的能力有多少？您停止或转移强迫思维的效果如何？（不包括通过强迫行为来停止强迫思维）" rule="['!=', 'question1', 0]">
         <option type="radio" name="question5" value="0">完全控制。我可以完全控制</option>
         <option type="radio" name="question5" value="1">大多能控制。只要花些力气与注意力，即能停止或转移强迫思维</option>
         <option type="radio" name="question5" value="2">中等程度控制。“有时”能停止或转移强迫思维</option>
         <option type="radio" name="question5" value="3">控制力弱。很少能成功地停止或消除强迫思维，只能转移</option>
         <option type="radio" name="question5" value="4">无法控制。完全不能自主，连转移一下强迫思维的能力都没有主诉的强迫行为</option>
     </question>
-    <question index="6" title="您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？">
+    <question index="6" title="6.您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？">
         <option type="radio" name="question6" value="0">完全无强迫行为</option>
         <option type="radio" name="question6" value="1">轻微（少于一小时），或偶尔有（一天不超过8次）</option>
         <option type="radio" name="question6" value="2">中度（一至三小时），或常常有（一天超过8次，但一天大部分时间没有强迫行为）</option>
         <option type="radio" name="question6" value="3">重度（多于三小时但不超过八小时），或频率非常高（一天超过8次，且一天大部分时间有强迫行为）</option>
         <option type="radio" name="question6" value="4">极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）</option>
     </question>
-    <question index="7" title="您的强迫行为对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）" rule="['!=', 'question6', 0]">
+    <question index="7" title="7.您的强迫行为对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）" rule="['!=', 'question6', 0]">
         <option type="radio" name="question7" value="0">不受妨碍</option>
         <option type="radio" name="question7" value="1">轻微。稍微妨碍社交或工作活动，但整体表现并无大碍</option>
         <option type="radio" name="question7" value="2">中度。确实妨碍社交或工作活动，但仍可应付</option>
         <option type="radio" name="question7" value="3">重度。导致社交或工作表现的障碍</option>
         <option type="radio" name="question7" value="4">极度。无能力应付社交或工作</option>
     </question>
-    <question index="8" title="假如被制止从事强迫行为时，您有什么感觉？您会多焦虑？" rule="['!=', 'question6', 0]">
+    <question index="8" title="8.假如被制止从事强迫行为时，您有什么感觉？您会多焦虑？" rule="['!=', 'question6', 0]">
         <option type="radio" name="question8" value="0">没有焦虑</option>
         <option type="radio" name="question8" value="1">轻微。假如强迫行为被阻止，只是稍微焦虑</option>
         <option type="radio" name="question8" value="2">中度。假如强迫行为被阻止，会有中等程度的焦虑，但是仍可以应付</option>
         <option type="radio" name="question8" value="3">严重。假如强迫行为被阻止，会明显且困扰地增加焦虑</option>
         <option type="radio" name="question8" value="4">极度。假如有任何需要改变强迫行为的处置时，会导致极度地焦虑</option>
     </question>
-    <question index="9" title="您有多努力去对抗强迫行为？或尝试停止强迫行为的频率？（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估您停止强迫行为的效果有多好）" rule="['!=', 'question6', 0]">
+    <question index="9" title="9.您有多努力去对抗强迫行为？或尝试停止强迫行为的频率？（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估您停止强迫行为的效果有多好）" rule="['!=', 'question6', 0]">
         <option type="radio" name="question9" value="0">一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）</option>
         <option type="radio" name="question9" value="1">大部分时间都试图与之对抗（超过一半的时间我都试图与之对抗）</option>
         <option type="radio" name="question9" value="2">用些许努力去对抗</option>
         <option type="radio" name="question9" value="3">屈服于所有的强迫行为，未试图控制，但仍有些不甘心</option>
         <option type="radio" name="question9" value="4">完全愿意屈服于强迫行为</option>
     </question>
-    <question index="10" title="您控制强迫行为的能力如何？您停止强迫（仪式）行为的效果如何？（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）" rule="['!=', 'question6', 0]">
+    <question index="10" title="10.您控制强迫行为的能力如何？您停止强迫（仪式）行为的效果如何？（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）" rule="['!=', 'question6', 0]">
         <option type="radio" name="question10" value="0">完全控制。我可以完全控制</option>
         <option type="radio" name="question10" value="1">大多能控制。只要花些力气与注意力，即能停止强迫行为</option>
         <option type="radio" name="question10" value="2">中等程度控制。“有时”控制强迫行为，有些困难</option>

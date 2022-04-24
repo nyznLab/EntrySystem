@@ -1,195 +1,195 @@
 <scale title="儿童期（16岁以前）的成长经历量表"
        warn="指导语：本问卷调查的是您儿童期（16岁以前）的成长经历。请根据您当时的体会从“从来没有这种现象、偶尔、有时、经常、总是”五个选项中选出最适合您情况的答案，如果您不是很清楚，请尽量估计。">
-    <question index="1" title="当时家里没人关心我的饥饱">
+    <question index="1" title="1.当时家里没人关心我的饥饱。">
         <option type="radio" name="question1" value="1">从来没有这种现象</option>
         <option type="radio" name="question1" value="2">偶尔</option>
         <option type="radio" name="question1" value="3">有时</option>
         <option type="radio" name="question1" value="4">经常</option>
         <option type="radio" name="question1" value="5">总是</option>
     </question>
-    <question index="2" title="当时有人照顾我、保护我。">
+    <question index="2" title="2.当时有人照顾我、保护我。">
         <option type="radio" name="question2" value="5">从来没有这种现象</option>
         <option type="radio" name="question2" value="4">偶尔</option>
         <option type="radio" name="question2" value="3">有时</option>
         <option type="radio" name="question2" value="2">经常</option>
         <option type="radio" name="question2" value="1">总是</option>
     </question>
-    <question index="3" title="当时家里有人喊我“笨蛋”、“懒虫”或“丑八怪”等。">
+    <question index="3" title="3.当时家里有人喊我“笨蛋”、“懒虫”或“丑八怪”等。">
         <option type="radio" name="question3" value="1">从来没有这种现象</option>
         <option type="radio" name="question3" value="2">偶尔</option>
         <option type="radio" name="question3" value="3">有时</option>
         <option type="radio" name="question3" value="4">经常</option>
         <option type="radio" name="question3" value="5">总是</option>
     </question>
-    <question index="4" title="当时我的父母因为酗酒、吸毒或赌博而不能照顾家庭。?">
+    <question index="4" title="4.当时我的父母因为酗酒、吸毒或赌博而不能照顾家庭。?">
         <option type="radio" name="question4" value="1">从来没有这种现象</option>
         <option type="radio" name="question4" value="2">偶尔</option>
         <option type="radio" name="question4" value="3">有时</option>
         <option type="radio" name="question4" value="4">经常</option>
         <option type="radio" name="question4" value="5">总是</option>
     </question>
-    <question index="5" title="当时家里有人重视我。">
+    <question index="5" title="5.当时家里有人重视我。">
         <option type="radio" name="question5" value="5">从来没有这种现象</option>
         <option type="radio" name="question5" value="4">偶尔</option>
         <option type="radio" name="question5" value="3">有时</option>
         <option type="radio" name="question5" value="2">经常</option>
         <option type="radio" name="question5" value="1">总是</option>
     </question>
-    <question index="6" title="当时家里没人管我衣着冷暖。">
+    <question index="6" title="6.当时家里没人管我衣着冷暖。">
         <option type="radio" name="question6" value="1">从来没有这种现象</option>
         <option type="radio" name="question6" value="2">偶尔</option>
         <option type="radio" name="question6" value="3">有时</option>
         <option type="radio" name="question6" value="4">经常</option>
         <option type="radio" name="question6" value="5">总是</option>
     </question>
-    <question index="7" title="当时我感到家里人爱我。">
+    <question index="7" title="7.当时我感到家里人爱我。">
         <option type="radio" name="question7" value="5">从来没有这种现象</option>
         <option type="radio" name="question7" value="4">偶尔</option>
         <option type="radio" name="question7" value="3">有时</option>
         <option type="radio" name="question7" value="2">经常</option>
         <option type="radio" name="question7" value="1">总是</option>
     </question>
-    <question index="8" title="当时我觉得父母希望从来没有生过我。">
+    <question index="8" title="8.当时我觉得父母希望从来没有生过我。">
         <option type="radio" name="question8" value="1">从来没有这种现象</option>
         <option type="radio" name="question8" value="2">偶尔</option>
         <option type="radio" name="question8" value="3">有时</option>
         <option type="radio" name="question8" value="4">经常</option>
         <option type="radio" name="question8" value="5">总是</option>
     </question>
-    <question index="9" title="当时家里有人把我打伤的很重，不得不去医院。">
+    <question index="9" title="9.当时家里有人把我打伤的很重，不得不去医院。">
         <option type="radio" name="question9" value="1">从来没有这种现象</option>
         <option type="radio" name="question9" value="2">偶尔</option>
         <option type="radio" name="question9" value="3">有时</option>
         <option type="radio" name="question9" value="4">经常</option>
         <option type="radio" name="question9" value="5">总是</option>
     </question>
-    <question index="10" title="当时我家的状况需要改善。">
+    <question index="10" title="10.当时我家的状况需要改善。">
         <option type="radio" name="question10" value="1">从来没有这种现象</option>
         <option type="radio" name="question10" value="2">偶尔</option>
         <option type="radio" name="question10" value="3">有时</option>
         <option type="radio" name="question10" value="4">经常</option>
         <option type="radio" name="question10" value="5">总是</option>
     </question>
-    <question index="11" title="当时家里有人打得我皮肤青紫或留下伤痕。">
+    <question index="11" title="11.当时家里有人打得我皮肤青紫或留下伤痕。">
         <option type="radio" name="question11" value="1">从来没有这种现象</option>
         <option type="radio" name="question11" value="2">偶尔</option>
         <option type="radio" name="question11" value="3">有时</option>
         <option type="radio" name="question11" value="4">经常</option>
         <option type="radio" name="question11" value="5">总是</option>
     </question>
-    <question index="12" title="当时家里有人用皮带、绳子、木板或其它硬东西惩罚我。">
+    <question index="12" title="12.当时家里有人用皮带、绳子、木板或其它硬东西惩罚我。">
         <option type="radio" name="question12" value="1">从来没有这种现象</option>
         <option type="radio" name="question12" value="2">偶尔</option>
         <option type="radio" name="question12" value="3">有时</option>
         <option type="radio" name="question12" value="4">经常</option>
         <option type="radio" name="question12" value="5">总是</option>
     </question>
-    <question index="13" title="当时家里人彼此互相关心。">
+    <question index="13" title="13.当时家里人彼此互相关心。">
         <option type="radio" name="question13" value="5">从来没有这种现象</option>
         <option type="radio" name="question13" value="4">偶尔</option>
         <option type="radio" name="question13" value="3">有时</option>
         <option type="radio" name="question13" value="2">经常</option>
         <option type="radio" name="question13" value="1">总是</option>
     </question>
-    <question index="14" title="当时家里有人向我说过侮辱性或让我伤心的话。">
+    <question index="14" title="14.当时家里有人向我说过侮辱性或让我伤心的话。">
         <option type="radio" name="question14" value="1">从来没有这种现象</option>
         <option type="radio" name="question14" value="2">偶尔</option>
         <option type="radio" name="question14" value="3">有时</option>
         <option type="radio" name="question14" value="4">经常</option>
         <option type="radio" name="question14" value="5">总是</option>
     </question>
-    <question index="15" title="我当时受到了躯体虐待。">
+    <question index="15" title="15.我当时受到了躯体虐待。">
         <option type="radio" name="question15" value="1">从来没有这种现象</option>
         <option type="radio" name="question15" value="2">偶尔</option>
         <option type="radio" name="question15" value="3">有时</option>
         <option type="radio" name="question15" value="4">经常</option>
         <option type="radio" name="question15" value="5">总是</option>
     </question>
-    <question index="16" title="我觉得我的童年比任何人的都完美。">
+    <question index="16" title="16.我觉得我的童年比任何人的都完美。">
         <option type="radio" name="question16" value="1">从来没有这种现象</option>
         <option type="radio" name="question16" value="2">偶尔</option>
         <option type="radio" name="question16" value="3">有时</option>
         <option type="radio" name="question16" value="4">经常</option>
         <option type="radio" name="question16" value="5">总是</option>
     </question>
-    <question index="17" title="当时我被打得很重，引起了老师、邻居或医生等人的注意。">
+    <question index="17" title="17.当时我被打得很重，引起了老师、邻居或医生等人的注意。">
         <option type="radio" name="question17" value="1">从来没有这种现象</option>
         <option type="radio" name="question17" value="2">偶尔</option>
         <option type="radio" name="question17" value="3">有时</option>
         <option type="radio" name="question17" value="4">经常</option>
         <option type="radio" name="question17" value="5">总是</option>
     </question>
-    <question index="18" title="当时我觉得家里有人恨我。">
+    <question index="18" title="18.当时我觉得家里有人恨我。">
         <option type="radio" name="question18" value="1">从来没有这种现象</option>
         <option type="radio" name="question18" value="2">偶尔</option>
         <option type="radio" name="question18" value="3">有时</option>
         <option type="radio" name="question18" value="4">经常</option>
         <option type="radio" name="question18" value="5">总是</option>
     </question>
-    <question index="19" title="当时家里人关系很亲密。">
+    <question index="19" title="19.当时家里人关系很亲密。">
         <option type="radio" name="question19" value="5">从来没有这种现象</option>
         <option type="radio" name="question19" value="4">偶尔</option>
         <option type="radio" name="question19" value="3">有时</option>
         <option type="radio" name="question19" value="2">经常</option>
         <option type="radio" name="question19" value="1">总是</option>
     </question>
-    <question index="20" title="当时有人以带有性色彩的方式触摸我或让我触摸他/她。">
+    <question index="20" title="20.当时有人以带有性色彩的方式触摸我或让我触摸他/她。">
         <option type="radio" name="question20" value="1">从来没有这种现象</option>
         <option type="radio" name="question20" value="2">偶尔</option>
         <option type="radio" name="question20" value="3">有时</option>
         <option type="radio" name="question20" value="4">经常</option>
         <option type="radio" name="question20" value="5">总是</option>
     </question>
-    <question index="21" title="当时有人威胁让我同他/她做性方面。">
+    <question index="21" title="21.当时有人威胁让我同他/她做性方面。">
         <option type="radio" name="question21" value="1">从来没有这种现象</option>
         <option type="radio" name="question21" value="2">偶尔</option>
         <option type="radio" name="question21" value="3">有时</option>
         <option type="radio" name="question21" value="4">经常</option>
         <option type="radio" name="question21" value="5">总是</option>
     </question>
-    <question index="22" title="我觉得当时我的家好得不能再好了。">
+    <question index="22" title="22.我觉得当时我的家好得不能再好了。">
         <option type="radio" name="question22" value="1">从来没有这种现象</option>
         <option type="radio" name="question22" value="2">偶尔</option>
         <option type="radio" name="question22" value="3">有时</option>
         <option type="radio" name="question22" value="4">经常</option>
         <option type="radio" name="question22" value="5">总是</option>
     </question>
-    <question index="23" title="当时有人试图让我做或看性方面的事。">
+    <question index="23" title="23.当时有人试图让我做或看性方面的事。">
         <option type="radio" name="question23" value="1">从来没有这种现象</option>
         <option type="radio" name="question23" value="2">偶尔</option>
         <option type="radio" name="question23" value="3">有时</option>
         <option type="radio" name="question23" value="4">经常</option>
         <option type="radio" name="question23" value="5">总是</option>
     </question>
-    <question index="24" title="当时有人猥亵我，如耍流氓、动手动脚等。">
+    <question index="24" title="24.当时有人猥亵我，如耍流氓、动手动脚等。">
         <option type="radio" name="question24" value="1">从来没有这种现象</option>
         <option type="radio" name="question24" value="2">偶尔</option>
         <option type="radio" name="question24" value="3">有时</option>
         <option type="radio" name="question24" value="4">经常</option>
         <option type="radio" name="question24" value="5">总是</option>
     </question>
-    <question index="25" title="当时我的心灵受到了折磨或虐待。">
+    <question index="25" title="25.当时我的心灵受到了折磨或虐待。">
         <option type="radio" name="question25" value="1">从来没有这种现象</option>
         <option type="radio" name="question25" value="2">偶尔</option>
         <option type="radio" name="question25" value="3">有时</option>
         <option type="radio" name="question25" value="4">经常</option>
         <option type="radio" name="question25" value="5">总是</option>
     </question>
-    <question index="26" title="当时有人关心我的身体健康。">
+    <question index="26" title="26.当时有人关心我的身体健康。">
         <option type="radio" name="question26" value="5">从来没有这种现象</option>
         <option type="radio" name="question26" value="4">偶尔</option>
         <option type="radio" name="question26" value="3">有时</option>
         <option type="radio" name="question26" value="2">经常</option>
         <option type="radio" name="question26" value="1">总是</option>
     </question>
-    <question index="27" title="我当时受到了性虐待。">
+    <question index="27" title="27.我当时受到了性虐待。">
         <option type="radio" name="question27" value="1">从来没有这种现象</option>
         <option type="radio" name="question27" value="2">偶尔</option>
         <option type="radio" name="question27" value="3">有时</option>
         <option type="radio" name="question27" value="4">经常</option>
         <option type="radio" name="question27" value="5">总是</option>
     </question>
-    <question index="28" title="当时家是我获得力量和支持的源泉。">
+    <question index="28" title="28.当时家是我获得力量和支持的源泉。">
         <option type="radio" name="question28" value="5">从来没有这种现象</option>
         <option type="radio" name="question28" value="4">偶尔</option>
         <option type="radio" name="question28" value="3">有时</option>
