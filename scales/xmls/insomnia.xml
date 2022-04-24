@@ -1,47 +1,47 @@
 <scale title="失眠严重指数量表" warn="指导语：请评估你过去两个星期睡眠问题的严重程度。">
-    <question index="1" title="入睡困难">
+    <question index="1" title="1.入睡困难">
         <option type="radio" name="question1" value="0">没有</option>
         <option type="radio" name="question1" value="1">轻微</option>
         <option type="radio" name="question1" value="2">普通</option>
         <option type="radio" name="question1" value="3">严重</option>
         <option type="radio" name="question1" value="4">非常严重</option>
     </question>
-    <question index="2" title="难以维持睡眠">
+    <question index="2" title="2.难以维持睡眠">
         <option type="radio" name="question2" value="0">没有</option>
         <option type="radio" name="question2" value="1">轻微</option>
         <option type="radio" name="question2" value="2">普通</option>
         <option type="radio" name="question2" value="3">严重</option>
         <option type="radio" name="question2" value="4">非常严重</option>
     </question>
-    <question index="3" title="太早就醒了的问题">
+    <question index="3" title="3.太早就醒了的问题">
         <option type="radio" name="question3" value="0">没有</option>
         <option type="radio" name="question3" value="1">轻微</option>
         <option type="radio" name="question3" value="2">普通</option>
         <option type="radio" name="question3" value="3">严重</option>
         <option type="radio" name="question3" value="4">非常严重</option>
     </question>
-    <question index="4" title="你对过去两个星期的睡眠状况满意度如何">
+    <question index="4" title="4.你对过去两个星期的睡眠状况满意度如何">
         <option type="radio" name="question4" value="0">非常满意</option>
         <option type="radio" name="question4" value="1">满意</option>
         <option type="radio" name="question4" value="2">一般</option>
         <option type="radio" name="question4" value="3">不满意</option>
         <option type="radio" name="question4" value="4">非常不满意</option>
     </question>
-    <question index="5" title="你认为你的睡眠问题妨碍你日常运作（例如：日渐疲劳、处理工作/日常时务的能力、集中力、记忆、情绪等等）到哪一个程度？">
+    <question index="5" title="5.你认为你的睡眠问题妨碍你日常运作（例如：日渐疲劳、处理工作/日常时务的能力、集中力、记忆、情绪等等）到哪一个程度？">
         <option type="radio" name="question5" value="0">完全没有妨碍</option>
         <option type="radio" name="question5" value="1">少许</option>
         <option type="radio" name="question5" value="2">颇为</option>
         <option type="radio" name="question5" value="3">非常</option>
         <option type="radio" name="question5" value="4">极之妨碍</option>
     </question>
-    <question index="6" title="你的睡眠问题在降低生活质素而言，在其它人眼中有多明显?">
+    <question index="6" title="6.你的睡眠问题在降低生活质素而言，在其它人眼中有多明显?">
         <option type="radio" name="question6" value="0">完全不明显</option>
         <option type="radio" name="question6" value="1">仅为</option>
         <option type="radio" name="question6" value="2">颇为</option>
         <option type="radio" name="question6" value="3">非常</option>
         <option type="radio" name="question6" value="4">极之明显</option>
     </question>
-    <question index="7" title="你对你现时的睡眠问题有多忧虑/苦恼？">
+    <question index="7" title="7.你对你现时的睡眠问题有多忧虑/苦恼？">
         <option type="radio" name="question7" value="0">完全没有</option>
         <option type="radio" name="question7" value="1">少许</option>
         <option type="radio" name="question7" value="2">颇为</option>

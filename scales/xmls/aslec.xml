@@ -1,5 +1,5 @@
-<scale title="青少年生活事件量表" warn="指导语：过去12个月内，你和你的家庭是否发生过下列事件？请仔细阅读下列每一个项目，如发生过，并根据事件给你造成的苦恼程度在相对方格内打个勾。如果某件事未发生，仅在事件未发生栏内打个勾就可以了。">
-    <question index="1" title="被人误会或错怪">
+<scale title="青少年生活事件量表" warn="指导语：过去12个月内，你和你的家庭是否发生过下列事件？请仔细阅读下列每一个项目，如发生过，并根据事件给你造成的苦恼程度在相对方格内打个勾。如果某件事未发生，选择未发生选项。">
+    <question index="1" title="1.被人误会或错怪">
         <option type="radio" name="question1" value="0">未发生过</option>
         <option type="radio" name="question1" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question1" value="2">发生过，对我轻度影响</option>
@@ -7,7 +7,7 @@
         <option type="radio" name="question1" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question1" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="2" title="受人歧视冷遇">
+    <question index="2" title="2.受人歧视冷遇">
         <option type="radio" name="question2" value="0">未发生过</option>
         <option type="radio" name="question2" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question2" value="2">发生过，对我轻度影响</option>
@@ -15,7 +15,7 @@
         <option type="radio" name="question2" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question2" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="3" title="考试失败或不理想">
+    <question index="3" title="3.考试失败或不理想">
         <option type="radio" name="question3" value="0">未发生过</option>
         <option type="radio" name="question3" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question3" value="2">发生过，对我轻度影响</option>
@@ -23,7 +23,7 @@
         <option type="radio" name="question3" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question3" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="4" title="与同学或好友发生纠纷">
+    <question index="4" title="4.与同学或好友发生纠纷">
         <option type="radio" name="question4" value="0">未发生过</option>
         <option type="radio" name="question4" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question4" value="2">发生过，对我轻度影响</option>
@@ -31,7 +31,7 @@
         <option type="radio" name="question4" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question4" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="5" title="生活习惯（饮食、休息等）明显变化">
+    <question index="5" title="5.生活习惯（饮食、休息等）明显变化">
         <option type="radio" name="question5" value="0">未发生过</option>
         <option type="radio" name="question5" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question5" value="2">发生过，对我轻度影响</option>
@@ -39,7 +39,7 @@
         <option type="radio" name="question5" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question5" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="6" title="不喜欢上学">
+    <question index="6" title="6.不喜欢上学">
         <option type="radio" name="question6" value="0">未发生过</option>
         <option type="radio" name="question6" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question6" value="2">发生过，对我轻度影响</option>
@@ -47,7 +47,7 @@
         <option type="radio" name="question6" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question6" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="7" title="恋爱不顺利或失恋">
+    <question index="7" title="7.恋爱不顺利或失恋">
         <option type="radio" name="question7" value="0">未发生过</option>
         <option type="radio" name="question7" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question7" value="2">发生过，对我轻度影响</option>
@@ -55,7 +55,7 @@
         <option type="radio" name="question7" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question7" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="8" title="长期远离家人不能团聚">
+    <question index="8" title="8.长期远离家人不能团聚">
         <option type="radio" name="question8" value="0">未发生过</option>
         <option type="radio" name="question8" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question8" value="2">发生过，对我轻度影响</option>
@@ -63,7 +63,7 @@
         <option type="radio" name="question8" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question8" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="9" title="学生负担重">
+    <question index="9" title="9.学生负担重">
         <option type="radio" name="question9" value="0">未发生过</option>
         <option type="radio" name="question9" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question9" value="2">发生过，对我轻度影响</option>
@@ -71,7 +71,7 @@
         <option type="radio" name="question9" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question9" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="10" title="与老师关系紧张">
+    <question index="10" title="10.与老师关系紧张">
         <option type="radio" name="question10" value="0">未发生过</option>
         <option type="radio" name="question10" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question10" value="2">发生过，对我轻度影响</option>
@@ -79,7 +79,7 @@
         <option type="radio" name="question10" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question10" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="11" title="本人患急重病">
+    <question index="11" title="11.本人患急重病">
         <option type="radio" name="question11" value="0">未发生过</option>
         <option type="radio" name="question11" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question11" value="2">发生过，对我轻度影响</option>
@@ -87,7 +87,7 @@
         <option type="radio" name="question11" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question11" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="12" title="亲友患急重病">
+    <question index="12" title="12.亲友患急重病">
         <option type="radio" name="question12" value="0">未发生过</option>
         <option type="radio" name="question12" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question12" value="2">发生过，对我轻度影响</option>
@@ -95,7 +95,7 @@
         <option type="radio" name="question12" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question12" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="13" title="亲友死亡">
+    <question index="13" title="13.亲友死亡">
         <option type="radio" name="question13" value="0">未发生过</option>
         <option type="radio" name="question13" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question13" value="2">发生过，对我轻度影响</option>
@@ -103,7 +103,7 @@
         <option type="radio" name="question13" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question13" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="14" title="被盗或丢失东西">
+    <question index="14" title="14.被盗或丢失东西">
         <option type="radio" name="question14" value="0">未发生过</option>
         <option type="radio" name="question14" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question14" value="2">发生过，对我轻度影响</option>
@@ -111,7 +111,7 @@
         <option type="radio" name="question14" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question14" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="15" title="当众丢面子">
+    <question index="15" title="15.当众丢面子">
         <option type="radio" name="question15" value="0">未发生过</option>
         <option type="radio" name="question15" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question15" value="2">发生过，对我轻度影响</option>
@@ -119,7 +119,7 @@
         <option type="radio" name="question15" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question15" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="16" title="家庭经济困难">
+    <question index="16" title="16.家庭经济困难">
         <option type="radio" name="question16" value="0">未发生过</option>
         <option type="radio" name="question16" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question16" value="2">发生过，对我轻度影响</option>
@@ -127,7 +127,7 @@
         <option type="radio" name="question16" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question16" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="17" title="家庭内部有矛盾">
+    <question index="17" title="17.家庭内部有矛盾">
         <option type="radio" name="question17" value="0">未发生过</option>
         <option type="radio" name="question17" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question17" value="2">发生过，对我轻度影响</option>
@@ -135,7 +135,7 @@
         <option type="radio" name="question17" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question17" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="18" title="预期评选（如三好学生）落空">
+    <question index="18" title="18.预期评选（如三好学生）落空">
         <option type="radio" name="question18" value="0">未发生过</option>
         <option type="radio" name="question18" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question18" value="2">发生过，对我轻度影响</option>
@@ -143,7 +143,7 @@
         <option type="radio" name="question18" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question18" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="19" title="受批评或处分">
+    <question index="19" title="19.受批评或处分">
         <option type="radio" name="question19" value="0">未发生过</option>
         <option type="radio" name="question19" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question19" value="2">发生过，对我轻度影响</option>
@@ -151,7 +151,7 @@
         <option type="radio" name="question19" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question19" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="20" title="转学或休学">
+    <question index="20" title="20.转学或休学">
         <option type="radio" name="question20" value="0">未发生过</option>
         <option type="radio" name="question20" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question20" value="2">发生过，对我轻度影响</option>
@@ -159,7 +159,7 @@
         <option type="radio" name="question20" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question20" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="21" title="被罚款">
+    <question index="21" title="21.被罚款">
         <option type="radio" name="question21" value="0">未发生过</option>
         <option type="radio" name="question21" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question21" value="2">发生过，对我轻度影响</option>
@@ -167,7 +167,7 @@
         <option type="radio" name="question21" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question21" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="22" title="升学压力">
+    <question index="22" title="22.升学压力">
         <option type="radio" name="question22" value="0">未发生过</option>
         <option type="radio" name="question22" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question22" value="2">发生过，对我轻度影响</option>
@@ -175,7 +175,7 @@
         <option type="radio" name="question22" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question22" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="23" title="与人打架">
+    <question index="23" title="23.与人打架">
         <option type="radio" name="question23" value="0">未发生过</option>
         <option type="radio" name="question23" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question23" value="2">发生过，对我轻度影响</option>
@@ -183,7 +183,7 @@
         <option type="radio" name="question23" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question23" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="24" title="遭父母打骂">
+    <question index="24" title="24.遭父母打骂">
         <option type="radio" name="question24" value="0">未发生过</option>
         <option type="radio" name="question24" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question24" value="2">发生过，对我轻度影响</option>
@@ -191,7 +191,7 @@
         <option type="radio" name="question24" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question24" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="25" title="家庭给你施加学习压力">
+    <question index="25" title="25.家庭给你施加学习压力">
         <option type="radio" name="question25" value="0">未发生过</option>
         <option type="radio" name="question25" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question25" value="2">发生过，对我轻度影响</option>
@@ -199,7 +199,7 @@
         <option type="radio" name="question25" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question25" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="26" title="意外惊吓，事故">
+    <question index="26" title="26.意外惊吓，事故">
         <option type="radio" name="question26" value="0">未发生过</option>
         <option type="radio" name="question26" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question26" value="2">发生过，对我轻度影响</option>
@@ -207,7 +207,7 @@
         <option type="radio" name="question26" value="4">发生过，对我重度影响</option>
         <option type="radio" name="question26" value="5">发生过，对我极重影响</option>
     </question>
-    <question index="27" title="如有其他事件说明">
+    <question index="27" title="27.如有其他事件说明">
         <option type="radio" name="question27" value="0">未发生过</option>
         <option type="radio" name="question27" value="1">发生过，对我没有影响</option>
         <option type="radio" name="question27" value="2">发生过，对我轻度影响</option>

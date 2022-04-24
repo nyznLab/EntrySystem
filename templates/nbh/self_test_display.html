@@ -127,7 +127,7 @@
         // 渲染题目
         let questionAreaDiv = $(".question_area");
         let questionH4 = document.createElement("h3")
-        questionH4.innerText = index + "." + questionInfo.title;
+        questionH4.innerText = questionInfo.title;
         questionAreaDiv.append(questionH4);
         let input;
         let j = 0, len = questionInfo.options.length;

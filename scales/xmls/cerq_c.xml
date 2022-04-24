@@ -1,251 +1,251 @@
 <scale title="认知情绪调节问卷"
        warn="指导语：请仔细阅读每个项目并考虑哪个情况与自己最符合。在遇到自己没有经历过的项目时，请先考虑和自己经历过的与其最相似的情境并作出选择。不必考虑你所选择的答案的一致性。">
-    <question index="1" title="我感到我应该被责备">
+    <question index="1" title="1.我感到我应该被责备">
         <option type="radio" name="question1" value="1">从不</option>
         <option type="radio" name="question1" value="2">几乎不</option>
         <option type="radio" name="question1" value="3">有时</option>
         <option type="radio" name="question1" value="4">几乎总是</option>
         <option type="radio" name="question1" value="5">总是</option>
     </question>
-    <question index="2" title="我感到我是一个对发生过的事负责任的人">
+    <question index="2" title="2.我感到我是一个对发生过的事负责任的人">
         <option type="radio" name="question2" value="1">从不</option>
         <option type="radio" name="question2" value="2">几乎不</option>
         <option type="radio" name="question2" value="3">有时</option>
         <option type="radio" name="question2" value="4">几乎总是</option>
         <option type="radio" name="question2" value="5">总是</option>
     </question>
-    <question index="3" title="我想我在这种情况下的错误是我造成">
+    <question index="3" title="3.我想我在这种情况下的错误是我造成">
         <option type="radio" name="question3" value="1">从不</option>
         <option type="radio" name="question3" value="2">几乎不</option>
         <option type="radio" name="question3" value="3">有时</option>
         <option type="radio" name="question3" value="4">几乎总是</option>
         <option type="radio" name="question3" value="5">总是</option>
     </question>
-    <question index="4" title="我想事情的基本原因在我自己?">
+    <question index="4" title="4.我想事情的基本原因在我自己?">
         <option type="radio" name="question4" value="1">从不</option>
         <option type="radio" name="question4" value="2">几乎不</option>
         <option type="radio" name="question4" value="3">有时</option>
         <option type="radio" name="question4" value="4">几乎总是</option>
         <option type="radio" name="question4" value="5">总是</option>
     </question>
-    <question index="5" title="我想我必须接受已经发生的事?">
+    <question index="5" title="5.我想我必须接受已经发生的事?">
         <option type="radio" name="question5" value="1">从不</option>
         <option type="radio" name="question5" value="2">几乎不</option>
         <option type="radio" name="question5" value="3">有时</option>
         <option type="radio" name="question5" value="4">几乎总是</option>
         <option type="radio" name="question5" value="5">总是</option>
     </question>
-    <question index="6" title="我想我必须接受这种状况?">
+    <question index="6" title="6.我想我必须接受这种状况?">
         <option type="radio" name="question6" value="1">从不</option>
         <option type="radio" name="question6" value="2">几乎不</option>
         <option type="radio" name="question6" value="3">有时</option>
         <option type="radio" name="question6" value="4">几乎总是</option>
         <option type="radio" name="question6" value="5">总是</option>
     </question>
-    <question index="7" title="我想我不能为此改变任何事?">
+    <question index="7" title="7.我想我不能为此改变任何事?">
         <option type="radio" name="question7" value="1">从不</option>
         <option type="radio" name="question7" value="2">几乎不</option>
         <option type="radio" name="question7" value="3">有时</option>
         <option type="radio" name="question7" value="4">几乎总是</option>
         <option type="radio" name="question7" value="5">总是</option>
     </question>
-    <question index="8" title="我想我必须学会去接受它?">
+    <question index="8" title="8.我想我必须学会去接受它?">
         <option type="radio" name="question8" value="1">从不</option>
         <option type="radio" name="question8" value="2">几乎不</option>
         <option type="radio" name="question8" value="3">有时</option>
         <option type="radio" name="question8" value="4">几乎总是</option>
         <option type="radio" name="question8" value="5">总是</option>
     </question>
-    <question index="9" title="我常常回想对我已经经历的事是怎样的感觉?">
+    <question index="9" title="9.我常常回想对我已经经历的事是怎样的感觉?">
         <option type="radio" name="question9" value="1">从不</option>
         <option type="radio" name="question9" value="2">几乎不</option>
         <option type="radio" name="question9" value="3">有时</option>
         <option type="radio" name="question9" value="4">几乎总是</option>
         <option type="radio" name="question9" value="5">总是</option>
     </question>
-    <question index="10" title="我沉迷于在对我已经经历的事的感觉和想法?">
+    <question index="10" title="10.我沉迷于在对我已经经历的事的感觉和想法?">
         <option type="radio" name="question10" value="1">从不</option>
         <option type="radio" name="question10" value="2">几乎不</option>
         <option type="radio" name="question10" value="3">有时</option>
         <option type="radio" name="question10" value="4">几乎总是</option>
         <option type="radio" name="question10" value="5">总是</option>
     </question>
-    <question index="11" title="我想去明白为什么会对我经历的事有这样的感觉">
+    <question index="11" title="11.我想去明白为什么会对我经历的事有这样的感觉">
         <option type="radio" name="question11" value="1">从不</option>
         <option type="radio" name="question11" value="2">几乎不</option>
         <option type="radio" name="question11" value="3">有时</option>
         <option type="radio" name="question11" value="4">几乎总是</option>
         <option type="radio" name="question11" value="5">总是</option>
     </question>
-    <question index="12" title="我细想由于这种形势唤起的感觉">
+    <question index="12" title="12.我细想由于这种形势唤起的感觉">
         <option type="radio" name="question12" value="1">从不</option>
         <option type="radio" name="question12" value="2">几乎不</option>
         <option type="radio" name="question12" value="3">有时</option>
         <option type="radio" name="question12" value="4">几乎总是</option>
         <option type="radio" name="question12" value="5">总是</option>
     </question>
-    <question index="13" title="我去想比我经历过的更好的事">
+    <question index="13" title="13.我去想比我经历过的更好的事">
         <option type="radio" name="question13" value="1">从不</option>
         <option type="radio" name="question13" value="2">几乎不</option>
         <option type="radio" name="question13" value="3">有时</option>
         <option type="radio" name="question13" value="4">几乎总是</option>
         <option type="radio" name="question13" value="5">总是</option>
     </question>
-    <question index="14" title="我去想那些与现在事情无关的愉快的事">
+    <question index="14" title="14.我去想那些与现在事情无关的愉快的事">
         <option type="radio" name="question14" value="1">从不</option>
         <option type="radio" name="question14" value="2">几乎不</option>
         <option type="radio" name="question14" value="3">有时</option>
         <option type="radio" name="question14" value="4">几乎总是</option>
         <option type="radio" name="question14" value="5">总是</option>
     </question>
-    <question index="15" title="我去想某些好事而不是所发生的事">
+    <question index="15" title="15.我去想某些好事而不是所发生的事">
         <option type="radio" name="question15" value="1">从不</option>
         <option type="radio" name="question15" value="2">几乎不</option>
         <option type="radio" name="question15" value="3">有时</option>
         <option type="radio" name="question15" value="4">几乎总是</option>
         <option type="radio" name="question15" value="5">总是</option>
     </question>
-    <question index="16" title="我去想愉快的经历">
+    <question index="16" title="16.我去想愉快的经历">
         <option type="radio" name="question16" value="1">从不</option>
         <option type="radio" name="question16" value="2">几乎不</option>
         <option type="radio" name="question16" value="3">有时</option>
         <option type="radio" name="question16" value="4">几乎总是</option>
         <option type="radio" name="question16" value="5">总是</option>
     </question>
-    <question index="17" title="我想我怎样才能做到最好">
+    <question index="17" title="17.我想我怎样才能做到最好">
         <option type="radio" name="question17" value="1">从不</option>
         <option type="radio" name="question17" value="2">几乎不</option>
         <option type="radio" name="question17" value="3">有时</option>
         <option type="radio" name="question17" value="4">几乎总是</option>
         <option type="radio" name="question17" value="5">总是</option>
     </question>
-    <question index="18" title="我在想我能怎样最好地应对这些情况">
+    <question index="18" title="18.我在想我能怎样最好地应对这些情况">
         <option type="radio" name="question18" value="1">从不</option>
         <option type="radio" name="question18" value="2">几乎不</option>
         <option type="radio" name="question18" value="3">有时</option>
         <option type="radio" name="question18" value="4">几乎总是</option>
         <option type="radio" name="question18" value="5">总是</option>
     </question>
-    <question index="19" title="我在想怎样去改变这种情况">
+    <question index="19" title="19.我在想怎样去改变这种情况">
         <option type="radio" name="question19" value="1">从不</option>
         <option type="radio" name="question19" value="2">几乎不</option>
         <option type="radio" name="question19" value="3">有时</option>
         <option type="radio" name="question19" value="4">几乎总是</option>
         <option type="radio" name="question19" value="5">总是</option>
     </question>
-    <question index="20" title="我在想一个我怎样能做得最好的计划">
+    <question index="20" title="20.我在想一个我怎样能做得最好的计划">
         <option type="radio" name="question20" value="1">从不</option>
         <option type="radio" name="question20" value="2">几乎不</option>
         <option type="radio" name="question20" value="3">有时</option>
         <option type="radio" name="question20" value="4">几乎总是</option>
         <option type="radio" name="question20" value="5">总是</option>
     </question>
-    <question index="21" title="我想我能从这些情形中学到一些东西">
+    <question index="21" title="21.我想我能从这些情形中学到一些东西">
         <option type="radio" name="question21" value="1">从不</option>
         <option type="radio" name="question21" value="2">几乎不</option>
         <option type="radio" name="question21" value="3">有时</option>
         <option type="radio" name="question21" value="4">几乎总是</option>
         <option type="radio" name="question21" value="5">总是</option>
     </question>
-    <question index="22" title="我想所发生的事情能让我成为更强的人">
+    <question index="22" title="22.我想所发生的事情能让我成为更强的人">
         <option type="radio" name="question22" value="1">从不</option>
         <option type="radio" name="question22" value="2">几乎不</option>
         <option type="radio" name="question22" value="3">有时</option>
         <option type="radio" name="question22" value="4">几乎总是</option>
         <option type="radio" name="question22" value="5">总是</option>
     </question>
-    <question index="23" title="我想这种情况也有积极的一面">
+    <question index="23" title="23.我想这种情况也有积极的一面">
         <option type="radio" name="question23" value="1">从不</option>
         <option type="radio" name="question23" value="2">几乎不</option>
         <option type="radio" name="question23" value="3">有时</option>
         <option type="radio" name="question23" value="4">几乎总是</option>
         <option type="radio" name="question23" value="5">总是</option>
     </question>
-    <question index="24" title="我寻找事情中的积极方面">
+    <question index="24" title="24.我寻找事情中的积极方面">
         <option type="radio" name="question24" value="1">从不</option>
         <option type="radio" name="question24" value="2">几乎不</option>
         <option type="radio" name="question24" value="3">有时</option>
         <option type="radio" name="question24" value="4">几乎总是</option>
         <option type="radio" name="question24" value="5">总是</option>
     </question>
-    <question index="25" title="我想所有的事情会变得更坏">
+    <question index="25" title="25.我想所有的事情会变得更坏">
         <option type="radio" name="question25" value="1">从不</option>
         <option type="radio" name="question25" value="2">几乎不</option>
         <option type="radio" name="question25" value="3">有时</option>
         <option type="radio" name="question25" value="4">几乎总是</option>
         <option type="radio" name="question25" value="5">总是</option>
     </question>
-    <question index="26" title="我想别人有更坏的经历">
+    <question index="26" title="26.我想别人有更坏的经历">
         <option type="radio" name="question26" value="1">从不</option>
         <option type="radio" name="question26" value="2">几乎不</option>
         <option type="radio" name="question26" value="3">有时</option>
         <option type="radio" name="question26" value="4">几乎总是</option>
         <option type="radio" name="question26" value="5">总是</option>
     </question>
-    <question index="27" title="我想和其他事情相比，这还不是太坏">
+    <question index="27" title="27.我想和其他事情相比，这还不是太坏">
         <option type="radio" name="question27" value="1">从不</option>
         <option type="radio" name="question27" value="2">几乎不</option>
         <option type="radio" name="question27" value="3">有时</option>
         <option type="radio" name="question27" value="4">几乎总是</option>
         <option type="radio" name="question27" value="5">总是</option>
     </question>
-    <question index="28" title="我告诉自己生命中有更坏的事情">
+    <question index="28" title="28.我告诉自己生命中有更坏的事情">
         <option type="radio" name="question28" value="1">从不</option>
         <option type="radio" name="question28" value="2">几乎不</option>
         <option type="radio" name="question28" value="3">有时</option>
         <option type="radio" name="question28" value="4">几乎总是</option>
         <option type="radio" name="question28" value="5">总是</option>
     </question>
-    <question index="29" title="我常常想我经历的事情比别人经历的更糟糕">
+    <question index="29" title="29.我常常想我经历的事情比别人经历的更糟糕">
         <option type="radio" name="question29" value="1">从不</option>
         <option type="radio" name="question29" value="2">几乎不</option>
         <option type="radio" name="question29" value="3">有时</option>
         <option type="radio" name="question29" value="4">几乎总是</option>
         <option type="radio" name="question29" value="5">总是</option>
     </question>
-    <question index="30" title="我不断地想我经历的事情是多么的可怕">
+    <question index="30" title="30.我不断地想我经历的事情是多么的可怕">
         <option type="radio" name="question30" value="1">从不</option>
         <option type="radio" name="question30" value="2">几乎不</option>
         <option type="radio" name="question30" value="3">有时</option>
         <option type="radio" name="question30" value="4">几乎总是</option>
         <option type="radio" name="question30" value="5">总是</option>
     </question>
-    <question index="31" title="我常想我所经历的是可以发生在一个人身上最坏的事">
+    <question index="31" title="31.我常想我所经历的是可以发生在一个人身上最坏的事">
         <option type="radio" name="question31" value="1">从不</option>
         <option type="radio" name="question31" value="2">几乎不</option>
         <option type="radio" name="question31" value="3">有时</option>
         <option type="radio" name="question31" value="4">几乎总是</option>
         <option type="radio" name="question31" value="5">总是</option>
     </question>
-    <question index="32" title="我不断的想这个事情是多么的可怕啊">
+    <question index="32" title="32.我不断的想这个事情是多么的可怕啊">
         <option type="radio" name="question32" value="1">从不</option>
         <option type="radio" name="question32" value="2">几乎不</option>
         <option type="radio" name="question32" value="3">有时</option>
         <option type="radio" name="question32" value="4">几乎总是</option>
         <option type="radio" name="question32" value="5">总是</option>
     </question>
-    <question index="33" title="我感到别人应该为此被责备">
+    <question index="33" title="33.我感到别人应该为此被责备">
         <option type="radio" name="question33" value="1">从不</option>
         <option type="radio" name="question33" value="2">几乎不</option>
         <option type="radio" name="question33" value="3">有时</option>
         <option type="radio" name="question33" value="4">几乎总是</option>
         <option type="radio" name="question33" value="5">总是</option>
     </question>
-    <question index="34" title="为了自杀，我感到别人应对发生的事情负责任">
+    <question index="34" title="34.为了自杀，我感到别人应对发生的事情负责任">
         <option type="radio" name="question34" value="1">从不</option>
         <option type="radio" name="question34" value="2">几乎不</option>
         <option type="radio" name="question34" value="3">有时</option>
         <option type="radio" name="question34" value="4">几乎总是</option>
         <option type="radio" name="question34" value="5">总是</option>
     </question>
-    <question index="35" title="我想这些错误是别人造成的">
+    <question index="35" title="35.我想这些错误是别人造成的">
         <option type="radio" name="question35" value="1">从不</option>
         <option type="radio" name="question35" value="2">几乎不</option>
         <option type="radio" name="question35" value="3">有时</option>
         <option type="radio" name="question35" value="4">几乎总是</option>
         <option type="radio" name="question35" value="5">总是</option>
     </question>
-    <question index="36" title="我感到事情发生的根本原因在别人身上">
+    <question index="36" title="36.我感到事情发生的根本原因在别人身上">
         <option type="radio" name="question36" value="1">从不</option>
         <option type="radio" name="question36" value="2">几乎不</option>
         <option type="radio" name="question36" value="3">有时</option>
