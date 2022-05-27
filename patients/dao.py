@@ -72,6 +72,7 @@ def add_patient_detail(patient_detail_objct):
     # 插入数据库
     patient_detail_objct.save()
 
+
 # add BPatientAppointment表
 def add_patient_appointment(PatientAppoientment_object):
     PatientAppoientment_object.save()
