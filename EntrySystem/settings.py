@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'scales',
     'patients',
+    'rtms',
     'users',
     'inpatients',
     'followup',
@@ -61,6 +62,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'EntrySystem.urls'
+
 
 TEMPLATES = [
     {
@@ -91,10 +93,10 @@ WSGI_APPLICATION = 'EntrySystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        'NAME': 'devDb',  # 你要存储数据的库名，事先要创建之
+        'NAME': 'devdb',  # 你要存储数据的库名，事先要创建之
         'USER': 'root',  # 数据库用户名
-        'PASSWORD': 'EntrySystem123456:',  # 密码
-        'HOST': '192.168.0.201',  # 主机
+        'PASSWORD': '12345678',  # 密码
+        'HOST': '127.0.0.1',  # 主机
         'PORT': '3306',  # 数据库使用的端口
     }
 }
@@ -134,6 +136,8 @@ LOGGING = {
         },
     }
 }
+
+UPLOAD_ROOT = os.path.join(BASE_DIR,'upload')
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

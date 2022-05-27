@@ -8,6 +8,7 @@
 from django.db import models
 from tools.ConfigClass import HospitalizedState
 from tools.Utils import get_patient_progress_note_direct, get_patient_medical_advice_direct
+
 class BPatientBaseInfo(models.Model):
     SEX_TYPE = (
         (0, '男'),

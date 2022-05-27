@@ -72,7 +72,6 @@ def add_patient_detail(patient_detail_objct):
     # 插入数据库
     patient_detail_objct.save()
 
-
 # add BPatientAppointment表
 def add_patient_appointment(PatientAppoientment_object):
     PatientAppoientment_object.save()
@@ -105,7 +104,6 @@ def del_patient_base_info_byPK(patient_id):
         all_list_ghr = patients_models.RPatientGhr.objects.filter(ghr_id=patient_id)
         for list in all_list_ghr:
             list.delete()
-
 
 
 #高危信息表
@@ -266,7 +264,6 @@ def get_patient_scales_byPatientDetailId(patient_detail_id):
         return None
     else:
         return patient_scales_list
-
 
 # d_patient_appointment表
 def get_patient_appointment_all():
