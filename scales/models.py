@@ -1473,6 +1473,49 @@ class RPatientHamd17(models.Model):
         db_table = 'r_patient_hamd17'
 
 
+class RPatientMadrs(models.Model):
+    patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
+    scale = models.ForeignKey(DScales, models.DO_NOTHING)
+
+    viewed_depressed = models.IntegerField(blank=True, null=True)
+    depressed_description = models.IntegerField(blank=True, null=True)
+    inner_nervous = models.IntegerField(blank=True, null=True)
+    sleep_decreased = models.IntegerField(blank=True, null=True)
+    appetite_loss = models.IntegerField(blank=True, null=True)
+    concentration_difficulty = models.IntegerField(blank=True, null=True)
+    idleness = models.IntegerField(blank=True, null=True)
+    can_not_feel = models.IntegerField(blank=True, null=True)
+    pessimistic_thought = models.IntegerField(blank=True, null=True)
+    suicidal_ideation = models.IntegerField(blank=True, null=True)
+
+    total_score = models.IntegerField(blank=True, null=True)
+    doctor = models.ForeignKey('users.Suser', models.DO_NOTHING)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'r_patient_madrs'
+
+
+class RPatientCGI(models.Model):
+    patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
+    scale = models.ForeignKey(DScales, models.DO_NOTHING)
+
+    severity_of_illness = models.IntegerField(blank=True, null=True)
+    global_improvement = models.IntegerField(blank=True, null=True)
+    efficacy = models.IntegerField(blank=True, null=True)
+    side_effects = models.IntegerField(blank=True, null=True)
+    efficacy_index = models.FloatField(blank=True, null=True)
+
+    doctor = models.ForeignKey('users.Suser', models.DO_NOTHING)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'r_patient_cgi'
+
 class RPatientHappiness(models.Model):
     patient_session = models.ForeignKey(DPatientDetail, models.DO_NOTHING)
     scale = models.ForeignKey(DScales, models.DO_NOTHING)
