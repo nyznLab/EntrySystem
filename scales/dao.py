@@ -67,6 +67,23 @@ def add_hamd_database(rPatientHAMD17, state):
     # 修改r_patient_scales表中state状态
     update_rscales_state(rPatientHAMD17.patient_session_id, rPatientHAMD17.scale_id, state)
 
+# 蒙哥马利抑郁定量表
+def add_madrs_database(rPatientMADRS, state):
+    rPatientMADRS.total_score, object_flag = tools_calculatingScores.MADRS_total_score(rPatientMADRS)
+    tools_utils.object_judgment(object_flag)
+    tools_insertCascadeCheck.insert_madrs_check(rPatientMADRS)
+    rPatientMADRS.save()
+    update_rscales_state(rPatientMADRS.patient_session_id,rPatientMADRS.scale_id, state)
+    
+
+# 临床疗效总评量表
+def add_cgi_database(rPatientCgi, state):
+    rPatientCgi.efficacy_index, object_flag = tools_calculatingScores.CGI_ei(rPatientCgi)
+    tools_utils.object_judgment(object_flag)
+    tools_insertCascadeCheck.insert_cgi_check(rPatientCgi)
+    rPatientCgi.save()
+    update_rscales_state(rPatientCgi.patient_session_id, rPatientCgi.scale_id, state)
+
 
 # 33 项轻躁狂症状清单
 def add_manicsymptom_database(rPatientManicsymptom, state):
@@ -506,6 +523,16 @@ def get_patient_HAMA_byPatientDetailId(patient_detail_id):
     else:
         return patient_HAMA[0]
 
+# 蒙哥马利抑郁定量表（MADRS）
+def get_patient_Madrs_byPatientDetailId(patient_detail_id):
+    patient_madrs = scales_models.RPatientMadrs.objects.filter(patient_session=patient_detail_id)
+    return None if patient_madrs.count() == 0 else patient_madrs[0]
+
+
+# 临床疗效总评量表（CGI）
+def get_patient_cgi_byPatientDetailId(patient_detail_id):
+    patient_cgi = scales_models.RPatientCGI.objects.filter(patient_session=patient_detail_id)
+    return None if patient_cgi.count() == 0 else patient_cgi[0]
 
 # 杨氏躁狂量表YMRS
 def get_patient_YMRS_byPatientDetailId(patient_detail_id):
@@ -833,6 +860,15 @@ def del_hama(patient_session_id, scale_id):
     if res.exists():
         res[0].delete()
 
+def del_madrs(patient_session_id, scale_id):
+    res = scales_models.RPatientMadrs.objects.filter(patient_session_id=patient_session_id, scale_id=scale_id)
+    if res.exists():
+        res[0].delete()
+
+def del_cgi(patient_session_id, scale_id):
+    res = scales_models.RPatientCGI.objects.filter(patient_session_id=patient_session_id, scale_id=scale_id)
+    if res.exists():
+        res[0].delete()
 
 def del_bprs(patient_session_id, scale_id):
     res = scales_models.RPatientBprs.objects.filter(patient_session_id=patient_session_id, scale_id=scale_id)

@@ -132,3 +132,4 @@ dmypy.json
 /.idea
 /material
 EntrySystem/settings.py
+.vscode

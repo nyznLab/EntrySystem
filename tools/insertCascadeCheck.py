@@ -311,6 +311,44 @@ def insert_hama_check(rPatientHama_object):
             object_flag = False
         tools_utils.object_judgment(object_flag)
 
+# 蒙哥马利抑郁评定量表（MADRS）
+def insert_madrs_check(rPatientMadrs_object):
+    if rPatientMadrs_object is None \
+        or rPatientMadrs_object.patient_session_id is None \
+        or rPatientMadrs_object.scale_id is None \
+        or rPatientMadrs_object.doctor_id is None:
+        tools_utils.object_judgment(True)
+    else:
+        # 非空时外键判断
+        dPatientDetail = patients_models.DPatientDetail.objects.filter(pk=rPatientMadrs_object.patient_session_id)[0]
+        dScales = scales_models.DScales.objects.filter(pk=rPatientMadrs_object.scale_id)[0]
+        doctor = users_models.SUser.objects.filter(pk=rPatientMadrs_object.doctor_id)[0]
+        if dPatientDetail is None or dScales is None or doctor is None:
+            object_flag = True
+        else:
+            object_flag = False
+        tools_utils.object_judgment(object_flag)
+
+
+# 临床疗效总评量表（CGI）
+def insert_cgi_check(rPatientCgi_object):
+    if rPatientCgi_object is None \
+        or rPatientCgi_object.patient_session_id is None \
+        or rPatientCgi_object.scale_id is None \
+        or rPatientCgi_object.doctor_id is None:
+        tools_utils.object_judgment(True)
+    else:
+        # 非空时外键判断
+        dPatientDetail = patients_models.DPatientDetail.objects.filter(pk=rPatientCgi_object.patient_session_id)[0]
+        dScales = scales_models.DScales.objects.filter(pk=rPatientCgi_object.scale_id)[0]
+        doctor = users_models.SUser.objects.filter(pk=rPatientCgi_object.doctor_id)[0]
+        if dPatientDetail is None or dScales is None or doctor is None:
+            object_flag = True
+        else:
+            object_flag = False
+        tools_utils.object_judgment(object_flag)
+
+
 
 # 一般资料_物质依赖
 def insert_information_abuse_check(rPatientBasicInformationAbuse_object):

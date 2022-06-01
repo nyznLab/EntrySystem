@@ -29,6 +29,11 @@ def processNone(value):
         return ''
     return value
 
+@register.filter(name='processFloat')
+def processFloat(value):
+    if value is None:
+        return ''
+    return round(value, 2)
 
 @register.filter(name='processSession')
 def processSession(value):
