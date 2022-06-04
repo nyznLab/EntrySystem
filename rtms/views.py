@@ -76,6 +76,7 @@ def read_rtms_excel(doctor_id, filename):
     check_rtms_excel = {}
 
     # 被试号(格式正确)；扫描号(格式正确)；治疗日期(格式正确、非空)；运动阈值(非空)；能量强度(非空)；治疗方案(非空、已有方案)
+    # 扫描号不连续（写入成功，但提示）
     check_patient_id = []
     check_session_id = []
     check_date = []
@@ -83,6 +84,7 @@ def read_rtms_excel(doctor_id, filename):
     check_intensity = []
     check_treatment_str = []
     check_treatment_num = []
+    tip_session_id=[]
 
     treatment_data = list(rtms_dao.get_treatment_rtms().values_list('treatment_id', 'treatment_name'))
 
@@ -95,7 +97,8 @@ def read_rtms_excel(doctor_id, filename):
                                 usecols=['编号', '扫描次数', '扫描备注（日期）', '运动阈值', '能量强度（%）', '方案', '备注'])
 
 
-    data_pd = data_raw_pd[~(data_raw_pd['扫描备注（日期）'].isnull())]
+    # data_pd = data_raw_pd[~(data_raw_pd['扫描备注（日期）'].isnull())]
+    data_pd = data_raw_pd.dropna(axis=0,how='all',inplace=False)
     data_pd = data_pd.reset_index(drop=True)
     data_pd.fillna("", inplace=True)
 
@@ -146,7 +149,11 @@ def read_rtms_excel(doctor_id, filename):
                         # 1.2.3 获取session_id的行索引范围
                         session_id_str = re.sub("\D", "", session_id_list[j])
                         if session_id_str != "":
-                            session_id = str(int(session_id_str))
+                            session_id = int(session_id_str)
+                            if j!=0:
+                                if (pre_session_id+1)!=session_id:
+                                    tip_session_id.append(str(patient_id_list[i]))
+                            pre_session_id = session_id
                         else:
                             flag_rtms_excel = 1
                             check_session_id.append(str(session_id_list[j]))
@@ -247,7 +254,7 @@ def read_rtms_excel(doctor_id, filename):
                                                 3) + '_' + str(x - s_range1))
 
                                     # times_per_day
-                                    times_per_day = 0
+                                    times_per_day = 1
                                     if flag_treatment_date == 1:
                                         treatment_date = "wrong date" + str(random.randint(1, 10))
                                     if pre_pre_treatment_date != pre_treatment_date == treatment_date:
@@ -304,7 +311,7 @@ def read_rtms_excel(doctor_id, filename):
                                         if (flag_rtms_excel == 0):
                                             rPatientRtms_object = rtms_models.rPatientRtms(
                                                 patient_id=patient_id,
-                                                session_id=session_id,
+                                                session_id=str(session_id),
                                                 treatment_id=str(treatment_id),
                                                 resting_motor_threshold=resting_motor_threshold,
                                                 intensity=intensity,
@@ -326,6 +333,11 @@ def read_rtms_excel(doctor_id, filename):
 
                                             except Exception as e:
                                                 logging.error("Failed to collect rPatientRtms_object")
+                                else:
+                                    flag_rtms_excel = 1
+                                    check_treatment_num.append(
+                                        "NN_" + str(patient_id).zfill(8) + "_S" + str(session_id).zfill(
+                                            3) + '_' + str(x - s_range1))
 
             # 批量写入数据库
             if (flag_rtms_excel == 0):
@@ -342,12 +354,15 @@ def read_rtms_excel(doctor_id, filename):
             for patient_session in insert_patient_session_list:
                 rtms_num = rtms_dao.get_rtms_num_byPatientIdSessionId(patient_id=patient_session[0],
                                                                       session_id=patient_session[1])
+                rtms_treatment_id = rtms_dao.get_rtms_treatment_id_byPatientIdSessionId(patient_id=patient_session[0],
+                                                                                        session_id=patient_session[1])
 
                 update_dpatient_detail_obj = patients_dao.get_patient_detail_byPatientIdAndSessionId(patient_session[0],
                                                                                                      patient_session[1])
                 if update_dpatient_detail_obj != None:
                     update_dpatient_detail_obj.update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     update_dpatient_detail_obj.tms = rtms_num
+                    update_dpatient_detail_obj.tms_treatment_id = rtms_treatment_id
                     update_dpatient_detail_obj.save()
 
     except Exception:
@@ -365,7 +380,8 @@ def read_rtms_excel(doctor_id, filename):
         'check_resting_motor_threshold': check_resting_motor_threshold,
         'check_intensity': check_intensity,
         'check_treatment_str': check_treatment_str,
-        'check_treatment_num': check_treatment_num
+        'check_treatment_num': check_treatment_num,
+        'tip_session_id':tip_session_id
     }
 
     return check_rtms_excel
@@ -529,7 +545,6 @@ def add_rtms_treatment(request):
                                            doctor_id)
         else:
             check_new_treatment = {"check_new_treatment": 1}
-
         if check_new_treatment['check_new_treatment']==1:
             return HttpResponse("方案名称重复！提交失败!")
         if check_new_treatment['check_new_treatment']==0:

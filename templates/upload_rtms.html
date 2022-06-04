@@ -95,14 +95,14 @@
                             <label class="col-sm-2 control-label" for="treatment_name"
                                    style="text-align: right">方案名称：</label>
                             <div class="col-sm-4">
-                                <input type="text" class=" sel_beauty form-control input-sm " name="treatment_name"
+                                <input type="text" class=" sel_beauty form-control input-sm treatment_input" name="treatment_name"
                                        οnkeyup="value=value.replace(/[^a-zA-Z]/g,'')" placeholder="请输入字母"
                                        required="required"/>
                             </div>
                             <label class="col-sm-2 control-label" style="text-align: right" for="therapeutic_target">
                                 刺激部位：</label>
                             <div class="col-sm-4">
-                                <input type="text" class=" sel_beauty form-control input-sm" name="therapeutic_target"
+                                <input type="text" class=" sel_beauty form-control input-sm treatment_input" name="therapeutic_target"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入汉字"
                                        required="required"/>
                             </div>
@@ -111,14 +111,14 @@
                             <label class="col-sm-2 control-label" for="frequency"
                                    style="text-align: right">频率(HZ)：</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="frequency"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="frequency"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
                             <label class="col-sm-2 control-label" style="text-align: right"
                                    for="pulses">脉冲个数(个）：</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm" name="pulses"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="pulses"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
@@ -126,13 +126,13 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-2 control-label" for="stimulation_time" style="text-align: right">刺激时间(秒）：</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="stimulation_time"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="stimulation_time"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
                             <label class="col-sm-2 control-label" style="text-align: right" for="inter_train_intervals">间歇时间(秒)：</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input"
                                        name="inter_train_intervals" οnkeyup="value=value.replace(/[^\d]/g,'')"
                                        placeholder="请输入数字"
                                        required="required"/>
@@ -142,14 +142,14 @@
                             <label class="col-sm-2 control-label" for="pulse_trains"
                                    style="text-align: right">重复次数：</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="pulse_trains"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="pulse_trains"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
                             <label class="col-sm-2 control-label" style="text-align: right"
                                    for="total_pulses">刺激总次数：</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm" name="total_pulses"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="total_pulses"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
@@ -157,13 +157,13 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-2 control-label" for="total_time_minute" style="text-align: right">总时间(分钟):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm " name="total_time_minute"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="total_time_minute"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
                             <label class="col-sm-2 control-label" style="text-align: right" for="total_time_second">总时间(秒):</label>
                             <div class="col-sm-4">
-                                <input type="number" class=" sel_beauty form-control input-sm" name="total_time_second"
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="total_time_second"
                                        οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
                                        required="required"/>
                             </div>
@@ -171,7 +171,7 @@
                         <div class="row" style="margin-bottom: 10px;">
                             <label class="col-sm-2 control-label" for="note" style="text-align: right">备注:</label>
                             <div class="col-sm-4">
-                                <input type="text" class=" sel_beauty form-control input-sm " name="note">
+                                <input type="text" class=" sel_beauty form-control input-sm treatment_input" name="note">
                             </div>
                         </div>
 
@@ -201,9 +201,14 @@
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="rtmsExcel_header"></h5>
                 </div>
-                <div class="modal-body" id="rtmsExcel_body">
-                    <ul id="rtmsExcel_table"> style="font-size: 10px;cellspacing:15px;">
-                    </ul>
+                <div class="modal-body" id="rtms_modal_body">
+                    <div id="rtmsExcel_body">
+                        <ul id="rtmsExcel_table"> style="font-size: 10px;cellspacing:15px;">
+                        </ul>
+                    </div>
+                    <div id="tip_session_id">
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <p class="text-center" id="rtmsExcel_footer" style="font-size: 5px;">
@@ -358,9 +363,14 @@
             }
         });
 
+        $(".treatment_input").change(function () {
+            $("#modal_rtms_treatment_add_info").html("");
+        });
+
         function clear_filename() {
             $("#img-upload-label").html("<i class=\"fa fa-cloud-upload\" aria-hidden=\"true\" style=\"font-size:30px;\"></i>");
         }
+
         function show_add_rtms_treatment_modal() {
             $("#modal_rtms_treatment_add_info").html("");
             $("#modal_rtms_treatment_add").show();
@@ -383,20 +393,27 @@
                     if (error_info == '0') {
                         $("#rtmsExcel_header").html("写入成功！");
                         $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
                         $("#rtmsExcel_body").hide();
+                        if (data_obj["tip_session_id"].toString()!==""){
+                            $("#tip_session_id").html('<b>【小提示】session_id不连续（不影响写入）：</b>' +
+                                        '<p style="word-break: break-all;">' + data_obj["tip_session_id"].toString() + '</p>');
+                            $("#rtms_modal_body").show();
+                            $("#tip_session_id").show();
+                        }
                         $(".upload_info").hide()
                     }
                     if (error_info == '1') {
                         $("#rtmsExcel_header").html("没有数据更新！");
                         $("#rtmsExcel_footer").hide();
-                        $("#rtmsExcel_body").hide();
+                        $("#rtms_modal_body").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '2') {
                         $("#rtmsExcel_header").html('上传失败！请按照提示进行内容补全与格式修改！');
                         var rtms_excel_info = "";
                         for (let i in data_obj) {
-                            if (i != 'error_info') {
+                            if (i != 'error_info' && i!='tip_session_id') {
                                 if (data_obj[i].length != 0) {
                                     check_info_item = '';
                                     check_info_item2 = data_obj[i].toString();
@@ -430,26 +447,26 @@
                             }
                         }
                         $("#rtmsExcel_table").html(rtms_excel_info);
-                        $("#rtmsExcel_body").show();
+                        $("#rtms_modal_body").show();
                         $("#rtmsExcel_footer").show();
                         $(".upload_info").hide()
                     }
                     if (error_info == '3') {
                         $("#rtmsExcel_header").html("请上传后缀为“.xlsx”的文件 ！");
                         $("#rtmsExcel_footer").hide();
-                        $("#rtmsExcel_body").hide();
+                        $("#rtms_modal_body").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '4') {
                         $("#rtmsExcel_header").html("请检查上传文件的【治疗具体信息汇总】表的表头名称是否完整/正确！<hr>需要的表头：【编号】,【扫描次数】,【扫描备注（日期）】<br>【运动阈值】,【能量强度（%】,【方案】,【备注】");
                         $("#rtmsExcel_footer").hide();
-                        $("#rtmsExcel_body").hide();
+                        $("#rtms_modal_body").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '5') {
                         $("#rtmsExcel_header").html("请检查上传文件中是否有表【治疗具体信息汇总】！");
                         $("#rtmsExcel_footer").hide();
-                        $("#rtmsExcel_body").hide();
+                        $("#rtms_modal_body").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '6') {
@@ -461,17 +478,19 @@
                     if (error_info == '7') {
                         $("#rtmsExcel_header").html("请选择文件后再点击【上传提交】！");
                         $("#rtmsExcel_footer").hide();
-                        $("#rtmsExcel_body").hide();
+                        $("#rtms_modal_body").hide();
                         $(".upload_info").hide()
                     }
                     $("#rtmsExcelModal").modal('show');
+                    $("#file_uploads").val("");
                 },
                 error: function (data) {
                     $("rtmsExcel_header").html('表格存在未知错误！上传失败！');
-                    $("#rtmsExcel_body").hide();
+                    $("#rtms_modal_body").hide();
                     $("#rtmsExcel_footer").hide();
                     $("#rtmsExcelModal").modal('show');
-                    $(".upload_info").hide()
+                    $(".upload_info").hide();
+                    $("#file_uploads").val("");
                 }
             })
         }

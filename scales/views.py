@@ -360,6 +360,7 @@ def get_select_scales(request):
     scales_list = patients_dao.judgment_scales(patient_session_id)
     generalinfo_scale_list, other_test_scale_list, self_test_scale_list, cognition_scale_list = scales_dao.get_uodo_scales(
         patient_session_id)
+
     tms = patients_models.DPatientDetail.objects.filter(id=patient_session_id)[0].tms
     r_patient_blood = patients_models.RPatientBlood.objects.filter(patient_session=patient_session_id).first()
     if r_patient_blood is not None:

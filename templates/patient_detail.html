@@ -792,6 +792,9 @@
                                     {% else %}
                                     <td>
                                         {{ patient_detail.tms }}
+                                        {% if patient_detail.tms_treatment_id != None %}
+                                            ({{ patient_detail.tms_treatment_id }})
+                                        {% endif %}
                                     </td>
                                     {% endif %}
                                     <td>

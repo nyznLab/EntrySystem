@@ -74,6 +74,7 @@ class DPatientDetail(models.Model):
     drugs_information = models.IntegerField(blank=True, null=True)
     mri_examination = models.IntegerField(blank=True, null=True)
     tms = models.IntegerField(blank=True, null=True)
+    tms_treatment_id = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     occupation = models.CharField(max_length=40, blank=True, null=True)
     education = models.CharField(max_length=20, blank=True, null=True)

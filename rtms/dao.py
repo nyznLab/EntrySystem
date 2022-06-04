@@ -19,11 +19,23 @@ def get_treatment_num_byPatientId(patient_id):
         max_treatment_num=Max('treatment_num'))['max_treatment_num']
     return max_treatment_num
 
-
 # 通过病人id和session_id查询治疗次数
 def get_rtms_num_byPatientIdSessionId(patient_id, session_id):
     rtms_num = rtms_models.rPatientRtms.objects.filter(delete=0, patient_id=patient_id, session_id=session_id).count()
     return rtms_num
+
+# 通过病人id和session_id查询治疗方案id，单一方案返回治疗方案id，多个方案返回None
+def get_rtms_treatment_id_byPatientIdSessionId(patient_id,session_id):
+    rtms_treatment_id_list = rtms_models.rPatientRtms.objects.filter(delete=0, patient_id=patient_id, session_id=session_id).values('treatment_id').distinct()
+    if rtms_treatment_id_list==None:
+        treatment_id = None
+    if rtms_treatment_id_list!=None:
+        num_treatment_id = len(list(rtms_treatment_id_list))
+        if num_treatment_id==1:
+            treatment_id = rtms_treatment_id_list[0]['treatment_id']
+        else:
+            treatment_id= None
+    return treatment_id
 
 
 # t_treatment_rtms表相关
@@ -43,7 +55,7 @@ def get_max_treatmentId():
 # 通过治疗方案id查询治疗方案名称
 def get_treatment_name_byTreatmentId(treatment_id):
     treatment_obj = rtms_models.tTreatmentRtms.objects.filter(treatment_id=treatment_id, delete=0)
-    if treatment_obj == None:
+    if treatment_obj == None or treatment_id == None:
         treatment_name = None
     else:
         treatment_name = treatment_obj[0].treatment_name
