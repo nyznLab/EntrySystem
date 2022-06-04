@@ -467,6 +467,112 @@ def get_check_hamd_17_form(request):
                                                      })
 
 
+# 蒙哥马利抑郁量表
+def add_madrs(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.madrs
+    doctor_id = request.session.get('doctor_id')
+    patient_id = request.GET.get('patient_id')
+    rPatientMADRS = scales_dao.get_patient_Madrs_byPatientDetailId(patient_session_id)
+    rPatientMADRS_new = scales_models.RPatientMadrs(patient_session_id=patient_session_id, scale_id=scale_id,
+                                                    doctor_id=doctor_id)
+    if rPatientMADRS is not None:
+        rPatientMADRS_new.create_time = rPatientMADRS.create_time
+        rPatientMADRS_new.id = rPatientMADRS.id
+    rPatientMADRS_new = set_attr_by_post(request, rPatientMADRS_new)
+    state = judge_other_scale_state(request)
+    scales_dao.add_madrs_database(rPatientMADRS_new, state)
+    redirect_url = '/scales/get_check_madrs_form?patient_session_id={}&patient_id={}'.format(patient_session_id, patient_id)
+    return redirect(redirect_url)
+
+
+def get_madrs_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.madrs
+    state = scales_dao.get_scale_state(patient_session_id=patient_session_id, scale_id=scale_id)
+    if state == 1:
+        scales_dao.del_madrs(patient_session_id=patient_session_id, scale_id=scale_id)
+        scales_dao.update_rscales_state(patient_session_id, scale_id, 0)
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
+    madrs_answer = scales_dao.get_patient_Madrs_byPatientDetailId(patient_session_id)
+    return render(request, 'nbh/add_madrs.html', {'patient_session_id': patient_session_id,
+                                                    'patient_id': request.GET.get('patient_id'),
+                                                    'username': request.session.get('username'),
+                                                    'scale_name_list': scale_name_list,
+                                                    'scale_id': scale_id,
+                                                    'madrs_answer': madrs_answer,
+                                                    'order': order,
+                                                    })
+
+
+def get_check_madrs_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.madrs
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
+    madrs_answer = scales_dao.get_patient_Madrs_byPatientDetailId(patient_session_id)
+    return render(request, 'nbh/edit_madrs.html', {'patient_session_id': patient_session_id,
+                                                     'patient_id': request.GET.get('patient_id'),
+                                                     'username': request.session.get('username'),
+                                                     'scale_name_list': scale_name_list,
+                                                     'scale_id': tools_config.madrs,
+                                                     'madrs_answer': madrs_answer,
+                                                     'order': order,
+                                                     })
+
+
+# 临床疗效总评量表
+def add_cgi(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.cgi
+    doctor_id = request.session.get('doctor_id')
+    patient_id = request.GET.get('patient_id')
+    rPatientCGI = scales_dao.get_patient_cgi_byPatientDetailId(patient_session_id)
+    rPatientCGI_new = scales_models.RPatientCGI(patient_session_id=patient_session_id, scale_id=scale_id,
+                                                    doctor_id=doctor_id)
+    if rPatientCGI is not None:
+        rPatientCGI_new.create_time = rPatientCGI.create_time
+        rPatientCGI_new.id = rPatientCGI.id
+    rPatientCGI_new = set_attr_by_post(request, rPatientCGI_new)
+    state = judge_other_scale_state(request)
+    scales_dao.add_cgi_database(rPatientCGI_new, state)
+    redirect_url = '/scales/get_check_cgi_form?patient_session_id={}&patient_id={}'.format(patient_session_id, patient_id)
+    return redirect(redirect_url)
+
+
+def get_cgi_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.cgi
+    state = scales_dao.get_scale_state(patient_session_id=patient_session_id, scale_id=scale_id)
+    if state == 1:
+        scales_dao.del_cgi(patient_session_id=patient_session_id, scale_id=scale_id)
+        scales_dao.update_rscales_state(patient_session_id, scale_id, 0)
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
+    cgi_answer = scales_dao.get_patient_cgi_byPatientDetailId(patient_session_id)
+    return render(request, 'nbh/add_cgi.html', {'patient_session_id': patient_session_id,
+                                                    'patient_id': request.GET.get('patient_id'),
+                                                    'username': request.session.get('username'),
+                                                    'scale_name_list': scale_name_list,
+                                                    'scale_id': scale_id,
+                                                    'cgi_answer': cgi_answer,
+                                                    'order': order,
+                                                    })
+
+
+def get_check_cgi_form(request):
+    patient_session_id = request.GET.get('patient_session_id')
+    scale_id = tools_config.cgi
+    scale_name_list, order = get_scale_order(patient_session_id, scale_id, tools_config.other_test_type)
+    cgi_answer = scales_dao.get_patient_cgi_byPatientDetailId(patient_session_id)
+    return render(request, 'nbh/edit_cgi.html', {'patient_session_id': patient_session_id,
+                                                     'patient_id': request.GET.get('patient_id'),
+                                                     'username': request.session.get('username'),
+                                                     'scale_name_list': scale_name_list,
+                                                     'scale_id': tools_config.madrs,
+                                                     'cgi_answer': cgi_answer,
+                                                     'order': order,
+                                                     })
+
+
 # 汉密尔顿焦虑量表
 def add_hama(request):
     patient_session_id = request.GET.get('patient_session_id')

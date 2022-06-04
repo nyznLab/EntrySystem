@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^get_chi_form', views.get_chi_form),
 
     url(r'^get_hamd_17_form', views.get_hamd_17_form),
+    url(r'^get_madrs_form', views.get_madrs_form),
+    url(r'^get_cgi_form',views.get_cgi_form),
     url(r'^get_hama_form', views.get_hama_form),
     url(r'^get_ymrs_form', views.get_ymrs_form),
     url(r'^get_bprs_form', views.get_bprs_form),
@@ -44,6 +46,8 @@ urlpatterns = [
     url(r'^add_patient_basic_information_health', views.add_patient_basic_information_health),
     url(r'^add_abuse', views.add_abuse),
     url(r'^add_hama', views.add_hama),
+    url(r'^add_madrs', views.add_madrs),
+    url(r'^add_cgi', views.add_cgi),
     url(r'^add_fept', views.add_fept),
     url(r'^add_vept', views.add_vept),
 
@@ -57,6 +61,8 @@ urlpatterns = [
     # -----------------------------------------------------------------#
     url(r'^get_check_hama_form', views.get_check_hama_form),
     url(r'^get_check_hamd_17_form', views.get_check_hamd_17_form),
+    url(r'^get_check_madrs_form', views.get_check_madrs_form),
+    url(r'^get_check_cgi_form', views.get_check_cgi_form),
     url(r'^get_check_ymrs_form', views.get_check_ymrs_form),
     url(r'^get_check_bprs_form', views.get_check_bprs_form),
     url(r'^get_last_url', views.get_last_url),

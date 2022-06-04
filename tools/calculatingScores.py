@@ -5,6 +5,9 @@
 
 
 # 中国人利手量表得分计算
+from re import T
+
+
 def Handy_total_score(rPatientChineseHandy_object):
     if rPatientChineseHandy_object is None \
             or rPatientChineseHandy_object.hold_pen is None \
@@ -115,6 +118,56 @@ def HAMA_total_score(rPatientHama_object):
             object_flag = True
             total_score = None
     return total_score, object_flag
+
+
+# 蒙哥马利抑郁定量表
+def MADRS_total_score(rPatientMadrs_object):
+    if rPatientMadrs_object is None \
+            or rPatientMadrs_object.viewed_depressed is None \
+            or rPatientMadrs_object.depressed_description is None \
+            or rPatientMadrs_object.inner_nervous is None \
+            or rPatientMadrs_object.sleep_decreased is None \
+            or rPatientMadrs_object.appetite_loss is None \
+            or rPatientMadrs_object.concentration_difficulty is None \
+            or rPatientMadrs_object.idleness is None \
+            or rPatientMadrs_object.can_not_feel is None \
+            or rPatientMadrs_object.pessimistic_thought is None \
+            or rPatientMadrs_object.suicidal_ideation is None:
+        object_flag = True
+        total_score = None
+    else:
+        total_score = int(rPatientMadrs_object.viewed_depressed) + \
+            int(rPatientMadrs_object.depressed_description) + \
+            int(rPatientMadrs_object.inner_nervous) + \
+            int(rPatientMadrs_object.sleep_decreased) + \
+            int(rPatientMadrs_object.appetite_loss) + \
+            int(rPatientMadrs_object.concentration_difficulty) + \
+            int(rPatientMadrs_object.idleness) + \
+            int(rPatientMadrs_object.can_not_feel) + \
+            int(rPatientMadrs_object.pessimistic_thought) + \
+            int(rPatientMadrs_object.suicidal_ideation)
+        if total_score <= 60 and total_score >= 0:
+            object_flag = False
+        else:
+            object_flag = True
+            total_score = None
+        
+    return total_score, object_flag
+
+
+# 临床疗效总评量表
+def CGI_ei(rPatientCgi_object):
+    if rPatientCgi_object is None or rPatientCgi_object.efficacy is None or rPatientCgi_object.side_effects is None:
+        object_flag = True
+        ei = None
+    else:
+        ei = int(rPatientCgi_object.efficacy) / int(rPatientCgi_object.side_effects)
+        if ei <= 4 and ei >= 0.25:
+            object_flag = False
+        else:
+            object_flag = True
+            ei = None
+    return ei, object_flag
 
 
 # 杨氏躁狂量表得分计算

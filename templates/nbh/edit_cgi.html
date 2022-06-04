@@ -1,0 +1,255 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}临床疗效总评量表（CGI）{% endblock %}
+{% block css %}
+    <link href="{% static '/css/scales_style.css' %}" rel="stylesheet">
+    <style>
+        .hamd_17_table input.labelauty + label {
+            margin-bottom: 2px;
+            width: 100%;
+            display: table;
+            font-size: 13px;
+            padding: 20px;
+            text-align: center;
+            background-color: #efefef;
+            color: #b3b3b3;
+            cursor: pointer;
+            border-radius: 3px 3px 3px 3px;
+            -moz-border-radius: 3px 3px 3px 3px;
+            -webkit-border-radius: 3px 3px 3px 3px;
+            transition: background-color 0.25s;
+            -moz-transition: background-color 0.25s;
+            -webkit-transition: background-color 0.25s;
+            -o-transition: background-color 0.25s;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -o-user-select: none;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="right_col" role="main">
+
+        <div class="container">
+            <div class="row show-grid">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li><a href="#">量表评估</a></li>
+                        <li><a href="#">他评量表</a></li>
+                        <li class="active"><a href="#">临床疗效总评量表（CGI）</a></li>
+                        <div style="float: right;margin-bottom: 0px;">
+                            <a id ="return_url" href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}"
+                               class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i><strong>&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</strong></a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard_graph x_panel" style="margin-top: 0px;height: 80%;">
+            <div id="wrapper">
+                <div id="left-side" style="height: 100%;" class="col-md-2">
+                    <ul class="scales_progress">
+                        {% for scale_name in scale_name_list %}
+                            {% if scale_name|get_item:'scale__scale_name' == '临床疗效总评量表（CGI）' %}
+                                <li class="step doing  ">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% elif scale_name|get_item:'state' == 0 %}
+                                <li class="step nodone notclick">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% else %}
+                                <li class="step done notclick">
+                                    <p>{{ scale_name|get_item:'scale__scale_name' }}</p>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="finish nodone notclick">
+                            <p>完成</p>
+                        </li>
+                    </ul>
+                </div>
+                <div id="right-side" class="col-md-10">
+                    <div id="first" class="active">
+                        <form action="/scales/add_cgi?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                              name="madrs_form" method="post" onSubmit="return myCheck(this)">
+                            {% csrf_token %}
+                            <div class="container">
+                                <div class="col-md-12 text-center">
+                                    <h4><strong>临床疗效总评量表</strong></h4>
+                                </div>
+                                <div class="row title">
+                                    <strong style="FONT-SIZE: 17px">
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;
+                                        <i class="fa fa-hand-o-right"></i>&nbsp;
+                                        选择适合患者情况的分数
+                                        <br/>
+                                    </strong>
+                                    <strong></strong>
+                                    <div class="ln_solid"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table hamd_17_table" frame="void" style="font-weight:bold;">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    1.病情严重程度（SI），根据具体病人的病情与同一研究的其他同类病人比较，作出评定。
+                                                    <input type="radio" name="severity_of_illness" value=0 data-labelauty="无病"/>
+                                                    <input type="radio" name="severity_of_illness" value=1 data-labelauty="基本无病"/>
+                                                    <input type="radio" name="severity_of_illness" value=2 data-labelauty="极轻"/>
+                                                    <input type="radio" name="severity_of_illness" value=3 data-labelauty="轻度"/>
+                                                    <input type="radio" name="severity_of_illness" value=4 data-labelauty="中度"/>
+                                                    <input type="radio" name="severity_of_illness" value=5 data-labelauty="偏重"/>
+                                                    <input type="radio" name="severity_of_illness" value=6 data-labelauty="重度"/>
+                                                    <input type="radio" name="severity_of_illness" value=7 data-labelauty="极重"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    2.疗效总评（GI），根据病人被评者目前病情与入组时相比，作出评定。
+                                                    <input type="radio" name="global_improvement" value=0 data-labelauty="未评"/>
+                                                    <input type="radio" name="global_improvement" value=1 data-labelauty="显著进步"/>
+                                                    <input type="radio" name="global_improvement" value=2 data-labelauty="进步"/>
+                                                    <input type="radio" name="global_improvement" value=3 data-labelauty="稍进步"/>
+                                                    <input type="radio" name="global_improvement" value=4 data-labelauty="无变化"/>
+                                                    <input type="radio" name="global_improvement" value=5 data-labelauty="稍恶化"/>
+                                                    <input type="radio" name="global_improvement" value=6 data-labelauty="恶化"/>
+                                                    <input type="radio" name="global_improvement" value=7 data-labelauty="严重恶化"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    疗效指数（EI），需综合治疗效果和治疗引起的副反应等，给予评定。（EI = 疗效 / 副反应）<br/>
+                                                    3.1.疗效
+                                                    <input type="radio" name="efficacy" value=4 data-labelauty="显效（症状完全消失）"/>
+                                                    <input type="radio" name="efficacy" value=3 data-labelauty="有效（部分症状消失）"/>
+                                                    <input type="radio" name="efficacy" value=2 data-labelauty="稍有效（症状略有减轻）"/>
+                                                    <input type="radio" name="efficacy" value=1 data-labelauty="无变化或恶化（症状毫无减轻）"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align:top;">
+                                                    3.2.副反应
+                                                    <input type="radio" name="side_effects" value=1
+                                                           data-labelauty="无"/>
+                                                    <input type="radio" name="side_effects" value=2
+                                                           data-labelauty="轻（有些副反应，但不影响病人的功能）"/>
+                                                    <input type="radio" name="side_effects" value=3
+                                                           data-labelauty="中（明显的影响病人功能）"/>
+                                                    <input type="radio" name="side_effects" value=4
+                                                           data-labelauty="重（发生了严重的甚至危及病人安全的副反应）"/> 
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <a  style="float: left;font-weight: bold">严重程度（SI）： {{ cgi_answer.severity_of_illness|processNone }}</a><br>
+                                        <a  style="float: left;font-weight: bold">疗效总评（GI）： {{ cgi_answer.global_improvement|processNone }}</a><br>
+                                        <a  style="float: left;font-weight: bold">疗效指数（EI）：{{ cgi_answer.efficacy }} / {{ cgi_answer.side_effects }} = {{ cgi_answer.efficacy_index|processFloat }}</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div  class="col-md-4 col-md-offset-4 col-sm-6" style="display: none" id="cgi_bt">
+                                             {% csrf_token %}
+                                        <input  type="submit" class="btn btn-success text-center"  value="保存提交修改" >
+                                    </div>
+
+                                </div>
+                                <div class="row" id='bt_group'>
+                                    <div class="col-md-4 col-sm-6 text-center" style="text-align: center">
+                                        <a href="/scales/get_last_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
+                                           id="last_scale">
+                                            <button type="button" class="btn btn-warning" id="bt_return">返回上一量表</button>
+                                        </a>
+                                    </div>
+                                    
+                                    <div  class="col-md-4 col-sm-6" id="next_scale" >
+                                             {% csrf_token %}
+                                            <a href="/scales/get_next_url?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}">
+                                                <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                            </a>
+                                    </div>
+                                    <div  class="col-md-4 col-sm-6" id="next_scale_final" >
+                                                 {% csrf_token %}
+                                                <a href="/scales/select_scales?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}">
+                                                    <input  type="button" class="btn btn-success text-center"  value="进入下一量表"  >
+                                                </a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                            <a onclick="remove_disabled()"  style="float: right"><u>修改</u></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getData() {
+            var order = "{{ order }}";
+            if(order==0){
+                $("#last_scale").attr("style","display:none;");
+                $("#next_scale_final").attr("style","display:none;");
+                $("#next_scale").attr("style","display:block;");
+            }else if(order==1){
+                $("#last_scale").attr("style","display:block;");
+                $("#next_scale_final").attr("style","display:block;");
+                $("#next_scale").attr("style","display:none;");
+            }else{
+                $("#last_scale").attr("style","display:block;");
+                $("#next_scale_final").attr("style","display:none;");
+                $("#next_scale").attr("style","display:block;");
+            }
+            
+        }
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $("table input").attr("disabled","disabled")
+        if('{{ cgi_answer }}'!='None'){
+            if ('{{ cgi_answer.severity_of_illness }}' != 'None') {
+            $("input[name='severity_of_illness'][value="+Number({{ cgi_answer.severity_of_illness }})+"]").prop("checked",true);
+            }
+            if ('{{ cgi_answer.global_improvement }}' != 'None') {
+                $("input[name='global_improvement'][value="+Number({{ cgi_answer.global_improvement }})+"]").prop("checked",true);
+            }
+            if ('{{ cgi_answer.efficacy }}'!='None') {
+                $("input[name='efficacy'][value="+Number({{ cgi_answer.efficacy }})+"]").prop("checked",true);
+            }
+            if ('{{ cgi_answer.side_effects }}' != 'None') {
+                $("input[name='side_effects'][value="+Number({{ cgi_answer.side_effects }})+"]").prop("checked",true);
+            }
+        }
+
+
+        function remove_disabled(){
+            $("table input").removeAttr("disabled","disabled");
+            $("#cgi_bt").show();
+            $("#bt_group").hide();
+
+        }
+    </script>
+    <script type="text/javascript" src="/mystatic/js/layer.js%20"></script>
+    <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+            $("input[type='radio']").labelauty();
+            cookie_val = getCookie('enter_page')
+            set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+        });
+    </script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
+{% endblock %}
