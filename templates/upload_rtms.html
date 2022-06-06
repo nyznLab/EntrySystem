@@ -1,0 +1,553 @@
+{% extends 'templates/index.html' %}
+{% load static %}
+{% load SelfDefinedFilter %}
+{% block title %}被试管理{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/appointToday.css' %}">
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href={% static '/css/tinyselect.css' %}>
+    <link href="{% static '/vendors/ajax/libs/select2/4.0.4/css/select2.min.css' %}" rel="stylesheet"/>
+
+    <style>
+        select {
+            font-size: 10px;
+        }
+
+        .sel_beauty {
+            background: #fafdfe;
+            height: 33px;
+            width: 180px;
+            line-height: 28px;
+            border: 1px solid #9bc0dd;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            width: 158px;
+        }
+
+        .modal-body {
+            padding: 10px 40px;
+        }
+
+        h4 {
+            margin: 0px;
+        }
+
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .img-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 0;
+            height: calc(3.5rem + 28px);
+        }
+
+        .img-upload-input {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: calc(3rem + 28px);
+            margin: 0;
+            opacity: 0;
+        }
+
+        .img-upload-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: #f0f0f0;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!--rtms治疗方案新增模态框 -->
+    <div class="modal fade" id="modal_rtms_treatment_add" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="myModalLabel">
+                        新建rTMS治疗方案
+                    </h5>
+                </div>
+
+                <div class="modal-body">
+                    <form action="/rtms/add_rtms_treatment" method="post" name="subjectEstablishForm"
+                          id="submit_new_rtms_treatment_form">
+                        {% csrf_token %}
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="treatment_name"
+                                   style="text-align: right">方案名称：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class=" sel_beauty form-control input-sm treatment_input" name="treatment_name"
+                                       οnkeyup="value=value.replace(/[^a-zA-Z]/g,'')" placeholder="请输入字母"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right" for="therapeutic_target">
+                                刺激部位：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class=" sel_beauty form-control input-sm treatment_input" name="therapeutic_target"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入汉字"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="frequency"
+                                   style="text-align: right">频率(HZ)：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="frequency"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right"
+                                   for="pulses">脉冲个数(个）：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="pulses"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="stimulation_time" style="text-align: right">刺激时间(秒）：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="stimulation_time"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right" for="inter_train_intervals">间歇时间(秒)：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input"
+                                       name="inter_train_intervals" οnkeyup="value=value.replace(/[^\d]/g,'')"
+                                       placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="pulse_trains"
+                                   style="text-align: right">重复次数：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="pulse_trains"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right"
+                                   for="total_pulses">刺激总次数：</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="total_pulses"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="total_time_minute" style="text-align: right">总时间(分钟):</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="total_time_minute"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                            <label class="col-sm-2 control-label" style="text-align: right" for="total_time_second">总时间(秒):</label>
+                            <div class="col-sm-4">
+                                <input type="number" class=" sel_beauty form-control input-sm treatment_input" name="total_time_second"
+                                       οnkeyup="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <label class="col-sm-2 control-label" for="note" style="text-align: right">备注:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class=" sel_beauty form-control input-sm treatment_input" name="note">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <p class="text-center" id="modal_rtms_treatment_add_info"></p>
+                    </div>
+                    <div class="row">
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-success" onclick="submit_new_rtms_treatment()"
+                                   value="提交"/>
+                            <button class="btn btn-danger" data-dismiss="modal" type="button" onclick="">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--rtms上传提示模态框 -->
+    <div class="modal fade" id="rtmsExcelModal" tabindex="-1" role="dialog" aria-labelledby="messageModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="rtmsExcel_header"></h5>
+                </div>
+                <div class="modal-body" id="rtms_modal_body">
+                    <div id="rtmsExcel_body">
+                        <ul id="rtmsExcel_table"> style="font-size: 10px;cellspacing:15px;">
+                        </ul>
+                    </div>
+                    <div id="tip_session_id">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <p class="text-center" id="rtmsExcel_footer" style="font-size: 5px;">
+                        tips：”NN_00000011_S002_3"表示编号NN_0000001_S002的第3行数据出现了格式错误</p>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clear_filename()">确认
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--提示模态框 -->
+    <div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-labelledby="messageModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="tip_header"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="right_col" role="main" style="min-height:100%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ul class="breadcrumb" style="background-color: white;font-weight:bold">
+                        <li>信息管理</li>
+                        <li><a href="#">rTMS信息管理与导入</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="padding:20px 35px">
+            <div class="x_title">
+                <h4 class="col-md-6">rTMS治疗数据导入与查看</h4>
+                <div style="float:right">
+                    <input type="button" class="btn btn-success btn-sm" style="margin-right: 20px"
+                           onclick="uploads()" value="上传提交">
+                    <button class="btn btn-success btn-sm"><a href="/rtms/get_all_rtms_data"
+                                                              style="color: white">查看所有rTMS数据</a></button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div>
+                            <div class="img-upload">
+                                <input type="file" class="img-upload-input" name="upload" id="file_uploads" required/>
+                                <label class="img-upload-label text-center p-4 position-absolute" id="img-upload-label"
+                                       for="img-upload-input">
+                                    <i class="fa fa-cloud-upload" aria-hidden="true" style="font-size:30px;"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row col-md-12" style="margin-top:5px">
+                            <p class="upload_info text-center" style="display: None">正在上传并处理excel中......</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard_graph x_panel" style="padding:20px 35px">
+            <div class="x_title">
+                <h4 class="col-md-7">所有rTMS治疗方案</h4>
+                <div style="float:right">
+                    <a href="#modal_rtms_treatment_add" data-toggle="modal">
+                        <button class="btn btn-success btn-sm" style="color: white">新建rTMS治疗方案</button>
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <table id="" class="table table-striped table-hover" style="font-size: 13px;cellspacing:15px;">
+                            <thead>
+                            <tr>
+                                <th>治疗方案名称</th>
+                                <th>刺激部位</th>
+                                <th>频率</th>
+                                <th>脉冲个数</th>
+                                <th>刺激时间</th>
+                                <th>间歇时间</th>
+                                <th>重复次数</th>
+                                <th>刺激总次数</th>
+                                <th>总时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for treatment_rtms in treatment_rtms_list %}
+                                <tr>
+                                    <td>
+                                        {{ treatment_rtms.treatment_name }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.therapeutic_target }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.frequency }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.pulses }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.stimulation_time }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.inter_train_intervals }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.pulse_trains }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.total_pulses }}
+                                    </td>
+                                    <td>
+                                        {{ treatment_rtms.total_time_minute }}min{{ treatment_rtms.total_time_second }}s
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static '/js/layerJquery.js' %}"></script>
+    <script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/subjectEstablish.js' %}"></script>
+
+    <script type="text/javascript" language="JavaScript">
+        $(".img-upload").on("change", "#file_uploads", function () {
+            var filePath = $(this).val();
+            if (filePath.indexOf("xlsx") != -1) {
+                var arr = filePath.split('\\');
+                var fileName = arr[arr.length - 1];
+                $("#img-upload-label").html(fileName);
+            }
+        });
+
+        $(".treatment_input").change(function () {
+            $("#modal_rtms_treatment_add_info").html("");
+        });
+
+        function clear_filename() {
+            $("#img-upload-label").html("<i class=\"fa fa-cloud-upload\" aria-hidden=\"true\" style=\"font-size:30px;\"></i>");
+        }
+
+        function show_add_rtms_treatment_modal() {
+            $("#modal_rtms_treatment_add_info").html("");
+            $("#modal_rtms_treatment_add").show();
+
+        }
+
+        function uploads() {
+            $(".upload_info").show();
+            const form_data = new FormData();
+            form_data.append('files', $('#file_uploads')[0].files[0]);
+            $.ajax({
+                url: '/rtms/files_upload',
+                type: 'post',
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function (data) {
+                    var data_obj = JSON.parse(data);
+                    error_info = data_obj.error_info;
+                    if (error_info == '0') {
+                        $("#rtmsExcel_header").html("写入成功！");
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
+                        $("#rtmsExcel_body").hide();
+                        if (data_obj["tip_session_id"].toString()!==""){
+                            $("#tip_session_id").html('<b>【小提示】session_id不连续（不影响写入）：</b>' +
+                                        '<p style="word-break: break-all;">' + data_obj["tip_session_id"].toString() + '</p>');
+                            $("#rtms_modal_body").show();
+                            $("#tip_session_id").show();
+                        }
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '1') {
+                        $("#rtmsExcel_header").html("没有数据更新！");
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '2') {
+                        $("#rtmsExcel_header").html('上传失败！请按照提示进行内容补全与格式修改！');
+                        var rtms_excel_info = "";
+                        for (let i in data_obj) {
+                            if (i != 'error_info' && i!='tip_session_id') {
+                                if (data_obj[i].length != 0) {
+                                    check_info_item = '';
+                                    check_info_item2 = data_obj[i].toString();
+                                    if (i == 'check_patient_id') {
+                                        check_info_item = '【编号】'
+                                    }
+                                    if (i == 'check_session_id') {
+                                        check_info_item = '【扫描次数】'
+                                    }
+                                    if (i == 'check_date') {
+                                        check_info_item = '【扫描备注(日期)】的日期'
+                                    }
+                                    if (i == 'check_resting_motor_threshold') {
+                                        check_info_item = '【运动阈值】'
+                                    }
+                                    if (i == 'check_intensity') {
+                                        check_info_item = '【能量强度】'
+                                    }
+                                    if (i == 'check_treatment_str') {
+                                        check_info_item = '【治疗方案】'
+                                    }
+                                    if (i == 'check_treatment_num') {
+                                        check_info_item = '【扫描备注(日期)】的顺序号'
+                                    }
+                                    rtms_excel_info = rtms_excel_info +
+                                        '<li>' +
+                                        '<b>' + check_info_item + '</b>' +
+                                        '<p style="word-break: break-all;">' + check_info_item2 + '</p>' +
+                                        '</li>'
+                                }
+                            }
+                        }
+                        $("#rtmsExcel_table").html(rtms_excel_info);
+                        $("#rtms_modal_body").show();
+                        $("#rtmsExcel_footer").show();
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '3') {
+                        $("#rtmsExcel_header").html("请上传后缀为“.xlsx”的文件 ！");
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '4') {
+                        $("#rtmsExcel_header").html("请检查上传文件的【治疗具体信息汇总】表的表头名称是否完整/正确！<hr>需要的表头：【编号】,【扫描次数】,【扫描备注（日期）】<br>【运动阈值】,【能量强度（%】,【方案】,【备注】");
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '5') {
+                        $("#rtmsExcel_header").html("请检查上传文件中是否有表【治疗具体信息汇总】！");
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '6') {
+                        $("#rtmsExcel_header").html('表格存在未知错误！上传失败！');
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtmsExcel_body").hide();
+                        $("#tip_session_id").hide();
+                        $(".upload_info").hide()
+                    }
+                    if (error_info == '7') {
+                        $("#rtmsExcel_header").html("请选择文件后再点击【上传提交】！");
+                        $("#rtmsExcel_footer").hide();
+                        $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
+                        $(".upload_info").hide()
+                    }
+                    $("#rtmsExcelModal").modal('show');
+                    $("#file_uploads").val("");
+                },
+                error: function (data) {
+                    $("rtmsExcel_header").html('表格存在未知错误！上传失败！');
+                    $("#rtms_modal_body").hide();
+                    $("#rtmsExcel_footer").hide();
+                    $("#rtmsExcelModal").modal('show');
+                    $("#tip_session_id").hide();
+                    $(".upload_info").hide();
+                    $("#file_uploads").val("");
+                }
+            })
+        }
+
+        function submit_new_rtms_treatment() {
+            if ($("input[name='treatment_name']").val() == '' ||
+                $("input[name='therapeutic_target']").val() == '' ||
+                $("input[name='frequency']").val() == '' ||
+                $("input[name='pulses']").val() == '' ||
+                $("input[name='stimulation_time']").val() == '' ||
+                $("input[name='inter_train_intervals']").val() == '' ||
+                $("input[name='pulse_trains']").val() == '' ||
+                $("input[name='total_pulses']").val() == '' ||
+                $("input[name='total_time_minute']").val() == '' ||
+                $("input[name='total_time_second']").val() == '' ||
+                !(isNaN($("input[name='treatment_name']").val())) ||
+                !(isNaN($("input[name='therapeutic_target']").val()))
+            ) {
+                $("#modal_rtms_treatment_add_info").html("填写格式错误！")
+            }
+            else {
+                $.ajax({
+                        url: '/rtms/add_rtms_treatment',
+                        method: 'post',
+                        data: {'treatment_name': $("input[name='treatment_name']").val(),
+                            'therapeutic_target':$("input[name='therapeutic_target']").val(),
+                            'frequency': $("input[name='frequency']").val(),
+                            'pulses':$("input[name='pulses']").val(),
+                            'stimulation_time':$("input[name='stimulation_time']").val(),
+                            'inter_train_intervals':$("input[name='inter_train_intervals']").val(),
+                            'pulse_trains':$("input[name='pulse_trains']").val(),
+                            'total_pulses':$("input[name='total_pulses']").val(),
+                            'total_time_minute':$("input[name='total_time_minute']").val(),
+                            'total_time_second':$("input[name='total_time_second']").val(),
+                            'note':$("input[name='note']").val(),
+                        },
+                        success: function (check) {
+                            $('#modal_rtms_treatment_add').hide();
+				            $(".modal-backdrop.fade").hide();
+                                alert(check);
+                                window.location.reload();
+                        },
+                        error: function (check) {
+                            $('#modal_rtms_treatment_add').hide();
+				            $(".modal-backdrop.fade").hide();
+                            alert("提交失败！");
+                        }
+                })
+            }
+        }
+
+
+    </script>
+{% endblock %}

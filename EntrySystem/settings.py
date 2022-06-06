@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'scales',
     'patients',
+    'rtms',
     'users',
     'inpatients',
     'followup',
@@ -61,6 +62,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'EntrySystem.urls'
+
 
 TEMPLATES = [
     {
@@ -134,6 +136,8 @@ LOGGING = {
         },
     }
 }
+
+UPLOAD_ROOT = os.path.join(BASE_DIR,'upload')
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

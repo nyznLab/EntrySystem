@@ -787,21 +787,14 @@
                                         <a href="#modal_cognitionTest_{{ patient_detail|get_item:'session_id' }}"
                                            data-toggle="modal" style="text-decoration: underline">量表详情</a>
                                     </td>
-                                    {% if patient_detail.rtms_count == 0 %}
-                                    <td>
-                                        <a href='/scales/get_rtms_forms?patient_session_id={{ patient_detail.id }}&patient_id={{ patient_detail.patient_id }}&do_type=0'
-                                           data-toggle="modal"
-                                           style="text-decoration: underline">
-                                            {{ patient_detail|get_item:'rtms_count' }}
-                                        </a>
-                                    </td>
+                                    {% if patient_detail.tms == None %}
+                                    <td>0</td>
                                     {% else %}
                                     <td>
-                                        <a href='/scales/get_rtms_forms?patient_session_id={{ patient_detail.id }}&patient_id={{ patient_detail.patient_id }}&do_type=1'
-                                           data-toggle="modal"
-                                           style="text-decoration: underline">
-                                            {{ patient_detail|get_item:'rtms_count' }}
-                                        </a>
+                                        {{ patient_detail.tms }}
+                                        {% if patient_detail.tms_treatment_id != None %}
+                                            ({{ patient_detail.tms_treatment_id }})
+                                        {% endif %}
                                     </td>
                                     {% endif %}
                                     <td>

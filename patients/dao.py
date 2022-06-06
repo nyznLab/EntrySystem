@@ -107,7 +107,6 @@ def del_patient_base_info_byPK(patient_id):
             list.delete()
 
 
-
 #高危信息表
 def add_patient_ghr(rPatientGhr):
     # 插入数据库前的级联检验
@@ -266,7 +265,6 @@ def get_patient_scales_byPatientDetailId(patient_detail_id):
         return None
     else:
         return patient_scales_list
-
 
 # d_patient_appointment表
 def get_patient_appointment_all():

@@ -29,4 +29,6 @@ urlpatterns = [
                   path('statistics/', include('statistics.urls')),
                   path('appointment/', include('appointment.urls')),
                   path('schedule/', include('schedule.urls')),
+                  path('rtms/',include('rtms.urls')),
+                  path('upload/',include('rtms.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

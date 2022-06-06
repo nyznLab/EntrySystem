@@ -753,8 +753,9 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{% static '/js/layerJquery.js' %}"></script>
+
     <script src="{% static '/vendors/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static '/js/layerJquery.js' %}"></script>
     {#        <script src="{% static '/js/layer.js' %}"></script>#}
     <script src="{% static '/vendors/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/vendors/ajax/libs/select2/4.0.4/js/select2.min.js' %}"></script>
@@ -810,8 +811,6 @@
             $("input[type='radio']").attr("checked", false);
         }
 
-
-
         function add_inpatient_before(patient_id){
             $('#add_inpatient_modal').modal("show");
             document.add_inpatient_form.action="/inpatients/add_inpatient_info?patient_id="+patient_id;
@@ -864,8 +863,8 @@
     </script>
     {% comment %}填充0{% endcomment %}
 
-    //  模态框相关js函数
     <script>
+    //  模态框相关js函数
         var patientid = null;
         function del_patient_before(patient_id,patient_name
             ,doctorid
@@ -885,8 +884,8 @@
          }
     </script>
 
-    // 高危相关的js函数
     <script>
+    // 高危相关的js函数
         //Ajax提交页面上的高危亲属信息到后台
         function save_ghr_relatives() {
             let saveghr_success = 1;
@@ -959,7 +958,6 @@
         }
 
         //页面上添加一行高危亲属信息（最后面添加）
-
         function addLine_ghr() {
             let ghr_relatives_num = $("#ghr_relatives>.ghr_relative_class").length;
             let ori_max_ghrid = $("input[name='max_ghr_id']").val();
@@ -1032,9 +1030,8 @@
         }
     </script>
 
-
-    // 验证码相关js函数
     <script>
+    // 验证码相关js函数
         //验证码图片的生成
         //生成一个随机数
         var verification_code = "";
