@@ -72,7 +72,9 @@ def read_rtms_excel(doctor_id, filename):
     flag_rtms_excel = 0
 
     # 格式错误汇总
-    error_info = '0'  # 0-写入成功；1-没有数据更新；2-rtms格式错误；3-excel文件后缀错误；4-excel中缺少相应字段；5-没有”治疗具体信息汇总“这个sheet;6-其他error;7-没有获取到文件
+    # 0-写入成功；1-没有数据更新；2-rtms格式错误；3-excel文件后缀错误；4-excel中缺少相应字段；
+    # 5-没有”治疗具体信息汇总“这个sheet;6-其他error;7-没有获取到文件
+    error_info = '0'
     check_rtms_excel = {}
 
     # 被试号(格式正确)；扫描号(格式正确)；治疗日期(格式正确、非空)；运动阈值(非空)；能量强度(非空)；治疗方案(非空、已有方案)
@@ -92,12 +94,8 @@ def read_rtms_excel(doctor_id, filename):
     excel_path = settings.UPLOAD_ROOT + "/" + filename
     sheet_name = '治疗具体信息汇总'
     # 1.2.1 不读空行(扫描次数+扫描备注(日期)不为空)
-
     data_raw_pd = pd.read_excel(excel_path, sheet_name=sheet_name, dtype=str,
                                 usecols=['编号', '扫描次数', '扫描备注（日期）', '运动阈值', '能量强度（%）', '方案', '备注'])
-
-
-    # data_pd = data_raw_pd[~(data_raw_pd['扫描备注（日期）'].isnull())]
     data_pd = data_raw_pd.dropna(axis=0,how='all',inplace=False)
     data_pd = data_pd.reset_index(drop=True)
     data_pd.fillna("", inplace=True)
@@ -531,7 +529,6 @@ def files_upload(request):
 
 def add_rtms_treatment(request):
     if request.is_ajax():
-
         check_new_treatment = {"check_new_treatment": 0}
         treatment_name = request.POST.get("treatment_name")
         therapeutic_target = request.POST.get("therapeutic_target")
@@ -547,7 +544,6 @@ def add_rtms_treatment(request):
         doctor_id = request.session.get('doctor_id')
 
         treatment_name_list = list(rtms_dao.get_treatment_rtms().values('treatment_name'))
-        print(treatment_name_list)
         if {'treatment_name':str(treatment_name)} not in treatment_name_list:
             rtms_dao.insert_tTreatmentRtms(treatment_name, therapeutic_target, frequency, pulses, stimulation_time,
                                            inter_train_intervals, pulse_trains, total_pulses, total_time_minute,
