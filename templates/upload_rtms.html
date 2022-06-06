@@ -455,30 +455,35 @@
                         $("#rtmsExcel_header").html("请上传后缀为“.xlsx”的文件 ！");
                         $("#rtmsExcel_footer").hide();
                         $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '4') {
                         $("#rtmsExcel_header").html("请检查上传文件的【治疗具体信息汇总】表的表头名称是否完整/正确！<hr>需要的表头：【编号】,【扫描次数】,【扫描备注（日期）】<br>【运动阈值】,【能量强度（%】,【方案】,【备注】");
                         $("#rtmsExcel_footer").hide();
                         $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '5') {
                         $("#rtmsExcel_header").html("请检查上传文件中是否有表【治疗具体信息汇总】！");
                         $("#rtmsExcel_footer").hide();
                         $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '6') {
                         $("#rtmsExcel_header").html('表格存在未知错误！上传失败！');
                         $("#rtmsExcel_footer").hide();
                         $("#rtmsExcel_body").hide();
+                        $("#tip_session_id").hide();
                         $(".upload_info").hide()
                     }
                     if (error_info == '7') {
                         $("#rtmsExcel_header").html("请选择文件后再点击【上传提交】！");
                         $("#rtmsExcel_footer").hide();
                         $("#rtms_modal_body").hide();
+                        $("#tip_session_id").hide();
                         $(".upload_info").hide()
                     }
                     $("#rtmsExcelModal").modal('show');
@@ -489,6 +494,7 @@
                     $("#rtms_modal_body").hide();
                     $("#rtmsExcel_footer").hide();
                     $("#rtmsExcelModal").modal('show');
+                    $("#tip_session_id").hide();
                     $(".upload_info").hide();
                     $("#file_uploads").val("");
                 }
