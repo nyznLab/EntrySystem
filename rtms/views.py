@@ -340,7 +340,7 @@ def read_rtms_excel(doctor_id, filename):
                                                     insert_patient_session_list.append([patient_id, session_id])
 
                                             except Exception as e:
-                                                logging.error("Failed to collect rPatientRtms_object")
+                                                logging.error("Failed to collect rPatientRtms_object: %s"%e)
                                 else:
                                     flag_rtms_excel = 1
                                     check_treatment_num.append(
@@ -353,7 +353,7 @@ def read_rtms_excel(doctor_id, filename):
                     rtms_models.rPatientRtms.objects.bulk_create(insert_patient_rtms_obj_list)
                 except Exception as e:
                     error_info = '6'
-                    logging.error("Failed to write to database")
+                    logging.error("Failed to write to database: %s"%e)
                 if len(insert_patient_rtms_obj_list) == 0:
                     error_info = '1'
             else:
@@ -373,12 +373,12 @@ def read_rtms_excel(doctor_id, filename):
                     update_dpatient_detail_obj.tms_treatment_id = rtms_treatment_id
                     update_dpatient_detail_obj.save()
 
-    except Exception:
+    except Exception as e:
         error_info = '6'
         if flag_rtms_excel == 1:
-            logger.error("excel格式错误")
+            logger.error("excel格式错误: %s"%e)
         else:
-            logger.error("非excel格式错误")
+            logger.error("非excel格式错误: %s"%e)
 
     check_rtms_excel = {
         'error_info': error_info,
