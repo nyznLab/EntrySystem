@@ -226,7 +226,7 @@ def read_rtms_excel(doctor_id, filename):
                                     intensity = str(data_pd['能量强度（%）'].loc[x])
                                     intensity = re.sub(pattern_space, "", intensity)  # 兼容cell里填了其他文字或单位的情况
                                     if intensity != "":
-                                        if float(intensity) <= 1:
+                                        if float(intensity) <= 2:
                                             intensity = str(int(100 * float(intensity)))
                                     else:
                                         flag_rtms_excel = 1
