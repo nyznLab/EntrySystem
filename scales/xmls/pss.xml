@@ -78,11 +78,11 @@
         <option type="radio" name="question11" value="5">总是</option>
     </question>
     <question index="12" title="12.经常想到有些事情是自己必须完成的">
-        <option type="radio" name="question12" value="5">从不</option>
-        <option type="radio" name="question12" value="4">偶尔</option>
+        <option type="radio" name="question12" value="1">从不</option>
+        <option type="radio" name="question12" value="2">偶尔</option>
         <option type="radio" name="question12" value="3">有时</option>
-        <option type="radio" name="question12" value="2">时常</option>
-        <option type="radio" name="question12" value="1">总是</option>
+        <option type="radio" name="question12" value="4">时常</option>
+        <option type="radio" name="question12" value="5">总是</option>
     </question>
     <question index="13" title="13.常能掌握时间安排方式">
         <option type="radio" name="question13" value="5">从不</option>
