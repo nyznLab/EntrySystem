@@ -40,7 +40,7 @@ other_test_scale_num = {
     '9': 11,  # ymrs
     '10': 18,  # bprs
     '35': 10, # madrs
-    '36': 4 #cgi
+    '36': 3 #cgi
 }
 
 scales_html_dict = {1: '/scales/get_family_form',
