@@ -75,7 +75,7 @@
                 <div id="right-side" class="col-md-10">
                     <div id="first" class="active">
                         <form action="/scales/add_cgi?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
-                              name="madrs_form" method="post" onSubmit="return myCheck(this)">
+                              name="madrs_form" method="post" onSubmit="return true;">
                             {% csrf_token %}
                             <div class="container">
                                 <div class="col-md-12 text-center">
@@ -124,27 +124,11 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    疗效指数（EI），需综合治疗效果和治疗引起的副反应等，给予评定。（EI = 疗效 / 副反应）<br/>
-                                                    3.1.疗效
-                                                    <input type="radio" name="efficacy" value=4 data-labelauty="显效（症状完全消失）"/>
-                                                    <input type="radio" name="efficacy" value=3 data-labelauty="有效（部分症状消失）"/>
-                                                    <input type="radio" name="efficacy" value=2 data-labelauty="稍有效（症状略有减轻）"/>
-                                                    <input type="radio" name="efficacy" value=1 data-labelauty="无变化或恶化（症状毫无减轻）"/>
+                                                    3.疗效指数（EI），需综合治疗效果和治疗引起的副反应等，给予评定。（EI = 疗效 / 副反应）<br/>
+                                                    <input type="text" name="efficacy_index" type="number" value="{{ cgi_answer.efficacy_index }}" id="efficacy_index">
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="vertical-align:top;">
-                                                    3.2.副反应
-                                                    <input type="radio" name="side_effects" value=1
-                                                           data-labelauty="无"/>
-                                                    <input type="radio" name="side_effects" value=2
-                                                           data-labelauty="轻（有些副反应，但不影响病人的功能）"/>
-                                                    <input type="radio" name="side_effects" value=3
-                                                           data-labelauty="中（明显的影响病人功能）"/>
-                                                    <input type="radio" name="side_effects" value=4
-                                                           data-labelauty="重（发生了严重的甚至危及病人安全的副反应）"/> 
-                                                </td>
-                                            </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -158,8 +142,8 @@
                                     </div>
                                     <div class="col-md-4 col-sm-6">
                                         {% csrf_token %}
-                                        <input type="submit" class="btn btn-success text-center" value="保存提交量表"
-                                               id="hamd_bt">
+                                        <input type="button" class="btn btn-success text-center" value="保存提交量表"
+                                               id="cgi_bt">
                                     </div>
                                     <div class="col-md-4 col-sm-6">
                                         <a href="/scales/skip_scale?patient_session_id={{ patient_session_id }}&patient_id={{ patient_id }}&scale_id={{ scale_id }}"
@@ -186,11 +170,9 @@
                 if ('{{ cgi_answer.global_improvement }}' != 'None') {
                     $("input[name='global_improvement'][value="+Number({{ cgi_answer.global_improvement }})+"]").prop("checked",true);
                 }
-                if ('{{ cgi_answer.efficacy }}'!='None') {
-                    $("input[name='efficacy'][value="+Number({{ cgi_answer.efficacy }})+"]").prop("checked",true);
-                }
-                if ('{{ cgi_answer.side_effects }}' != 'None') {
-                    $("input[name='side_effects'][value="+Number({{ cgi_answer.side_effects }})+"]").prop("checked",true);
+
+                if ('{{ cgi_answer.efficacy_index }}' != 'None') {
+                    $("input[name='efficacy_index'][value="+Number({{ cgi_answer.efficacy_index }})+"]").prop("disabled",true);
                 }
             }
         }
@@ -206,6 +188,14 @@
             $("input[type='radio']").labelauty();
             cookie_val = getCookie('enter_page')
             set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
+            $("#cgi_bt").click(function (){
+                if(Number($("#efficacy_index").val()) >= 0 && Number($("#efficacy_index").val()) <= 4){
+                   $("form").submit()
+                }else{
+                    alert("填入分数不合法，应该在0-4之间（包含）!")
+                    return false;
+                }
+            })
         });
     </script>
     <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>

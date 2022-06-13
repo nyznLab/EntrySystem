@@ -78,8 +78,8 @@ def add_madrs_database(rPatientMADRS, state):
 
 # 临床疗效总评量表
 def add_cgi_database(rPatientCgi, state):
-    rPatientCgi.efficacy_index, object_flag = tools_calculatingScores.CGI_ei(rPatientCgi)
-    tools_utils.object_judgment(object_flag)
+    # rPatientCgi.efficacy_index, object_flag = tools_calculatingScores.CGI_ei(rPatientCgi)
+    # tools_utils.object_judgment(object_flag)
     tools_insertCascadeCheck.insert_cgi_check(rPatientCgi)
     rPatientCgi.save()
     update_rscales_state(rPatientCgi.patient_session_id, rPatientCgi.scale_id, state)
