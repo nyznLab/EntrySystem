@@ -61,7 +61,7 @@
                                 </div>
 
                                 <div class="">
-                                    <label class="control-label control-label col-md-12"><span>1.简要现病史记录：（其中是否有自杀观念、自杀行为、强迫观念、强迫行为等）</span></label>
+                                    <label class="control-label control-label col-md-12"><span>简要现病史记录：（其中是否有自杀观念、自杀行为、强迫观念、强迫行为等）</span></label>
                                     <br>
                                 </div>
 
@@ -72,61 +72,137 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row " style="margin: 10px">
+                                    <label class="control-label col-md-3">1.诊断</label>
+                                    <select name="diagnosis" id="diagnosis_select">
+                                        <option value="" selected></option>
+                                        <option value="0">未诊断</option>
+                                        <option value="1">健康者</option>
+                                        <option value="2">重性抑郁障碍</option>
+                                        <option value="3">焦虑障碍</option>
+                                        <option value="4">双相障碍</option>
+                                        <option value="5">精神分裂症</option>
+                                        <option value="6">强迫症</option>
+                                        <option value="7">高危遗传</option>
+                                        <option value="8">临床高危</option>
+                                        <option value="9">抑郁症状</option>
+                                        <option value="99">其他诊断</option>
+                                    </select>
+                                </div>
+                                <div class="row " style="margin: 10px">
+                                    <label class="control-label col-md-3"> - 伴随症状/特征</label>
+                                    <input type="text" name="accompanying_symptoms" id="accompanying_symptoms"/>
+                                </div>
+                                <div class="row " style="margin: 10px">
+                                    <label class="control-label col-md-3"> - 目前状态</label>
+                                    <input type="text" name="current_state" id="current_state"/>
+                                </div>
+                                <div class="row" style="margin:10px">
+                                    <label class="control-label"><span>2.共病（是/否）</span></label>
+                                    <input type="radio" name="is_comorbidity" value=0 data-labelauty="否"/>
+                                    <input type="radio" name="is_comorbidity" value=1 data-labelauty="是"/>
+                                    <input type="text" placeholder="请填写具体类型" name="comorbidity_content">
+                                </div>
 
                                 <div class="row " style="margin: 10px">
-                                    <label class="control-label col-md-3">2.前驱期：</label>
-                                    <input type="month" name="prophase_begin" id="prophase_begin" onclick="maxtime()"/>至
+                                    <label class="control-label col-md-3">3.前驱期：</label>
+                                    <input type="month" name="prophase_begin" id="prophase_begin" onclick="maxtime()"/> 至
                                     <input type="month" name="prophase_end" id="prophase_end" onclick="mintime()"/>
                                 </div>
 
                                 <div class=" " style="margin: 10px">
-                                    <label class="control-label col-md-3">3.首次发病时间（不包括前驱期）：</label>
+                                    <label class="control-label col-md-3">4.首次发病时间（不包括前驱期）：</label>
                                     <input type="month" name="first_time_begin" id="first_time_begin" onclick="maxtime2()"/>
                                     至
                                     <input type="month" name="first_time_end" id="first_time_end" onclick="mintime2()"/>
                                 </div>
 
                                 <div class="row" style="margin: 10px">
-                                    <label class="control-label col-md-3"><span>4.首次发病时诊断：</span></label>
+                                    <label class="control-label col-md-3"><span>5.首次发病时诊断</span></label>
                                     <input type="text" name="first_episode_diagnosis" id="first_episode_diagnosis" class="first_episode_diagnosis"/>
 
                                 </div>
 
                                 <div class="row" style="margin: 10px">
-                                    <label class="control-label col-md-3"><span>5.发作次数：（首发患者无需填）</span></label>
+                                    <label class="control-label col-md-3"><span>6.发作次数（首发患者无需填）</span></label>
                                     <input type="number" name="number_of_episode" id="number_of_episode" min="0"/>
 
                                 </div>
                                 <div class="row" style="margin: 10px">
-                                    <label class="control-label col-md-3 "><span>6.本次发作日期</span></label>
+                                    <label class="control-label col-md-3 "><span>7.既往缓解期（月）（首发患者无需填）</span></label>
+                                    <input type="number" name="previous_period_of_remission" min="0"/>
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 "><span>8.本次发作日期（首发患者无需填）</span></label>
                                     <input type="month" name="current_episode_date" id="current_episode_date"
                                            onclick="maxtime3()" class="current_episode_date" style="width:200px"/>
 
                                 </div>
                                 <div class="row" style="margin: 10px">
-                                    <label class="control-label col-md-3 col-sm-7 "><span>7.本次发作诊断</span></label>
+                                    <label class="control-label col-md-3 col-sm-7 "><span>9.本次发作诊断（首发患者无需填）</span></label>
                                     <input type="text" name="current_episode_diagnosis" id="current_episode_diagnosis" class="current_episode_diagnosis"/>
 
                                 </div>
                                 <div class="row" style="margin: 10px">
-                                    <label class="control-label "><span>8.既往是否服用药物</span></label>
+                                    <label class="control-label col-md-3 col-sm-7 "><span>10.患病总时长（月）</span></label>
+                                    <input type="number" id="total_sick_time" name="total_sick_time"/>
+
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label col-md-3 col-sm-7 "><span>11.社会功能受损</span></label>
+                                </div>
+                                <div class="row" style="margin:10px">
+                                    <label class="control-label "><span> - 学业：休学（是/否）</span></label>
+                                    <input type="radio" name="is_schooling_suspension" value=0 data-labelauty="否"/>
+                                    <input type="radio" name="is_schooling_suspension" value=1 data-labelauty="是"/>
+                                    <input type="number" placeholder="休学时长（月）" name="suspension_month">
+                                </div>
+                                <div class="row" style="margin:10px">
+                                    <label class="control-label "><span> - 其他：</span></label>
+                                    <input type="text" name="others">
+                                </div>
+                                <div class="row" style="margin:10px">
+                                    <label class="control-label "><span> - 人际关系受损（是/否）</span></label>
+                                    <input type="radio" name="is_impaired_relationships" value=0 data-labelauty="否"/>
+                                    <input type="radio" name="is_impaired_relationships" value=1 data-labelauty="是"/>
+                                    <input type="text" name="impaired_reason" placeholder="如果有受损，可以描述一下">
+                                </div>
+                                <div class="row" style="margin:10px">
+                                    <label class="control-label "><span>12.非自杀性自伤（是/否）</span></label>
+                                    <input type="radio" name="is_non_suicidal_self_harm" value=0 data-labelauty="否"/>
+                                    <input type="radio" name="is_non_suicidal_self_harm" value=1 data-labelauty="是"/>
+                                    <input type="number" placeholder="次数" name="non_suicidal_self_harm_num">
+                                </div>
+                                <div class="row" style="margin: 10px">
+                                    <label class="control-label "><span>13.既往是否服用药物</span></label>
                                     <input type="radio" class="historical_drugs" name="historical_drugs" value=0 data-labelauty="否"/>
                                     <input type="radio" class="historical_drugs" name="historical_drugs" value=1 data-labelauty="是"/>
                                 </div>
 
 
                                 <div class="row" id="use_time1" style="margin: 10px">
-                                    <label class="control-label col-md-3 col-sm-7 historical_drugs_month_question "><span>多长时间未使用药物(从未使用请填0)</span></label>
+                                    <label class="control-label col-md-3 col-sm-7 historical_drugs_month_question "><span>多长时间未服用药物(从未使用请填0)</span></label>
                                     <input type="text" class="historical_drugs_month " class="control-label" id="historical_drugs_month" name="historical_drugs_month" value=0 disabled/>
                                 </div>
 
 
                                 <div class="row" style="margin: 10px">
-                                    <label class="control-label col-md-3 col-sm-7"><span>9.扫描时状态：</span></label>
+                                    <label class="control-label col-md-3 col-sm-7"><span>14.扫描时状态：</span></label>
                                     <input class=" col-md-4" type="radio" name="scanning_state" id="scanning_state_no" value=0 data-labelauty="不稳定"/>
                                     <input class=" col-md-4" type="radio" name="scanning_state" id="scanning_state_yes" value=1 data-labelauty="稳定"/>
                                 </div>
+                                <div class="row " style="margin: 10px">
+                                    <label class="control-label col-md-3">15.滴定</label>
+                                </div>
+                                <div class="row " style="margin: 10px">
+                                    <label class="control-label col-md-3"> - 滴定开始时间</label>
+                                    <input type="date"  id="titration_start_time" name="titration_start_time" />
 
+                                </div>
+                                <div class="row" style="margin:10px">
+                                    <label class="control-label col-md-3"> - 滴定结束时间</label>
+                                    <input type="date"  id="titration_end_time" name="titration_end_time"/>
+                                </div>
                                 <div class="row" style="margin: 10px">
                                     <label class="control-label col-md-3 col-sm-7"><span>10.扫描时是否使用药物</span></label>
                                     <input type="radio" class=" col-md-4 scanning_using_drugs" name="scanning_using_drugs" value=0 data-labelauty="否"/>
@@ -338,6 +414,9 @@
         </div>
     </div>
     <script>
+
+
+
         function getData() {
             var order = "{{ order }}";
             if (order == 0) {
@@ -346,6 +425,23 @@
             var do_type = "{{ do_type }}";
             if (do_type == '1') {
                 $("textarea[name='disease_history']").val('{{ patient_medical_history.disease_history|processNone }}');
+                $("select option[value='{{ patient_medical_history.diagnosis|processNone }}']").attr("selected", true);
+                $("input[name='accompanying_symptoms']").val('{{ patient_medical_history.accompanying_symptoms|processNone }}')
+                $("input[name='current_state']").val('{{ patient_medical_history.current_state|processNone }}')
+                $("input[name='is_comorbidity'][value='{{ patient_medical_history.is_comorbidity|processNone }}']").prop('checked',true)
+                $("input[name='comorbidity_content']").val('{{ patient_medical_history.comorbidity_content|processNone }}')
+                $("input[name='previous_period_of_remission']").val({{ patient_medical_history.previous_period_of_remission|processNone }})
+                $("input[name='total_sick_time']").val({{ patient_medical_history.total_sick_time|processNone }})
+                $("input[name='is_schooling_suspension'][value='{{ patient_medical_history.is_schooling_suspension|processNone }}']").prop('checked',true)
+                $("input[name='suspension_month']").val({{ patient_medical_history.suspension_month|processNone }})
+                $("input[name='others']").val('{{ patient_medical_history.others|processNone }}')
+                $("input[name='is_impaired_relationships'][value='{{ patient_medical_history.is_impaired_relationships|processNone }}']").prop('checked',true)
+                $("input[name='impaired_reason']").val('{{ patient_medical_history.impaired_reason|processNone }}')
+                $("input[name='is_non_suicidal_self_harm'][value='{{ patient_medical_history.is_non_suicidal_self_harm|processNone }}']").prop('checked',true)
+                $("input[name='non_suicidal_self_harm_num']").val({{ patient_medical_history.suspension_month|processNone }})
+                $("input[name='titration_start_time']").val('{{ patient_medical_history.titration_start_time|date:"Y-m-d" }}')
+                $("input[name='titration_end_time']").val('{{ patient_medical_history.titration_end_time|date:"Y-m-d" }}')
+
                 $("input[name='prophase_begin']").val('{{ patient_medical_history.prophase_begin|processNone }}');
                 $("input[name='prophase_end']").val('{{ patient_medical_history.prophase_end|processNone }}');
                 $("input[name='first_time_begin']").val('{{ patient_medical_history.first_time_begin|processNone }}');
@@ -354,6 +450,7 @@
                 $("input[name='number_of_episode']").val('{{ patient_medical_history.number_of_episode|processNone }}');
                 $("input[name='current_episode_date']").val('{{ patient_medical_history.current_episode_date|processNone }}');
                 $("input[name='current_episode_diagnosis']").val('{{ patient_medical_history.current_episode_diagnosis|processNone }}');
+
 
                 {##既往是否服用药物#}
                 var historical_drugs = Number("{{ patient_medical_history.historical_drugs}}");
@@ -380,15 +477,31 @@
                 }
                 $("input[name='scaning_drugs_month']").val('{{ patient_medical_history.scaning_drugs_month|processNone }}');
                 {#锁住#}
-                $("input[name='disease_history']").attr("disabled", "disabled");
+                $("textarea[name='disease_history']").attr("disabled", "disabled");
+                $("select[name='diagnosis']").attr("disabled", "disabled")
+                $("input[name='accompanying_symptoms']").attr("disabled", "disabled")
+                $("input[name='current_state']").attr("disabled", "disabled")
+                $("input[name='is_comorbidity']").attr("disabled", "disabled")
+                $("input[name='comorbidity_content']").attr("disabled", "disabled")
                 $("input[name='prophase_begin']").attr("disabled", "disabled");
                 $("input[name='prophase_end']").attr("disabled", "disabled");
                 $("input[name='first_time_begin']").attr("disabled", "disabled");
                 $("input[name='first_time_end']").attr("disabled", "disabled");
                 $("input[name='first_episode_diagnosis']").attr("disabled", "disabled");
                 $("input[name='number_of_episode']").attr("disabled", "disabled");
+                $("input[name='previous_period_of_remission']").attr("disabled", "disabled")
                 $("input[name='current_episode_date']").attr("disabled", "disabled");
                 $("input[name='current_episode_diagnosis']").attr("disabled", "disabled");
+                $("input[name='total_sick_time']").attr("disabled", "disabled");
+                $("input[name='is_schooling_suspension']").attr("disabled", "disabled");
+                $("input[name='suspension_month']").attr("disabled", "disabled");
+                $("input[name='others']").attr("disabled", "disabled");
+                $("input[name='is_impaired_relationships']").attr("disabled", "disabled");
+                $("input[name='impaired_reason']").attr("disabled", "disabled");
+                $("input[name='is_non_suicidal_self_harm']").attr("disabled", "disabled");
+                $("input[name='non_suicidal_self_harm_num']").attr("disabled", "disabled");
+                $("input[name='titration_start_time']").attr("disabled", "disabled");
+                $("input[name='titration_end_time']").attr("disabled", "disabled");
                 $("input[name='historical_drugs']").attr("disabled", "disabled");
                 $("input[name='historical_drugs_month']").attr("disabled", "disabled");
                 $("input[name='scanning_state']").attr("disabled", "disabled");
@@ -396,6 +509,36 @@
                 $("input[name='scaning_drugs_month']").attr("disabled", "disabled");
                 $("#historical_drugs_table :input").attr("disabled", true);
                 $("#scanning_drugs_table :input").attr("disabled", true);
+
+                $("input[name='is_comorbidity']").click(function () {
+                    if ($("input[name='is_comorbidity']:checked").val() == 1){
+                        $("input[name='comorbidity_content']").show()
+                    }else{
+                        $("input[name='comorbidity_content']").hide()
+                    }
+                })
+                $("input[name='is_schooling_suspension']").click(function () {
+                    if ($("input[name='is_schooling_suspension']:checked").val() == 1){
+                        $("input[name='suspension_month']").show()
+                    }else{
+                        $("input[name='suspension_month']").hide()
+                    }
+                })
+                $("input[name='is_impaired_relationships']").click(function () {
+                    if ($("input[name='is_impaired_relationships']:checked").val() == 1){
+                        $("input[name='impaired_reason']").show()
+                    }else{
+                        $("input[name='impaired_reason']").hide()
+                    }
+                })
+                $("input[name='is_non_suicidal_self_harm']").click(function () {
+                    if ($("input[name='is_non_suicidal_self_harm']:checked").val() == 1){
+                        $("input[name='non_suicidal_self_harm_num']").show()
+                    }else{
+                        $("input[name='non_suicidal_self_harm_num']").hide()
+                    }
+                })
+
 
 
 
@@ -430,8 +573,8 @@
 {% block js %}
     <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
         <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
-
-    <script> $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
         $("input[type='radio']").labelauty();
         cookie_val = getCookie('enter_page')
         set_return_url(cookie_val,'{{ patient_session_id }}' ,'{{ patient_id }}')
@@ -451,6 +594,18 @@
         }
         var currentdate = year + seperator1 + month + seperator1 + strDate;
         return currentdate;
+    }
+
+    function getMinTime(el){
+        let current_date = getNowFormatDate();
+        let start_time = el.value;
+        $(el).attr("min", start_time)
+        $(el).attr("max", current_date)
+    }
+
+    function getMaxTime(el){
+        let current_date = getNowFormatDate();
+        $(el).attr("max",current_date)
     }
 
     function mintime() {
@@ -632,15 +787,31 @@
     </script>
     <script>
         function remove_disabled() {
-            $("input[name='disease_history']").removeAttr("disabled", "disabled");
+            $("textarea[name='disease_history']").removeAttr("disabled", "disabled");
+            $("select[name='diagnosis']").removeAttr("disabled", "disabled")
+            $("input[name='accompanying_symptoms']").removeAttr("disabled", "disabled")
+            $("input[name='current_state']").removeAttr("disabled", "disabled")
+            $("input[name='is_comorbidity']").removeAttr("disabled", "disabled")
+            $("input[name='comorbidity_content']").removeAttr("disabled", "disabled")
             $("input[name='prophase_begin']").removeAttr("disabled", "disabled");
             $("input[name='prophase_end']").removeAttr("disabled", "disabled");
             $("input[name='first_time_begin']").removeAttr("disabled", "disabled");
             $("input[name='first_time_end']").removeAttr("disabled", "disabled");
             $("input[name='first_episode_diagnosis']").removeAttr("disabled", "disabled");
             $("input[name='number_of_episode']").removeAttr("disabled", "disabled");
+            $("input[name='previous_period_of_remission']").removeAttr("disabled", "disabled")
             $("input[name='current_episode_date']").removeAttr("disabled", "disabled");
             $("input[name='current_episode_diagnosis']").removeAttr("disabled", "disabled");
+            $("input[name='total_sick_time']").removeAttr("disabled", "disabled");
+            $("input[name='is_schooling_suspension']").removeAttr("disabled", "disabled");
+            $("input[name='suspension_month']").removeAttr("disabled", "disabled");
+            $("input[name='others']").removeAttr("disabled", "disabled");
+            $("input[name='is_impaired_relationships']").removeAttr("disabled", "disabled");
+            $("input[name='impaired_reason']").removeAttr("disabled", "disabled");
+            $("input[name='is_non_suicidal_self_harm']").removeAttr("disabled", "disabled");
+            $("input[name='non_suicidal_self_harm_num']").removeAttr("disabled", "disabled");
+            $("input[name='titration_start_time']").removeAttr("disabled", "disabled");
+            $("input[name='titration_end_time']").removeAttr("disabled", "disabled");
             $("input[name='historical_drugs']").removeAttr("disabled", "disabled");
             $("input[name='historical_drugs_month']").removeAttr("disabled", "disabled");
             $("input[name='scanning_state']").removeAttr("disabled", "disabled");
