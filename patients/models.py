@@ -232,3 +232,18 @@ class BPatientMedicalAdviceDetail(models.Model):
     class Meta:
         managed = False
         db_table = 'b_patient_medical_advice_detail'
+        
+        
+        
+class BPatientGenericClinicalData(models.Model):
+    patient_id = models.IntegerField()
+    data_type = models.CharField(max_length=40, blank=True, null=True)
+    data_count = models.IntegerField(blank=True, null=True)
+    admission_id = models.IntegerField(blank=True, null=True)
+    data_content = models.TextField(blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'b_patient_generic_clinical_data'
