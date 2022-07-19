@@ -19,16 +19,17 @@
             <div align="center" style="padding-left: 18%; padding-right: 20%">
                     <strong>
                         <h1 class="active"></h1>
+
                     </strong>
             </div>
         </div>
         <br>
         <br>
         <br>
-        <br>
-        <br>
-        <br>
+        <div id="total_score_area" style="text-align: center;font-size: 16px;font-weight: bold;">
+        </div>
         <div class="question_area" name="question_area" style="text-align: center">
+            <hr/>
         </div>
     </div>
 </div>
@@ -56,9 +57,60 @@
         $.ajaxSettings.async = true;
         console.log("getMetaData")
         updateQuestionContent()
+        getTotalScore()
         console.log("updateQuestion")
     });
-
+    function getTotalScore(){
+        let totalScoreAreaDiv = $("#total_score_area")
+        let en2cn = {
+            "yboTotalScore": "总分",
+            "shapesTotalScore": "总分",
+            "tepsTotalScore":"总分",
+            "atqTotalScore":"总分",
+            "phq9TotalScore":"总分",
+            "gad7TotalScore":"总分",
+            "insomniaTotalScore":"总分",
+            "hcl33TotalScore":"总分",
+            "pssTotalScore":"总分",
+            "pssTensionScore":"紧张感总分",
+            "pssOutofControlScore":"失控感总分",
+            "bssLastWeekTotalScore":"近一周",
+            "bssMostDepressedTotalScore":"最消沉",
+            "ctqSfEmotionalAbuseTotalScore":"情感虐待",
+            "ctqSfPhysicalAbuseTotalScore":"躯体虐待",
+            "ctqSfSexualAbuseTotalScore":"性虐待",
+            "ctqSfEmotionalIgnoranceTotalScore":"情感忽视",
+            "ctqSfPhysicalIgnoranceTotalScore":"躯体忽视",
+            "ctqSfTotalScore":"总分",
+            "cerqSelfBlameTotalScore":"自我责难",
+            "cerqOtherBlameTotalScore":"责难他人",
+            "cerqMeditationTotalScore":"沉思",
+            "cerqCatastrophicallyTotalScore":"灾难化",
+            "cerqAcceptedTotalScore":"接受",
+            "cerqPositiveRefocusTotalScore":"积极重新关注",
+            "cerqProjectRefocusTotalScore":"重新关注计划",
+            "cerqPositiveEvaluationTotalScore":"积极重新评价",
+            "cerqRationalAnalysisTotalScore":"理性分析",
+        }
+        $.ajaxSettings.async = true;
+        $.get("/scales/get_total_score",
+            {
+                patient_session_id: patientSessionId,
+                scale_id: scaleId
+            },
+            function (res, statue) {
+                if(statue === 'success'){
+                    console.log(res)
+                    res.data.forEach(function(item, index, arr){
+                        $("#total_score_area").append("<span>"+en2cn[item.score_name]+"</span>:&nbsp")
+                        $("#total_score_area").append("<span>"+item.score_value+"</span><br/>")
+                    })
+                }else{
+                    console.log("总分请求失败!")
+                }
+            }
+        )
+    }
     // 更新题目文本
     function updateQuestionContent() {
         $.ajaxSettings.async = false;

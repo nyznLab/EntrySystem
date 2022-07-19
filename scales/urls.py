@@ -96,4 +96,5 @@ urlpatterns = [
     url("self_test_display", views.selfTestDisplay),
     url('self_test', views.selfTest),
     url('get_answer_by_index', views.get_answer_by_index),
+    url('get_total_score', views.get_total_score)
 ]
