@@ -31,6 +31,24 @@ class BInpatientInfo(models.Model):
         managed = False
         db_table = 'b_inpatient_info'
 
+class BInpatientData(models.Model):
+    DATA_TYPE = (
+        (0, '长期医嘱单'),
+        (1, '病程记录'),
+        (2, '采血化验单')
+    )
+    id = models.AutoField(primary_key=True)
+    inpatient_id = models.IntegerField(blank=True, null=True)
+    data_type = models.CharField(max_length=20, blank=True, null=True)
+    file = models.TextField(blank=True, null=True)
+    data_date = models.DateField(blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+    class Meta:
+        managed = False
+        db_table = 'b_inpatient_data'
+        
+        
 class BInpatientMedicalAdvice(models.Model):
     inpatient = models.ForeignKey('BInpatientInfo', models.DO_NOTHING)
     start_time = models.DateTimeField(blank=True, null=True)
@@ -59,3 +77,16 @@ class DMedicalAdvice(models.Model):
     class Meta:
         managed = False
         db_table = 'd_medical_advice'
+
+
+class DBloodTest(models.Model):
+    id = models.AutoField(primary_key=True)
+    data_id = models.IntegerField(blank=True, null=True)
+    case_num = models.CharField(max_length=40, blank=True, null=True)
+    barcode_num = models.CharField(max_length=40, blank=True, null=True)
+    item_name = models.CharField(max_length=40, blank=True, null=True)
+    item_value = models.FloatField(blank=True, null=True)
+    item_unit = models.CharField(max_length=10, blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'd_blood_test'

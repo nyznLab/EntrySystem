@@ -1,4 +1,4 @@
-from inpatients.models import BInpatientInfo,BInpatientMedicalAdvice,DMedicalAdvice
+from inpatients.models import *
 # 根据inpatient_id获取对象
 def get_inpatient_info_byPK(inpatient_id):
     res = BInpatientInfo.objects.filter(pk = inpatient_id)
@@ -55,3 +55,14 @@ def get_medical_dict():
     for ele in res:
         medical_dict[ele[0]] = ele[1]
     return medical_dict
+
+
+# 添加一条数据到住院数据流水表
+def add_inpatient_data(inpatient_id, data_type, file=None, data_date=None):
+    bInpatientData = BInpatientData()
+    bInpatientData.inpatient_id = inpatient_id
+    bInpatientData.data_type = data_type
+    bInpatientData.data_date = data_date
+    bInpatientData.file = file
+    bInpatientData.save()
+    
