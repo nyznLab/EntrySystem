@@ -438,7 +438,7 @@
                 $("input[name='is_impaired_relationships'][value='{{ patient_medical_history.is_impaired_relationships|processNone }}']").prop('checked',true)
                 $("input[name='impaired_reason']").val('{{ patient_medical_history.impaired_reason|processNone }}')
                 $("input[name='is_non_suicidal_self_harm'][value='{{ patient_medical_history.is_non_suicidal_self_harm|processNone }}']").prop('checked',true)
-                $("input[name='non_suicidal_self_harm_num']").val({{ patient_medical_history.suspension_month|processNone }})
+                $("input[name='non_suicidal_self_harm_num']").val({{ patient_medical_history.non_suicidal_self_harm_num|processNone }})
                 $("input[name='titration_start_time']").val('{{ patient_medical_history.titration_start_time|date:"Y-m-d" }}')
                 $("input[name='titration_end_time']").val('{{ patient_medical_history.titration_end_time|date:"Y-m-d" }}')
 
