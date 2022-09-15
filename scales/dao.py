@@ -1249,29 +1249,6 @@ def update_scales(scale_model, patient_session_id, form_content, doctor_id, scal
     res.doctor_id = doctor_id
     res.save()
 
-# # 将自杀量表第13题后的答案置空
-# def delete_bss_scales(scale_model, patient_session_id, form_content, doctor_id, scale_id):
-#     form_content=
-#     # 先去查有没有记录
-#     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
-#     if res is None:
-#         # 没有记录说明是写入第一道题 所以先创建一个
-#         res = scale_model.objects.create(patient_session_id=patient_session_id,
-#                                          doctor_id=doctor_id,
-#                                          create_time=int(time.time()),
-#                                          version=get_scale_content_version_by_id(scale_id),
-#                                          update_time=int(time.time()),
-#                                          )
-#         # 创建完成之后再查出来
-#         res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).first()
-#     # 把对应题目的答案更新 同时更新更新时间和医生id
-#     for key in form_content.keys():
-#         setattr(res, key, str(form_content[key]))
-#     res.update_time = int(time.time())
-#     res.doctor_id = doctor_id
-#     res.save()
-
-
 # 插入题目的响应时间
 def insert_scale_duration(patient_session_id, scale_id, question_index, duration):
     scales_models.RSelfTestDuration.objects.create(patient_session_id=patient_session_id, scale_id=scale_id,
