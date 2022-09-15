@@ -1626,6 +1626,17 @@ def get_answer_by_index(request):
         "answer": res,
     })
 
+# 获取总分
+def get_total_score(request):
+    patient_session_id = request.GET.get("patient_session_id")
+    scale_id = request.GET.get("scale_id")
+    res = Do.get_total_score(scale_id, patient_session_id)
+
+    return JsonResponse({
+        'msg': 'ok',
+        'data': list(res)
+    })
+
 
 #  获取量表标题和警示
 def get_scale_metadata(request):

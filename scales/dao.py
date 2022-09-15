@@ -1292,6 +1292,14 @@ def get_answer_by_index(scale_model, patient_session_id, question_index):
     res = scale_model.objects.filter(patient_session_id=patient_session_id, delete=config.Del_No).values(
         question_index).first()[question_index]
     return res
+# 获取总分
+def get_total_score(scale_id, patient_session_id):
+    res = scales_models.TScalesTotalScores.objects.filter(
+        patient_session_id=patient_session_id,
+        scale_definition_id=scale_id,
+        delete=0
+    ).values('score_name', 'score_value')
+    return res
 
 
 # 根据 patient_session_id 返回对应的 patient id

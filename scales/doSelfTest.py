@@ -224,6 +224,11 @@ def redo_scale(scale_id, patient_session_id):
     return True
 
 
+# 获取总分（部分量表可能有多个总分）
+def get_total_score(scale_id, patient_session_id):
+    res = scales_dao.get_total_score(scale_id, patient_session_id)
+    return res
+
 # 根据题号取答案
 def get_answer_by_index(scale_id, patient_session_id, question_index):
     res = scales_dao.get_answer_by_index(config.scaleId_Models_Map[str(scale_id)], patient_session_id,
