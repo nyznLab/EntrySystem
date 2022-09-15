@@ -292,3 +292,38 @@ def calculate_scale_score(patient_session_id, scale_id, user_id):
                             f"on scale {scale_id}"
                             f" error: {json.dumps(scale_answer_obj)}")
     return score_dic
+
+# 自杀量表9，10，11，12题选不自杀选项，总分置0
+def calculate_scale_score_bss(patient_session_id, scale_id, user_id):
+    score_value = 0
+    score_dic = {}
+    # 取答题记录
+    scale_answer_obj = scales_dao.get_scale_answers(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
+    # 根据量表的version取scale_content_id
+    scale_content = scales_dao.get_scale_content_by_id_and_version(scale_id, scale_answer_obj.version)
+    if scale_content is not None:
+        scale_content_id = scale_content.id
+    # 取总分计算规则
+    calculate_rules_obj = scales_dao.get_scale_calculate_rules_obj(scale_id, scale_content_id)
+    if calculate_rules_obj is None:
+        return
+    # 处理总分计算规则
+    calculate_rules_dic = process_total_score_calculate_rules(calculate_rules_obj["calculate_rule"])
+    # 写入总分
+    for score_name in calculate_rules_dic.keys():
+        res = write_scale_total_scores(
+            scale_id,
+            scale_answer_obj.id,
+            scale_content_id,
+            calculate_rules_obj["id"],
+            patient_session_id,
+            score_name,
+            score_value,
+            user_id,
+        )
+        if res is None:
+            logging.warning(f"calculate_scale_score of patient_session_id {patient_session_id} "
+                            f"on scale {scale_id}"
+                            f" error: {json.dumps(scale_answer_obj)}")
+    return score_dic
+
