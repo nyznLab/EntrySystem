@@ -1576,6 +1576,25 @@ def get_question_by_index(request):
     user_id = request.session.get('doctor_id')
     # 取scale_content对象
     scale_content = Do.get_right_scale_content(scale_id, patient_session_id)
+
+    #自杀量表跳转问题
+    if scale_id == '12' and question_index == '13':
+        scale_answer_obj = scales_dao.get_scale_answers(config.scaleId_Models_Map[str(scale_id)], patient_session_id)
+        if scale_answer_obj.question9 == '1' and scale_answer_obj.question10 == '1' and scale_answer_obj.question11 == '1' and scale_answer_obj.question12 == '1':
+            try:
+                form_content_del = {'question13':'','question14':'','question15':'','question16':'','question17':'','question18':'','question19':'','question20':'',
+                                    'question21':'','question22':'','question23':'','question24':'','question25':'','question26':'','question27':'','question28':'',
+                                    'question29':'','question30':'','question31':'','question32':'','question33':'','question34':'','question35':'','question36':'',
+                                    'question37':'','question38':'','question39':'','question40':'','question41':'','question42':'','question43':'','question44':'',
+                                    'question45':'','question46':'','question47':'','question48':'','question49':'','question50':''}
+                doctor_id = request.session.get('doctor_id')
+                Do.write_scale_answer(scale_id, patient_session_id, form_content_del, doctor_id)
+                Do.complete_scale(patient_session_id, scale_id)
+                Do.calculate_scale_score_bss(patient_session_id, scale_id, user_id)
+                return JsonResponse(True, safe=False)
+            except ValueError:
+                return JsonResponse(False, safe=False)
+
     # 在scale_content中找对应题目
     if question_index in scale_content.keys():
         # 题目存在

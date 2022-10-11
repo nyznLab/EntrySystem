@@ -1249,7 +1249,6 @@ def update_scales(scale_model, patient_session_id, form_content, doctor_id, scal
     res.doctor_id = doctor_id
     res.save()
 
-
 # 插入题目的响应时间
 def insert_scale_duration(patient_session_id, scale_id, question_index, duration):
     scales_models.RSelfTestDuration.objects.create(patient_session_id=patient_session_id, scale_id=scale_id,
