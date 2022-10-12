@@ -37,243 +37,243 @@
         <option type="radio" name="question7" value="4">总是</option>
     </question>
     <question index="8" title="2.1 父亲赞美我">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question8" value="1">从不</option>
+        <option type="radio" name="question8" value="2">偶尔</option>
+        <option type="radio" name="question8" value="3">经常</option>
+        <option type="radio" name="question8" value="4">总是</option>
     </question>
     <question index="9" title="2.2 母亲赞美我">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question9" value="1">从不</option>
+        <option type="radio" name="question9" value="2">偶尔</option>
+        <option type="radio" name="question9" value="3">经常</option>
+        <option type="radio" name="question9" value="4">总是</option>
     </question>
     <question index="10" title="3.1 我希望父亲对我正在做的事不要过分担心">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question10" value="1">从不</option>
+        <option type="radio" name="question10" value="2">偶尔</option>
+        <option type="radio" name="question10" value="3">经常</option>
+        <option type="radio" name="question10" value="4">总是</option>
     </question>
     <question index="11" title="3.2 我希望母亲对我正在做的事不要过分担心">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question11" value="1">从不</option>
+        <option type="radio" name="question11" value="2">偶尔</option>
+        <option type="radio" name="question11" value="3">经常</option>
+        <option type="radio" name="question11" value="4">总是</option>
     </question>
     <question index="12" title="4.1 父亲对我的惩罚往往超过我应受的程度">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question12" value="1">从不</option>
+        <option type="radio" name="question12" value="2">偶尔</option>
+        <option type="radio" name="question12" value="3">经常</option>
+        <option type="radio" name="question12" value="4">总是</option>
     </question>
     <question index="13" title="4.2 母亲对我的惩罚往往超过我应受的程度">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question13" value="1">从不</option>
+        <option type="radio" name="question13" value="2">偶尔</option>
+        <option type="radio" name="question13" value="3">经常</option>
+        <option type="radio" name="question13" value="4">总是</option>
     </question>
     <question index="14" title="5.1 父亲要求我回到家里必须得向她说明我在外面做了什么事">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question14" value="1">从不</option>
+        <option type="radio" name="question14" value="2">偶尔</option>
+        <option type="radio" name="question14" value="3">经常</option>
+        <option type="radio" name="question14" value="4">总是</option>
     </question>
     <question index="15" title="5.2 母亲要求我回到家里必须得向她说明我在外面做了什么事">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question15" value="1">从不</option>
+        <option type="radio" name="question15" value="2">偶尔</option>
+        <option type="radio" name="question15" value="3">经常</option>
+        <option type="radio" name="question15" value="4">总是</option>
     </question>
     <question index="16" title="6.1 我觉得父亲尽量使我的青少年时期的生活更有意义和丰富多彩">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question16" value="1">从不</option>
+        <option type="radio" name="question16" value="2">偶尔</option>
+        <option type="radio" name="question16" value="3">经常</option>
+        <option type="radio" name="question16" value="4">总是</option>
     </question>
     <question index="17" title="6.2 我觉得母亲尽量使我的青少年时期的生活更有意义和丰富多彩">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question17" value="1">从不</option>
+        <option type="radio" name="question17" value="2">偶尔</option>
+        <option type="radio" name="question17" value="3">经常</option>
+        <option type="radio" name="question17" value="4">总是</option>
     </question>
     <question index="18" title="7.1 父亲经常当着别人的面批评我既懒惰又无用">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question18" value="1">从不</option>
+        <option type="radio" name="question18" value="2">偶尔</option>
+        <option type="radio" name="question18" value="3">经常</option>
+        <option type="radio" name="question18" value="4">总是</option>
     </question>
     <question index="19" title="7.2 母亲经常当着别人的面批评我既懒惰又无用">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question19" value="1">从不</option>
+        <option type="radio" name="question19" value="2">偶尔</option>
+        <option type="radio" name="question19" value="3">经常</option>
+        <option type="radio" name="question19" value="4">总是</option>
     </question>
     <question index="20" title="8.1 父亲不允许我做一些其他孩子可以做的事情，因为他（她）害怕我会出事">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question20" value="1">从不</option>
+        <option type="radio" name="question20" value="2">偶尔</option>
+        <option type="radio" name="question20" value="3">经常</option>
+        <option type="radio" name="question20" value="4">总是</option>
     </question>
     <question index="21" title="8.2 母亲不允许我做一些其他孩子可以做的事情，因为他（她）害怕我会出事">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question21" value="1">从不</option>
+        <option type="radio" name="question21" value="2">偶尔</option>
+        <option type="radio" name="question21" value="3">经常</option>
+        <option type="radio" name="question21" value="4">总是</option>
     </question>
     <question index="22" title="9.1 父亲总试图鼓励我，使我成为佼佼者">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question22" value="1">从不</option>
+        <option type="radio" name="question22" value="2">偶尔</option>
+        <option type="radio" name="question22" value="3">经常</option>
+        <option type="radio" name="question22" value="4">总是</option>
     </question>
     <question index="23" title="9.2 母亲总试图鼓励我，使我成为佼佼者">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question23" value="1">从不</option>
+        <option type="radio" name="question23" value="2">偶尔</option>
+        <option type="radio" name="question23" value="3">经常</option>
+        <option type="radio" name="question23" value="4">总是</option>
     </question>
     <question index="24" title="10.1 我觉得父亲对我可能出事的担心是夸大的、过分的">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question24" value="1">从不</option>
+        <option type="radio" name="question24" value="2">偶尔</option>
+        <option type="radio" name="question24" value="3">经常</option>
+        <option type="radio" name="question24" value="4">总是</option>
     </question>
     <question index="25" title="10.2 我觉得母亲对我可能出事的担心是夸大的、过分的">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question25" value="1">从不</option>
+        <option type="radio" name="question25" value="2">偶尔</option>
+        <option type="radio" name="question25" value="3">经常</option>
+        <option type="radio" name="question25" value="4">总是</option>
     </question>
     <question index="26" title="11.1 当遇到不顺心的事时，我能感到父亲在尽量鼓励我，使我得到安慰">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question26" value="1">从不</option>
+        <option type="radio" name="question26" value="2">偶尔</option>
+        <option type="radio" name="question26" value="3">经常</option>
+        <option type="radio" name="question26" value="4">总是</option>
     </question>
     <question index="27" title="11.2 当遇到不顺心的事时，我能感到母亲在尽量鼓励我，使我得到安慰">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question27" value="1">从不</option>
+        <option type="radio" name="question27" value="2">偶尔</option>
+        <option type="radio" name="question27" value="3">经常</option>
+        <option type="radio" name="question27" value="4">总是</option>
     </question>
     <question index="28" title="12.1 我在家里往往被父亲当作“替罪羊”或“害群之马">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question28" value="1">从不</option>
+        <option type="radio" name="question28" value="2">偶尔</option>
+        <option type="radio" name="question28" value="3">经常</option>
+        <option type="radio" name="question28" value="4">总是</option>
     </question>
     <question index="29" title="12.2 我在家里往往被母亲当作“替罪羊”或“害群之马">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question29" value="1">从不</option>
+        <option type="radio" name="question29" value="2">偶尔</option>
+        <option type="radio" name="question29" value="3">经常</option>
+        <option type="radio" name="question29" value="4">总是</option>
     </question>
     <question index="30" title="13.1 我能通过父亲的言谈、表情感受到他（她）很喜欢我">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question30" value="1">从不</option>
+        <option type="radio" name="question30" value="2">偶尔</option>
+        <option type="radio" name="question30" value="3">经常</option>
+        <option type="radio" name="question30" value="4">总是</option>
     </question>
     <question index="31" title="13.2 我能通过母亲的言谈、表情感受到他（她）很喜欢我">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question31" value="1">从不</option>
+        <option type="radio" name="question31" value="2">偶尔</option>
+        <option type="radio" name="question31" value="3">经常</option>
+        <option type="radio" name="question31" value="4">总是</option>
     </question>
     <question index="32" title="14.1 父亲常以一种使我很难堪的方式对待我">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question32" value="1">从不</option>
+        <option type="radio" name="question32" value="2">偶尔</option>
+        <option type="radio" name="question32" value="3">经常</option>
+        <option type="radio" name="question32" value="4">总是</option>
     </question>
     <question index="33" title="14.2 母亲常以一种使我很难堪的方式对待我">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question33" value="1">从不</option>
+        <option type="radio" name="question33" value="2">偶尔</option>
+        <option type="radio" name="question33" value="3">经常</option>
+        <option type="radio" name="question33" value="4">总是</option>
     </question>
     <question index="34" title="15.1 父亲常常允许我到我喜欢去的地方，而他（她）又不会过分担心">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question34" value="1">从不</option>
+        <option type="radio" name="question34" value="2">偶尔</option>
+        <option type="radio" name="question34" value="3">经常</option>
+        <option type="radio" name="question34" value="4">总是</option>
     </question>
     <question index="35" title="15.2 母亲常常允许我到我喜欢去的地方，而他（她）又不会过分担心">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question35" value="1">从不</option>
+        <option type="radio" name="question35" value="2">偶尔</option>
+        <option type="radio" name="question35" value="3">经常</option>
+        <option type="radio" name="question35" value="4">总是</option>
     </question>
     <question index="36" title="16.1 我觉得父亲干涉我做的任何一件事">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question36" value="1">从不</option>
+        <option type="radio" name="question36" value="2">偶尔</option>
+        <option type="radio" name="question36" value="3">经常</option>
+        <option type="radio" name="question36" value="4">总是</option>
     </question>
     <question index="37" title="16.2 我觉得母亲干涉我做的任何一件事">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question37" value="1">从不</option>
+        <option type="radio" name="question37" value="2">偶尔</option>
+        <option type="radio" name="question37" value="3">经常</option>
+        <option type="radio" name="question37" value="4">总是</option>
     </question>
     <question index="38" title="17.1 我觉得与父亲之间存在一种温暖、体贴和亲热的感觉">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question38" value="1">从不</option>
+        <option type="radio" name="question38" value="2">偶尔</option>
+        <option type="radio" name="question38" value="3">经常</option>
+        <option type="radio" name="question38" value="4">总是</option>
     </question>
     <question index="39" title="17.2 我觉得与母亲之间存在一种温暖、体贴和亲热的感觉">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question39" value="1">从不</option>
+        <option type="radio" name="question39" value="2">偶尔</option>
+        <option type="radio" name="question39" value="3">经常</option>
+        <option type="radio" name="question39" value="4">总是</option>
     </question>
     <question index="40" title="18.1 父亲对我该做什么、不该做什么都有严格的限制而且决不让步">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question40" value="1">从不</option>
+        <option type="radio" name="question40" value="2">偶尔</option>
+        <option type="radio" name="question40" value="3">经常</option>
+        <option type="radio" name="question40" value="4">总是</option>
     </question>
     <question index="41" title="18.2 母亲对我该做什么、不该做什么都有严格的限制而且决不让步">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question41" value="1">从不</option>
+        <option type="radio" name="question41" value="2">偶尔</option>
+        <option type="radio" name="question41" value="3">经常</option>
+        <option type="radio" name="question41" value="4">总是</option>
     </question>
     <question index="42" title="19.1 即使是很小的过错，父亲也惩罚我">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question42" value="1">从不</option>
+        <option type="radio" name="question42" value="2">偶尔</option>
+        <option type="radio" name="question42" value="3">经常</option>
+        <option type="radio" name="question42" value="4">总是</option>
     </question>
     <question index="43" title="19.2 即使是很小的过错，母亲也惩罚我">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question43" value="1">从不</option>
+        <option type="radio" name="question43" value="2">偶尔</option>
+        <option type="radio" name="question43" value="3">经常</option>
+        <option type="radio" name="question43" value="4">总是</option>
     </question>
     <question index="44" title="20.1 父亲总是左右我该穿什么衣服或该打扮成什么样子">
-        <option type="radio" name="question6" value="4">从不</option>
-        <option type="radio" name="question6" value="3">偶尔</option>
-        <option type="radio" name="question6" value="2">经常</option>
-        <option type="radio" name="question6" value="1">总是</option>
+        <option type="radio" name="question44" value="4">从不</option>
+        <option type="radio" name="question44" value="3">偶尔</option>
+        <option type="radio" name="question44" value="2">经常</option>
+        <option type="radio" name="question44" value="1">总是</option>
     </question>
     <question index="45" title="20.2 母亲总是左右我该穿什么衣服或该打扮成什么样子">
-        <option type="radio" name="question7" value="4">从不</option>
-        <option type="radio" name="question7" value="3">偶尔</option>
-        <option type="radio" name="question7" value="2">经常</option>
-        <option type="radio" name="question7" value="1">总是</option>
+        <option type="radio" name="question45" value="4">从不</option>
+        <option type="radio" name="question45" value="3">偶尔</option>
+        <option type="radio" name="question45" value="2">经常</option>
+        <option type="radio" name="question45" value="1">总是</option>
     </question>
     <question index="46" title="21.1 当我做的事情取得成功时，我觉得父亲很为我自豪">
-        <option type="radio" name="question6" value="1">从不</option>
-        <option type="radio" name="question6" value="2">偶尔</option>
-        <option type="radio" name="question6" value="3">经常</option>
-        <option type="radio" name="question6" value="4">总是</option>
+        <option type="radio" name="question46" value="1">从不</option>
+        <option type="radio" name="question46" value="2">偶尔</option>
+        <option type="radio" name="question46" value="3">经常</option>
+        <option type="radio" name="question46" value="4">总是</option>
     </question>
     <question index="47" title="21.2 当我做的事情取得成功时，我觉得母亲很为我自豪">
-        <option type="radio" name="question7" value="1">从不</option>
-        <option type="radio" name="question7" value="2">偶尔</option>
-        <option type="radio" name="question7" value="3">经常</option>
-        <option type="radio" name="question7" value="4">总是</option>
+        <option type="radio" name="question47" value="1">从不</option>
+        <option type="radio" name="question47" value="2">偶尔</option>
+        <option type="radio" name="question47" value="3">经常</option>
+        <option type="radio" name="question47" value="4">总是</option>
     </question>
 </scale>
