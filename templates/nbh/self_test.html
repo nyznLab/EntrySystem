@@ -140,6 +140,7 @@
         updateFormAnswer();
         // 更新按钮
         document.getElementById("previous").disabled = false;
+        $.getScript("{% static '/js/question_load.js' %}")
 
     });
 
@@ -160,6 +161,7 @@
         if (index === 1){
             document.getElementById("previous").disabled = true;
         }
+        $.getScript("{% static '/js/question_load.js' %}")
     });
 
     // 更新题目文本
@@ -392,15 +394,14 @@
         }
     });
 </script>
-    <script>
-    $(document).ready(function () {
-        $('input.scale_form[type=radio]').change(function () {
-            if ($(this).prop('checked')===true) {
-                $(this).siblings().css({'background-color': '#2a3f54', 'color': '#efefef'})
-                $(this).parent().siblings('div').children('label').css({'background-color':'#efefef','color':'#2a3f54'})
-            }
-            console.log('changing!!')
-        });
-    })
+    <script id="question_load_script">
+        $(document).ready(function () {
+            $('input.scale_form[type=radio]').change(function () {
+                if ($(this).prop('checked')===true) {
+                    $(this).siblings().css({'background-color': '#2a3f54', 'color': '#efefef'})
+                    $(this).parent().siblings('div').children('label').css({'background-color':'#efefef','color':'#73879C'})
+                }
+            });
+        })
     </script>
 {% endblock %}
