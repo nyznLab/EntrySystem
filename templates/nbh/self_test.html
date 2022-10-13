@@ -75,6 +75,7 @@
 <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
 <script type="text/javascript" language="JavaScript">
+
     // dom加载完毕
     const $m_btn = $('.exit_button');
     const $modal = $('#exit_confirm');
@@ -329,6 +330,7 @@
                 input.setAttribute("name", questionInfo.options[j].name);
                 input.setAttribute("value", questionInfo.options[j].value);
                 input.setAttribute("class", "scale_form");
+                input.setAttribute("style","display:none;");
                 input.setAttribute("id", questionInfo.options[j].name + "_" + questionInfo.options[j].value);
                 {#input.setAttribute("data-labelauty", questionInfo.options[j].content);#}
                 let div = document.createElement("div");
@@ -338,6 +340,7 @@
                 let options = $(".options");
                 let labelText = document.createTextNode(questionInfo.options[j].content);
                 label.setAttribute("for", questionInfo.options[j].name + "_" + questionInfo.options[j].value)
+                label.setAttribute("style", "padding:10px;background-color:#efefef;text-align: center;border-radius:10px;width:350px;transition:all .3s;cursor:pointer;")
 
                 label.appendChild(labelText);
                 div.append(input);
@@ -389,4 +392,15 @@
         }
     });
 </script>
+    <script>
+    $(document).ready(function () {
+        $('input.scale_form[type=radio]').change(function () {
+            if ($(this).prop('checked')===true) {
+                $(this).siblings().css({'background-color': '#2a3f54', 'color': '#efefef'})
+                $(this).parent().siblings('div').children('label').css({'background-color':'#efefef','color':'#2a3f54'})
+            }
+            console.log('changing!!')
+        });
+    })
+    </script>
 {% endblock %}
