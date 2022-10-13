@@ -71,8 +71,9 @@
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
+
 <script type="text/javascript" src="{% static '/js/utils.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-radio-beauty.js' %}"></script>
 <script type="text/javascript" language="JavaScript">
     // dom加载完毕
     const $m_btn = $('.exit_button');
@@ -328,15 +329,20 @@
                 input.setAttribute("name", questionInfo.options[j].name);
                 input.setAttribute("value", questionInfo.options[j].value);
                 input.setAttribute("class", "scale_form");
-                input.setAttribute("data-labelauty", questionInfo.options[j].content);
+                input.setAttribute("id", questionInfo.options[j].name + "_" + questionInfo.options[j].value);
+                {#input.setAttribute("data-labelauty", questionInfo.options[j].content);#}
                 let div = document.createElement("div");
                 div.setAttribute("class", "row show-grid");
                 div.setAttribute("style", "margin:10px");
                 let label = document.createElement("label");
                 let options = $(".options");
-                label.append(input);
+                let labelText = document.createTextNode(questionInfo.options[j].content);
+                label.setAttribute("for", questionInfo.options[j].name + "_" + questionInfo.options[j].value)
+
+                label.appendChild(labelText);
                 div.append(input);
-                div.append(questionInfo.options[j].content)
+                div.append(label)
+                {#div.append(questionInfo.options[j].content)#}
                 options.append(div);
                 continue;
             }
