@@ -253,16 +253,16 @@
         <option type="radio" name="question43" value="4">总是</option>
     </question>
     <question index="44" title="20.1 父亲总是左右我该穿什么衣服或该打扮成什么样子">
-        <option type="radio" name="question44" value="1">从不</option>
-        <option type="radio" name="question44" value="2">偶尔</option>
-        <option type="radio" name="question44" value="3">经常</option>
-        <option type="radio" name="question44" value="4">总是</option>
+        <option type="radio" name="question44" value="4">从不</option>
+        <option type="radio" name="question44" value="3">偶尔</option>
+        <option type="radio" name="question44" value="2">经常</option>
+        <option type="radio" name="question44" value="1">总是</option>
     </question>
     <question index="45" title="20.2 母亲总是左右我该穿什么衣服或该打扮成什么样子">
-        <option type="radio" name="question45" value="1">从不</option>
-        <option type="radio" name="question45" value="2">偶尔</option>
-        <option type="radio" name="question45" value="3">经常</option>
-        <option type="radio" name="question45" value="4">总是</option>
+        <option type="radio" name="question45" value="4">从不</option>
+        <option type="radio" name="question45" value="3">偶尔</option>
+        <option type="radio" name="question45" value="2">经常</option>
+        <option type="radio" name="question45" value="1">总是</option>
     </question>
     <question index="46" title="21.1 当我做的事情取得成功时，我觉得父亲很为我自豪">
         <option type="radio" name="question46" value="1">从不</option>

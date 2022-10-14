@@ -141,7 +141,11 @@
         // 更新按钮
         document.getElementById("previous").disabled = false;
         $.getScript("{% static '/js/question_load.js' %}")
-
+        $("input[type=radio]").each(function () {
+            if($(this).is(":checked")) {
+                $(this).siblings().css({'background-color': '#2a3f54', 'color': '#efefef'})
+            }
+        })
     });
 
     $("#previous").click(function () {
@@ -162,6 +166,11 @@
             document.getElementById("previous").disabled = true;
         }
         $.getScript("{% static '/js/question_load.js' %}")
+        $("input[type=radio]").each(function () {
+            if($(this).is(":checked")) {
+                $(this).siblings().css({'background-color': '#2a3f54', 'color': '#efefef'})
+            }
+        })
     });
 
     // 更新题目文本
@@ -342,7 +351,7 @@
                 let options = $(".options");
                 let labelText = document.createTextNode(questionInfo.options[j].content);
                 label.setAttribute("for", questionInfo.options[j].name + "_" + questionInfo.options[j].value)
-                label.setAttribute("style", "padding:10px;background-color:#efefef;text-align: center;border-radius:10px;width:350px;transition:all .3s;cursor:pointer;")
+                label.setAttribute("style", "padding:10px;background-color:#efefef;text-align: center;border-radius:10px;width:400px;transition:all .3s;cursor:pointer;")
 
                 label.appendChild(labelText);
                 div.append(input);
