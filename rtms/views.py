@@ -255,40 +255,41 @@ def read_rtms_excel(doctor_id, filename):
                                     times_per_day = 1
                                     if flag_treatment_date == 1:
                                         treatment_date = "wrong date" + str(random.randint(1, 10))
-                                    if pre_pre_treatment_date != pre_treatment_date == treatment_date:
-                                        times_per_day = 2
-                                        if idx_insert_patient_rtms_obj_list >= 1:
-                                            update_obj = insert_patient_rtms_obj_list[
-                                                idx_insert_patient_rtms_obj_list - 1]
-                                            update_obj.update_times_per_day(2)
-                                            insert_patient_rtms_obj_list[
-                                                idx_insert_patient_rtms_obj_list - 1] = update_obj
-                                    if pre_pre_treatment_date == pre_treatment_date == treatment_date:
-                                        times_per_day = 3
-                                        if idx_insert_patient_rtms_obj_list >= 2:
-                                            update_obj = insert_patient_rtms_obj_list[
-                                                idx_insert_patient_rtms_obj_list - 1]
-                                            update_obj.update_times_per_day(2)
-                                            insert_patient_rtms_obj_list[
-                                                idx_insert_patient_rtms_obj_list - 1] = update_obj
+                                    else:
+                                        if pre_pre_treatment_date != pre_treatment_date == treatment_date:
+                                            times_per_day = 2
+                                            if idx_insert_patient_rtms_obj_list >= 1:
+                                                update_obj = insert_patient_rtms_obj_list[
+                                                    idx_insert_patient_rtms_obj_list - 1]
+                                                update_obj.update_times_per_day(2)
+                                                insert_patient_rtms_obj_list[
+                                                    idx_insert_patient_rtms_obj_list - 1] = update_obj
+                                        if pre_pre_treatment_date == pre_treatment_date == treatment_date:
+                                            times_per_day = 3
+                                            if idx_insert_patient_rtms_obj_list >= 2:
+                                                update_obj = insert_patient_rtms_obj_list[
+                                                    idx_insert_patient_rtms_obj_list - 1]
+                                                update_obj.update_times_per_day(2)
+                                                insert_patient_rtms_obj_list[
+                                                    idx_insert_patient_rtms_obj_list - 1] = update_obj
 
-                                            update_obj2 = insert_patient_rtms_obj_list[
-                                                idx_insert_patient_rtms_obj_list - 1 - 1]
-                                            update_obj2.update_times_per_day(3)
-                                            insert_patient_rtms_obj_list[
-                                                idx_insert_patient_rtms_obj_list - 1 - 1] = update_obj2
-                                    if pre_treatment_date!='a':
-                                        pre_treatment_datetime = datetime.datetime.strptime(str(pre_treatment_date)+' 00:00:00','%Y-%m-%d %H:%M:%S')
-                                        treatment_datetime = datetime.datetime.strptime(str(treatment_date)+' 00:00:00','%Y-%m-%d %H:%M:%S')
-                                        compare_day = (pre_treatment_datetime - treatment_datetime).days
-                                        if (compare_day >0):
-                                            flag_treatment_date = 1
-                                            flag_rtms_excel = 1
-                                            check_date.append(
-                                                "NN_" + str(patient_id).zfill(8) + "_S" + str(session_id).zfill(
-                                                    3) + '_' + str(x - s_range1))
-                                    pre_pre_treatment_date = pre_treatment_date
-                                    pre_treatment_date = treatment_date
+                                                update_obj2 = insert_patient_rtms_obj_list[
+                                                    idx_insert_patient_rtms_obj_list - 1 - 1]
+                                                update_obj2.update_times_per_day(3)
+                                                insert_patient_rtms_obj_list[
+                                                    idx_insert_patient_rtms_obj_list - 1 - 1] = update_obj2
+                                        if pre_treatment_date!='a':
+                                            pre_treatment_datetime = datetime.datetime.strptime(str(pre_treatment_date)+' 00:00:00','%Y-%m-%d %H:%M:%S')
+                                            treatment_datetime = datetime.datetime.strptime(str(treatment_date)+' 00:00:00','%Y-%m-%d %H:%M:%S')
+                                            compare_day = (pre_treatment_datetime - treatment_datetime).days
+                                            if (compare_day >0):
+                                                flag_treatment_date = 1
+                                                flag_rtms_excel = 1
+                                                check_date.append(
+                                                    "NN_" + str(patient_id).zfill(8) + "_S" + str(session_id).zfill(
+                                                        3) + '_' + str(x - s_range1))
+                                        pre_pre_treatment_date = pre_treatment_date
+                                        pre_treatment_date = treatment_date
 
                                     # note
                                     note = data_pd['备注'].loc[x]
